@@ -41,13 +41,13 @@
         </div>
 
         <div class="form-group">
+            <p>Selected: {{agg}}</p>
+            {{!http://balinterdi.com/2015/08/29/how-to-do-a-select-dropdown-in-ember-20.html }}
             <label for="time-agg-filter">Aggregate by</label>
-            <select class='form-control' id="time-agg-filter">
-                <option value="day">Day</option>
-                <option value="week" selected="true">Week</option>
-                <option value="month">Month</option>
-                <option value="quarter">Quarter</option>
-                <option value="year">Year</option>
+            <select onchange={{action "selectAgg" value="target.value"}}>
+              {{#each aggOptions as |aggChoice|}}
+                  <option value={{aggChoice}} selected={{eq agg aggChoice}}>{{aggChoice}}</option>
+              {{/each}}
             </select>
         </div>
 

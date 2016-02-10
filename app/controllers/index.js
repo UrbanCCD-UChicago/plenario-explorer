@@ -9,5 +9,7 @@ export default Ember.Controller.extend({
   drawnShape: null,
   shapeSubmitted: false,
   startDate: '11/12/2015',
-  endDate: '02/10/2016'
+  endDate: '02/10/2016',
+  agg: 'week',
+  aggOptions: ['day', 'week', 'quarter', 'month', 'year']
 });
