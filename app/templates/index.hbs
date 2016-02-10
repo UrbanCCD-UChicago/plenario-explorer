@@ -1,7 +1,13 @@
-<h2>Maps are nifty.</h2>
+<div class="row">
+  <div class="col-md-5">
+    Query box goes in here.
+  </div>
+  <div class="col-md-7 half-height">
+    {{leaflet-map lat=lat lng=lng zoom=zoom tileURL=tileURL
+    drawnShape=drawnShape shapeSubmitted=shapeSubmitted}}
+  </div>
+</div>
 
-{{leaflet-map lat=lat lng=lng zoom=zoom tileURL=tileURL
-              drawnShape=drawnShape shapeSubmitted=shapeSubmitted}}
 {{input type="checkbox" name="shapeSubmitted" checked=shapeSubmitted }}
 
 {{outlet}}
