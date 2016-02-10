@@ -1,1 +1,63 @@
-{{yield}}
+<div id="filters">
+    <div class="panel-group" id="accordion">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse-intro">
+                        <i class='fa fa-info-circle'></i>
+                        Instructions
+                    </a>
+                </h4>
+            </div>
+            <div id="collapse-intro" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <div class='clearfix'></div>
+                    <p class='pull-left'><img id='drawing-tools-img' src='/static/images/draw-tools.png' alt='drawing tools' /></p>
+                    <p>Draw a box, line or a custom shape on the map and select the dates and time aggregation below to filter datasets.</p>
+
+                    <p class='pull-right'><a href='#' id='dismiss-intro'>OK, thanks!</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <form role="form">
+        <div class='row'>
+            <div class='col-md-6'>
+                <div class="form-group">
+                    {{startDate}}
+                    <label for="start-date-filter">Start date</label>
+                    {{bootstrap-datepicker id="start-date-filter" placeholder=startDate value=startDate}}
+                </div>
+            </div>
+            <div class='col-md-6'>
+                <div class="form-group">
+                    {{endDate}}
+                    <label for="end-date-filter">End date</label>
+                    {{bootstrap-datepicker id="end-date-filter" placeholder=endDate value=endDate}}
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="time-agg-filter">Aggregate by</label>
+            <select class='form-control' id="time-agg-filter">
+                <option value="day">Day</option>
+                <option value="week" selected="true">Week</option>
+                <option value="month">Month</option>
+                <option value="quarter">Quarter</option>
+                <option value="year">Year</option>
+            </select>
+        </div>
+
+        <button type="button" id="submit-query" class="btn btn-primary">
+            <i class='fa fa-search'></i>
+            Submit
+        </button>
+        <a href='#' id="reset" class="btn btn-default">
+            <i class='fa fa-undo'></i>
+            Reset
+        </a>
+    </form>
+</div>
