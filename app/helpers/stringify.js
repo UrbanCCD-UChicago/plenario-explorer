@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
-export function stringify(pojo) {
-  return JSON.stringify(pojo);
+export function stringify(layer) {
+  return JSON.stringify(layer);
 }
 
 export default Ember.Helper.helper(stringify);

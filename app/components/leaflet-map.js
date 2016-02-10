@@ -2,6 +2,16 @@ import Ember from 'ember';
 /* global L */
 
 export default Ember.Component.extend({
+  // Leaflet layer
+  drawnLayer: null,
+
+  didUpdateAttrs () {
+    this._super(...arguments);
+    if (this.get('shapeSubmitted')) {
+      this.map.fitBounds(this.drawnLayer.getBounds());
+    }
+  },
+
   // Set up once the div is added to the DOM
   didInsertElement() {
     const map_options = {
@@ -9,7 +19,8 @@ export default Ember.Component.extend({
       tapTolerance: 30,
       minZoom: 1
     };
-    this.map = L.map('map', map_options).setView([this.get('lat'), this.get('lng')], this.get('zoom'));
+    this.map = L.map('map', map_options).
+                 setView([this.get('lat'), this.get('lng')], this.get('zoom'));
     this.addTiles();
     this.initDrawComponent();
   },
@@ -20,6 +31,11 @@ export default Ember.Component.extend({
   },
 
   initDrawComponent() {
+    this.addDrawControl();
+    this.addDrawListeners();
+  },
+
+  addDrawControl() {
     // Making the feature group an attribute of the map
     // so that event handlers that have access to the map
     // can get at it.
@@ -37,7 +53,9 @@ export default Ember.Component.extend({
       }
     });
     this.map.addControl(drawControl);
+  },
 
+  addDrawListeners() {
     // Only allow the user to draw one vector at a time.
     this.map.on('draw:created', this.drawCreate);
     this.map.on('draw:edited', this.drawEdit);
@@ -45,11 +63,18 @@ export default Ember.Component.extend({
     this.map.on('draw:deleted', this.drawDelete);
 
     // Propagate the user's drawings up to the controller.
+    // Attach the reporting functions to the map
+    // so that we can call them from the Leaflet event handlers.
     let self = this;
     this.map.reportDrawn = function(layer) {
+      self.drawnLayer = layer;
       self.set('drawnShape', layer.toGeoJSON());
     };
-    this.map.reportDeleted = function() {self.set('drawnShape', null);};
+    this.map.reportDeleted = function() {
+      self.drawnLayer = null;
+      self.set('drawnShape', null);
+      self.set('shapeSubmitted', false);
+    };
   },
 
   drawCreate(e){

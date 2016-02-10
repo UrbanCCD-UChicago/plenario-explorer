@@ -5,5 +5,7 @@ export default Ember.Controller.extend({
   lng: -87.644061,
   zoom: 10,
   tileURL: 'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
-  drawnShape: null
+  // GeoJSON representation
+  drawnShape: null,
+  shapeSubmitted: false,
 });
