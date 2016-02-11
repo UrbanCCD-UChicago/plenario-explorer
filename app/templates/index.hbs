@@ -1,1 +1,12 @@
+<h2>We're in the index!</h2>
+
+<p>Shape and point indexes</p>
+{{#each model.pointDatasets as |pointDataset| }}
+  {{point-dataset dataset=pointDataset}}
+{{/each}}
+
+{{#each model.shapeDatasets as |shapeDataset| }}
+  {{shape-dataset dataset=shapeDataset}}
+{{/each}}
+
 {{outlet}}
