@@ -1,0 +1,7 @@
+{{timeseries-panel panel=model.timeseriesPanel}}
+
+{{#each model.shapeIntersectionCounts as |shapeIntersectionCount|}}
+  {{shape-dataset dataset=shapeIntersectionCount}}
+{{/each}}
+
+{{outlet}}

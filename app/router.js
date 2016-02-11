@@ -8,6 +8,7 @@ const Router = Ember.Router.extend({
 Router.map(function() {
   this.route('timeseries');
   this.route('timeseries-panel');
+  this.route('aggregate');
 });
 
 export default Router;
