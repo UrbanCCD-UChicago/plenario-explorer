@@ -1,7 +1,14 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  // namedParam of drawnShape is required
+  didReceiveAttrs() {
+    this._super(...arguments);
+    // namedParam of layer is optional
+    // (in case you want a shape on the map from the start)
+    const layer = this.get('layer');
+    this.layer = layer ? layer : null;
+  },
+
   // Need to set dynamic default dates (today to 90 days ago)
   startDate: '11/12/2015',
   endDate: '02/10/2016',

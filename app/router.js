@@ -6,9 +6,7 @@ const Router = Ember.Router.extend({
 });
 
 Router.map(function() {
-  this.route('timeseries');
-  this.route('timeseries-panel');
-  this.route('aggregate');
+  this.route('aggregate', {path: '/aggregate/:geojson'});
 });
 
 export default Router;

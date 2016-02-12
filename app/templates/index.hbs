@@ -1,13 +1,6 @@
 <h2>We're in the index!</h2>
 
-<div class="row">
-    <div class="col-md-5">
-      {{filter-box startDate=startDate endDate=endDate agg=agg}}
-    </div>
-    <div class="col-md-7 half-height">
-      {{leaflet-map layer=drawnShape isDrawable=true}}
-    </div>
-</div>
+{{aggregate-query-maker}}
 
 <p>Agg unit is {{agg}}. And {{startDate}} {{endDate}}</p>
 
