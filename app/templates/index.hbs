@@ -5,8 +5,7 @@
       {{filter-box startDate=startDate endDate=endDate agg=agg}}
     </div>
     <div class="col-md-7 half-height">
-      {{leaflet-map lat=lat lng=lng zoom=zoom tileURL=tileURL
-      drawnShape=drawnShape shapeSubmitted=shapeSubmitted}}
+      {{leaflet-map layer=drawnShape isDrawable=true}}
     </div>
 </div>
 

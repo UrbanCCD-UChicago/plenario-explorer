@@ -1,21 +1,18 @@
 import Ember from 'ember';
 /* global L */
 
+// Expected parameters:
+// layer: null for a blank canvas
+//        a LeafletLayer if we want to display something
+// isDrawable: whether we should enable draw controls
+//             to let the user create/mutate `layer`
+
 const lat = 41.880517;
 const lng = -87.644061;
 const zoom = 10;
 const tileURL = 'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png';
 
 export default Ember.Component.extend({
-  // Leaflet layer
-  drawnLayer: null,
-
-  didUpdateAttrs () {
-    this._super(...arguments);
-    if (this.get('shapeSubmitted')) {
-      this.map.fitBounds(this.drawnLayer.getBounds());
-    }
-  },
 
   // Set up once the div is added to the DOM
   didInsertElement() {
@@ -26,9 +23,15 @@ export default Ember.Component.extend({
     };
     this.map = L.map('map', map_options).
                  setView([lat, lng], zoom);
-    console.log(this.map);
     this.addTiles();
-    this.initDrawComponent();
+    if (this.get('isDrawable')) {
+      this.initDrawComponent();
+    }
+    var layer = this.get('layer');
+    if (layer) {
+      layer.addto(this.map);
+      this.map.fitBounds(layer.getBounds());
+    }
   },
 
   addTiles() {
@@ -46,7 +49,6 @@ export default Ember.Component.extend({
     // so that event handlers that have access to the map
     // can get at it.
     this.map.drawnItems = new L.FeatureGroup();
-    // And then
     this.map.addLayer(this.map.drawnItems);
 
     let drawControl = new L.Control.Draw({
@@ -73,13 +75,10 @@ export default Ember.Component.extend({
     // so that we can call them from the Leaflet event handlers.
     let self = this;
     this.map.reportDrawn = function(layer) {
-      self.drawnLayer = layer;
-      self.set('drawnShape', layer.toGeoJSON());
+      self.set('layer', layer);
     };
     this.map.reportDeleted = function() {
-      self.drawnLayer = null;
-      self.set('drawnShape', null);
-      self.set('shapeSubmitted', false);
+      self.set('layer', null);
     };
   },
 
