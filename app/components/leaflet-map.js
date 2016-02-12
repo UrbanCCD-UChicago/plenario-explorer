@@ -1,6 +1,11 @@
 import Ember from 'ember';
 /* global L */
 
+const lat = 41.880517;
+const lng = -87.644061;
+const zoom = 10;
+const tileURL = 'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png';
+
 export default Ember.Component.extend({
   // Leaflet layer
   drawnLayer: null,
@@ -20,13 +25,14 @@ export default Ember.Component.extend({
       minZoom: 1
     };
     this.map = L.map('map', map_options).
-                 setView([this.get('lat'), this.get('lng')], this.get('zoom'));
+                 setView([lat, lng], zoom);
+    console.log(this.map);
     this.addTiles();
     this.initDrawComponent();
   },
 
   addTiles() {
-    let tiles = L.tileLayer(this.get('tileURL'));
+    let tiles = L.tileLayer(tileURL);
     tiles.addTo(this.map);
   },
 
