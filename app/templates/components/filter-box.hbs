@@ -28,7 +28,7 @@
                 <div class="form-group">
                     {{startDate}}
                     <label for="start-date-filter">Start date</label>
-                    {{bootstrap-datepicker id="start-date-filter" placeholder=startDate value=startDate}}
+                    {{bootstrap-datepicker id="start-date-filter" placeholder=startDate value=startDate }}
                 </div>
             </div>
             <div class='col-md-6'>
@@ -44,7 +44,7 @@
             <p>Selected: {{agg}}</p>
             {{!http://balinterdi.com/2015/08/29/how-to-do-a-select-dropdown-in-ember-20.html }}
             <label for="time-agg-filter">Aggregate by</label>
-            <select onchange={{action "selectAgg" value="target.value"}}>
+            <select id="agg-select" onchange={{action "selectAgg" value="target.value"}}>
               {{#each aggOptions as |aggChoice|}}
                   <option value={{aggChoice}} selected={{eq agg aggChoice}}>{{aggChoice}}</option>
               {{/each}}

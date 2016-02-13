@@ -29,7 +29,7 @@ export default Ember.Component.extend({
     }
     var layer = this.get('layer');
     if (layer) {
-      layer.addto(this.map);
+      layer.addTo(this.map);
       this.map.fitBounds(layer.getBounds());
     }
   },

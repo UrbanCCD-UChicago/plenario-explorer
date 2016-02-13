@@ -1,5 +1,6 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
+/* global L */
 
 moduleForComponent('aggregate-query-maker', 'Integration | Component | aggregate query maker', {
   integration: true
@@ -21,4 +22,31 @@ test('it renders', function(assert) {
   `);
 
   assert.equal(this.$().text().trim(), 'template block text');
+});
+
+test('it submits the query params', function(assert) {
+  const universityVillage = {"type":"Feature","properties":{},"geometry":{"type":"Polygon","coordinates":[[[-87.67248630523682,41.86454328565965],[-87.67248630523682,41.872117384500754],[-87.6549768447876,41.872117384500754],[-87.6549768447876,41.86454328565965],[-87.67248630523682,41.86454328565965]]]}};
+  let mockLayer = L.geoJson(universityVillage);
+
+  this.set('mockSubmit', (actual) => {
+    let expected = {
+      geom: JSON.stringify(mockLayer.toGeoJSON()),
+      startDate: '2016-2-10',
+      endDate: '2016-2-10',
+      agg: 'day'
+    };
+    assert.equal(actual.geom, expected.geom, 'Failed to report correct geoJSON');
+    assert.equal(actual.agg, expected.agg, 'Failed to report selected aggregation unit.');
+  });
+
+  this.set('mockReset', () => {
+    // NoOp
+  });
+
+  this.set('layer', mockLayer);
+
+  this.render(hbs`{{aggregate-query-maker layer=layer submit=(action mockSubmit) reset=(action mockReset)}}`);
+  this.$('#agg-select').val('day').change();
+
+  this.$('#submit-query').click();
 });
