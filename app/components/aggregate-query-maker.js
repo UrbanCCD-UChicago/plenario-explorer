@@ -12,5 +12,15 @@ export default Ember.Component.extend({
   // Need to set dynamic default dates (today to 90 days ago)
   startDate: '11/12/2015',
   endDate: '02/10/2016',
-  agg: 'week'
+  agg: 'week',
+
+  actions: {
+    submit() {
+      var geoJSON = this.layer.toGeoJSON();
+      this.get('submit')(geoJSON, this.startDate, this.endDate, this.agg);
+    },
+    reset() {
+      this.get('reset')();
+    }
+  }
 });

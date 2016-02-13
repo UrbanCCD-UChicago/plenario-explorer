@@ -1,8 +1,11 @@
 <h2>We're in the index!</h2>
 
-{{aggregate-query-maker}}
+{{#if refresh}}
+ <p>I know how Ember conditionals work.</p>
+ {{aggregate-query-maker submit=(action "submit") reset=(action "reset")}}
+{{/if}}
 
-<p>Agg unit is {{agg}}. And {{startDate}} {{endDate}}</p>
+{{refresh}}
 
 <p>Shape and point indexes</p>
 
