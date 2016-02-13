@@ -5,13 +5,11 @@ export default Ember.Controller.extend({
   // TODO: DRY controllers by making base controller
   // with these actions for /aggregate and /index
   actions: {
-    submit: function(geoJSON, startDate, endDate, agg) {
-      this.transitionToRoute('aggregate/${geoJSON}', {queryParams:
-        {obs_date__ge: startDate,
-         obs_date__le: endDate,
-         agg: agg}
-      });
-    },
+    submit: function(params) {
+      const geoJSON = params.geom;
+      delete params.geom;
+      this.transitionToRoute('aggregate', geoJSON, {queryParams: params});
+      },
     reset: function() {
       // Thanks http://stackoverflow.com/questions/32862134/in-ember-is-there-a-way-to-update-a-component-without-a-full-re-render-route-tr
       console.log('In reset');
