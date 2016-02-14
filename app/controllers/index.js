@@ -2,8 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Controller.extend({
   refresh: true,
-  // TODO: DRY controllers by making base controller
-  // with these actions for /aggregate and /index
+  // TODO: DRY index and aggregate controllers by sharing submit action
   actions: {
     submit: function(params) {
       const geoJSON = params.geom;

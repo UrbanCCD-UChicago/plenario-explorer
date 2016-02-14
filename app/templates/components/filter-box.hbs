@@ -23,17 +23,16 @@
 
 
     <form role="form">
+        {{! TODO: DRY datepickers }}
         <div class='row'>
             <div class='col-md-6'>
                 <div class="form-group">
-                    {{startDate}}
                     <label for="start-date-filter">Start date</label>
                     {{bootstrap-datepicker id="start-date-filter" placeholder=startDate value=startDate }}
                 </div>
             </div>
             <div class='col-md-6'>
                 <div class="form-group">
-                    {{endDate}}
                     <label for="end-date-filter">End date</label>
                     {{bootstrap-datepicker id="end-date-filter" placeholder=endDate value=endDate}}
                 </div>
@@ -42,7 +41,8 @@
 
         <div class="form-group">
             <p>Selected: {{agg}}</p>
-            {{!http://balinterdi.com/2015/08/29/how-to-do-a-select-dropdown-in-ember-20.html }}
+            {{! Dropdown menu thanks to this blog post:
+            http://balinterdi.com/2015/08/29/how-to-do-a-select-dropdown-in-ember-20.html }}
             <label for="time-agg-filter">Aggregate by</label>
             <select id="agg-select" onchange={{action "selectAgg" value="target.value"}}>
               {{#each aggOptions as |aggChoice|}}

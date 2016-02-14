@@ -6,17 +6,12 @@ export default Ember.Controller.extend({
   obs_date__ge: null,
   agg: null,
 
-  // TODO: DRY controllers by making base controller
-  // with these actions for /aggregate and /index
+  // TODO: DRY index and aggregate controllers by sharing submit action
   actions: {
-    submit: function (geoJSON, startDate, endDate, agg) {
-      this.transitionToRoute('aggregate/${geoJSON}', {
-        queryParams: {
-          obs_date__ge: startDate,
-          obs_date__le: endDate,
-          agg: agg
-        }
-      });
+    submit: function(params) {
+      const geoJSON = params.geom;
+      delete params.geom;
+      this.transitionToRoute('aggregate', geoJSON, {queryParams: params});
     },
     reset: function () {
       this.transitionToRoute('index');

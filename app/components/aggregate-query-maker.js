@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   // Need to set dynamic default dates (today to 90 days ago)
-  startDate: '11/12/2015',
+  startDate: '02/01/2016',
   endDate: '02/10/2016',
   agg: 'week',
 
@@ -24,11 +24,18 @@ export default Ember.Component.extend({
 
   actions: {
     submit() {
-      var geoJSON = JSON.stringify(this.get('layer').toGeoJSON());
+      // Need try-except block to show error if geom not provided
+      try {
+        var geoJSON = JSON.stringify(this.get('layer').toGeoJSON());
+      }
+      catch (e) {
+        console.log('We need an error popup here.');
+        return;
+      }
       this.get('submit')({
         geom: geoJSON,
-        startDate: this.formatDateTime(this.startDate),
-        endDate: this.formatDateTime(this.endDate),
+        obs_date__ge: this.formatDateTime(this.startDate),
+        obs_date__le: this.formatDateTime(this.endDate),
         agg: this.agg
       });
     },
