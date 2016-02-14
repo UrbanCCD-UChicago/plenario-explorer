@@ -65,11 +65,5 @@ export default Ember.Route.extend({
       pointDatasets: this.mockedPointDatasets,
       shapeDatasets: this.mockedShapeDatasets
     };
-  },
-  actions: {
-    resetQuery: function() {
-      console.log('Trying to refresh');
-      this.refresh();
-    }
   }
 });
