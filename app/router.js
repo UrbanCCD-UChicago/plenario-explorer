@@ -6,7 +6,7 @@ const Router = Ember.Router.extend({
 });
 
 Router.map(function() {
-  this.route('aggregate', {path: '/aggregate/:geojson'});
+  this.route('aggregate');
   this.route('points');
 });
 

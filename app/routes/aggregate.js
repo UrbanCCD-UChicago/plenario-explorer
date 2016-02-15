@@ -139,6 +139,6 @@ export default Ember.Route.extend({
     return {
       timeseriesPanel: this.mockedTimeseries,
       shapeIntersectionCounts: this.mockedShapeIntersections
-    }
+    };
   }
 });
