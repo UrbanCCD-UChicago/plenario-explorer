@@ -54,7 +54,7 @@ export default Ember.Component.extend({
     }
     let agg = this.get('agg');
     if (!agg) {
-      this.set('agg', 'week')
+      this.set('agg', 'week');
     }
   },
 

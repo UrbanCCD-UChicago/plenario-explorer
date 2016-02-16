@@ -4,6 +4,11 @@
  {{aggregate-query-maker submit=(action "submit") reset=(action "reset")}}
 {{/if}}
 
+<h2>Sandbox</h2>
+
+{{pickedString}}
+{{date-picker default='1/2/2015' pickedString=pickedString}}
+
 <p>Shape and point indexes</p>
 
 {{#each model.pointDatasets as |pointDataset| }}
