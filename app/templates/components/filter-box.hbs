@@ -23,18 +23,17 @@
 
 
     <form role="form">
-        {{! TODO: DRY datepickers }}
         <div class='row'>
             <div class='col-md-6'>
                 <div class="form-group">
                     <label for="start-date-filter">Start date</label>
-                    {{bootstrap-datepicker id="start-date-filter" placeholder=startDate value=startDate}}
+                    {{date-picker id="start-date-filter" pickedString=startDate}}
                 </div>
             </div>
             <div class='col-md-6'>
                 <div class="form-group">
                     <label for="end-date-filter">End date</label>
-                    {{bootstrap-datepicker id="end-date-filter" placeholder=endDate value=endDate}}
+                    {{date-picker id="end-date-filter" pickedString=endDate}}
                 </div>
             </div>
         </div>

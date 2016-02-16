@@ -3,14 +3,6 @@ import moment from 'moment';
 
 export default Ember.Component.extend({
 
-  formatDateTime(dt) {
-    const date = new Date(dt);
-    var y = date.getFullYear();
-    var m = date.getMonth() + 1;
-    var d = date.getDate();
-    return y + '-' + m + '-' + d;
-  },
-
   didReceiveAttrs() {
     this._super(...arguments);
     this.initLayer();
@@ -44,14 +36,13 @@ export default Ember.Component.extend({
     // Need to set dynamic default dates (today to 90 days ago)
     let endDate = this.get('endDate');
     if (!endDate) {
-      this.set('endDate', moment());  // today
+      this.set('endDate', moment().toString());  // today
     }
     let startDate = this.get('startDate');
-    console.log(startDate)
-    console.log(startDate)
     if (!startDate) {
-      this.set('startDate', moment().subtract('days', 90));
+      this.set('startDate', moment().subtract(90, 'days').toString());
     }
+    console.log(this.get('startDate'))
     let agg = this.get('agg');
     if (!agg) {
       this.set('agg', 'week');
@@ -70,8 +61,8 @@ export default Ember.Component.extend({
       }
       this.get('submit')({
         geoJSON: geoJSON,
-        obs_date__ge: this.formatDateTime(this.startDate),
-        obs_date__le: this.formatDateTime(this.endDate),
+        obs_date__ge: this.startDate,
+        obs_date__le: this.endDate,
         agg: this.agg
       });
     },

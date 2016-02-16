@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-  pickedString: null,
+  pickedString: '2015-2-1',
   refresh: true,
   // TODO: DRY index and aggregate controllers by sharing submit action
   actions: {
