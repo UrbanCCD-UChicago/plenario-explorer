@@ -2,72 +2,72 @@ import Ember from 'ember';
 import moment from 'moment';
 
 export default Ember.Component.extend({
+  // Current state of Query Maker.
+  // Never overwrite parameters that were passed in.
+  _startDate: null,
+  _endDate: null,
+  _agg: null,
+  _geoJSON: null,
 
-  didReceiveAttrs() {
+  init() {
+    console.log('In didReceiveAttrs')
     this._super(...arguments);
     this.initLayer();
     this.initFilterBox();
   },
 
+  // TODO: DRY out copying/defaulting in initLayer and initFilterBox.
+  // Gotta be an Ember way to do it.
   initLayer() {
-    // namedParam of layer is optional
-    // (in case you want a shape on the map from the start)
-    let layer = this.get('layer');
-    console.log(layer);
-    // Is the layer non-null, but it isn't a Leaflet Layer object?
-    if (layer && !layer.addTo) {
-      try {
-        if (typeof(layer) === 'string') {
-          layer = JSON.parse(layer);
-        }
-        // We should have a raw geoJSON object
-        layer = L.geoJson(layer);
-      }
-      catch (e) {
-        // Wasn't valid GeoJSON
-        layer = null;
-      }
+    // Copy parameter geoJSON to private attribute
+    // If not given, set to null.
+    let geoJSON = this.get('geoJSON');
+    if (!geoJSON) {
+      geoJSON = null;
     }
-
-    this.set('layer', layer);
+    this.set('_geoJSON', geoJSON);
   },
 
   initFilterBox() {
-    // Need to set dynamic default dates (today to 90 days ago)
+    // Copy parameters startDate, endDate, and agg
+    // to private attributes.
+    // If not given, set private attributes to defaults.
+
     let endDate = this.get('endDate');
     if (!endDate) {
-      this.set('endDate', moment().toString());  // today
+      endDate = moment().toString(); // today
     }
+    this.set('_endDate', endDate);
+
     let startDate = this.get('startDate');
     if (!startDate) {
-      this.set('startDate', moment().subtract(90, 'days').toString());
+      startDate = moment().subtract(90, 'days').toString(); // 90 days ago
     }
-    console.log(this.get('startDate'))
+    this.set('_startDate', startDate);
+
     let agg = this.get('agg');
     if (!agg) {
-      this.set('agg', 'week');
+      agg = 'week';
     }
+    this.set('_agg', agg)
   },
 
   actions: {
     submit() {
       // Need try-except block to show error if geom not provided
-      try {
-        var geoJSON = JSON.stringify(this.get('layer').toGeoJSON());
-      }
-      catch (e) {
-        console.log('We need an error popup here.');
-        return;
-      }
       this.get('submit')({
-        geoJSON: geoJSON,
-        obs_date__ge: this.startDate,
-        obs_date__le: this.endDate,
-        agg: this.agg
+        geoJSON: this._geoJSON,
+        obs_date__ge: this._startDate,
+        obs_date__le: this._endDate,
+        agg: this._agg
       });
     },
     reset() {
       this.get('reset')();
+    },
+    changedJSON(geoJSON) {
+      console.log('Changing geoJSON');
+      this.set('_geoJSON', geoJSON);
     }
   }
 });

@@ -10,6 +10,7 @@ export default Ember.Controller.extend({
   // TODO: DRY index and aggregate controllers by sharing submit action
   actions: {
     submit: function(params) {
+      console.log(params);
       this.transitionToRoute('aggregate', {queryParams: params});
     },
     reset: function () {

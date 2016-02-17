@@ -1,4 +1,7 @@
-{{aggregate-query-maker submit=(action "submit") reset=(action "reset")}}
+{{aggregate-query-maker geoJSON=geoJSON startDate=obs_date__ge endDate=obs_date__le agg=agg
+                        submit=(action "submit") reset=(action "reset")}}
+
+{{geoJSON}}
 
 {{timeseries-panel panel=model.timeseriesPanel}}
 
