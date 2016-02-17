@@ -7,37 +7,43 @@ import Ember from 'ember';
  */
 
 export default Ember.Component.extend({
-  didReceiveAttrs() {
-    // Make a copy of the date string that was passed in
-    let placeholder = this.get('pickedString');
-    console.log(placeholder)
-    const copy = this.dateFormat(placeholder.slice(0), 'display');
-    this.set('_placeholder', copy);
-    this.setDefaultString();
-  },
-
-  // Need a private '_pickedString' so that the `pickedString` value passed in
-  // doesn't overwrite the computed property.
-  // `pickedString` without an underscore is the value we mutate
-  // to report back to the containing component.
-  _pickedString: Ember.computed('_pickedDate', function() {
-    const pickedDate = this.get('_pickedDate');
-    console.log('pickedDate');
-    if (!pickedDate) {
-      var pickedString = this.setDefaultString();
-    }
-    else {
-      pickedString = this.dateFormat(pickedDate);
-      this.set('pickedString', pickedString);
-    }
-    return pickedString;
+  // Default API string passed in as param. REQUIRED
+  placeholder: null,
+  // Default display string, derived from param
+  _placeholderDisplay: Ember.computed('placeholder', function() {
+    return this.dateFormat(this.get('placeholder'), 'display');
   }),
 
-  setDefaultString() {
-    const defaultDate = this.get('_placeholder');
-    const pickedString = this.dateFormat(defaultDate);
-    this.set('pickedString', pickedString);
-    return pickedString;
+  // API-formatted string ready to send up.
+  _picked: Ember.observer('_pickedDate', function() {
+    const pickedDate = this.get('_pickedDate');
+    console.log('In pick listener');
+
+    var apiFormatted = null;
+    // If the user has cleared the box,
+    if (!pickedDate) {
+      // Report the default.
+      apiFormatted = this.get('placeholder');
+    }
+    else {
+      // Convert from Bootstrap format to Plenario format.
+      apiFormatted = this.dateFormat(pickedDate);
+    }
+    // Report up to containing component
+    this.get('changed')(apiFormatted);
+  }),
+
+  didUpdateAttrs() {
+    this._super(...arguments);
+    console.log('Updated datepicker')
+  },
+
+  didReceiveAttrs() {
+    this._super(...arguments);
+    // On init and when dateString changes.
+    // Make a copy of the date string that was passed in
+    let placeholder = this.get('placeholder');
+    this.set('_placeholderDisplay', this.dateFormat(placeholder));
   },
 
   // Not using moment library here

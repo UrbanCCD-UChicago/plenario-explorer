@@ -10,7 +10,7 @@ export default Ember.Component.extend({
   _geoJSON: null,
 
   init() {
-    console.log('In didReceiveAttrs')
+    console.log('In didReceiveAttrs');
     this._super(...arguments);
     this.initLayer();
     this.initFilterBox();
@@ -37,19 +37,19 @@ export default Ember.Component.extend({
     if (!endDate) {
       endDate = moment().toString(); // today
     }
-    this.set('_endDate', endDate);
+    this.set('endDate', endDate);
 
     let startDate = this.get('startDate');
     if (!startDate) {
       startDate = moment().subtract(90, 'days').toString(); // 90 days ago
     }
-    this.set('_startDate', startDate);
+    this.set('startDate', startDate);
 
     let agg = this.get('agg');
     if (!agg) {
       agg = 'week';
     }
-    this.set('_agg', agg)
+    this.set('agg', agg)
   },
 
   actions: {

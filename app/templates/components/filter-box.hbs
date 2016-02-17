@@ -27,13 +27,15 @@
             <div class='col-md-6'>
                 <div class="form-group">
                     <label for="start-date-filter">Start date</label>
-                    {{date-picker id="start-date-filter" pickedString=startDate}}
+                    {{date-picker id="start-date-filter" placeholder=startDate
+                                  changed=(action "changedStartDate")}}
                 </div>
             </div>
             <div class='col-md-6'>
                 <div class="form-group">
                     <label for="end-date-filter">End date</label>
-                    {{date-picker id="end-date-filter" pickedString=endDate}}
+                    {{date-picker id="end-date-filter" placeholder=endDate
+                                  changed=(action "changedEndDate")}}
                 </div>
             </div>
         </div>

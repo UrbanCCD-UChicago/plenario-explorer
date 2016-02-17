@@ -12,9 +12,10 @@ const zoom = 10;
 const tileURL = 'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png';
 
 export default Ember.Component.extend({
+  // Leaflet layer that should be displayed.
   _layer: null,
 
-  // On first render, create map and add all layers and controls
+  // On first render, create map, add layer, and add controls
   didInsertElement() {
     this.initMap();
     var layer = this.initLayer();
@@ -24,6 +25,8 @@ export default Ember.Component.extend({
     if (layer) {
       this.map.fitBounds(layer.getBounds());
     }
+    // Consider factoring out layer addition
+    // into common helper
   },
 
   // On subsequent renders,
