@@ -2,8 +2,7 @@ import Ember from 'ember';
 /* global L */
 
 // Expected parameters:
-// layer: null for a blank canvas
-//        a LeafletLayer if we want to display something
+// geoJSON: geoJSON for a layer to be displayed
 // isDrawable: whether we should enable draw controls
 //             to let the user create/mutate `layer`
 
@@ -17,15 +16,19 @@ export default Ember.Component.extend({
 
   // On first render, create map and add all layers and controls
   didInsertElement() {
-    console.log('Init map')
     this.initMap();
-    this.putStuffOnMap();
+    var layer = this.initLayer();
+    if (this.get('isDrawable')) {
+      this.initDrawComponent(layer);
+    }
+    if (layer) {
+      this.map.fitBounds(layer.getBounds());
+    }
   },
 
   // On subsequent renders,
-  //
+  // make sure we're zoomed in on the drawn geom.
   didUpdateAttrs() {
-    console.log('Update map');
     this.updateDrawComponent();
   },
 
@@ -37,22 +40,8 @@ export default Ember.Component.extend({
     }
   },
 
-  putStuffOnMap() {
-    var layer = this.initLayer();
-    console.log(layer);
-
-    if (this.get('isDrawable')) {
-      this.initDrawComponent(layer);
-    }
-    if (layer) {
-      console.log('Tryna fit');
-      this.map.fitBounds(layer.getBounds());
-    }
-  },
-
   initLayer() {
     var geoJSON = this.get('geoJSON');
-    console.log(geoJSON);
     var layer = this.geoJSONtoLayer(geoJSON);
     this.set('_layer', layer);
     return layer;
@@ -103,7 +92,6 @@ export default Ember.Component.extend({
     // can get at it.
     this.map.drawnItems = new L.FeatureGroup();
     if (layer) {
-      console.log(layer);
       this.map.drawnItems.addLayer(layer);
     }
     this.map.addLayer(this.map.drawnItems);
@@ -139,7 +127,6 @@ export default Ember.Component.extend({
     let self = this;
     this.map.reportDrawn = function(layer) {
       self.set('_layer', layer);
-      console.log(JSON.stringify(layer.toGeoJSON()));
       self.get('changedJSON')(JSON.stringify(layer.toGeoJSON()));
     };
     this.map.reportDeleted = function() {
