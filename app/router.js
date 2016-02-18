@@ -8,6 +8,7 @@ const Router = Ember.Router.extend({
 Router.map(function() {
   this.route('aggregate');
   this.route('points');
+  this.route('display', {path: 'display/:dataset_name'});
 });
 
 export default Router;
