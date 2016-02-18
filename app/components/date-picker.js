@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import moment from 'moment';
 
 /*
  Expects default date string in YYYY-MM-DD format
@@ -17,7 +18,6 @@ export default Ember.Component.extend({
   // API-formatted string ready to send up.
   _picked: Ember.observer('_pickedDate', function() {
     const pickedDate = this.get('_pickedDate');
-    console.log('In pick listener');
 
     var apiFormatted = null;
     // If the user has cleared the box,
@@ -33,32 +33,24 @@ export default Ember.Component.extend({
     this.get('changed')(apiFormatted);
   }),
 
-  didUpdateAttrs() {
-    this._super(...arguments);
-    console.log('Updated datepicker')
-  },
-
   didReceiveAttrs() {
+    // On init and when dateString changes,
+    // enforce that the date is formatted correctly up the chain.
     this._super(...arguments);
-    // On init and when dateString changes.
-    // Make a copy of the date string that was passed in
-    let placeholder = this.get('placeholder');
-    this.set('_placeholderDisplay', this.dateFormat(placeholder));
+    const placeholder = this.get('placeholder');
+    const apiFormatted = this.dateFormat(placeholder);
+    this.get('changed')(apiFormatted);
   },
 
   // Not using moment library here
   // Because bootstrap datepicker returns non-standard date format.
   dateFormat(dt, type) {
-    const date = new Date(dt);
-    var y = date.getFullYear();
-    var m = date.getMonth() + 1;
-    var d = date.getDate();
+    const date = moment(dt);
     if (type === 'display') {
-      return m + '/' + d + '/' + y;
+      return date.format('YYYY/MM/DD');
     }
     else {
-      return y + '-' + m + '-' + d;
+      return date.format('YYYY-MM-DD');
     }
   }
-
 });

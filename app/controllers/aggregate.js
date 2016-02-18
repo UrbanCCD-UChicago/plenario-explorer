@@ -6,13 +6,19 @@ export default Ember.Controller.extend({
   obs_date__ge: null,
   agg: null,
   geoJSON: null,
+  zoom: false,
 
-  // TODO: DRY index and aggregate controllers by sharing submit action
   actions: {
     submit: function(params) {
       console.log(params);
       this.transitionToRoute('aggregate', {queryParams: params});
+      this.set('zoom', true);
+      const self = this;
+      Ember.run.next(() => {
+        self.set('zoom', false);
+      });
     },
+
     reset: function () {
       this.transitionToRoute('index');
     }

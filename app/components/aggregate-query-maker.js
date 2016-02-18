@@ -4,13 +4,15 @@ import moment from 'moment';
 export default Ember.Component.extend({
   // Current state of Query Maker.
   // Never overwrite parameters that were passed in.
+  // These get passed down to nested components for display.
+  // They get sent up to the route on submission
   _startDate: null,
   _endDate: null,
-  _agg: null,
+  _agg: 'week',
   _geoJSON: null,
 
   init() {
-    console.log('In didReceiveAttrs');
+    console.log('In aggregate-query-maker init');
     this._super(...arguments);
     this.initLayer();
     this.initFilterBox();
@@ -37,37 +39,56 @@ export default Ember.Component.extend({
     if (!endDate) {
       endDate = moment().toString(); // today
     }
-    this.set('endDate', endDate);
+    this.set('_endDate', endDate);
 
     let startDate = this.get('startDate');
     if (!startDate) {
       startDate = moment().subtract(90, 'days').toString(); // 90 days ago
     }
-    this.set('startDate', startDate);
+    this.set('_startDate', startDate);
+    console.log(startDate);
 
     let agg = this.get('agg');
+    console.log(agg);
     if (!agg) {
+      this.set('_agg', 'week');
       agg = 'week';
+      console.log('Set agg');
     }
-    this.set('agg', agg)
+
   },
 
   actions: {
+    //Actions that look up.
     submit() {
       // Need try-except block to show error if geom not provided
       this.get('submit')({
-        geoJSON: this._geoJSON,
-        obs_date__ge: this._startDate,
-        obs_date__le: this._endDate,
-        agg: this._agg
+        geoJSON: this.get('_geoJSON'),
+        obs_date__ge: this.get('_startDate'),
+        obs_date__le: this.get('_endDate'),
+        agg: this.get('_agg')
       });
     },
     reset() {
       this.get('reset')();
     },
-    changedJSON(geoJSON) {
-      console.log('Changing geoJSON');
+
+    // Actions that pass down.
+    changedGeoJSON(geoJSON) {
+      console.log('Set geoJSON to ' + geoJSON);
       this.set('_geoJSON', geoJSON);
+    },
+    changedStartDate(startDate) {
+      console.log('Set start date to ' + startDate);
+      this.set('_startDate', startDate);
+    },
+    changedEndDate(endDate) {
+      console.log('Set end date to ' + endDate);
+      this.set('_endDate', endDate);
+    },
+    changedAgg(agg) {
+      console.log('Set agg to ' + agg);
+      this.set('_agg', agg);
     }
   }
 });

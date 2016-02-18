@@ -32,7 +32,10 @@ export default Ember.Component.extend({
   // On subsequent renders,
   // make sure we're zoomed in on the drawn geom.
   didUpdateAttrs() {
-    this.updateDrawComponent();
+    if (this.get('zoom')){
+      let layer = this.map.drawnItems.getLayers()[0];
+      this.map.fitBounds(layer.getBounds());
+    }
   },
 
   updateDrawComponent() {
@@ -130,11 +133,11 @@ export default Ember.Component.extend({
     let self = this;
     this.map.reportDrawn = function(layer) {
       self.set('_layer', layer);
-      self.get('changedJSON')(JSON.stringify(layer.toGeoJSON()));
+      self.get('changedGeoJSON')(JSON.stringify(layer.toGeoJSON()));
     };
     this.map.reportDeleted = function() {
       self.set('_layer', null);
-      self.get('changedJSON')(null);
+      self.get('changedGeoJSON')(null);
     };
   },
 

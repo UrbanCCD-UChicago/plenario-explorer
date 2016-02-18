@@ -1,7 +1,6 @@
-{{aggregate-query-maker geoJSON=geoJSON startDate=obs_date__ge endDate=obs_date__le agg=agg
+  {{aggregate-query-maker geoJSON=geoJSON startDate=obs_date__ge endDate=obs_date__le agg=agg zoom=zoom
                         submit=(action "submit") reset=(action "reset")}}
 
-{{geoJSON}}
 
 {{timeseries-panel panel=model.timeseriesPanel}}
 

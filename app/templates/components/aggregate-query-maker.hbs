@@ -1,10 +1,13 @@
 <div class="row">
     <div class="col-md-5">
-      {{filter-box startDate=startDate endDate=endDate agg=agg}}
+      {{filter-box startDate=_startDate endDate=_endDate agg=_agg
+                   changedStartDate=(action "changedStartDate")
+                   changedEndDate=(action "changedEndDate")
+                   changedAgg=(action "changedAgg")}}
       {{submit-or-reset submit=(action "submit") reset=(action "reset")}}
     </div>
     <div class="col-md-7 half-height">
-      {{leaflet-map geoJSON=geoJSON isDrawable=true
-                    changedJSON=(action "changedJSON")}}
+      {{leaflet-map geoJSON=_geoJSON isDrawable=true zoom=zoom
+                    changedGeoJSON=(action "changedGeoJSON")}}
     </div>
 </div>
