@@ -10,7 +10,9 @@
     "bootstrap-datepicker": "^1.6.0",
     "pretender": "~0.10.1",
     "lodash": "~3.7.0",
-    "Faker": "~3.0.0"
+    "Faker": "~3.0.0",
+    "leaflet-draw": "leaflet.draw#^0.2.4",
+    "bootstrap": "^3.3.6"
   },
   "resolutions": {
     "ember": "2.3.0"
