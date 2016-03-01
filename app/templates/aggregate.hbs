@@ -1,11 +1,9 @@
-  {{aggregate-query-maker geoJSON=geoJSON startDate=obs_date__ge endDate=obs_date__le agg=agg zoom=zoom
+{{aggregate-query-maker geoJSON=geoJSON startDate=obs_date__ge endDate=obs_date__le agg=agg zoom=zoom
                         submit=(action "submit") reset=(action "reset")}}
 
 
-{{timeseries-panel panel=model.timeseriesPanel}}
+{{point-index-listing pointDatasets=model.pointDatasets}}
 
-{{#each model.shapeIntersectionCounts as |shapeIntersectionCount|}}
-  {{shape-dataset dataset=shapeIntersectionCount}}
-{{/each}}
+{{shape-listing shapeDatasets=model.shapeDatasets}}
 
 {{outlet}}
