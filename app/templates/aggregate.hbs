@@ -2,8 +2,10 @@
                         submit=(action "submit") reset=(action "reset")}}
 
 
-{{point-index-listing pointDatasets=model.pointDatasets}}
+{{model.timeseries}}
+{{high-charts content=model.timeseries}}
 
+{{point-index-listing pointDatasets=model.pointDatasets}}
 {{shape-listing shapeDatasets=model.shapeDatasets}}
 
 {{outlet}}

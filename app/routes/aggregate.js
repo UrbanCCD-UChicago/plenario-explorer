@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import moment from 'moment';
 
 export default Ember.Route.extend({
   mockedTimeseries: [
@@ -257,7 +258,8 @@ export default Ember.Route.extend({
   model() {
     return {
       pointDatasets: this.mockedTimeseries,
-      shapeDatasets: this.mockedShapeDatasets
+      shapeDatasets: this.mockedShapeDatasets,
+      timeseries: [{data: [[moment('2010-11-29'), 3], [moment('2010-12-06'), 7]]}]
     };
   }
 });
