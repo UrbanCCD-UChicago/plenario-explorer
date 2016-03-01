@@ -1,0 +1,23 @@
+<table id='available-point-datasets' class='table table-condensed'>
+    <thead>
+    <tr>
+        <th>Source</th>
+        <th>Dataset Name</th>
+        <th>Timespan Available</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#each pointDatasets as |pointDataset| }}
+        <tr>
+            <td>{{pointDataset.attribution}}</td>
+            <td>{{pointDataset.human_name}}</td>
+            <td><strong>{{timespan pointDataset.obs_from pointDataset.obs_to}}</strong>
+                ({{display-time pointDataset.obs_from}} - {{display-time pointDataset.obs_to}})</td>
+        </tr>
+    {{/each}}
+    </tbody>
+</table>
+
+{{#each pointDatasets as |pointDataset| }}
+  {{! each row}}
+{{/each}}
