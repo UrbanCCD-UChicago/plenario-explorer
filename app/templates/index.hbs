@@ -12,8 +12,6 @@
   {{point-dataset dataset=pointDataset}}
 {{/each}}
 
-{{#each model.shapeDatasets as |shapeDataset| }}
-  {{shape-dataset dataset=shapeDataset}}
-{{/each}}
+{{shape-listing shapeDatasets=model.shapeDatasets}}
 
 {{outlet}}
