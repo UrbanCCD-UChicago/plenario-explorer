@@ -259,7 +259,17 @@ export default Ember.Route.extend({
     return {
       pointDatasets: this.mockedTimeseries,
       shapeDatasets: this.mockedShapeDatasets,
-      timeseries: [{data: [[moment('2010-11-29'), 3], [moment('2010-12-06'), 7]]}]
+      timeseries: [{data: [[moment('2010-11-29+0000').valueOf(), 3], [moment('2010-12-06').valueOf(), 7]]}],
+      unformattedTimeseries: [
+        {
+          count: 3,
+          datetime: "2010-11-29"
+        },
+        {
+          count: 7,
+          datetime: "2010-12-06"
+        }
+      ]
     };
   }
 });

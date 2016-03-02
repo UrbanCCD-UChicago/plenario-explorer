@@ -2,8 +2,7 @@
                         submit=(action "submit") reset=(action "reset")}}
 
 
-{{model.timeseries}}
-{{high-charts content=model.timeseries}}
+{{time-series-chart timeseries=model.unformattedTimeseries}}
 
 {{point-index-listing pointDatasets=model.pointDatasets}}
 {{shape-listing shapeDatasets=model.shapeDatasets}}
