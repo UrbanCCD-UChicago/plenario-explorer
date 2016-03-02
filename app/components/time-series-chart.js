@@ -24,7 +24,7 @@ export default Ember.Component.extend({
     // The chart expects a list of series objects,
     // each with a data attribute that actually holds the timeseries.
     // So construct a list of one such object.
-    return [{data: formattedSeries}];
+    return [{data: formattedSeries, name: 'Count'}];
   }
 
 });

@@ -19,7 +19,7 @@ export default function(defaultOptions) {
         text: ''
       },
       type: 'datetime',
-        labels: {
+      labels: {
         enabled: false
       }
     },
