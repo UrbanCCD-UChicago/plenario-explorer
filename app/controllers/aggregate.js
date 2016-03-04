@@ -21,6 +21,12 @@ export default Ember.Controller.extend({
 
     reset: function () {
       this.transitionToRoute('index');
+    },
+    navigateToShape: function(name) {
+      alert(`Imagine you just transitioned to ${name} shape detail page.`);
+    },
+    navigateToPoint: function(name) {
+      alert(`Imagine you just transitioned to ${name} point detail page.`);
     }
   }
 });
