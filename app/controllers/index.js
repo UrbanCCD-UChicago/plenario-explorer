@@ -14,6 +14,12 @@ export default Ember.Controller.extend({
       Ember.run.next(() =>
         {self.set('refresh', true);}
       );
+    },
+    navigateToShape: function(name) {
+      alert(`Imagine you just transitioned to ${name} shape detail page.`);
+    },
+    navigateToPoint: function(name) {
+      alert(`Imagine you just transitioned to ${name} point detail page.`);
     }
   }
 });

@@ -8,8 +8,8 @@
 
 <p>Shape and point indexes</p>
 
-{{point-index-listing pointDatasets=model.pointDatasets}}
+{{point-index-listing link=(action "navigateToPoint") pointDatasets=model.pointDatasets}}
 
-{{shape-listing shapeDatasets=model.shapeDatasets}}
+{{shape-listing link=(action "navigateToShape") shapeDatasets=model.shapeDatasets}}
 
 {{outlet}}

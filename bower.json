@@ -12,7 +12,9 @@
     "lodash": "~3.7.0",
     "Faker": "~3.0.0",
     "leaflet-draw": "leaflet.draw#^0.2.4",
-    "bootstrap": "^3.3.6"
+    "bootstrap": "^3.3.6",
+    "datatables.net": "^1.10.11",
+    "datatables.net-bs": "^1.10.11"
   },
   "resolutions": {
     "ember": "2.3.0"

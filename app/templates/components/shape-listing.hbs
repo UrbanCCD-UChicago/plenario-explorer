@@ -11,7 +11,7 @@
       {{#each shapeDatasets as |shapeDataset| }}
           <tr>
               <td>{{shapeDataset.attribution}}</td>
-              <td>{{shapeDataset.human_name}}</td>
+              <td><a href {{action link shapeDataset.id}}>{{shapeDataset.human_name}}</a></td>
               <td>{{shapeDataset.num_shapes}}</td>
               <td>(Download links)</td>
           </tr>
