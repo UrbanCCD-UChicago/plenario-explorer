@@ -1,7 +1,9 @@
 {{aggregate-query-maker geoJSON=geoJSON startDate=obs_date__ge endDate=obs_date__le agg=agg zoom=zoom
                         submit=(action "submit") reset=(action "reset")}}
 
-{{point-index-listing link=(action "navigateToPoint") pointDatasets=model.pointDatasets displayTrends=true}}
+{{chart-table-experiment rows=model.pointDatasets}}
+
+{{!point-index-listing link=(action "navigateToPoint") pointDatasets=model.pointDatasets displayTrends=true}}
 {{shape-listing link=(action "navigateToShape") shapeDatasets=model.shapeDatasets}}
 
 {{outlet}}
