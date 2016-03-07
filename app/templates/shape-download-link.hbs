@@ -1,0 +1,7 @@
+<p>Look at me, I rendered.</p>
+<ul class="dropdown-menu" role="menu">
+    <li>All up in yo list</li>
+    <li><a {{action downloadLink record.id "json"}}><i class='fa fa-download'></i> GeoJson</a></li>
+    <li><a {{action downloadLink record.id "shapefile"}}><i class='fa fa-download'></i> ESRI Shapefile</a></li>
+    <li><a {{action downloadLink record.id "kml"}}><i class='fa fa-download'></i> KML</a></li>
+</ul>

@@ -20,6 +20,12 @@ export default Ember.Controller.extend({
     },
     navigateToPoint: function(name) {
       alert(`Imagine you just transitioned to ${name} point detail page.`);
+    },
+    downloadShape: function(name, fileType) {
+      alert(`Downloading shape dataset ${name} as file type ${fileType}.`);
+    },
+    downloadPoint: function(name, fileType) {
+      alert(`Downloading point dataset ${name} as file type ${fileType}.`);
     }
   }
 });

@@ -6,10 +6,20 @@
 
 <h2>Sandbox</h2>
 
+<ul class="dropdown-menu" role="menu">
+    <li>All up in yo list</li>
+</ul>
+
 <p>Shape and point indexes</p>
 
-{{point-index-listing link=(action "navigateToPoint") pointDatasets=model.pointDatasets}}
+{{point-index-listing
+  displayLink=(action "navigateToPoint")
+  downloadLink=(action "downloadPoint")
+  pointDatasets=model.pointDatasets}}
 
-{{shape-listing link=(action "navigateToShape") shapeDatasets=model.shapeDatasets}}
+{{shape-listing
+  displayLink=(action "navigateToShape")
+  downloadLink=(action "downloadShape")
+  shapeDatasets=model.shapeDatasets}}
 
 {{outlet}}

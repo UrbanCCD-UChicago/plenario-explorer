@@ -1,3 +1,9 @@
+{{models-table
+  columns=columns
+  data=shapeDatasets
+  downloadLink=downloadLink
+  displayLink=displayLink}}
+
 <table id='available-shape-datasets' class='table table-condensed'>
     <thead>
       <tr>
@@ -11,7 +17,7 @@
       {{#each shapeDatasets as |shapeDataset| }}
           <tr>
               <td>{{shapeDataset.attribution}}</td>
-              <td><a href {{action link shapeDataset.id}}>{{shapeDataset.human_name}}</a></td>
+              <td><a href {{action displayLink shapeDataset.id}}>{{shapeDataset.human_name}}</a></td>
               <td>{{shapeDataset.num_shapes}}</td>
               <td>(Download links)</td>
           </tr>
