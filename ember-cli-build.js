@@ -11,7 +11,7 @@ module.exports = function(defaults) {
   app.import('bower_components/leaflet/dist/leaflet.css');
   app.import('bower_components/leaflet-draw/dist/leaflet.draw.js');
   app.import('bower_components/leaflet-draw/dist/leaflet.draw.css');
-  app.import('bower_components/bootstrap/dist/css/bootstrap.css');
+  app.import('bower_components/bootswatch/simplex/bootstrap.css');
   app.import('bower_components/bootstrap/dist/js/bootstrap.js');
   app.import('bower_components/datatables.net/js/jquery.dataTables.js');
   app.import('bower_components/datatables.net-bs/js/dataTables.bootstrap.js');

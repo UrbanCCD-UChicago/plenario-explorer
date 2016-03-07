@@ -1,4 +1,8 @@
-<p>Look at me, I rendered.</p>
+<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+    <i class='fa fa-download'></i>
+    Download
+    <span class="caret"></span>
+</button>
 <ul class="dropdown-menu" role="menu">
     <li>All up in yo list</li>
     <li><a {{action downloadLink record.id "json"}}><i class='fa fa-download'></i> GeoJson</a></li>

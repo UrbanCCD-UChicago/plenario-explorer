@@ -4,24 +4,3 @@
   downloadLink=downloadLink
   displayLink=displayLink}}
 
-<table id='available-shape-datasets' class='table table-condensed'>
-    <thead>
-      <tr>
-          <th>Source</th>
-          <th>Dataset Name</th>
-          <th>Count</th>
-          <th>Download</th>
-      </tr>
-    </thead>
-    <tbody>
-      {{#each shapeDatasets as |shapeDataset| }}
-          <tr>
-              <td>{{shapeDataset.attribution}}</td>
-              <td><a href {{action displayLink shapeDataset.id}}>{{shapeDataset.human_name}}</a></td>
-              <td>{{shapeDataset.num_shapes}}</td>
-              <td>(Download links)</td>
-          </tr>
-      {{/each}}
-    </tbody>
-</table>
-
