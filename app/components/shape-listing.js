@@ -18,5 +18,5 @@ export default Ember.Component.extend({
       "title": "Download",
       "template": "shape-download-link"
     }
-  ],
+  ]
 });

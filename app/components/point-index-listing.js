@@ -1,12 +1,18 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  didRender() {
-    //console.log(this.$("table"));
-    this.$("table").DataTable({
-      "paging": false,
-      "searching": false,
-      "info": false
-    });
-  }
+  columns: [
+    {
+      "title": "Source",
+      "propertyName": "attribution"
+    },
+    {
+      "title": "Dataset Name",
+      "template": "display-link"
+    },
+    {
+      "title": "Time span available",
+      "template": "time-span"
+    }
+  ]
 });
