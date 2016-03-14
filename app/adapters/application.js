@@ -2,12 +2,7 @@ import DS from "ember-data";
 import Ember from "ember";
 
 export default DS.RESTAdapter.extend({
-  host: 'http://plenar.io',
-  namespace: 'api/v1',
-  baseURL: Ember.computed('host', 'namespace', function() {
-    return `${this.get('host')}/${this.get('namespace')}`;
-  }),
-
+  baseURL: 'http://plenar.io/api/v1',
   /**
    *
    * Helper for overriding Adapter methods.
@@ -19,6 +14,7 @@ export default DS.RESTAdapter.extend({
    * @returns {Ember.RSVP.Promise}
      */
   promiseFromPath(path, id) {
+    window.base = this.baseURL;
     const url = this.baseURL + path;
     // Boilerplate Promise construction taken from Ember docs example
     // of overriding RESTAdapter::findRecord
@@ -31,11 +27,13 @@ export default DS.RESTAdapter.extend({
           // ids for queries.
           data.id = id;
         }
+        console.log(data);
         Ember.run(null, resolve, data);
       }, function(jqXHR) {
         jqXHR.then = null; // tame jQuery's ill mannered promises
         Ember.run(null, reject, jqXHR);
-      });});
+      });
+    });
   }
 
 });

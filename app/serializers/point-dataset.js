@@ -1,12 +1,38 @@
-import DS from 'ember-data';
+import ApplicationSerializer from './application';
 
-export default DS.JSONAPISerializer.extend({
+export default ApplicationSerializer.extend({
   normalizeFindAllResponse(store, primaryModelClass, payload, id, requestType) {
-    payload.data.attributes.amount = payload.data.attributes.cost.amount;
-    payload.data.attributes.currency = payload.data.attributes.cost.currency;
+    var self = this;
 
-    delete payload.data.attributes.cost;
+    var normalizeHash = function(hash) {
+      let normalized = {};
+      for(let key in hash) {
+        if(hash.hasOwnProperty(key)) {
+          const normalizedKey = self.keyForAttribute(key);
+          normalized[normalizedKey] = hash[key];
+        }
+      }
+      return normalized;
+    };
 
-    return this._super(...arguments);
-  },
+    let jsonAPIFromDataset = function(plenarioDataset) {
+      //console.log(plenarioDataset);
+      const normalized = normalizeHash(plenarioDataset);
+      console.log(normalized);
+      return {
+        "type": "point-dataset",
+        "id": normalized.datasetName,
+        "attributes": normalized
+      };
+    };
+
+    /*
+     Expected AJAX payload is
+     {meta: {...}, objects: [{dataset1},...{datasetn}]}
+     */
+    const allDatasets = payload.objects.map(jsonAPIFromDataset);
+    return {
+      "data": allDatasets
+    };
+  }
 });

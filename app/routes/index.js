@@ -1,6 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
+  // Grab pointDataset models
   mockedPointDatasets: [
       {
         attribution: "Seattle",
@@ -37,7 +38,7 @@ export default Ember.Route.extend({
         source_url: "https://data.sfgov.org/api/views/tmnf-yvry/rows.csv?accessType=DOWNLOAD",
         observed_date: "date",
         source_url_hash: "51be264f1bc2524b2069c9244475e558"
-      },
+      }
   ],
   mockedShapeDatasets: [
     {
@@ -62,7 +63,7 @@ export default Ember.Route.extend({
 
   model() {
     return {
-      pointDatasets: this.mockedPointDatasets,
+      pointDatasets: this.store.findAll('pointDataset'),
       shapeDatasets: this.mockedShapeDatasets
     };
   }

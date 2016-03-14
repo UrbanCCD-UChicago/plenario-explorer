@@ -1,5 +1,63 @@
 export default function() {
 
+  this.get('http://plenar.io/api/v1/datasets', function() {
+    return {
+      "meta": {
+      "status": "ok"
+    },
+      "objects": [
+      {
+        "column_names": [],
+        "attribution": "City of Chicago",
+        "description": "The Chicago Building Energy",
+        "date_added": null,
+        "view_url": "https://data.cityofchicago.org/api/views/xq83-jr8c/rows",
+        "source_url": "https://data.cityofchicago.org/api/views/xq83-jr8c/rows.csv?accessType=DOWNLOAD",
+        "obs_from": null,
+        "obs_to": null,
+        "human_name": "Chicago Energy Benchmarking",
+        "last_update": null,
+        "dataset_name": "chicago_energy_benchmarking",
+        "update_freq": "yearly"
+      },
+      {
+        "column_names": [
+          "initial_type_subgroup",
+          "initial_type_group",
+          "initial_type_description",
+          "event_clearance_description",
+          "at_scene_time",
+          "district_sector",
+          "cad_event_number",
+          "cad_cdw_id",
+          "event_clearance_subgroup",
+          "event_clearance_date",
+          "zone_beat",
+          "incident_location",
+          "census_tract",
+          "latitude",
+          "hundred_block_location",
+          "general_offense_number",
+          "event_clearance_group",
+          "longitude",
+          "event_clearance_code"
+        ],
+        "attribution": "City of Seattle, Department of Information Technology, Seattle Police Department",
+        "description": "This dataset is",
+        "date_added": null,
+        "view_url": "https://data.seattle.gov/api/views/3k2p-39jp/rows",
+        "source_url": "https://data.seattle.gov/api/views/3k2p-39jp/rows.csv?accessType=DOWNLOAD",
+        "obs_from": null,
+        "obs_to": null,
+        "human_name": "Seattle Police Department 911 Incident Response",
+        "last_update": null,
+        "dataset_name": "seattle_police_department_911_incident_response",
+        "update_freq": "yearly"
+      }
+    ]
+    };
+  })
+
   this.get('/v1/api/detail-aggregate', () => {
     return '{meta:{status:"ok",query:{agg:"week",location_geom__within:{crs:{type:"name",properties:{name:"EPSG:4326"}},type:"Polygon",coordinates:[[[-87.64176964759827,41.850639123649636],[-87.64176964759827,41.881320144894765],[-87.59301781654358,41.881320144894765],[-87.59301781654358,41.850639123649636],[-87.64176964759827,41.850639123649636]]]},obs_date__ge:"2015-11-13T00:00:00",data_type:"json",obs_date__le:"2016-02-11T00:00:00"},message:[]},objects:[{count:44,datetime:"2015-11-09"},{count:104,datetime:"2015-11-16"},{count:104,datetime:"2015-11-23"},{count:117,datetime:"2015-11-30"},{count:112,datetime:"2015-12-07"},{count:120,datetime:"2015-12-14"},{count:115,datetime:"2015-12-21"},{count:123,datetime:"2015-12-28"},{count:115,datetime:"2016-01-04"},{count:132,datetime:"2016-01-11"},{count:111,datetime:"2016-01-18"},{count:97,datetime:"2016-01-25"},{count:47,datetime:"2016-02-01"},{count:0,datetime:"2016-02-08"}]}';
   });
