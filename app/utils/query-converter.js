@@ -4,9 +4,9 @@
 
 export default function QueryConverter() {
   this.fromId = function(id){};
-  this.fromObject = function(obj){};
+  this.fromHash = function(obj){};
   this.fromQueryString = function(qString){};
   this.toId = function(){};
-  this.toObject = function(){};
+  this.toHash = function(){};
   this.toQueryString = function(){};
 }
