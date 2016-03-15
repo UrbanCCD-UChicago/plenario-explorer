@@ -6,7 +6,12 @@ export default ApplicationAdapter.extend({
     return this.promiseFromPath(path);
   },
 
-  findAll (store, type, sinceToken) {
+  findAll(store, type, sinceToken) {
+    const path = '/datasets';
+    return this.promiseFromPath(path);
+  },
+
+  query(store, type, query){
     const path = '/datasets';
     return this.promiseFromPath(path);
   }

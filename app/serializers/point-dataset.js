@@ -28,7 +28,7 @@ export default ApplicationSerializer.extend({
 
     /*
      Expected AJAX payload is
-     {meta: {...}, objects: [{dataset1},...{datasetn}]}
+     {meta: {...}, objects: [{dataset1},...{datasetN}]}
      */
     const allDatasets = payload.objects.map(jsonAPIFromDataset);
     return {

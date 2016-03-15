@@ -1,5 +1,69 @@
 export default function() {
 
+  this.get('http://plenar.io/api/v1/datasets?dataset_name=crimes_2001_to_present', function() {
+    return {
+      meta: {
+        status: "ok",
+        query: {
+          location_geom__within: null,
+          obs_date__ge: null,
+          obs_date__le: null,
+          dataset_name: "crimes_2001_to_present"
+        },
+        message: [ ],
+        total: 1
+      },
+      objects: [
+        {
+          column_names: null,
+          attribution: "Chicago Police Department",
+          description: "This dataset reflects reported incidents of crime.",
+          date_added: "2014-09-10T22:51:19.214726",
+          view_url: "http://data.cityofchicago.org/api/views/ijzp-q8t2/rows",
+          source_url: "http://data.cityofchicago.org/api/views/ijzp-q8t2/rows.csv?accessType=DOWNLOAD",
+          obs_from: "2001-01-01",
+          obs_to: "2016-03-02",
+          human_name: "Crimes - 2001 to present",
+          last_update: "2016-03-10T17:43:10.988899",
+          dataset_name: "crimes_2001_to_present",
+          update_freq: "daily"
+        }
+      ]
+    }
+  });
+
+  this.get('http://plenar.io/api/v1/datasets?dataset_name=building_permits', function() {
+    return {
+      meta: {
+        status: "ok",
+          query: {
+          location_geom__within: null,
+            obs_date__ge: null,
+            obs_date__le: null,
+            dataset_name: "building_permits"
+        },
+        message: [ ],
+          total: 1
+      },
+      objects: [
+        {
+          column_names: null,
+          attribution: "City of Chicago",
+          description: "Permits issued by the Department of Buildings in the City of Chicago.",
+          date_added: "2014-09-10T18:07:26.991109",
+          view_url: "http://data.cityofchicago.org/api/views/ydr8-5enu/rows",
+          source_url: "http://data.cityofchicago.org/api/views/ydr8-5enu/rows.csv?accessType=DOWNLOAD",
+          obs_from: "2001-11-19",
+          obs_to: "2016-03-15",
+          human_name: "Building Permits",
+          last_update: "2016-03-15T14:22:15.165711",
+          dataset_name: "building_permits",
+          update_freq: "daily"
+        }
+      ]
+    }
+  });
+
   this.get('http://plenar.io/api/v1/datasets', function() {
     return {
       "meta": {
@@ -56,7 +120,7 @@ export default function() {
       }
     ]
     };
-  })
+  });
 
   this.get('/v1/api/detail-aggregate', () => {
     return '{meta:{status:"ok",query:{agg:"week",location_geom__within:{crs:{type:"name",properties:{name:"EPSG:4326"}},type:"Polygon",coordinates:[[[-87.64176964759827,41.850639123649636],[-87.64176964759827,41.881320144894765],[-87.59301781654358,41.881320144894765],[-87.59301781654358,41.850639123649636],[-87.64176964759827,41.850639123649636]]]},obs_date__ge:"2015-11-13T00:00:00",data_type:"json",obs_date__le:"2016-02-11T00:00:00"},message:[]},objects:[{count:44,datetime:"2015-11-09"},{count:104,datetime:"2015-11-16"},{count:104,datetime:"2015-11-23"},{count:117,datetime:"2015-11-30"},{count:112,datetime:"2015-12-07"},{count:120,datetime:"2015-12-14"},{count:115,datetime:"2015-12-21"},{count:123,datetime:"2015-12-28"},{count:115,datetime:"2016-01-04"},{count:132,datetime:"2016-01-11"},{count:111,datetime:"2016-01-18"},{count:97,datetime:"2016-01-25"},{count:47,datetime:"2016-02-01"},{count:0,datetime:"2016-02-08"}]}';
