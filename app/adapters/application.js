@@ -25,7 +25,7 @@ export default DS.RESTAdapter.extend({
           // so that we can fetch it from the store.
           // A useful hack for when the application wants to define
           // ids for queries.
-          data.id = id;
+          data['id']= id;
         }
         console.log(data);
         Ember.run(null, resolve, data);

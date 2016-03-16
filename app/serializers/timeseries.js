@@ -21,14 +21,15 @@ import DS from 'ember-data';
 
 export default DS.JSONSerializer.extend({
   normalizeResponse(store, primaryModelClass, payload, id, requestType) {
-    payload.data = {
-      'id': JSON.stringify(payload.meta.query),
-      'type': 'timeseries',
-      'series': payload.objects
+    var doc = {
+      "data": {
+        "type": "timeseries",
+        "attributes": {
+          "series": payload.objects
+        }
+      }
     };
-    delete payload.meta;
-    delete payload.objects;
 
-    return this._super(...arguments);
+    return doc;
   }
 });
