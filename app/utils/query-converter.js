@@ -22,8 +22,9 @@ export default function QueryConverter() {
     // JS objects maintain insertion ordering! Woah.
     // http://stackoverflow.com/questions/5467129/sort-javascript-object-by-key/31102605#31102605
     var orderedHash = {};
+    var unorderedHash = this.hash;
     Object.keys(this.hash).sort().forEach(function(key){
-      orderedHash[key] = this.hash[key];
+      orderedHash[key] = unorderedHash[key];
     });
     return JSON.stringify(orderedHash);
   };
