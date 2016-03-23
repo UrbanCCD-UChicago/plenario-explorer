@@ -6,6 +6,7 @@ export default DS.Model.extend({
   sourceURL: DS.attr('string'),
   obsFrom: DS.attr('date'),
   obsTo: DS.attr('date'),
+  datasetName: DS.attr('string'),
   humanName: DS.attr('string'),
   updateFreq: DS.attr('string')
 });

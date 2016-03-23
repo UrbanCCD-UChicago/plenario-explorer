@@ -1,4 +1,4 @@
-import URI from 'uri';
+/* global URI */
 
 /**
  * QueryConverter stores a list of string to string pairs

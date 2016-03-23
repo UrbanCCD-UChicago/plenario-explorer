@@ -2,6 +2,10 @@ import Ember from 'ember';
 
 export default Ember.Controller.extend({
   refresh: true,
+  init() {
+    let jankyPoints = this.store.findAll('pointDataset');
+    this.set('jankyPoints', jankyPoints);
+  },
   actions: {
     submit: function(params) {
       console.log(params);
@@ -15,6 +19,7 @@ export default Ember.Controller.extend({
         {self.set('refresh', true);}
       );
     },
+
     navigateToShape: function(name) {
       alert(`Imagine you just transitioned to ${name} shape detail page.`);
     },

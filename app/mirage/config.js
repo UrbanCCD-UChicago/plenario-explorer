@@ -81,7 +81,7 @@ export default function() {
         "obs_to": null,
         "human_name": "Chicago Energy Benchmarking",
         "last_update": null,
-        "dataset_name": "chicago_energy_benchmarking",
+        "dataset_name": "building_permits",
         "update_freq": "yearly"
       },
       {
@@ -115,7 +115,7 @@ export default function() {
         "obs_to": null,
         "human_name": "Seattle Police Department 911 Incident Response",
         "last_update": null,
-        "dataset_name": "seattle_police_department_911_incident_response",
+        "dataset_name": "crimes_2001_to_present",
         "update_freq": "yearly"
       }
     ]

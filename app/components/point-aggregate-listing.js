@@ -48,19 +48,41 @@ export default Ember.Component.extend({
 
     // Transform each model's items property
     // to a form that Highcharts can deal with.
-    let pointDatasets = this.get('pointDatasets');
-    for (let row of pointDatasets){
-      row.items = prepTimeseries(row.items);
-    }
-    this.set('preppedPointDatasets', []);
-    Ember.run.later(this, function(){
-      let dsets = this.get('preppedPointDatasets');
-      dsets.addObject(pointDatasets[0])
-    }, 500);
-    Ember.run.later(this, function(){
-      let dsets = this.get('preppedPointDatasets');
-      dsets.addObject(pointDatasets[1])
-    }, 3000);
+
+    let delayedLoad = function() {
+      let pointDatasets = this.get('pointDatasets');
+      //pointDatasets.then(()=>{console.log('Resolved!')})
+      console.log(pointDatasets);
+      window.pd = pointDatasets;
+      var dsets = [];
+      pointDatasets.forEach(function(row){
+        console.log(row);
+        dsets.addObject(row);
+      });
+      this.set('preppedPointDatasets', dsets);
+      //console.log(dsets);
+
+      //this.set('preppedPointDatasets', []);
+      ////let dsets = this.get('preppedPointDatasets');
+      //console.log(pointDatasets[0]);
+      //dsets.addObject(pointDatasets[0]);
+      //dsets.addObject(pointDatasets[1]);
+
+      /*
+       this.set('preppedPointDatasets', []);
+       Ember.run.later(this, function(){
+       console.log('Made it to this delay')
+
+       }, 500);
+       Ember.run.later(this, function(){
+       let dsets = this.get('preppedPointDatasets');
+
+       this.set('preppedPointDatasets', dsets)
+       }, 3000);
+       */
+
+    };
+    Ember.run.later(this, delayedLoad, 500);
 
     // Don't mutate the 'pointDatasets' value passed in. DDAU.
     //this.set('preppedPointDatasets', pointDatasets);
