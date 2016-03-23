@@ -18,7 +18,7 @@ export default ApplicationSerializer.extend({
     let jsonAPIFromDataset = function(plenarioDataset) {
       //console.log(plenarioDataset);
       const normalized = normalizeHash(plenarioDataset);
-      console.log(normalized);
+      //console.log(normalized);
       return {
         "type": "point-dataset",
         "id": normalized.datasetName,

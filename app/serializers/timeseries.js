@@ -24,6 +24,7 @@ export default DS.JSONSerializer.extend({
     var doc = {
       "data": {
         "type": "timeseries",
+        "id": id,
         "attributes": {
           "series": payload.objects
         }

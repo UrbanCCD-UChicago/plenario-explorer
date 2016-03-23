@@ -1,5 +1,42 @@
 export default function() {
 
+  this.get('http://plenar.io/api/v1/detail-aggregate', function(_, request){
+    console.log(request.queryParams);
+    return {
+      attribution: "City of Chicago",
+      description: "All open graffiti removal requests made to 311 and all requests completed since January 1, 2011. The Department of Streets & Sanitation's Graffiti Blasters crews offer a vandalism removal service to private property owners. Graffiti Blasters employ blast trucks that use baking soda under high water pressure to erase painted graffiti from brick, stone and other mineral surfaces. They also use paint trucks to cover graffiti on the remaining surfaces. Organizations and residents may report graffiti and request its removal. 311 sometimes receives duplicate requests for graffiti removal. Requests that have been labeled as Duplicates are in the same geographic area and have been entered into 311’s Customer Service Requests (CSR) system at around the same time as a previous request. Duplicate reports/requests are labeled as such in the Status field,",
+      view_url: "http://data.cityofchicago.org/api/views/hec5-y4x5/rows",
+      source_url: "http://data.cityofchicago.org/api/views/hec5-y4x5/rows.csv?accessType=DOWNLOAD",
+      bbox: {
+        type: "Polygon",
+        coordinates: [
+          [
+            [
+              -87.9201468772724,
+              41.6446953564915
+            ],
+            [
+              -87.9201468772724,
+              42.0226602680775
+            ],
+            [
+              -87.5243810071102,
+              42.0226602680775
+            ],
+            [
+              -87.5243810071102,
+              41.6446953564915
+            ],
+            [
+              -87.9201468772724,
+              41.6446953564915
+            ]
+          ]
+        ]
+      }
+    };
+  });
+
   this.get('http://plenar.io/api/v1/datasets?dataset_name=crimes_2001_to_present', function() {
     return {
       meta: {

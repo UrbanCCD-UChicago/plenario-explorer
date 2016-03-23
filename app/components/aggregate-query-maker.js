@@ -12,7 +12,7 @@ export default Ember.Component.extend({
   _geoJSON: null,
 
   init() {
-    console.log('In aggregate-query-maker init');
+    //console.log('In aggregate-query-maker init');
     this._super(...arguments);
     this.initLayer();
     this.initFilterBox();
@@ -46,10 +46,10 @@ export default Ember.Component.extend({
       startDate = moment().subtract(90, 'days').toString(); // 90 days ago
     }
     this.set('_startDate', startDate);
-    console.log(startDate);
+    //console.log(startDate);
 
     let agg = this.get('agg');
-    console.log(agg);
+    //console.log(agg);
     if (!agg) {
       this.set('_agg', 'week');
       agg = 'week';
@@ -75,19 +75,19 @@ export default Ember.Component.extend({
 
     // Actions that pass down.
     changedGeoJSON(geoJSON) {
-      console.log('Set geoJSON to ' + geoJSON);
+      //console.log('Set geoJSON to ' + geoJSON);
       this.set('_geoJSON', geoJSON);
     },
     changedStartDate(startDate) {
-      console.log('Set start date to ' + startDate);
+      //console.log('Set start date to ' + startDate);
       this.set('_startDate', startDate);
     },
     changedEndDate(endDate) {
-      console.log('Set end date to ' + endDate);
+      //console.log('Set end date to ' + endDate);
       this.set('_endDate', endDate);
     },
     changedAgg(agg) {
-      console.log('Set agg to ' + agg);
+      //console.log('Set agg to ' + agg);
       this.set('_agg', agg);
     }
   }

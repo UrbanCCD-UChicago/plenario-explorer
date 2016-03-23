@@ -29,7 +29,7 @@ export default function QueryConverter() {
     // http://stackoverflow.com/questions/5467129/sort-javascript-object-by-key/31102605#31102605
     var orderedHash = {};
     var unorderedHash = this.hash;
-    console.log(unorderedHash);
+    //console.log(unorderedHash);
     Object.keys(this.hash).sort().forEach(function(key){
       orderedHash[key] = unorderedHash[key];
     });

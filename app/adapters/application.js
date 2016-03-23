@@ -27,7 +27,7 @@ export default DS.RESTAdapter.extend({
           // ids for queries.
           data['id']= id;
         }
-        console.log(data);
+        //console.log(data.id);
         Ember.run(null, resolve, data);
       }, function(jqXHR) {
         jqXHR.then = null; // tame jQuery's ill mannered promises
