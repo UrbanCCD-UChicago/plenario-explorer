@@ -11,26 +11,35 @@
 export default function QueryConverter() {
   this.fromId = function(id){
     this.hash = JSON.parse(id);
+    return this;
   };
+
   this.fromHash = function(hash){
     this.hash = hash;
+    return this;
   };
+
   this.fromQueryString = function(qString){
     this.hash = URI(qString).query(true);
+    return this;
   };
+
   this.toId = function(){
     // JS objects maintain insertion ordering! Woah.
     // http://stackoverflow.com/questions/5467129/sort-javascript-object-by-key/31102605#31102605
     var orderedHash = {};
     var unorderedHash = this.hash;
+    console.log(unorderedHash);
     Object.keys(this.hash).sort().forEach(function(key){
       orderedHash[key] = unorderedHash[key];
     });
     return JSON.stringify(orderedHash);
   };
+
   this.toHash = function(){
     return this.hash;
   };
+
   this.toQueryString = function(){
     return URI('').addQuery(this.hash).toString();
   };
