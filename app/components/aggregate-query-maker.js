@@ -63,7 +63,7 @@ export default Ember.Component.extend({
     submit() {
       // Need try-except block to show error if geom not provided
       this.get('submit')({
-        geoJSON: this.get('_geoJSON'),
+        location_geom__within: this.get('_geoJSON'),
         obs_date__ge: this.get('_startDate'),
         obs_date__le: this.get('_endDate'),
         agg: this.get('_agg')

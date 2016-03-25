@@ -1,4 +1,4 @@
-{{aggregate-query-maker geoJSON=geoJSON startDate=obs_date__ge endDate=obs_date__le agg=agg zoom=zoom
+{{aggregate-query-maker geoJSON=location_geom__within startDate=obs_date__ge endDate=obs_date__le agg=agg zoom=zoom
                         submit=(action "submit") reset=(action "reset")}}
 
 {{timeseriesList}}
