@@ -2,7 +2,7 @@ import DS from "ember-data";
 import Ember from "ember";
 
 export default DS.RESTAdapter.extend({
-  baseURL: 'http://plenar.io/api/v1',
+  baseURL: 'http://plenar.io/v1/api',
   /**
    *
    * Helper for overriding Adapter methods.
@@ -16,6 +16,7 @@ export default DS.RESTAdapter.extend({
   promiseFromPath(path, id) {
     window.base = this.baseURL;
     const url = this.baseURL + path;
+    // console.log(url + '\n' + id);
     // Boilerplate Promise construction taken from Ember docs example
     // of overriding RESTAdapter::findRecord
     return new Ember.RSVP.Promise(function(resolve, reject) {
