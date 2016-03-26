@@ -8,5 +8,7 @@ export default DS.Model.extend({
   obsTo: DS.attr('date'),
   datasetName: DS.attr('string'),
   humanName: DS.attr('string'),
-  updateFreq: DS.attr('string')
+  updateFreq: DS.attr('string'),
+  series: DS.attr(),
+  arrivalOrder: DS.attr('number')
 });

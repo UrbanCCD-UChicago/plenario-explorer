@@ -22,5 +22,6 @@ export default Ember.Component.extend({
       "title": "Download",
       "template": "point-download-link"
     }
-  ]
+  ],
+  sortProperties: Ember.A(['arrivalOrder:asc'])
 });
