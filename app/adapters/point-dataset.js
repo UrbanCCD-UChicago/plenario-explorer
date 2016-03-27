@@ -1,5 +1,5 @@
 import ApplicationAdapter from './application';
-import QueryConverter from '../utils/query-converter'
+import QueryConverter from '../utils/query-converter';
 
 export default ApplicationAdapter.extend({
   findRecord(store, type, id, snapshot) {
@@ -13,10 +13,10 @@ export default ApplicationAdapter.extend({
   },
 
   query(store, type, query){
-    console.log(query);
+    //console.log(query);
     const qString = new QueryConverter().fromHash(query).toQueryString();
     let path = '/datasets' + qString;
-    console.log(path);
+    //console.log(path);
     return this.promiseFromPath(path);
   }
 });

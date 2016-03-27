@@ -26,6 +26,7 @@ export default Ember.Route.extend({
     return Ember.RSVP.hash({
       pointDatasets: this.store.query('pointDataset', params),
       shapeDatasets: this.mockedShapeDatasets
+      //shapeDatasets: this.store.query('shapeDataset', params)
     });
   }
 });
