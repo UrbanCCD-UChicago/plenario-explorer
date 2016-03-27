@@ -64,7 +64,7 @@ export default Ember.Route.extend({
   model() {
     return {
       pointDatasets: this.store.findAll('pointDataset'),
-      shapeDatasets: this.mockedShapeDatasets
+      shapeDatasets: this.store.findAll('shapeDataset')
     };
   }
 });

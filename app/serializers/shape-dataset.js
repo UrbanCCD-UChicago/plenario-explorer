@@ -1,4 +1,7 @@
-import DS from 'ember-data';
+import ApplicationSerializer from './application';
 
-export default DS.JSONAPISerializer.extend({
+export default ApplicationSerializer.extend({
+  normalizeFindAllResponse(store, primaryModelClass, payload, id, requestType) {
+    return this.normalizeMetadataResponse(payload, 'shapeDataset');
+  }
 });
