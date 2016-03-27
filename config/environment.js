@@ -21,7 +21,7 @@ module.exports = function(environment) {
 
   if (environment === 'development') {
     ENV['ember-cli-mirage'] = {
-      enabled: false
+      enabled: true
     };
     // ENV.APP.LOG_RESOLVER = true;
     // ENV.APP.LOG_ACTIVE_GENERATION = true;
@@ -35,7 +35,7 @@ module.exports = function(environment) {
     ENV.baseURL = '/';
     ENV.locationType = 'none';
     ENV['ember-cli-mirage'] = {
-      enabled: false
+      enabled: true
     };
 
     // keep test console output quieter

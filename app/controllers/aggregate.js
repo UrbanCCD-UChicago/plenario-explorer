@@ -51,12 +51,6 @@ export default Ember.Controller.extend({
 
   launchTimeseriesQueries() {
     let model = this.get('model');
-    //console.log(model);
-    // let arrivalOrder = 0;
-    // let getArrivalOrder = function() {
-    //   arrivalOrder ++;
-    //   return arrivalOrder;
-    // };
     let arrivalOrder = 1;
 
     model.pointDatasets.forEach((d)=>{
