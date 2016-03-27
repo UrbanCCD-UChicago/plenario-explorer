@@ -2,17 +2,17 @@ import Ember from 'ember';
 import QueryConverter from '../utils/query-converter';
 
 export default Ember.Controller.extend({
-  queryParams: ['obs_date__le', 'obs_date__ge', 'agg', 'geoJSON'],
+  queryParams: ['obs_date__le', 'obs_date__ge', 'agg', 'location_geom__within'],
   obs_date__le: null,
   obs_date__ge: null,
   agg: null,
-  geoJSON: null,
-  queryHash: Ember.computed('obs_date__le', 'obs_date__ge', 'agg', 'geoJSON', function() {
+  location_geom__within: null,
+  queryHash: Ember.computed('obs_date__le', 'obs_date__ge', 'agg', 'location_geom__within', function() {
     return {
       obs_date__le: this.get('obs_date__le'),
       obs_date__ge: this.get('obs_date__ge'),
       agg: this.get('agg'),
-      geoJSON: this.get('geoJSON')
+      location_geom__within: this.get('location_geom__within')
     };
   }),
   zoom: false,
@@ -20,13 +20,16 @@ export default Ember.Controller.extend({
 
   actions: {
     submit: function(params) {
-      console.log(params);
-      this.transitionToRoute('aggregate', {queryParams: params});
+      //console.log(params);
+      this.setProperties(params);
+      //this.transitionToRoute('aggregate', {queryParams: params});
+      // Set all of the query params
       this.set('zoom', true);
       const self = this;
       Ember.run.next(() => {
         self.set('zoom', false);
       });
+      //this.transitionToRoute('aggregate', {queryParams: params});
     },
     reset: function () {
       this.transitionToRoute('index');
@@ -46,6 +49,7 @@ export default Ember.Controller.extend({
   },
 
   modelArrived: Ember.observer('model', function() {
+    this.get('timeseriesList').clear();
     this.launchTimeseriesQueries();
   }),
 
@@ -64,17 +68,13 @@ export default Ember.Controller.extend({
       var self = this;
 
       tsPromise.then(function(value){
-        console.log(value);
         d.set('series', value.get('series'));
         d.set('arrivalOrder', arrivalOrder);
         arrivalOrder++;
         self.get('timeseriesList').pushObject(d);
-        let tsl = self.get('timeseriesList');
-        console.log(tsl.get('firstObject').get('datasetName'),
-                    tsl.get('lastObject').get('datasetName'));
       }, function(reason){
-        console.log(reason);
-        window.r = reason;
+        //console.log(reason);
+        //window.r = reason;
       });
 
     });
