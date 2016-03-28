@@ -13,7 +13,7 @@ export default Ember.Component.extend({
     },
     {
       "title": "Count",
-      "propertyName": "num_shapes"
+      "propertyName": "numShapes"
     },
     {
       "title": "Download",

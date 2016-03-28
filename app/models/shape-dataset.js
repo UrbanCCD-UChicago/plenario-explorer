@@ -6,5 +6,6 @@ export default DS.Model.extend({
   viewURL: DS.attr('string'),
   sourceURL: DS.attr('string'),
   numShapes: DS.attr('number'),
-  updateFreq: DS.attr('string')
+  updateFreq: DS.attr('string'),
+  attribution: DS.attr('string')
 });
