@@ -47,7 +47,7 @@ export default Ember.Component.extend({
   dateFormat(dt, type) {
     const date = moment(dt);
     if (type === 'display') {
-      return date.format('YYYY/MM/DD');
+      return date.format('MM/DD/YYYY');
     }
     else {
       return date.format('YYYY-MM-DD');
