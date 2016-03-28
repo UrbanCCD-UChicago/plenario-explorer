@@ -56,7 +56,7 @@ export default Ember.Controller.extend({
     // Launch a new set of timeseries queries from the new candidates.
     this.launchTimeseriesQueries();
   }),
-  
+
   /**
    * For each candidate dataset,
    * query the matching timeseries
@@ -91,8 +91,6 @@ export default Ember.Controller.extend({
         // Maybe think on a better way to handle failures
         console.log(reason);
       });
-
     });
   }
-
 });

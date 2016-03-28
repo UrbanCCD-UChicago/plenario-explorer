@@ -21,7 +21,17 @@ export default Ember.Component.extend({
     {
       "title": "Download",
       "template": "point-download-link"
+    },
+    {
+      "isHidden": true,
+      "title": "Name Plaintext",
+      "propertyName": "humanName"
     }
   ],
+  customMessages: {
+    "searchLabel": "Filter on text:",
+    "tableSummary": "Showing %@ - %@ of %@",
+    "noDataToShow": "Loading timeseries..."
+  },
   sortProperties: Ember.A(['arrivalOrder:asc'])
 });
