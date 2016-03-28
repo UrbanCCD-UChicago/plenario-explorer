@@ -18,5 +18,12 @@ export default Ember.Component.extend({
       "title": "Download",
       "template": "shape-download-link"
     }
-  ]
+  ],
+  customMessages: {
+    "searchLabel": "Filter on text:",
+    "tableSummary": "Showing %@ - %@ of %@",
+    "noDataToShow": "Could not find any data within your filters"
+  },
+  pageSizeValues: Ember.A([5, 10, 25, 50]),
+  customClasses: {"globalFilterWrapper": "pull-left bottom-breathe"}
 });
