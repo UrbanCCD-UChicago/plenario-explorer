@@ -8,7 +8,8 @@ export default Ember.Component.extend({
     },
     {
       "title": "Dataset Name",
-      "template": "display-link"
+      "template": "display-link",
+      "sortedBy": "humanName"
     },
     {
       "title": "Count",
@@ -31,7 +32,8 @@ export default Ember.Component.extend({
   customMessages: {
     "searchLabel": "Filter on text:",
     "tableSummary": "Showing %@ - %@ of %@",
-    "noDataToShow": "Loading timeseries..."
+    "noDataToShow": "Could not find any data within your filters"
   },
-  sortProperties: Ember.A(['arrivalOrder:asc'])
+  sortProperties: Ember.A(['arrivalOrder:asc']),
+  pageSizeValues: Ember.A([5, 10, 25, 50])
 });

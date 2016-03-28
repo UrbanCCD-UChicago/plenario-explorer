@@ -55,5 +55,4 @@ export default function(defaultOptions) {
     }
   };
   return Ember.merge(defaultOptions, options);
-  //return options;
 }
