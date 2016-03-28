@@ -8,7 +8,8 @@ export default Ember.Component.extend({
     },
     {
       "title": "Dataset Name",
-      "template": "display-link"
+      "template": "display-link",
+      "sortedBy": "humanName"
     },
     {
       "title": "Count",
@@ -17,7 +18,13 @@ export default Ember.Component.extend({
     {
       "title": "Download",
       "template": "shape-download-link"
+    },
+    {
+      "title": "Name Plaintext",
+      "propertyName": "humanName",
+      "isHidden": true
     }
+
   ],
   customMessages: {
     "searchLabel": "Filter on text:",
