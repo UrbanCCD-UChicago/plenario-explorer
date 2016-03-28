@@ -12,6 +12,6 @@ export default ApplicationSerializer.extend({
     Serializes filtered /datasets
    */
   normalizeQueryResponse(store, primaryModelClass, payload, id, requestType){
-    return this.normalizeMetadataResponse(payload, 'pointDataset');
+    return this.normalizeMetadataResponse(payload, 'pointDataset', true);
   }
 });

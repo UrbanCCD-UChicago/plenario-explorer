@@ -10,6 +10,6 @@ export default ApplicationAdapter.extend({
   query(store, type, query){
     const qString = new QueryConverter().fromHash(query).toQueryString();
     let path = '/shapes' + qString;
-    return this.promiseFromPath(path);
+    return this.promiseFromPath(path, undefined, query);
   }
 });

@@ -13,10 +13,8 @@ export default ApplicationAdapter.extend({
   },
 
   query(store, type, query){
-    //console.log('Making a query!');
     const qString = new QueryConverter().fromHash(query).toQueryString();
     let path = '/datasets' + qString;
-    //console.log(path);
-    return this.promiseFromPath(path);
+    return this.promiseFromPath(path, undefined, query);
   }
 });

@@ -1,5 +1,6 @@
 import DS from "ember-data";
 import Ember from "ember";
+import QueryConverter from '../utils/query-converter';
 
 export default DS.RESTAdapter.extend({
   baseURL: 'http://plenar.io/v1/api',
@@ -8,31 +9,69 @@ export default DS.RESTAdapter.extend({
    * Helper for overriding Adapter methods.
    * Given an ID and a resource path, return the Promise
    * that will resolve to the requested model.
+   * Inserts the ID
+   *
+   * Only good for requests guaranteed to return a _single_
+   * record, like .findRecord() or .queryRecord()
    *
    * @param path Path of the resource after the API namespace, including
    * @param id If specified, save serialized object to the store with this ID.
+   * @param params Hash of query parameters used to define filters used to grab
+   *        a list of objects filtered by the parameters.
    * @returns {Ember.RSVP.Promise}
      */
-  promiseFromPath(path, id) {
-    window.base = this.baseURL;
+  promiseFromPath(path, id, params) {
     const url = this.baseURL + path;
-    // console.log(url + '\n' + id);
     // Boilerplate Promise construction taken from Ember docs example
     // of overriding RESTAdapter::findRecord
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      Ember.$.getJSON(url).then(function(data) {
-        if (id !== undefined) {
-          // Assign the id generated from the application
-          // so that we can fetch it from the store.
-          // A useful hack for when the application wants to define
-          // ids for queries.
-          data['id']= id;
-        }
-        //console.log(data.id);
-        Ember.run(null, resolve, data);
-      }, function(jqXHR) {
-        jqXHR.then = null; // tame jQuery's ill mannered promises
-        Ember.run(null, reject, jqXHR);
+      // What transformation do we need to apply
+      // to the document that gets returned from this serialized API document?
+      let mungeFunc;
+      if (id !== undefined) {
+        // This is a document with a top level object,
+        // whose id field the caller wants to override.
+        mungeFunc = function(apiDoc) {
+          apiDoc['id'] = id;
+          Ember.run(null, resolve, apiDoc);
+        };
+      }
+      else if (params !== undefined) {
+        // This is a document with a list of objects.
+        // We'll construct an id for each one with the query params provided
+        // and the datasetName of each.
+        // (It so happens that this case only occurs when "datasetName"
+        // is the right choice for making the id unique.
+        // We could easily parametrize this over other attribute names.)
+        mungeFunc = function(apiDoc) {
+          console.log(apiDoc);
+          apiDoc.objects.forEach(function(dataset) {
+            let paramsClone = Ember.$().extend({}, params);
+            paramsClone['dataset_name'] = dataset.dataset_name;
+            dataset['id'] = new QueryConverter().fromHash(paramsClone).toId();
+            return dataset;
+          });
+          console.log(apiDoc);
+          Ember.run(null, resolve, apiDoc);
+        };
+      }
+      else {
+        // Don't do anything to the payload.
+        mungeFunc = function(apiDoc) {return apiDoc;};
+      }
+
+      // Now, make the API call,
+      // and pass along the transformed document to Ember Store.
+      Ember.$.getJSON(url).then(
+        function(apiDoc) {
+          // If the AJAX call goes through
+          let transformedDoc = mungeFunc(apiDoc);
+          Ember.run(null, resolve, transformedDoc);
+        },
+        function(jqXHR) {
+          // If the AJAX call fails
+          jqXHR.then = null;
+          Ember.run(null, reject, jqXHR);
       });
     });
   }
