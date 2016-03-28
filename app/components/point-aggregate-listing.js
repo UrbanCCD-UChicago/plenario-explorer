@@ -35,5 +35,6 @@ export default Ember.Component.extend({
     "noDataToShow": "Could not find any data within your filters"
   },
   sortProperties: Ember.A(['arrivalOrder:asc']),
-  pageSizeValues: Ember.A([5, 10, 25, 50])
+  pageSizeValues: Ember.A([5, 10, 25, 50]),
+  customClasses: {"globalFilterWrapper": "pull-left bottom-breathe"}
 });

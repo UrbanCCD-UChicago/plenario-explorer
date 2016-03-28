@@ -304,3 +304,8 @@ body {
   margin-left: 30px;
 }
 
+/* An attempt at fixing the squishedness of table filter boxes */
+.bottom-breathe {
+  margin-bottom: 10px;
+}
+
