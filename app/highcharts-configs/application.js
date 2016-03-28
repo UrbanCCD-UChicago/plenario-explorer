@@ -28,6 +28,11 @@ export default function(defaultOptions) {
         text: ''
       }
     },
+    tooltip: {
+      dateTimeLabelFormats: {
+        hour: '%b %e, %Y'
+      }
+    },
     plotOptions: {
       series: {
         marker: {
