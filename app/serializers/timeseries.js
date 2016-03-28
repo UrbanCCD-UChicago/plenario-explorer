@@ -29,6 +29,7 @@ export default DS.JSONSerializer.extend({
         "type": "timeseries",
         "id": id,
         "attributes": {
+          "count": payload.count,
           "series": this.prepTimeseries(payload.objects)
         }
       }

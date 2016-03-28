@@ -69,12 +69,13 @@ export default Ember.Controller.extend({
 
       tsPromise.then(function(value){
         d.set('series', value.get('series'));
+        d.set('count', value.get('count'));
         d.set('arrivalOrder', arrivalOrder);
         arrivalOrder++;
         self.get('timeseriesList').pushObject(d);
       }, function(reason){
-        //console.log(reason);
-        //window.r = reason;
+        // Maybe think on a better way to handle failures
+        console.log(reason);
       });
 
     });
