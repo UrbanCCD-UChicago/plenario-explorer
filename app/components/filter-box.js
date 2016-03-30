@@ -7,7 +7,5 @@ export default Ember.Component.extend({
       this.get('changedAgg')(newAgg);
     }
   },
-
   aggOptions: ['day', 'week', 'quarter', 'month', 'year']
-
 });
