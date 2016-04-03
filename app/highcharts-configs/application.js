@@ -29,8 +29,16 @@ export default function(defaultOptions) {
       }
     },
     tooltip: {
+      // Mostly the dates are formatted as hours,
+      // but better safe than sorry.
       dateTimeLabelFormats: {
-        hour: '%b %e, %Y'
+        second: '%b %e, %Y',
+        minute: '%b %e, %Y',
+        hour: '%b %e, %Y',
+        day: '%b %e, %Y',
+        week: '%b %e, %Y',
+        month: '%b %e, %Y',
+        year: '%b %e, %Y'
       }
     },
     plotOptions: {
