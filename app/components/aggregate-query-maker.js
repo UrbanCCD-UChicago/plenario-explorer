@@ -8,7 +8,7 @@ export default Ember.Component.extend({
   // They get sent up to the route on submission
   _startDate: null,
   _endDate: null,
-  _agg: 'week',
+  _agg: null,
   _geoJSON: null,
 
   defaults: {
