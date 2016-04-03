@@ -41,11 +41,22 @@ export default Ember.Controller.extend({
     navigateToPoint: function(name) {
       alert(`Imagine you just transitioned to ${name} point detail page.`);
     },
-    downloadShape: function(name, fileType) {
-      alert(`Downloading shape dataset ${name} as file type ${fileType}.`);
+    downloadShape: function(id, fileType) {
+      // Pull the dataset name out of the query string.
+      let qHash = new QueryConverter().fromId(id).toHash();
+      const name = qHash['dataset_name'];
+      delete qHash['dataset_name'];
+      // And insert the correct data type.
+      qHash['data_type'] = fileType;
+      const qString = new QueryConverter().fromHash(qHash).toQueryString();
+      // Open in a new tab.
+      window.open(`http://plenar.io/v1/api/shapes/${name}${qString}`);
     },
-    downloadPoint: function(name, fileType) {
-      alert(`Downloading point dataset ${name} as file type ${fileType}.`);
+    downloadPoint: function(id, fileType) {
+      let qHash = new QueryConverter().fromId(id).toHash();
+      qHash['data_type'] = fileType;
+      const qString = new QueryConverter().fromHash(qHash).toQueryString();
+      window.open(`http://plenar.io/v1/api/detail${qString}`);
     }
   },
 

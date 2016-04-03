@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import QueryConverter from '../utils/query-converter';
 
 export default Ember.Controller.extend({
   refresh: true,
@@ -17,16 +18,18 @@ export default Ember.Controller.extend({
     },
 
     navigateToShape: function(name) {
+      // transitionTo(...)
       alert(`Imagine you just transitioned to ${name} shape detail page.`);
     },
     navigateToPoint: function(name) {
+      // transitionTo(...)
       alert(`Imagine you just transitioned to ${name} point detail page.`);
     },
     downloadShape: function(name, fileType) {
-      alert(`Downloading shape dataset ${name} as file type ${fileType}.`);
-    },
-    downloadPoint: function(name, fileType) {
-      alert(`Downloading point dataset ${name} as file type ${fileType}.`);
+      // Open new tab with raw download link.
+      //console.log(`${name} ${fileType}`);
+      // Any way to do this through the adapter and serializer?
+      window.open(`http://plenar.io/v1/api/shapes/${name}?data_type=${fileType}`);
     }
   }
 });
