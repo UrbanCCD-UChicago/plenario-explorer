@@ -15,6 +15,8 @@ export default Ember.Component.extend({
   // Leaflet layer that should be displayed.
   _layer: null,
 
+  // Assumption that doesn't hold with the grid:
+  // we only display layer if it's removable.
   // On first render, create map, add layer, and add controls
   didInsertElement() {
     this.initMap();
@@ -77,8 +79,7 @@ export default Ember.Component.extend({
       tapTolerance: 30,
       minZoom: 1
     };
-    this.map = L.map('map', map_options).
-    setView([lat, lng], zoom);
+    this.map = L.map('map', map_options).setView([lat, lng], zoom);
     this.addTiles();
   },
 

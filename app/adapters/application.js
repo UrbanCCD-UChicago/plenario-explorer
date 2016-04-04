@@ -30,7 +30,6 @@ export default DS.RESTAdapter.extend({
       // What transformation do we need to apply
       // to the document that gets returned from this serialized API document?
       let mungeFunc;
-      //console.log(id);
       if (id !== undefined) {
         // This is a document with a top level object,
         // whose id field the caller wants to override.
@@ -55,7 +54,6 @@ export default DS.RESTAdapter.extend({
             return dataset;
           });
           return apiDoc;
-          //Ember.run(null, resolve, apiDoc);
         };
       }
       else {
@@ -68,10 +66,7 @@ export default DS.RESTAdapter.extend({
       Ember.$.getJSON(url).then(
         function(apiDoc) {
           // If the AJAX call goes through
-          //console.log(apiDoc);
-          //console.log(mungeFunc);
           let transformedDoc = mungeFunc(apiDoc);
-          console.log(transformedDoc);
           Ember.run(null, resolve, transformedDoc);
         },
         function(jqXHR) {

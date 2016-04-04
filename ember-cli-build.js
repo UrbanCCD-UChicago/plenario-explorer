@@ -20,6 +20,8 @@ module.exports = function(defaults) {
   app.import('bower_components/datatables.net-bs/js/dataTables.bootstrap.js');
   app.import('bower_components/datatables.net-bs/css/dataTables.bootstrap.css');
   app.import('bower_components/urijs/src/URI.js');
+  app.import('vendor/leaflet-label/leaflet.label-src.js');
+  app.import('vendor/leaflet-label/leaflet.label.css');
 
   // Use `app.import` to add additional libraries to the generated
   // output files.

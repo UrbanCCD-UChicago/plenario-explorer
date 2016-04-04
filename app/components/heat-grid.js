@@ -1,5 +1,7 @@
 import Ember from 'ember';
 import jenks from '../utils/jenks';
+//import L from "npm:leaflet-label";
+
 /* global L */
 
 export default Ember.Component.extend({
@@ -13,16 +15,18 @@ export default Ember.Component.extend({
   ],
 
   init() {
+    this._super(...arguments);
+    //window.L = L;
     // Determine the count grouping.
-    const grid = this.get('grid');
-    const cutoffs = this.makeCutoffs(grid);
+    const squares = this.get('grid').get('squares');
+    const cutoffs = this.makeCutoffs(squares);
     this.set('cutoffs', cutoffs);
     // Make a legend for the heatmap.
     const datasetName = this.get('datasetName');
     const legendDiv = this.makeLegendDiv(cutoffs, datasetName);
     this.set('legendDiv', legendDiv);
     // Convert the geoJSON to a styled Leaflet layer.
-    const gridLayer = this.makeLayer(grid, cutoffs);
+    const gridLayer = this.makeLayer(squares, cutoffs);
     this.set('gridLayer', gridLayer);
   },
 
@@ -31,6 +35,8 @@ export default Ember.Component.extend({
    * @returns [number] array of five non-negative integers.
      */
   makeCutoffs(grid) {
+    //console.log(grid.get('features'));
+    //window.grid = grid;
     const counts = grid.features.map(f => {return f.properties.count;});
 
     if (Math.max(...counts) < 5) {
@@ -90,7 +96,7 @@ export default Ember.Component.extend({
    * @param cnt
    */
   getColor(cnt) {
-    const colors = this.colors;
+    const colors = this.get('colors');
     const cutoffs = this.get('cutoffs');
     return  cnt >  cutoffs[4] ? colors[4] :
             cnt >  cutoffs[3] ? colors[3] :
@@ -99,8 +105,20 @@ export default Ember.Component.extend({
                                 colors[0];
   },
 
+  makeFixedGetColor() {
+    const colors = this.get('colors');
+    const cutoffs = this.get('cutoffs');
+    return function(cnt) {
+      return  cnt >  cutoffs[4] ? colors[4] :
+              cnt >  cutoffs[3] ? colors[3] :
+              cnt >  cutoffs[2] ? colors[2] :
+              cnt >= cutoffs[1] ? colors[1] :
+              colors[0];
+    };
+  },
+
   makeLayer(grid) {
-    const getColor = this.getColor;
+    const getColor = this.makeFixedGetColor();
     const addCountLabel = function(feature, layer){
       var content = '<h4>Count: ' + feature.properties.count + '</h4>';
       layer.bindLabel(content);

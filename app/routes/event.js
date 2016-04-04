@@ -35,7 +35,6 @@ export default Ember.Route.extend({
     // Later: provide an option for displaying
     // a points view instead.
     //console.log(params);
-    console.log(transition.queryParams);
     const name = params.dataset_name;
     const id = new QueryConverter().fromHash(transition.queryParams).toId();
     return Ember.RSVP.hash({
