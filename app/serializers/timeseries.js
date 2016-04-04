@@ -23,10 +23,10 @@ import moment from 'moment';
 
 export default DS.JSONSerializer.extend({
   normalizeResponse(store, primaryModelClass, payload, id, requestType) {
-    //console.log(payload);
     return {
       "data": {
         "type": "timeseries",
+        // Do we even know the id at this stage?
         "id": id,
         "attributes": {
           "count": payload.count,

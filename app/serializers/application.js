@@ -38,7 +38,6 @@ export default DS.JSONAPISerializer.extend({
     };
 
     // Place each object in the toplevel "data" of the JSONAPI document.
-    console.log(payload);
     const allDatasets = payload.objects.map(normalizeDataset, this);
     return {
       "data": allDatasets

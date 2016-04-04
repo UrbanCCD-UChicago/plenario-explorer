@@ -9,6 +9,7 @@ Router.map(function() {
   this.route('aggregate');
   this.route('points');
   this.route('display', {path: 'display/:dataset_name'});
+  this.route('event');
 });
 
 export default Router;

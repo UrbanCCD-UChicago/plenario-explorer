@@ -4,15 +4,17 @@ import QueryConverter from '../utils/query-converter';
 
 export default DS.RESTAdapter.extend({
   baseURL: 'http://plenar.io/v1/api',
+
   /**
    *
    * Helper for overriding Adapter methods.
-   * Given an ID and a resource path, return the Promise
+   * Returns the Promise
    * that will resolve to the requested model.
-   * Inserts the ID
+
+   * Can insert an ID into a single-object response
+   * or generate many IDs from a params hash
+   * for an array of objects.
    *
-   * Only good for requests guaranteed to return a _single_
-   * record, like .findRecord() or .queryRecord()
    *
    * @param path Path of the resource after the API namespace, including
    * @param id If specified, save serialized object to the store with this ID.
@@ -28,11 +30,12 @@ export default DS.RESTAdapter.extend({
       // What transformation do we need to apply
       // to the document that gets returned from this serialized API document?
       let mungeFunc;
+      console.log(id);
       if (id !== undefined) {
         // This is a document with a top level object,
         // whose id field the caller wants to override.
         mungeFunc = function(apiDoc) {
-          apiDoc['id'] = id;
+          //apiDoc['id'] = id;
           Ember.run(null, resolve, apiDoc);
         };
       }
@@ -44,14 +47,12 @@ export default DS.RESTAdapter.extend({
         // is the right choice for making the id unique.
         // We could easily parametrize this over other attribute names.)
         mungeFunc = function(apiDoc) {
-          console.log(apiDoc);
           apiDoc.objects.forEach(function(dataset) {
             let paramsClone = Ember.$().extend({}, params);
             paramsClone['dataset_name'] = dataset.dataset_name;
             dataset['id'] = new QueryConverter().fromHash(paramsClone).toId();
             return dataset;
           });
-          console.log(apiDoc);
           Ember.run(null, resolve, apiDoc);
         };
       }
