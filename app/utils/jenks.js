@@ -7,14 +7,14 @@
 // [3](https://github.com/simogeo/geostats/blob/master/lib/geostats.js#L407) (works)
 
 /**
- * From Wikipedia: The Jenks optimization method,
+ * From Wikipedia: "The Jenks optimization method,
  * also called the Jenks natural breaks classification method,
  * is a data clustering method
  * designed to determine the best arrangement of values into different classes.
  * This is done by seeking to minimize each class’s average deviation from the class mean,
  * while maximizing each class’s deviation from the means of the other groups.
  * In other words, the method seeks to reduce the variance within classes
- * and maximize the variance between classes.
+ * and maximize the variance between classes."
  *
  * Given an array of integers (data)
  * and a number of classes to produce (n_classes),
