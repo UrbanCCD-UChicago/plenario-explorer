@@ -3,7 +3,7 @@ import QueryConverter from '../utils/query-converter';
 
 export default ApplicationAdapter.extend({
   findRecord(store, type, id, snapshot) {
-    const path = `/datasets&dataset_name=${id}`;
+    const path = `/datasets?dataset_name=${id}`;
     return this.promiseFromPath(path);
   },
 

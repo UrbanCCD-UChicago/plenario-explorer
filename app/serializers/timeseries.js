@@ -23,6 +23,7 @@ import moment from 'moment';
 
 export default DS.JSONSerializer.extend({
   normalizeResponse(store, primaryModelClass, payload, id, requestType) {
+    console.log('Try to normalize timeseries.');
     return {
       "data": {
         "type": "timeseries",
