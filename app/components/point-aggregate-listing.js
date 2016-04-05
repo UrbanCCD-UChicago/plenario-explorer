@@ -17,7 +17,8 @@ export default Ember.Component.extend({
     },
     {
       "title": "Trend",
-      "template": "chart-wrapper"
+      "template": "chart-wrapper",
+      "className": "embedded-chart"
     },
     {
       "title": "Download",

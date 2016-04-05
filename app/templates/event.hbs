@@ -1,2 +1,8 @@
-{{heat-grid grid=model.grid datasetName=model.metadata.humanName}}
-{{high-charts content=model.timeseries.series}}
+<div class="row">
+  <div class="col-md-5">
+  </div>
+  <div class="col-md-7">
+    {{heat-grid grid=model.grid datasetName=model.metadata.humanName}}
+    {{high-charts classNames=chartClasses content=model.timeseries.series}}
+  </div>
+</div>
