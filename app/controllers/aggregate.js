@@ -7,14 +7,6 @@ export default Ember.Controller.extend({
   obs_date__ge: null,
   agg: null,
   location_geom__within: null,
-  queryHash: Ember.computed('obs_date__le', 'obs_date__ge', 'agg', 'location_geom__within', function() {
-    return {
-      obs_date__le: this.get('obs_date__le'),
-      obs_date__ge: this.get('obs_date__ge'),
-      agg: this.get('agg'),
-      location_geom__within: this.get('location_geom__within')
-    };
-  }),
   zoom: false,
   timeseriesList: [],
 
