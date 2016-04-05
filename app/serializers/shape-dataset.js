@@ -2,9 +2,9 @@ import ApplicationSerializer from './application';
 
 export default ApplicationSerializer.extend({
   normalizeFindAllResponse(store, primaryModelClass, payload, id, requestType) {
-    return this.normalizeMetadataResponse(payload, 'shapeDataset');
+    return this.normalizeMetadataMultiple(payload, 'shapeDataset');
   },
   normalizeQueryResponse(store, primaryModelClass, payload, id, requestType){
-    return this.normalizeMetadataResponse(payload, 'shapeDataset', true);
+    return this.normalizeMetadataSingle(payload, 'shapeDataset', true);
   }
 });
