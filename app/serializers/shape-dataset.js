@@ -5,6 +5,6 @@ export default ApplicationSerializer.extend({
     return this.normalizeMetadataMultiple(payload, 'shapeDataset');
   },
   normalizeQueryResponse(store, primaryModelClass, payload, id, requestType){
-    return this.normalizeMetadataSingle(payload, 'shapeDataset', true);
+    return this.normalizeMetadataMultiple(payload, 'shapeDataset', true);
   }
 });
