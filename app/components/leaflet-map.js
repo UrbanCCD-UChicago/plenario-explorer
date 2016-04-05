@@ -1,32 +1,52 @@
 import Ember from 'ember';
 /* global L */
 
-// Expected parameters:
+// Possible parameters:
 // geoJSON: geoJSON for a layer to be displayed
 // isDrawable: whether we should enable draw controls
 //             to let the user create/mutate `layer`
+// layer: preformatted Leaflet layer, ready to display.
+// legend: HTML div to insert in the bottom right-hand corner of the map.
+//
+// (We expect a combination of geoJSON and isDrawable for
+//  the main query pages and layer + legend for grid display)
 
-const lat = 41.880517;
-const lng = -87.644061;
+
+// Chi-town
+const lat = 41.795509;
+const lng = -87.581916;
 const zoom = 10;
-const tileURL = 'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png';
+const tileURL = 'https://{s}.tiles.mapbox.com/v3/datamade.hn83a654/{z}/{x}/{y}.png';
 
 export default Ember.Component.extend({
   // Leaflet layer that should be displayed.
   _layer: null,
 
+  // didReceiveAttrs() {
+  //   let test = this.get('layer');
+  //   console.log(test);
+  // },
+
   // Assumption that doesn't hold with the grid:
   // we only display layer if it's removable.
   // On first render, create map, add layer, and add controls
   didInsertElement() {
+    //let preformatted = this.get('layer');
+    //console.log(preformatted);
     this.initMap();
     var layer = this.initLayer();
     if (this.get('isDrawable')) {
-      this.initDrawComponent(layer);
+      this.displayDrawableLayer(layer);
+    }
+    else {
+      console.log(layer);
+      this.displayImmutableLayer(layer);
     }
     if (layer) {
       this.map.fitBounds(layer.getBounds());
     }
+    this.createLegend();
+
     // Consider factoring out layer addition
     // into common helper
   },
@@ -40,6 +60,18 @@ export default Ember.Component.extend({
     }
   },
 
+  createLegend() {
+    const div = this.get('legendDiv');
+    console.log(div);
+    if (!!div) {
+      const legend = L.control({position: 'bottomright'});
+      legend.onAdd = function() {
+        return div;
+      };
+      legend.addTo(this.map);
+    }
+  },
+
   updateDrawComponent() {
     let layer = this.initLayer();
     if (layer) {
@@ -49,8 +81,17 @@ export default Ember.Component.extend({
   },
 
   initLayer() {
-    var geoJSON = this.get('geoJSON');
-    var layer = this.geoJSONtoLayer(geoJSON);
+    let layer;
+    // Did the caller supply a layer to display as-is?
+    let preformatted = this.get('layer');
+    if (!!preformatted) {
+      layer = preformatted;
+    }
+    else {
+      // Make a layer out of geoJSON
+      let geoJSON = this.get('geoJSON');
+      layer = this.geoJSONtoLayer(geoJSON);
+    }
     this.set('_layer', layer);
     return layer;
   },
@@ -88,7 +129,7 @@ export default Ember.Component.extend({
     tiles.addTo(this.map);
   },
 
-  initDrawComponent(layer) {
+  displayDrawableLayer(layer) {
     this.addDrawControl(layer);
     this.addDrawListeners();
   },
@@ -119,6 +160,10 @@ export default Ember.Component.extend({
       }
     });
     this.map.addControl(drawControl);
+  },
+
+  displayImmutableLayer(layer) {
+    this.map.addLayer(layer);
   },
 
   addDrawListeners() {

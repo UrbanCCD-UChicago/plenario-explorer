@@ -23,6 +23,7 @@ export default Ember.Component.extend({
     this.set('cutoffs', cutoffs);
     // Make a legend for the heatmap.
     const datasetName = this.get('datasetName');
+    console.log(datasetName);
     const legendDiv = this.makeLegendDiv(cutoffs, datasetName);
     this.set('legendDiv', legendDiv);
     // Convert the geoJSON to a styled Leaflet layer.
