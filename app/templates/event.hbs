@@ -1,5 +1,10 @@
 <div class="row">
   <div class="col-md-5">
+    {{filter-box startDate=_startDate endDate=_endDate agg=_agg res=resolution
+        changedStartDate=(action "noOp")
+        changedEndDate=(action "noOp")
+        changedAgg=(action "noOp")
+        resChanged=(action "resChanged")}}
   </div>
   <div class="col-md-7">
     {{heat-grid grid=model.grid datasetName=model.metadata.humanName}}

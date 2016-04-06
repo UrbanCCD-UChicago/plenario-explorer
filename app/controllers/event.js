@@ -50,6 +50,14 @@ export default Ember.Controller.extend({
       // Go back to the index
       // Unless geojson has been specified,
       // in which case go back to aggregate route.
+    },
+
+    noOp(text) {
+      console.log(text);
+    },
+
+    resChanged(newRes) {
+      this.set('resolution', newRes);
     }
   }
 

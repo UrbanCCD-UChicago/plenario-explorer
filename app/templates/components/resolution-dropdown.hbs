@@ -1,0 +1,6 @@
+<label for="res-select">Resolution</label>
+<select id="res-select" onchange={{action "selectRes" value="target.value"}}>
+  {{#each resOptions as |resChoice|}}
+      <option value={{resChoice}} selected={{eq resText resChoice}}>{{resChoice}}</option>
+  {{/each}}
+</select>

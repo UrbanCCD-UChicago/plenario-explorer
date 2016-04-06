@@ -40,15 +40,26 @@
             </div>
         </div>
 
-        <div class="form-group">
-            {{! Dropdown menu thanks to this blog post:
-            http://balinterdi.com/2015/08/29/how-to-do-a-select-dropdown-in-ember-20.html }}
-            <label for="time-agg-filter">Aggregate by</label>
-            <select id="agg-select" onchange={{action "selectAgg" value="target.value"}}>
-              {{#each aggOptions as |aggChoice|}}
-                  <option value={{aggChoice}} selected={{eq agg aggChoice}}>{{aggChoice}}</option>
-              {{/each}}
-            </select>
+        <div class='row'>
+          <div class='col-md-6'>
+            <div class="form-group">
+                {{! Dropdown menu thanks to this blog post:
+                http://balinterdi.com/2015/08/29/how-to-do-a-select-dropdown-in-ember-20.html }}
+                <label for="time-agg-filter">Aggregate by</label>
+                <select id="agg-select" onchange={{action "selectAgg" value="target.value"}}>
+                  {{#each aggOptions as |aggChoice|}}
+                      <option value={{aggChoice}} selected={{eq agg aggChoice}}>{{aggChoice}}</option>
+                  {{/each}}
+                </select>
+            </div>
+          </div>
+          {{#if res}}
+            <div class='col-md-6'>
+              <div class="form-group">
+                  {{resolution-dropdown res=res resChanged=(action resChanged)}}
+              </div>
+            </div>
+          {{/if}}
         </div>
     </form>
 </div>

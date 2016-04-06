@@ -25,7 +25,8 @@ export default Ember.Route.extend({
   defaults: {
     'agg': 'week',
     'obs_date__le': moment().toString(),
-    'obs_date__ge': moment().subtract(90, 'days').toString()
+    'obs_date__ge': moment().subtract(90, 'days').toString(),
+    'resolution': 500
   },
 
   model(params, transition) {
@@ -46,8 +47,6 @@ export default Ember.Route.extend({
     const name = params.dataset_name;
     // For the grid and timeseries, we need all the params to ID it.
     const id = new QueryConverter().fromHash(transition.queryParams).toId();
-
-
 
     return Ember.RSVP.hash({
       metadata: this.store.findRecord('point-dataset', name),
