@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import moment from 'moment';
 import QueryConverter from '../utils/query-converter';
 
 export default Ember.Route.extend({
@@ -10,37 +11,87 @@ export default Ember.Route.extend({
    *
    * @param transition
    */
-  // queryParams: {
-  //   dataset_name: {
-  //     refreshModel: true
-  //   }
-  // },
+  beforeModel(transition){
+    let params = transition.queryParams;
+    //if (params)
 
-  //beforeModel(transition){
-    //transition.queryParams['nuhuh'] = 'foo';
-    // console.log(transition.queryParams);
-    // this.replaceWith({queryParams: {
-    //    dataset_name: 'blergh'
-    //  }});
-    // If params doesn't have a start or end date,
-    // choose a reasonable default
-    // If params doesn't have a geom, don't worry on it.
-    // If params doesn't have a default agg unit, go with week.
-  //},
+    for (const key in this.defaults) {
+      if (params[key] === undefined) {
+        params[key] = this.defaults[key];
+      }
+    }
+  },
+
+  defaults: {
+    'agg': 'week',
+    'obs_date__le': moment().toString(),
+    'obs_date__ge': moment().subtract(90, 'days').toString()
+  },
 
   model(params, transition) {
-    // Fetch the dataset's metadata,
-    // the grid representation,
-    // and the timeseries representation.
     // Later: provide an option for displaying
     // a points view instead.
-    //console.log(params);
+
+    // Because filter parameters can have arbitrary names,
+    // we need to do some pre-processing here so we can pass a parameter named
+    // 'filters' to the controller.
+    // It will be stringified JSON where each filter is an object
+    // with the schema {name: '', op: '', val: ''}
+    const filterJSON = this.extractFilters(transition.queryParams);
+    if (filterJSON) {
+      transition.queryParams['filters'] = filterJSON;
+    }
+
+    // We only need the point dataset name to grab its metadata.
     const name = params.dataset_name;
+    // For the grid and timeseries, we need all the params to ID it.
     const id = new QueryConverter().fromHash(transition.queryParams).toId();
+
+
+
     return Ember.RSVP.hash({
       metadata: this.store.findRecord('point-dataset', name),
       timeseries: this.store.findRecord('timeseries', id),
       grid: this.store.findRecord('grid', id)
     });
+    // But we need to package it into a "filters" param
+    // to pass it down to the controller.
+    // Maybe process it, marshal to JSON and unmarshal in the controller.
+  },
+
+  extractFilters(queryParams) {
+    let filters = [];
+    const skipKeys = ['obs_date__le', 'obs_date__ge', 'location_geom__within'];
+
+    console.log(queryParams);
+    for (const key in queryParams) {
+      console.log(key);
+      // Not one of the "standard" filters.
+      if (skipKeys.indexOf(key) > -1) {
+        continue;
+      }
+      // Expected form of filter params is name__op
+      if (!key.includes('__')) {
+        continue;
+      }
+      let split = key.split('__');
+      if (split.length !== 2) {
+        continue;
+      }
+
+      const [name, op] = split;
+      const val = queryParams[key];
+      filters.push({
+        name: name,
+        op: op,
+        val: val
+      });
+    }
+    if (filters.length > 0) {
+      return JSON.stringify(filters);
+    }
+    else {
+      return null;
+    }
   }
 });
