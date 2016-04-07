@@ -10,6 +10,9 @@ export default DS.Model.extend({
   datasetName: DS.attr('string'),
   humanName: DS.attr('string'),
   updateFreq: DS.attr('string'),
+  // An array of dictionaries like
+  // [ {field_type: "INTEGER", field_name: "id"}, {...}]
+  columns: DS.attr(),
 
   // The series and count attributes more properly belong
   // to a timeseries model.
