@@ -9,7 +9,7 @@ export default Ember.Component.extend({
 
   fieldOptions: ([
     {computer_name: 'foo', human_name: 'Foo'},
-    {computer_name: 'bar_baz', human_name: 'Bar Baz Bar Baz Bar Baz Bar Baz Bar Baz'},
+    {computer_name: 'bar_baz', human_name: 'Bar Baz'},
     {computer_name: 'gorp', human_name: 'Gorp'}
   ]),
 

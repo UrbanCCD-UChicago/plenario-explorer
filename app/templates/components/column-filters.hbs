@@ -1,17 +1,22 @@
 <h3>Filters</h3>
 {{#each filters as |filter index|}}
-  <p>{{filter.field}} {{filter.operator}} {{filter.value}}
-      <button {{action "removeFilter" index}} class="btn btn-default">x</button></p>
+  <p>&nbsp;&nbsp;<button {{action "removeFilter" index}} class="btn btn-default btn-sm">x</button>
+      &nbsp;&nbsp;{{filter.field}} {{filter.operator}} {{filter.value}}
+  </p>
 {{/each}}
 
 
-{{#em-form formLayout="horizontal" submitButton=false model=activeFilter}}
+{{#em-form formLayout="horizontal"
+submitButton=false
+model=activeFilter
+validationIcons=false}}
+
   {{em-select
   property="field"
   content=fieldOptions
   optionValuePath="computer_name"
   optionLabelPath="human_name"
-  prompt="--field--"
+  prompt="..."
   label="Field"}}
 
   {{em-select
@@ -19,13 +24,13 @@
   content=operatorOptions
   optionValuePath="operator_name"
   optionLabelPath="operator_symbol"
-  prompt="--operator--"
+  prompt="..."
   label="Operator"}}
 
   {{em-input label="Value"
-  placeholder="--value--"
   property="value"}}
   <div class="form-actions">
-      <input type="submit" disabled={{notComplete}} class="btn btn-primary" value="Add">
+      <input type="submit" disabled={{notComplete}} class="btn btn-info pull-right" value="Add Filter">
   </div>
+
 {{/em-form}}
