@@ -309,3 +309,11 @@ body {
   margin-bottom: 10px;
 }
 
+.has-success .form-control,
+.has-success .form-control:focus{
+  border-color: inherit;
+}
+
+.has-success .control-label {
+  color: inherit;
+}
