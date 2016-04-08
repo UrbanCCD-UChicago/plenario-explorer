@@ -2,6 +2,11 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
 
+  init() {
+    this._super(...arguments);
+    this.resetActiveFilter();
+  },
+
   fieldOptions: ([
     {computer_name: 'foo', human_name: 'Foo'},
     {computer_name: 'bar_baz', human_name: 'Bar Baz Bar Baz Bar Baz Bar Baz Bar Baz'},
@@ -14,24 +19,38 @@ export default Ember.Component.extend({
     {operator_name: 'gorp', operator_symbol: '<'}
   ]),
 
-  operator: null,
-  field: null,
+  notComplete: Ember.computed('activeFilter.field',
+                              'activeFilter.operator',
+                              'activeFilter.value',
+                              function() {
+    const filter = this.get('activeFilter');
+    return !Boolean(filter.field && filter.operator && filter.value);
+  }),
 
   actions: {
     submit: function() {
-      console.log(this.get('activeFilter'));
+      this.get('filters').pushObject(this.get('activeFilter'));
+      this.resetActiveFilter();
     },
     removeFilter: function(index) {
-      alert('Remove ' + index.toString());
+      this.set('filters', this.get('filters').removeAt(index));
     }
   },
 
-  activeFilter: {
-    field: null,
-    operator: null,
-    value: null
-  }
+  makeNewFilter() {
+    return Ember.Object.create({
+      field: null,
+      operator: null,
+      value: null
+    });
+  },
 
-  //arbitraryList: ['foo', 'bar', 'baz']
+  resetActiveFilter() {
+    this.set('activeFilter', this.makeNewFilter());
+  },
+
+  activeFilterChanged: Ember.observer('activeFilter', function() {
+    console.log(this.get('activeFilter'));
+  })
 
 });

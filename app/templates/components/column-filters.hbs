@@ -11,28 +11,21 @@
   content=fieldOptions
   optionValuePath="computer_name"
   optionLabelPath="human_name"
+  prompt="--field--"
   label="Field"}}
+
   {{em-select
   property="operator"
   content=operatorOptions
   optionValuePath="operator_name"
   optionLabelPath="operator_symbol"
+  prompt="--operator--"
   label="Operator"}}
-  {{em-input label="Value" property="value"}}
+
+  {{em-input label="Value"
+  placeholder="--value--"
+  property="value"}}
   <div class="form-actions">
-      <input type="submit" class="btn btn-primary" value="Add">
+      <input type="submit" disabled={{notComplete}} class="btn btn-primary" value="Add">
   </div>
 {{/em-form}}
-
-
-{{!em-input label="Date" property="date" type="date" elementClass="datepicker"}}
-
-{{!#each arbitraryList as |item|}}
-  {{!em-select
-  label="Gender"
-  property="gender"
-  content=genderOptions
-  optionValuePath="id"
-  optionLabelPath="name"
-  prompt="--select--"}}
-{{!/each}}
