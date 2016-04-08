@@ -1,12 +1,15 @@
 <h3>Filters</h3>
 {{#each filters as |filter index|}}
-  <p>&nbsp;&nbsp;<button {{action "removeFilter" index}} class="btn btn-default btn-sm">x</button>
-      &nbsp;&nbsp;{{filter.field}} {{filter.operator}} {{filter.value}}
+  <p>{{filter.field}} {{filter.operator}} {{filter.value}}
+      &nbsp;&nbsp;<button {{action "removeFilter" index}} class="btn btn-default btn-sm pull-right">Remove Filter</button>
+      &nbsp;&nbsp;
   </p>
 {{/each}}
 
+<br/>
 
-{{#em-form formLayout="horizontal"
+
+{{#em-form formLayout="inline"
 submitButton=false
 model=activeFilter
 validationIcons=false}}
@@ -29,8 +32,10 @@ validationIcons=false}}
 
   {{em-input label="Value"
   property="value"}}
-  <div class="form-actions">
+
+  <input type="submit" disabled={{notComplete}} class="btn btn-info pull-right" value="Add Filter">
+  <!--<div class="form-actions">
       <input type="submit" disabled={{notComplete}} class="btn btn-info pull-right" value="Add Filter">
-  </div>
+  </div>-->
 
 {{/em-form}}

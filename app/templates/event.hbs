@@ -6,6 +6,15 @@
         changedAgg=(action "noOp")
         resChanged=(action "resChanged")}}
     {{column-filters filters=mockFilters}}
+    <br/>
+      <button type="button" id="submit-query" class="btn btn-primary">
+          <i class='fa fa-search'></i>
+          Submit
+      </button>
+      <button type="button" id="reset-query" class="btn btn-default">
+          <i class='fa fa-undo'></i>
+          Reset
+      </button>
   </div>
   <div class="col-md-7">
     {{heat-grid grid=model.grid datasetName=model.metadata.humanName}}
