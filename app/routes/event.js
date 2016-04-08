@@ -78,12 +78,12 @@ export default Ember.Route.extend({
         continue;
       }
 
-      const [name, op] = split;
+      const [field, op] = split;
       const val = queryParams[key];
       filters.push({
-        name: name,
-        op: op,
-        val: val
+        field: field,
+        operator: op,
+        value: val
       });
     }
     if (filters.length > 0) {

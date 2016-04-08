@@ -2,7 +2,7 @@ import Ember from 'ember';
 import moment from 'moment';
 
 /*
- Expects default date string in YYYY-MM-DD format
+ Expects default date string in YYYY-MM-DD format (ISO 8601)
  and reports back pickedString in YYYY-MM-DD format (what the API wants)
  Displays in MM/DD/YYYY format.
  */
@@ -42,8 +42,6 @@ export default Ember.Component.extend({
     this.get('changed')(apiFormatted);
   },
 
-  // Not using moment library here
-  // Because bootstrap datepicker returns non-standard date format.
   dateFormat(dt, type) {
     const date = moment(dt);
     if (type === 'display') {
