@@ -3,20 +3,20 @@
 {{/if}}
 
 <br/>
-<p class="lead"><strong>{{model.pointDatasets.length}}</strong>
+<p class="lead"><strong>{{filteredPointDatasets.length}}</strong>
                               Event Datasets Available to Query</p>
 
 {{point-index-listing
   displayLink=(action "navigateToPoint")
-  pointDatasets=model.pointDatasets}}
+  pointDatasets=filteredPointDatasets}}
 
 <br/>
-<p class="lead"><strong>{{model.shapeDatasets.length}}</strong>
+<p class="lead"><strong>{{filteredShapeDatasets.length}}</strong>
                               Shape Datasets Available to Query</p>
 
 {{shape-listing
   displayLink=(action "navigateToShape")
   downloadLink=(action "downloadShape")
-  shapeDatasets=model.shapeDatasets}}
+  shapeDatasets=filteredShapeDatasets}}
 
 {{outlet}}
