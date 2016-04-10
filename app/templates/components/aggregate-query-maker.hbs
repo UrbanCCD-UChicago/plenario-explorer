@@ -23,10 +23,8 @@
           </div>
       </div>
 
-      {{filter-box startDate=_startDate endDate=_endDate agg=_agg
-                   changedStartDate=(action "changedStartDate")
-                   changedEndDate=(action "changedEndDate")
-                   changedAgg=(action "changedAgg")}}
+      {{date-range startDate=_startDate endDate=_endDate}}
+      {{drop-downs agg=_agg}}
       {{submit-or-reset submit=(action "submit") reset=(action "reset")}}
     </div>
     <div class="col-md-7 half-height">
