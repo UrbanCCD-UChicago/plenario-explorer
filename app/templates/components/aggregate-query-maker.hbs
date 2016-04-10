@@ -23,12 +23,11 @@
           </div>
       </div>
 
-      {{date-range startDate=_startDate endDate=_endDate}}
-      {{drop-downs agg=_agg}}
-      {{submit-or-reset submit=(action "submit") reset=(action "reset")}}
+      {{date-range startDate=startDate endDate=endDate}}
+      {{drop-downs agg=agg}}
+      {{submit-or-reset submit=(action submit) reset=(action reset)}}
     </div>
     <div class="col-md-7 half-height">
-      {{leaflet-map geoJSON=_geoJSON isDrawable=true zoom=zoom
-                    changedGeoJSON=(action "changedGeoJSON")}}
+      {{leaflet-map geoJSON=geoJSON isDrawable=true zoom=zoom}}
     </div>
 </div>

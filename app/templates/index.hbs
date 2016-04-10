@@ -1,5 +1,10 @@
 {{#if refresh}}
- {{aggregate-query-maker submit=(action "submit") reset=(action "reset")}}
+ {{aggregate-query-maker
+ startDate=startDate
+ endDate=endDate
+ geoJSON=geoJSON
+ agg=agg
+ submit=(action "submit") reset=(action "reset")}}
 {{/if}}
 
 <br/>

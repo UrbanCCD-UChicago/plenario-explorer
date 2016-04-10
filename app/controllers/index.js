@@ -1,7 +1,12 @@
 import Ember from 'ember';
-import QueryConverter from '../utils/query-converter';
+import moment from 'moment';
 
 export default Ember.Controller.extend({
+  startDate: moment().subtract(90, 'days').toString(),
+  endDate: moment().toString(),
+  agg: 'week',
+  geoJSON: null,
+
   refresh: true,
 
   modelArrived: Ember.observer('model', function() {
@@ -24,7 +29,6 @@ export default Ember.Controller.extend({
 
   actions: {
     submit: function(params) {
-      console.log(params);
       this.transitionToRoute('aggregate', {queryParams: params});
       },
     reset: function() {
@@ -46,7 +50,6 @@ export default Ember.Controller.extend({
     },
     downloadShape: function(name, fileType) {
       // Open new tab with raw download link.
-      //console.log(`${name} ${fileType}`);
       // Any way to do this through the adapter and serializer?
       window.open(`http://plenar.io/v1/api/shapes/${name}?data_type=${fileType}`);
     }
