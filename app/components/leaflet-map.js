@@ -19,46 +19,30 @@ const zoom = 10;
 const tileURL = 'https://{s}.tiles.mapbox.com/v3/datamade.hn83a654/{z}/{x}/{y}.png';
 
 export default Ember.Component.extend({
-  // Leaflet layer that should be displayed.
-  _layer: null,
-
-  // didReceiveAttrs() {
-  //   let test = this.get('layer');
-  //   console.log(test);
-  // },
-
-  // Assumption that doesn't hold with the grid:
-  // we only display layer if it's removable.
   // On first render, create map, add layer, and add controls
   didInsertElement() {
-    //let preformatted = this.get('layer');
-    //console.log(preformatted);
     this.initMap();
     var layer = this.initLayer();
     if (this.get('isDrawable')) {
       this.displayDrawableLayer(layer);
     }
     else {
-      console.log(layer);
       this.displayImmutableLayer(layer);
     }
     if (layer) {
       this.map.fitBounds(layer.getBounds());
     }
     this.createLegend();
-
-    // Consider factoring out layer addition
-    // into common helper
   },
 
   // On subsequent renders,
   // make sure we're zoomed in on the drawn geom.
-  didUpdateAttrs() {
+  shouldZoom: Ember.observer('zoom', function() {
     if (this.get('zoom')){
       let layer = this.map.drawnItems.getLayers()[0];
       this.map.fitBounds(layer.getBounds());
     }
-  },
+  }),
 
   createLegend() {
     const div = this.get('legendDiv');
@@ -69,14 +53,6 @@ export default Ember.Component.extend({
         return div;
       };
       legend.addTo(this.map);
-    }
-  },
-
-  updateDrawComponent() {
-    let layer = this.initLayer();
-    if (layer) {
-      this.map.drawnItems.addLayer(layer);
-      this.map.fitBounds(layer.getBounds());
     }
   },
 
@@ -92,7 +68,6 @@ export default Ember.Component.extend({
       let geoJSON = this.get('geoJSON');
       layer = this.geoJSONtoLayer(geoJSON);
     }
-    this.set('_layer', layer);
     return layer;
   },
 
@@ -173,17 +148,14 @@ export default Ember.Component.extend({
     this.map.on('draw:drawstart', this.drawDelete);
     this.map.on('draw:deleted', this.drawDelete);
 
-    // Propagate the user's drawings up to the containing component.
     // Attach the reporting functions to the map
     // so that we can call them from the Leaflet event handlers.
     let self = this;
     this.map.reportDrawn = function(layer) {
-      self.set('_layer', layer);
-      self.get('changedGeoJSON')(JSON.stringify(layer.toGeoJSON()));
+      self.set('geoJSON', JSON.stringify(layer.toGeoJSON()));
     };
     this.map.reportDeleted = function() {
-      self.set('_layer', null);
-      self.get('changedGeoJSON')(null);
+      self.set('geoJSON', null);
     };
   },
 
