@@ -40,8 +40,6 @@ export default Ember.Controller.extend({
       window.open(`http://plenar.io/v1/api/shapes/${name}${qString}`);
     },
     downloadPoint: function(name, fileType) {
-      //console.log(name);
-      //console.log(fileType);
       const qHash = this.getProperties(this.get('queryParams'));
       qHash['dataset_name'] = name;
       qHash['data_type'] = fileType;

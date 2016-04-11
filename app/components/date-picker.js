@@ -9,9 +9,8 @@ import moment from 'moment';
  */
 
 export default Ember.Component.extend({
-  didReceiveAttrs() {
-    // Render the passed in date as a placeholder
-    // in MM/DD/YYYY format.
+  init() {
+    this._super(...arguments);
     const date = this.get('date');
     this.set('_placeholder', dateFormat(date, 'display'));
   },
