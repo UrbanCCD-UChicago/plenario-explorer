@@ -3,10 +3,11 @@ import GJV from "npm:geojson-validation";
 
 export default Ember.Route.extend({
   notify: Ember.inject.service('notify'),
+  query: Ember.inject.service(),
   model(params) {
     return Ember.RSVP.hash({
-      pointDatasets: this.store.query('pointDataset', params),
-      shapeDatasets: this.store.query('shapeDataset', params)
+      pointDatasets: this.get('query').eventCandidates(params),
+      shapeDatasets: this.get('query').shapeSubsets(params)
     });
   },
   actions: {

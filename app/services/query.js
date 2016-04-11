@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import moment from 'moment';
 
 /**
  * Grabs and caches all dataset metadata.
@@ -28,9 +29,9 @@ export default Ember.Service.extend({
   },
 
   _getMetadata(type) {
-    const self = this;
+    const camelizeHash = this.camelizeHash;
     return this.get(type).then(function(doc) {
-      return doc.objects.map(self.camelizeHash);
+      return doc.objects.map(camelizeHash);
     },function(reason) {
       console.log(`Failed to load ${type}. Reason: ${reason}.`);
     });
@@ -42,8 +43,6 @@ export default Ember.Service.extend({
    * @returns {*}
      */
   allEventMetadata() {
-    //const all = this._getMetadata('events');
-    //console.log(all);
     return this._getMetadata('events');
   },
 
@@ -98,6 +97,38 @@ export default Ember.Service.extend({
    * @param params
      */
   timeseries(name, params) {
+    console.log(params);
+    params['dataset_name'] = name;
+    const ts = this.get('ajax').request('/detail-aggregate', {data: params});
+    const prepTimeseries = this.prepTimeseries;
+    return ts.then(function(payload) {
+      console.log(payload);
+      return {
+        series: prepTimeseries(payload.objects),
+        count: payload.count
+      };
+    }, function(reason) {
+      console.log(reason);
+    });
+  },
+
+  /**
+   Takes array of objects of the form [{count: 3, datetime: '2016-12-06'}...]
+   Returns array of arrays of the form [[momentJSObject, integer]]
+   */
+  prepTimeseries(ts) {
+    const formattedSeries = ts.map(function(timeSlice) {
+      // Why exactly does `moment(timeSlice.datetime + "+0000").valueOf()` work
+      // to let Highcharts accept datetimes on the x axis?
+      // I don't know. Don't question it.
+      return [moment(timeSlice.datetime + "+0000").valueOf(), timeSlice.count];
+    });
+    // The chart expects a list of series objects,
+    // each with a data attribute that actually holds the timeseries.
+    // So construct a list of one such object.
+    // NB: name: 'Count' determines chart tooltip.
+    // Easy to override if desired.
+    return [{data: formattedSeries, name: 'Count'}];
   },
 
   /**
@@ -116,8 +147,13 @@ export default Ember.Service.extend({
    * @param params
      */
   eventCandidates(params) {
-    // Return array of event dataset metadata
-    // within time and space bounding box.
+    const camelizeHash = this.camelizeHash;
+    const candidates = this.get('ajax').request('/datasets', {data: params});
+    return candidates.then(function(doc) {
+      return doc.objects.map(camelizeHash);
+    }, function(reason) {
+      console.log(`Event candidate query failed: ${reason}`);
+    });
   },
 
   /**
@@ -125,7 +161,14 @@ export default Ember.Service.extend({
    * that are within the given space bounding box.
    * @param params
      */
-  shapeSubsets(geoJSON) {
+  shapeSubsets(params) {
+    const self = this;
+    const subsets = this.get('ajax').request('/shapes', {data: params});
+    return subsets.then(function(doc) {
+      return doc.objects.map(self.camelizeHash);
+    }, function(reason) {
+      console.log(`Shape subset query failed: ${reason}`);
+    });
   },
 
   /**

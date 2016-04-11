@@ -60,6 +60,8 @@ export default Ember.Controller.extend({
     this.launchTimeseriesQueries();
   }),
 
+  query: Ember.inject.service(),
+
   /**
    * For each candidate dataset,
    * query the matching timeseries
@@ -70,28 +72,22 @@ export default Ember.Controller.extend({
     let model = this.get('model');
     let arrivalOrder = 1;
     model.pointDatasets.forEach((d)=>{
-      // Generate the id of the timeseries we want
-      let datasetName = d.get('datasetName');
-      let queryProps = this.getProperties(this.get('queryParams'));
-      queryProps['dataset_name'] = datasetName;
-      let id = new QueryConverter().fromHash(queryProps).toId();
-
-      // Then launch the query.
-      let tsPromise = this.store.findRecord('timeseries', id);
+      const datasetName = d.datasetName;
+      const queryProps = this.getProperties(this.get('queryParams'));
+      const tsPromise = this.get('query').timeseries(datasetName, queryProps);
       let timeseriesList = this.get('timeseriesList');
+
       tsPromise.then(function(value){
-        const count = value.get('count');
-        if (count === 0) {
-          // Empty timeseries. Don't display it.
-          return;
+        console.log(value);
+        if (value.count === 0) {
+          return;  // Empty timeseries. Don't display it.
         }
-        d.set('count', count);
-        d.set('series', value.get('series'));
-        d.set('arrivalOrder', arrivalOrder);
+        d['count'] = value.count;
+        d['series'] = value.series;
+        d['arrivalOrder'] = arrivalOrder;
         arrivalOrder++;
         timeseriesList.pushObject(d);
       }, function(reason){
-        // Maybe think on a better way to handle failures
         console.log(reason);
       });
     });

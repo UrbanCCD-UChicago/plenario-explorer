@@ -1,10 +1,7 @@
 <div class="row">
   <div class="col-md-5">
-    {{filter-box startDate=_startDate endDate=_endDate agg=_agg res=resolution
-        changedStartDate=(action "noOp")
-        changedEndDate=(action "noOp")
-        changedAgg=(action "noOp")
-        resChanged=(action "resChanged")}}
+    {{date-range}}
+    {{drop-downs agg='week' res='500'}}
     {{column-filters filters=mockFilters}}
     <br/>
       <button type="button" id="submit-query" class="btn btn-primary">
