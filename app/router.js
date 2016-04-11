@@ -10,6 +10,7 @@ Router.map(function() {
   this.route('points');
   this.route('display', {path: 'display/:dataset_name'});
   this.route('event');
+  this.route('loading');
 });
 
 export default Router;
