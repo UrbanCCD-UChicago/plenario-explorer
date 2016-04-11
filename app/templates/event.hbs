@@ -14,6 +14,7 @@
       </button>
   </div>
   <div class="col-md-7">
+      {{log model.metadata}}
     {{heat-grid grid=model.grid datasetName=model.metadata.humanName}}
     {{high-charts classNames=chartClasses content=model.timeseries.series}}
   </div>

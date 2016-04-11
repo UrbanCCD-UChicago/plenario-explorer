@@ -18,7 +18,7 @@ export default Ember.Component.extend({
     this._super(...arguments);
     //window.L = L;
     // Determine the count grouping.
-    const squares = this.get('grid').get('squares');
+    const squares = this.get('grid');
     const cutoffs = this.makeCutoffs(squares);
     this.set('cutoffs', cutoffs);
     // Make a legend for the heatmap.

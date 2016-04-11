@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import moment from 'moment';
-import QueryConverter from '../utils/query-converter';
 
 export default Ember.Route.extend({
 
@@ -13,7 +12,6 @@ export default Ember.Route.extend({
    */
   beforeModel(transition){
     let params = transition.queryParams;
-    //if (params)
 
     for (const key in this.defaults) {
       if (params[key] === undefined) {
@@ -28,43 +26,40 @@ export default Ember.Route.extend({
     'obs_date__ge': moment().subtract(90, 'days').toString(),
     'resolution': 500
   },
+  query: Ember.inject.service(),
+
 
   model(params, transition) {
-    // Later: provide an option for displaying
-    // a points view instead.
-
-    // Because filter parameters can have arbitrary names,
-    // we need to do some pre-processing here so we can pass a parameter named
-    // 'filters' to the controller.
-    // It will be stringified JSON where each filter is an object
-    // with the schema {name: '', op: '', val: ''}
-    const filterJSON = this.extractFilters(transition.queryParams);
+    let qParams = transition.queryParams;
+    // Normalize column filters
+    const filterJSON = this.extractFilters(qParams);
     if (filterJSON) {
-      transition.queryParams['filters'] = filterJSON;
+      qParams['filters'] = filterJSON;
     }
-
-    // We only need the point dataset name to grab its metadata.
-    const name = params.dataset_name;
-    // For the grid and timeseries, we need all the params to ID it.
-    const id = new QueryConverter().fromHash(transition.queryParams).toId();
-
+    // Fetch data
+    const name = qParams.dataset_name;
+    const qService = this.get('query');
     return Ember.RSVP.hash({
-      metadata: this.store.findRecord('point-dataset', name),
-      timeseries: this.store.findRecord('timeseries', id),
-      grid: this.store.findRecord('grid', id)
+      metadata: qService.eventMetadata(name),
+      timeseries: qService.timeseries(name, qParams),
+      grid: qService.grid(name, qParams)
     });
-    // But we need to package it into a "filters" param
-    // to pass it down to the controller.
-    // Maybe process it, marshal to JSON and unmarshal in the controller.
   },
 
+  /**
+   * Because filter parameters can have arbitrary names,
+     we need to do some pre-processing here so w e can pass a parameter named
+     'filters' to the controller.
+     It will be stringified JSON where each filter is an object
+     with the schema {name: '', op: '', val: ''}
+   * @param queryParams
+   * @returns {null}
+     */
   extractFilters(queryParams) {
     let filters = [];
     const skipKeys = ['obs_date__le', 'obs_date__ge', 'location_geom__within'];
 
-    console.log(queryParams);
     for (const key in queryParams) {
-      console.log(key);
       // Not one of the "standard" filters.
       if (skipKeys.indexOf(key) > -1) {
         continue;

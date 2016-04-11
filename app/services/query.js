@@ -20,7 +20,6 @@ export default Ember.Service.extend({
 
   init() {
     this._super(...arguments);
-    //console.log('launching queries');
     const eventParams = {
       data: {include_columns: true}
     };
@@ -82,11 +81,16 @@ export default Ember.Service.extend({
   },
 
   _findDataset(name, datasets) {
-    for (const dset of datasets) {
-      if (dset.dataset_name === name) {
-        return dset;
+    return datasets.then(function(dsets) {
+      for (const key in dsets) {
+        if (dsets.hasOwnProperty(key)) {
+          const dset = dsets[key];
+          if (dset.datasetName === name) {
+            return dset;
+          }
+        }
       }
-    }
+    });
   },
 
   /**
@@ -97,12 +101,10 @@ export default Ember.Service.extend({
    * @param params
      */
   timeseries(name, params) {
-    console.log(params);
     params['dataset_name'] = name;
     const ts = this.get('ajax').request('/detail-aggregate', {data: params});
     const prepTimeseries = this.prepTimeseries;
     return ts.then(function(payload) {
-      console.log(payload);
       return {
         series: prepTimeseries(payload.objects),
         count: payload.count
@@ -138,7 +140,13 @@ export default Ember.Service.extend({
    * @param params
      */
   grid(name, params) {
-    // Return single grid response
+    params['dataset_name'] = name;
+    const grid = this.get('ajax').request('/grid', {data: params});
+    return grid.then(function(payload) {
+      return payload;
+    }, function(reason) {
+      console.log(reason);
+    });
   },
 
   /**

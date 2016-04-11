@@ -46,7 +46,6 @@ export default Ember.Component.extend({
 
   createLegend() {
     const div = this.get('legendDiv');
-    console.log(div);
     if (!!div) {
       const legend = L.control({position: 'bottomright'});
       legend.onAdd = function() {
