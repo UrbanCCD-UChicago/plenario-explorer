@@ -1,11 +1,13 @@
 import Ember from 'ember';
+import moment from 'moment';
+import dateFormat from '../utils/date-format';
 import QueryConverter from '../utils/query-converter';
 
 export default Ember.Controller.extend({
   queryParams: ['obs_date__le', 'obs_date__ge', 'agg', 'location_geom__within'],
-  obs_date__le: null,
-  obs_date__ge: null,
-  agg: null,
+  obs_date__le: dateFormat(moment().subtract(90, 'days').toString()),
+  obs_date__ge: dateFormat(moment().toString()),
+  agg: 'week',
   location_geom__within: null,
 
   zoom: false,

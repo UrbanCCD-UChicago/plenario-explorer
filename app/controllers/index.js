@@ -1,11 +1,12 @@
 import Ember from 'ember';
 import moment from 'moment';
+import dateFormat from '../utils/date-format';
 
 export default Ember.Controller.extend({
-  startDate: moment().subtract(90, 'days').toString(),
-  endDate: moment().toString(),
+  obs_date__ge: dateFormat(moment().subtract(90, 'days').toString()),
+  obs_date__le: dateFormat(moment().toString()),
   agg: 'week',
-  geoJSON: null,
+  location_geom__within: null,
 
   refresh: true,
 
@@ -30,10 +31,10 @@ export default Ember.Controller.extend({
   actions: {
     submit: function() {
       const params = {
-        obs_date__ge: this.get('startDate'),
-        obs_date__le: this.get('endDate'),
+        obs_date__ge: this.get('obs_date__ge'),
+        obs_date__le: this.get('obs_date__le'),
         agg: this.get('agg'),
-        location_geom__within: this.get('geoJSON')
+        location_geom__within: this.get('location_geom__within')
       };
       this.transitionToRoute('aggregate', {queryParams: params});
       },

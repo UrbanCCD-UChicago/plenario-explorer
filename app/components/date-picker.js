@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import dateFormat from '../utils/date-format';
 import moment from 'moment';
 
 /*
@@ -12,14 +13,14 @@ export default Ember.Component.extend({
     // Render the passed in date as a placeholder
     // in MM/DD/YYYY format.
     const date = this.get('date');
-    this.set('_placeholder', this.dateFormat(date, 'display'));
+    this.set('_placeholder', dateFormat(date, 'display'));
   },
 
   dateChanged: Ember.observer('_date', function() {
     // Mutate the passed in date
     // as the user changes her selection.
     const _date = this.get('_date');
-    this.set('date', this.dateFormat(_date));
+    this.set('date', dateFormat(_date));
   }),
 
   dateFormat(dt, type) {

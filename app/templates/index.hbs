@@ -1,8 +1,8 @@
 {{#if refresh}}
  {{aggregate-query-maker
- startDate=startDate
- endDate=endDate
- geoJSON=geoJSON
+ startDate=obs_date__le
+ endDate=obs_date__ge
+ geoJSON=location_geom__within
  agg=agg
  submit=(action "submit") reset=(action "reset")}}
 {{/if}}
