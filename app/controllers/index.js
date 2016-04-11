@@ -39,7 +39,6 @@ export default Ember.Controller.extend({
     },
     downloadShape: function(name, fileType) {
       // Open new tab with raw download link.
-      // Any way to do this through the adapter and serializer?
       window.open(`http://plenar.io/v1/api/shapes/${name}?data_type=${fileType}`);
     }
   }

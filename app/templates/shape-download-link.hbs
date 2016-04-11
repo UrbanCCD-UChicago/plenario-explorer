@@ -5,8 +5,8 @@
       <span class="caret"></span>
   </button>
   <ul class="dropdown-menu" role="menu">
-      <li><a {{action downloadLink record.id "json"}}><i class='fa fa-download'></i> GeoJson</a></li>
-      <li><a {{action downloadLink record.id "shapefile"}}><i class='fa fa-download'></i> ESRI Shapefile</a></li>
-      <li><a {{action downloadLink record.id "kml"}}><i class='fa fa-download'></i> KML</a></li>
+      <li><a {{action downloadLink record.datasetName "json"}}><i class='fa fa-download'></i> GeoJson</a></li>
+      <li><a {{action downloadLink record.datasetName "shapefile"}}><i class='fa fa-download'></i> ESRI Shapefile</a></li>
+      <li><a {{action downloadLink record.datasetName "kml"}}><i class='fa fa-download'></i> KML</a></li>
   </ul>
 </div>
