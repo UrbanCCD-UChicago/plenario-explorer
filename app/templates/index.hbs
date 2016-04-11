@@ -8,20 +8,20 @@
 {{/if}}
 
 <br/>
-<p class="lead"><strong>{{filteredPointDatasets.length}}</strong>
+<p class="lead"><strong>{{model.pointDatasets.length}}</strong>
                               Event Datasets Available to Query</p>
 
 {{point-index-listing
   displayLink=(action "navigateToPoint")
-  pointDatasets=filteredPointDatasets}}
+  pointDatasets=model.pointDatasets}}
 
 <br/>
-<p class="lead"><strong>{{filteredShapeDatasets.length}}</strong>
+<p class="lead"><strong>{{model.shapeDatasets.length}}</strong>
                               Shape Datasets Available to Query</p>
 
 {{shape-listing
   displayLink=(action "navigateToShape")
   downloadLink=(action "downloadShape")
-  shapeDatasets=filteredShapeDatasets}}
+  shapeDatasets=model.shapeDatasets}}
 
 {{outlet}}

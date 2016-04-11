@@ -10,24 +10,6 @@ export default Ember.Controller.extend({
 
   refresh: true,
 
-  modelArrived: Ember.observer('model', function() {
-    const self = this;
-    const notSubset = function(dset) {
-      return !dset.id.startsWith('{');
-    };
-
-    this.get('model.pointDatasets').then(function(dsets) {
-      const notSubsets = dsets.filter(notSubset);
-      console.log(notSubsets.length);
-      self.set('filteredPointDatasets', notSubsets);
-    });
-
-    this.get('model.shapeDatasets').then(function(dsets) {
-      const notSubsets = dsets.filter(notSubset);
-      self.set('filteredShapeDatasets', notSubsets);
-    });
-  }),
-
   actions: {
     submit: function() {
       const params = {
