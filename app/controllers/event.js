@@ -10,18 +10,17 @@ export default Ember.Controller.extend({
     'obs_date__ge',
     'location_geom__within'
   ],
-  gender: null,
 
-  // These all should have been set by the route.
-  // They will be used in the filter creation box.
-  dataset_name: null,
-  agg: null,
-  obs_date__le: null,
-  obs_date__ge: null,
-  resolution: null,
+  // // These all should have been set by the route.
+  // // They will be used in the filter creation box.
+  // dataset_name: null,
+  // agg: null,
+  // obs_date__le: null,
+  // obs_date__ge: null,
+  // resolution: null,
 
   // Will be set only if the user supplied column filters.
-  filters: null,
+  //filters: null,
 
   // May not have been set by the route.
   // In case it was set,
@@ -35,19 +34,6 @@ export default Ember.Controller.extend({
     }
     this.set('filterHash', JSON.parse(filters));
   }),
-  
-  mockFilters: [
-    {
-      field: 'foo',
-      operator: '>',
-      value: '2'
-    },
-    {
-      field: 'bar',
-      operator: '!=',
-      value: 'fizz'
-    }
-  ],
 
   actions: {
     submit(params) {

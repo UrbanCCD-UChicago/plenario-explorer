@@ -14,9 +14,14 @@ export default Ember.Component.extend({
   ]),
 
   operatorOptions: ([
-    {operator_name: 'foo', operator_symbol: '!='},
-    {operator_name: 'bar_baz', operator_symbol: '>'},
-    {operator_name: 'gorp', operator_symbol: '<'}
+    {operator_name: '', operator_symbol: '='},
+    {operator_name: 'gt', operator_symbol: '>'},
+    {operator_name: 'ge', operator_symbol: '>='},
+    {operator_name: 'lt', operator_symbol: '<'},
+    {operator_name: 'le', operator_symbol: '<='},
+    {operator_name: 'ne', operator_symbol: '!='},
+    {operator_name: 'ilike', operator_symbol: 'LIKE'},
+    {operator_name: 'in', operator_symbol: 'IN'}
   ]),
 
   notComplete: Ember.computed('activeFilter.field',

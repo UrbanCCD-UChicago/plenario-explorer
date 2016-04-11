@@ -38,9 +38,11 @@ export default Ember.Route.extend({
     const name = qParams.dataset_name;
     // If start and end dates weren't explicitly specified,
     // we need to pick reasonable defaults.
-    if (!(qParams.obs_date__ge && qParams.obs_date__le)) {
+    console.log((Boolean(qParams.obs_date__ge) && Boolean(qParams.obs_date__le)));
+    if (!(Boolean(qParams.obs_date__ge) && Boolean(qParams.obs_date__le))) {
       // Fetch metadata first to find out date range.
       return qService.eventMetadata(name).then(function(meta) {
+        console.log(meta);
         qParams['obs_date__le'] = moment(meta.obsTo).toString();
         qParams['obs_date__ge'] = moment(meta.obsTo).subtract(90, 'days').toString();
         return Ember.RSVP.hash({
@@ -53,6 +55,7 @@ export default Ember.Route.extend({
       });
     }
     else {
+      console.log('Specified!');
       return Ember.RSVP.hash({
         metadata: qService.eventMetadata(name),
         timeseries: qService.timeseries(name, qParams),
@@ -60,32 +63,6 @@ export default Ember.Route.extend({
       });
     }
 
-  },
-
-  modelWithSelectedDates(qParams) {
-    const qService = this.get('query');
-    const name = qParams.dataset_name;
-    return Ember.RSVP.hash({
-      metadata: qService.eventMetadata(name),
-      timeseries: qService.timeseries(name, qParams),
-      grid: qService.grid(name, qParams)
-    });
-  },
-
-  modelWithDefaultDates(qParams) {
-    const name = qParams.dataset_name;
-    const qService = this.get('query');
-    // We need to know the date range of this dataset
-    // to pick a decent default.
-    qService.eventMetadata(name).then(function(meta) {
-      const endDate = moment(meta.obsTo).toString();
-      const startDate = moment(meta.obsTo).subtract(90, 'days').toString();
-      return Ember.RSVP.hash({
-
-      });
-    }, function(reason) {
-      console.log(reason);
-    })
   },
 
   /**
