@@ -13,6 +13,14 @@ export default Ember.Controller.extend({
   zoom: false,
   timeseriesList: [],
 
+  _detailTransition(pageName, datasetName) {
+    let params = this.get('queryParams');
+    delete params['obs_date__le'];
+    delete params['obs_date__ge'];
+    params['dataset_name'] = datasetName;
+    this.transitionToRoute(pageName, {queryParams: params});
+  },
+
   actions: {
     submit: function() {
       this.send("reload");
@@ -28,10 +36,10 @@ export default Ember.Controller.extend({
       this.transitionToRoute('index');
     },
     navigateToShape: function(name) {
-      alert(`Imagine you just transitioned to ${name} shape detail page.`);
+      this._detailTransition('shape', name);
     },
     navigateToPoint: function(name) {
-      alert(`Imagine you just transitioned to ${name} point detail page.`);
+      this._detailTransition('event', name);
     },
     downloadShape: function(name, fileType) {
       const qHash = this.getProperties(this.get('queryParams'));
@@ -44,7 +52,6 @@ export default Ember.Controller.extend({
       qHash['dataset_name'] = name;
       qHash['data_type'] = fileType;
       const qString = new QueryConverter().fromHash(qHash).toQueryString();
-      console.log(qString);
       window.open(`http://plenar.io/v1/api/detail${qString}`);
     }
   },
