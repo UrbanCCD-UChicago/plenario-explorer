@@ -7,15 +7,13 @@ export default Ember.Controller.extend({
   obs_date__ge: null,
   agg: null,
   location_geom__within: null,
+
   zoom: false,
   timeseriesList: [],
 
   actions: {
-    submit: function(params) {
-      // Re-set the query params
-      // and trigger a model reload if any have changed.
-      this.setProperties(params);
-
+    submit: function() {
+      this.send("reload");
       // We need to nudge leaflet to zoom in on
       // the shape the user has drawn.
       this.set('zoom', true);

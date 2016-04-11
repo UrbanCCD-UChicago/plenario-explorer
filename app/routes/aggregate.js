@@ -3,18 +3,16 @@ import GJV from "npm:geojson-validation";
 
 export default Ember.Route.extend({
   notify: Ember.inject.service('notify'),
-  // A change in any query parameter should trigger a refresh.
-  queryParams: {
-    obs_date__le: {refreshModel: true},
-    obs_date__ge: {refreshModel: true},
-    agg: {refreshModel: true},
-    location_geom__within: {refreshModel: true}
-  },
   model(params) {
     return Ember.RSVP.hash({
       pointDatasets: this.store.query('pointDataset', params),
       shapeDatasets: this.store.query('shapeDataset', params)
     });
+  },
+  actions: {
+    reload: function() {
+      this.refresh();
+    }
   },
 
   /**
@@ -50,7 +48,5 @@ export default Ember.Route.extend({
     if (!isPolygonOrLine) {
       bailToIndex('Geometry must be a polygon or line. ' + genericHelp);
     }
-
-    // Check that agg is valid
   }
 });

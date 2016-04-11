@@ -28,7 +28,13 @@ export default Ember.Controller.extend({
   }),
 
   actions: {
-    submit: function(params) {
+    submit: function() {
+      const params = {
+        obs_date__ge: this.get('startDate'),
+        obs_date__le: this.get('endDate'),
+        agg: this.get('agg'),
+        location_geom__within: this.get('geoJSON')
+      };
       this.transitionToRoute('aggregate', {queryParams: params});
       },
     reset: function() {
