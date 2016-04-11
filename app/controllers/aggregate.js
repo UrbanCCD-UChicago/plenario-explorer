@@ -78,7 +78,6 @@ export default Ember.Controller.extend({
       let timeseriesList = this.get('timeseriesList');
 
       tsPromise.then(function(value){
-        console.log(value);
         if (value.count === 0) {
           return;  // Empty timeseries. Don't display it.
         }
