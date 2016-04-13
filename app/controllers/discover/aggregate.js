@@ -1,22 +1,15 @@
 import Ember from 'ember';
-import moment from 'moment';
-import dateFormat from '../../utils/date-format';
 import QueryConverter from '../../utils/query-converter';
 
 export default Ember.Controller.extend({
+  postController: Ember.inject.controller('discover'),
+  //queryParams: Ember.computed.reads('discover.queryParams'),
   queryParams: ['obs_date__le', 'obs_date__ge', 'agg', 'location_geom__within'],
-  obs_date__le: dateFormat(moment().subtract(90, 'days').toString()),
-  obs_date__ge: dateFormat(moment().toString()),
-  agg: 'week',
-  location_geom__within: null,
 
-  zoom: false,
   timeseriesList: [],
 
   _detailTransition(pageName, datasetName) {
     let params = this.get('queryParams');
-    delete params['obs_date__le'];
-    delete params['obs_date__ge'];
     params['dataset_name'] = datasetName;
     this.transitionToRoute(pageName, {queryParams: params});
   },
@@ -24,16 +17,6 @@ export default Ember.Controller.extend({
   actions: {
     submit: function() {
       this.send("reload");
-      // We need to nudge leaflet to zoom in on
-      // the shape the user has drawn.
-      this.set('zoom', true);
-      const self = this;
-      Ember.run.next(() => {
-        self.set('zoom', false);
-      });
-    },
-    reset: function () {
-      this.transitionToRoute('index');
     },
     navigateToShape: function(name) {
       this._detailTransition('shape', name);

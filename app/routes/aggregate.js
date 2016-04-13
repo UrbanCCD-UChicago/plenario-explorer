@@ -12,6 +12,7 @@ export default Ember.Route.extend({
   },
   actions: {
     reload: function() {
+      console.log('Trying to reload model');
       this.refresh();
     }
   },

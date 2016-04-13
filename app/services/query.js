@@ -155,6 +155,7 @@ export default Ember.Service.extend({
    * @param params
      */
   eventCandidates(params) {
+    
     const camelizeHash = this.camelizeHash;
     const candidates = this.get('ajax').request('/datasets', {data: params});
     return candidates.then(function(doc) {
