@@ -4,7 +4,7 @@ import QueryConverter from '../../utils/query-converter';
 export default Ember.Controller.extend({
   postController: Ember.inject.controller('discover'),
   //queryParams: Ember.computed.reads('discover.queryParams'),
-  queryParams: ['obs_date__le', 'obs_date__ge', 'agg', 'location_geom__within'],
+  //queryParams: ['obs_date__le', 'obs_date__ge', 'agg', 'location_geom__within'],
 
   timeseriesList: [],
 

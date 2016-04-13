@@ -61,6 +61,7 @@ export default Ember.Controller.extend({
       // Reflect to find if we need to transition,
       if (this._inIndex()) {
         this.transitionToRoute('discover.aggregate');
+        this._resetTemplate();
       }
       // or just reload current model.
       else {
@@ -77,16 +78,16 @@ export default Ember.Controller.extend({
       } else {
         this.transitionToRoute('index');
       }
-    },
-    navigateToShape: function(name) {
-      this._detailTransition('shape', name);
-    },
-    navigateToPoint: function(name) {
-      this._detailTransition('event', name);
-    },
-    downloadShape: function(name, fileType) {
-      // Open new tab with raw download link.
-      window.open(`http://plenar.io/v1/api/shapes/${name}?data_type=${fileType}`);
     }
+    // navigateToShape: function(name) {
+    //   this._detailTransition('shape', name);
+    // },
+    // navigateToPoint: function(name) {
+    //   this._detailTransition('event', name);
+    // },
+    // downloadShape: function(name, fileType) {
+    //   // Open new tab with raw download link.
+    //   window.open(`http://plenar.io/v1/api/shapes/${name}?data_type=${fileType}`);
+    // }
   }
 });
