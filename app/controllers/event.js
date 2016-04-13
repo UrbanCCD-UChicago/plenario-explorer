@@ -25,14 +25,14 @@ export default Ember.Controller.extend({
   // May not have been set by the route.
   // In case it was set,
   // we need to hold on to it to spit it out on transitions.
-  location_geom__within: null,
+  //location_geom__within: null,
 
   filtersArrived: Ember.observer('filters', function() {
     const filters = this.get('filters');
     if (!filters) {
       return;
     }
-    this.set('filterHash', JSON.parse(filters));
+    this.set('filterHashes', JSON.parse(filters));
   }),
 
   actions: {
@@ -50,14 +50,6 @@ export default Ember.Controller.extend({
       // Go back to the index
       // Unless geojson has been specified,
       // in which case go back to aggregate route.
-    },
-
-    noOp(text) {
-      console.log(text);
-    },
-
-    resChanged(newRes) {
-      this.set('resolution', newRes);
     }
   }
 

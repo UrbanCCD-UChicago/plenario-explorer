@@ -1,8 +1,8 @@
 <div class="row">
   <div class="col-md-5">
-    {{date-range}}
-    {{drop-downs agg='week' res='500'}}
-    {{column-filters filters=mockFilters}}
+    {{date-range startDate=obs_date__ge endDate=obs_date__le}}
+    {{drop-downs agg=agg res=res}}
+    {{column-filters filters=filterHashes}}
     <br/>
       <button type="button" id="submit-query" class="btn btn-primary">
           <i class='fa fa-search'></i>
