@@ -1,0 +1,15 @@
+<p class="lead"><strong>{{model.pointDatasets.length}}</strong>
+    Event Datasets Available to Query</p>
+
+{{point-index-listing
+displayLink=(action "navigateToPoint")
+pointDatasets=model.pointDatasets}}
+
+<br/>
+<p class="lead"><strong>{{model.shapeDatasets.length}}</strong>
+    Shape Datasets Available to Query</p>
+
+{{shape-listing
+displayLink=(action "navigateToShape")
+downloadLink=(action "downloadShape")
+shapeDatasets=model.shapeDatasets}}

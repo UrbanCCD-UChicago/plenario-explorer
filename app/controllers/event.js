@@ -47,7 +47,7 @@ export default Ember.Controller.extend({
     },
 
     exit(params) {
-      // Go back to the index
+      // Go back to the discover
       // Unless geojson has been specified,
       // in which case go back to aggregate route.
     }

@@ -1,3 +1,5 @@
+{{outlet}}
+
 {{#if refresh}}
  {{aggregate-query-maker
  startDate=obs_date__ge
@@ -23,5 +25,3 @@
   displayLink=(action "navigateToShape")
   downloadLink=(action "downloadShape")
   shapeDatasets=model.shapeDatasets}}
-
-{{outlet}}

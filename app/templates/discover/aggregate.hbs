@@ -1,0 +1,16 @@
+<p class="lead"><strong>
+  {{timeseriesList.length}} {{pluralize 'Event Dataset' timeseriesList.length}} Found
+</strong></p>
+{{point-aggregate-listing
+displayLink=(action "navigateToPoint")
+downloadLink=(action "downloadPoint")
+pointDatasets=timeseriesList
+displayTrends=true}}
+<br/>
+<p class="lead"><strong>
+  {{model.shapeDatasets.length}} {{pluralize 'Shape Dataset' model.shapeDatasets.length}} Found
+</strong></p>
+{{shape-listing
+displayLink=(action "navigateToShape")
+downloadLink=(action "downloadShape")
+shapeDatasets=model.shapeDatasets}}

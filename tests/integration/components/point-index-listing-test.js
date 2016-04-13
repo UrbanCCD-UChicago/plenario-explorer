@@ -1,7 +1,7 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('point-index-listing', 'Integration | Component | point index listing', {
+moduleForComponent('point-discover-listing', 'Integration | Component | point discover listing', {
   integration: true
 });
 
