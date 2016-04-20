@@ -17,8 +17,6 @@ export default Ember.Controller.extend({
     }
   ),
 
-  refresh: true,
-
   _resetParams() {
     this.set('obs_date__le', dateFormat(moment().toString()));
     this.set('obs_date__ge', dateFormat(moment().subtract(90, 'days').toString()));
@@ -47,30 +45,16 @@ export default Ember.Controller.extend({
     return Ember.getOwner(this).lookup('controller:application').currentPath === 'discover.index';
   },
 
-  _resetTemplate() {
-    // Thanks http://stackoverflow.com/questions/32862134/in-ember-is-there-a-way-to-update-a-component-without-a-full-re-render-route-tr
-    // It would be nice to have a less jarring transition though.
-    // Maybe pass down a "reset" signal that could trigger a spinner for a second.
-    this.set('refresh', false);
-    const self = this;
-    Ember.run.later(() =>
-      {self.set('refresh', true);},
-      500
-    );
-  },
-
   actions: {
     submit: function() {
       // Reflect to find if we need to transition,
       if (this._inIndex()) {
         this.transitionToRoute('discover.aggregate');
-        //this._resetTemplate();
       }
       // or just reload current model.
       else {
         this.get('aggController').send('submit');
       }
-
       // Refocus map on user-drawn shape.
       this._zoomIn();
     },
@@ -79,7 +63,6 @@ export default Ember.Controller.extend({
         this.transitionToRoute('index');
       }
       this._resetParams();
-      //this._resetTemplate();
     }
   }
 });
