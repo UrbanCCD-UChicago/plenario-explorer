@@ -15,6 +15,12 @@ export default Ember.Component.extend({
     this.set('_placeholder', dateFormat(date, 'display'));
   },
 
+  didUpdateAttrs() {
+    const date = this.get('date');
+    this.set('_date', null);
+    this.set('_placeholder', dateFormat(date, 'display'));
+  },
+
   dateChanged: Ember.observer('_date', function() {
     // Mutate the passed in date
     // as the user changes her selection.

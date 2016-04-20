@@ -49,10 +49,13 @@ export default Ember.Controller.extend({
 
   _resetTemplate() {
     // Thanks http://stackoverflow.com/questions/32862134/in-ember-is-there-a-way-to-update-a-component-without-a-full-re-render-route-tr
+    // It would be nice to have a less jarring transition though.
+    // Maybe pass down a "reset" signal that could trigger a spinner for a second.
     this.set('refresh', false);
     const self = this;
-    Ember.run.next(() =>
-      {self.set('refresh', true);}
+    Ember.run.later(() =>
+      {self.set('refresh', true);},
+      500
     );
   },
 
@@ -61,7 +64,7 @@ export default Ember.Controller.extend({
       // Reflect to find if we need to transition,
       if (this._inIndex()) {
         this.transitionToRoute('discover.aggregate');
-        this._resetTemplate();
+        //this._resetTemplate();
       }
       // or just reload current model.
       else {
@@ -72,22 +75,11 @@ export default Ember.Controller.extend({
       this._zoomIn();
     },
     reset: function() {
-      if (this._inIndex()) {
-        this._resetParams();
-        this._resetTemplate();
-      } else {
+      if (! this._inIndex()) {
         this.transitionToRoute('index');
       }
+      this._resetParams();
+      //this._resetTemplate();
     }
-    // navigateToShape: function(name) {
-    //   this._detailTransition('shape', name);
-    // },
-    // navigateToPoint: function(name) {
-    //   this._detailTransition('event', name);
-    // },
-    // downloadShape: function(name, fileType) {
-    //   // Open new tab with raw download link.
-    //   window.open(`http://plenar.io/v1/api/shapes/${name}?data_type=${fileType}`);
-    // }
   }
 });

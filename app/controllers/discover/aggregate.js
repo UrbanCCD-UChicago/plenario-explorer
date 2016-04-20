@@ -2,9 +2,8 @@ import Ember from 'ember';
 import QueryConverter from '../../utils/query-converter';
 
 export default Ember.Controller.extend({
-  postController: Ember.inject.controller('discover'),
-  //queryParams: Ember.computed.reads('discover.queryParams'),
-  //queryParams: ['obs_date__le', 'obs_date__ge', 'agg', 'location_geom__within'],
+  discoverController: Ember.inject.controller('discover'),
+  qHash: Ember.computed.reads('discoverController.queryParamsHash'),
 
   timeseriesList: [],
 
@@ -25,13 +24,13 @@ export default Ember.Controller.extend({
       this._detailTransition('event', name);
     },
     downloadShape: function(name, fileType) {
-      const qHash = this.getProperties(this.get('queryParams'));
+      const qHash = this.get('qHash');
       qHash['data_type'] = fileType;
       const qString = new QueryConverter().fromHash(qHash).toQueryString();
       window.open(`http://plenar.io/v1/api/shapes/${name}${qString}`);
     },
     downloadPoint: function(name, fileType) {
-      const qHash = this.getProperties(this.get('queryParams'));
+      const qHash = this.get('qHash');
       qHash['dataset_name'] = name;
       qHash['data_type'] = fileType;
       const qString = new QueryConverter().fromHash(qHash).toQueryString();
@@ -60,8 +59,9 @@ export default Ember.Controller.extend({
     let arrivalOrder = 1;
     model.pointDatasets.forEach((d)=>{
       const datasetName = d.datasetName;
-      const queryProps = this.getProperties(this.get('queryParams'));
-      const tsPromise = this.get('query').timeseries(datasetName, queryProps);
+      let qHash = this.get('qHash');
+      console.log(qHash);
+      const tsPromise = this.get('query').timeseries(datasetName, qHash);
       let timeseriesList = this.get('timeseriesList');
 
       tsPromise.then(function(value){

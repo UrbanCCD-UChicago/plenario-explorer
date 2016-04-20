@@ -16,7 +16,8 @@
     "datatables.net": "^1.10.11",
     "datatables.net-bs": "^1.10.11",
     "bootswatch": "^3.3.6+1",
-    "urijs": "uri.js#^1.17.1"
+    "urijs": "uri.js#^1.17.1",
+    "spin.js": "^2.3.2"
   },
   "resolutions": {
     "ember": "2.3.0",

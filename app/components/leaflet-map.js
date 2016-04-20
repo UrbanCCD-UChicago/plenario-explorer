@@ -35,12 +35,38 @@ export default Ember.Component.extend({
     this.createLegend();
   },
 
+  // didUpdateAttrs() {
+  //   console.log('Detected change!');
+  //   if (this.get('geoJSON')) {
+  //     console.log('Detected JSON');
+  //     var layer = this.initLayer();
+  //     if (this.get('isDrawable')) {
+  //       this.displayDrawableLayer(layer);
+  //     }
+  //     else {
+  //       this.displayImmutableLayer(layer);
+  //     }
+  //     if (layer) {
+  //       this.map.fitBounds(layer.getBounds());
+  //     }
+  //   }
+  // },
+
   // On subsequent renders,
   // make sure we're zoomed in on the drawn geom.
   shouldZoom: Ember.observer('zoom', function() {
     if (this.get('zoom')){
       let layer = this.map.drawnItems.getLayers()[0];
       this.map.fitBounds(layer.getBounds());
+    }
+  }),
+
+  shouldReset: Ember.observer('geoJSON', function() {
+    if (!this.get('geoJSON')) {
+      this.map.setView([lat, lng], zoom);
+      //this.didInsertElement();
+      this.map.drawnItems.clearLayers();
+      //this.initLayer();
     }
   }),
 

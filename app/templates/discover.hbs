@@ -7,7 +7,17 @@
   zoom=zoom
   submit=(action "submit") reset=(action "reset")}}
 {{/if}}
+{{#if refresh}}
+  {{else}}
+    <div class="row">
+        <div class="col-md-5">
+        </div>
+        <div class="col-md-7 half-height">
+          {{leaflet-map}}
+        </div>
+    </div>
+{{/if}}
 
-<br/>
+  <br/>
 
 {{outlet}}
