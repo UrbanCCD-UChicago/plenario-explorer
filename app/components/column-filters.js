@@ -8,13 +8,14 @@ export default Ember.Component.extend({
   },
 
   fieldOptions: ([
+    // Load in the dataset field names here
     {computer_name: 'foo', human_name: 'Foo'},
     {computer_name: 'bar_baz', human_name: 'Bar Baz'},
     {computer_name: 'gorp', human_name: 'Gorp'}
   ]),
 
   operatorOptions: ([
-    {operator_name: '', operator_symbol: '='},
+    {operator_name: 'eq', operator_symbol: '='},
     {operator_name: 'gt', operator_symbol: '>'},
     {operator_name: 'ge', operator_symbol: '>='},
     {operator_name: 'lt', operator_symbol: '<'},

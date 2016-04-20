@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import dateFormat from '../utils/date-format';
 import moment from 'moment';
 
 export default Ember.Route.extend({
@@ -12,6 +13,7 @@ export default Ember.Route.extend({
    */
   beforeModel(transition){
     let qParams = transition.queryParams;
+    console.log(qParams['agg']);
 
     // Normalize column filters
     const filterJSON = this.extractFilters(qParams);
@@ -20,7 +22,8 @@ export default Ember.Route.extend({
     }
 
     // Set defaults
-    if (qParams['agg'] === undefined) {
+    if (qParams.agg === undefined) {
+      console.log("Agg didn't stick");
       qParams['agg'] = 'week';
     }
     if (qParams['resolution'] === undefined) {
@@ -34,17 +37,17 @@ export default Ember.Route.extend({
 
   model(_, transition) {
     let qParams = transition.queryParams;
+    console.log(qParams);
     const qService = this.get('query');
     const name = qParams.dataset_name;
     // If start and end dates weren't explicitly specified,
     // we need to pick reasonable defaults.
-    console.log((Boolean(qParams.obs_date__ge) && Boolean(qParams.obs_date__le)));
     if (!(Boolean(qParams.obs_date__ge) && Boolean(qParams.obs_date__le))) {
       // Fetch metadata first to find out date range.
       return qService.eventMetadata(name).then(function(meta) {
-        console.log(meta);
-        qParams['obs_date__le'] = moment(meta.obsTo).toString();
-        qParams['obs_date__ge'] = moment(meta.obsTo).subtract(90, 'days').toString();
+        qParams['obs_date__le'] = dateFormat(meta.obsTo);
+        qParams['obs_date__ge'] = dateFormat(moment(meta.obsTo).subtract(90, 'days'));
+
         return Ember.RSVP.hash({
           metadata: meta,
           timeseries: qService.timeseries(name, qParams),
@@ -55,7 +58,7 @@ export default Ember.Route.extend({
       });
     }
     else {
-      console.log('Specified!');
+      //console.log('Specified!');
       return Ember.RSVP.hash({
         metadata: qService.eventMetadata(name),
         timeseries: qService.timeseries(name, qParams),
@@ -104,7 +107,8 @@ export default Ember.Route.extend({
       return JSON.stringify(filters);
     }
     else {
-      return null;
+      // An empty array
+      return '[]';
     }
   }
 });

@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-md-5">
     {{date-range startDate=obs_date__ge endDate=obs_date__le}}
-    {{drop-downs agg=agg res=res}}
+    {{drop-downs agg=agg res=resolution}}
     {{column-filters filters=filterHashes}}
     <br/>
       <button type="button" id="submit-query" class="btn btn-primary">
@@ -14,7 +14,6 @@
       </button>
   </div>
   <div class="col-md-7">
-      {{log model.metadata}}
     {{heat-grid grid=model.grid datasetName=model.metadata.humanName}}
     {{high-charts classNames=chartClasses content=model.timeseries.series}}
   </div>

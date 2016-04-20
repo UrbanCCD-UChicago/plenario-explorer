@@ -11,27 +11,23 @@ export default Ember.Controller.extend({
     'location_geom__within'
   ],
 
-  // // These all should have been set by the route.
-  // // They will be used in the filter creation box.
-  // dataset_name: null,
-  // agg: null,
-  // obs_date__le: null,
-  // obs_date__ge: null,
-  // resolution: null,
-
-  // Will be set only if the user supplied column filters.
-  //filters: null,
+  agg: null,
+  obs_date__le: null,
+  obs_date__ge: null,
+  resolution: null,
+  filters: null,
 
   // May not have been set by the route.
   // In case it was set,
   // we need to hold on to it to spit it out on transitions.
-  //location_geom__within: null,
+  location_geom__within: null,
 
   filtersArrived: Ember.observer('filters', function() {
     const filters = this.get('filters');
     if (!filters) {
       return;
     }
+    console.log(JSON.parse(filters));
     this.set('filterHashes', JSON.parse(filters));
   }),
 

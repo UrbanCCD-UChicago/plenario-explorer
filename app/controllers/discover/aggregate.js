@@ -8,7 +8,7 @@ export default Ember.Controller.extend({
   timeseriesList: [],
 
   _detailTransition(pageName, datasetName) {
-    let params = this.get('queryParams');
+    let params = this.get('qHash');
     params['dataset_name'] = datasetName;
     this.transitionToRoute(pageName, {queryParams: params});
   },
@@ -60,7 +60,6 @@ export default Ember.Controller.extend({
     model.pointDatasets.forEach((d)=>{
       const datasetName = d.datasetName;
       let qHash = this.get('qHash');
-      console.log(qHash);
       const tsPromise = this.get('query').timeseries(datasetName, qHash);
       let timeseriesList = this.get('timeseriesList');
 
