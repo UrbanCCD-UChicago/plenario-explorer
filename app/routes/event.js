@@ -28,6 +28,12 @@ export default Ember.Route.extend({
     }
   },
 
+  actions: {
+    reload: function() {
+      this.refresh();
+    }
+  },
+  
   model(_, transition) {
     let qParams = transition.queryParams;
     const qService = this.get('query');
