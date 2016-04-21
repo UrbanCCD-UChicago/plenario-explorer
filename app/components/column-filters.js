@@ -43,11 +43,11 @@ export default Ember.Component.extend({
   // },
 
   notComplete: Ember.computed('activeFilter.field',
-                              'activeFilter.operator',
-                              'activeFilter.value',
+                              'activeFilter.op',
+                              'activeFilter.val',
                               function() {
     const filter = this.get('activeFilter');
-    return !Boolean(filter.field && filter.operator && filter.value);
+    return !Boolean(filter.field && filter.op && filter.val);
   }),
 
 
@@ -72,8 +72,8 @@ export default Ember.Component.extend({
   makeNewFilter() {
     return Ember.Object.create({
       field: null,
-      operator: null,
-      value: null
+      op: null,
+      val: null
     });
   },
 
