@@ -2,28 +2,45 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
 
+
+
   init() {
     this._super(...arguments);
     this.resetActiveFilter();
+    this.populateFields();
+    this.populateOperators();
   },
 
-  fieldOptions: ([
-    // Load in the dataset field names here
-    {computer_name: 'foo', human_name: 'Foo'},
-    {computer_name: 'bar_baz', human_name: 'Bar Baz'},
-    {computer_name: 'gorp', human_name: 'Gorp'}
-  ]),
+  // Initialize options for the dropdown menus
 
-  operatorOptions: ([
-    {operator_name: 'eq', operator_symbol: '='},
-    {operator_name: 'gt', operator_symbol: '>'},
-    {operator_name: 'ge', operator_symbol: '>='},
-    {operator_name: 'lt', operator_symbol: '<'},
-    {operator_name: 'le', operator_symbol: '<='},
-    {operator_name: 'ne', operator_symbol: '!='},
-    {operator_name: 'ilike', operator_symbol: 'LIKE'},
-    {operator_name: 'in', operator_symbol: 'IN'}
-  ]),
+  populateOperators() {
+    const options = this.get('operators').map(op => {
+      return {operator: op};
+    });
+    this.set('operatorOptions', options);
+  },
+
+  populateFields() {
+    const meta = this.get('metadata');
+    const fieldOptions = meta.columns.map(col => {
+      const name = col.field_name;
+      return {computerName: name, humanName: this.humanizeName(name)};
+    });
+    this.set('fieldOptions', fieldOptions);
+  },
+
+  operators: ['=', '>', '>=','<','<=','!=', 'LIKE','IN'],
+
+  // operatorMap: {
+  //   'eq': '=',
+  //   'gt': '>',
+  //   'ge': '>=',
+  //   'lt': '<',
+  //   'le': '<=',
+  //   'ne': '!=',
+  //   'ilike': 'LIKE',
+  //   'in': 'IN'
+  // },
 
   notComplete: Ember.computed('activeFilter.field',
                               'activeFilter.operator',
@@ -32,6 +49,15 @@ export default Ember.Component.extend({
     const filter = this.get('activeFilter');
     return !Boolean(filter.field && filter.operator && filter.value);
   }),
+
+
+
+  humanizeName(name) {
+    return name.replace(/_/g, ' ')
+      .replace(/(\w+)/g, function(match) {
+        return match.charAt(0).toUpperCase() + match.slice(1);
+      });
+  },
 
   actions: {
     submit: function() {

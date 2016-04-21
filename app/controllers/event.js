@@ -15,19 +15,10 @@ export default Ember.Controller.extend({
   obs_date__le: null,
   obs_date__ge: null,
   resolution: null,
-  filters: null,
-
-  // May not have been set by the route.
-  // In case it was set,
-  // we need to hold on to it to spit it out on transitions.
   location_geom__within: null,
 
   filtersArrived: Ember.observer('filters', function() {
     const filters = this.get('filters');
-    if (!filters) {
-      return;
-    }
-    console.log(JSON.parse(filters));
     this.set('filterHashes', JSON.parse(filters));
   }),
 

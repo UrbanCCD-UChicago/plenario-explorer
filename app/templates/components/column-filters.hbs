@@ -17,25 +17,22 @@ validationIcons=false}}
   {{em-select
   property="field"
   content=fieldOptions
-  optionValuePath="computer_name"
-  optionLabelPath="human_name"
+  optionValuePath="computerName"
+  optionLabelPath="humanName"
   prompt="..."
   label="Field"}}
 
   {{em-select
   property="operator"
   content=operatorOptions
-  optionValuePath="operator_name"
-  optionLabelPath="operator_symbol"
+  optionValuePath="operator"
+  optionLabelPath="operator"
   prompt="..."
   label="Operator"}}
 
   {{em-input label="Value"
   property="value"}}
 
-  <input type="submit" disabled={{notComplete}} class="btn btn-info pull-right" value="Add Filter">
-  <!--<div class="form-actions">
-      <input type="submit" disabled={{notComplete}} class="btn btn-info pull-right" value="Add Filter">
-  </div>-->
+  <input type="submit" disabled={{notComplete}} class="btn btn-info pull-right" value="Add Filter" />
 
 {{/em-form}}
