@@ -102,6 +102,7 @@ export default Ember.Service.extend({
      */
   timeseries(name, params) {
     params['dataset_name'] = name;
+    params = this._translateFilters(params);
     const ts = this.get('ajax').request('/detail-aggregate', {data: params});
     const prepTimeseries = this.prepTimeseries;
     return ts.then(function(payload) {
@@ -141,6 +142,8 @@ export default Ember.Service.extend({
      */
   grid(name, params) {
     params['dataset_name'] = name;
+    params = this._translateFilters(params);
+    console.log(params);
     const grid = this.get('ajax').request('/grid', {data: params});
     return grid.then(function(payload) {
       return payload;
@@ -149,13 +152,89 @@ export default Ember.Service.extend({
     });
   },
 
+  _translateFilters(params) {
+    params = Ember.copy(params);
+    if (!params.filters) {
+      // No filters to transform.
+      return params;
+    }
+    let filterAPIFormatted = {};
+    const filterHashes = JSON.parse(params.filters);
+    for (const filter of filterHashes) {
+      if (filter.op === '=') {
+        filterAPIFormatted[filter.field] = filter.val;
+      }
+      else {
+        const APIOperator = this.get('operatorMap')[filter.op];
+        filterAPIFormatted[`${filter.field}__${APIOperator}`] = filter.val;
+      }
+    }
+    delete params['filters'];
+    return Ember.merge(params, filterAPIFormatted);
+  },
+
+  operatorMap: {
+    '=': 'eq',
+    '>': 'gt',
+    '>=': 'ge',
+    '<': 'lt',
+    '<=': 'le',
+    '!=': 'ne',
+    'LIKE': 'ilike',
+    'IN': 'in'
+  },
+
+  // /**
+  //  * Because filter parameters can have arbitrary names,
+  //    we need to do some pre-processing here so w e can pass a parameter named
+  //    'filters' to the controller.
+  //    It will be stringified JSON where each filter is an object
+  //    with the schema {field: '', op: '', val: ''}
+  //  * @param queryParams
+  //  * @returns {null}
+  //    */
+  // extractFilters(queryParams) {
+  //   let filters = [];
+  //   const skipKeys = ['obs_date__le', 'obs_date__ge', 'location_geom__within'];
+  //
+  //   for (const key in queryParams) {
+  //     // Not one of the "standard" filters.
+  //     if (skipKeys.indexOf(key) > -1) {
+  //       continue;
+  //     }
+  //     // Expected form of filter params is name__op
+  //     if (!key.includes('__')) {
+  //       continue;
+  //     }
+  //     let split = key.split('__');
+  //     if (split.length !== 2) {
+  //       continue;
+  //     }
+  //
+  //     const [field, op] = split;
+  //     const val = queryParams[key];
+  //     filters.push({
+  //       field: field,
+  //       operator: op,
+  //       value: val
+  //     });
+  //   }
+  //   if (filters.length > 0) {
+  //     return JSON.stringify(filters);
+  //   }
+  //   else {
+  //     // An empty array
+  //     return '[]';
+  //   }
+  // }
+
   /**
    * Return list of event metadata objects
    * that are within the given time and space bounding box.
    * @param params
      */
   eventCandidates(params) {
-    
+
     const camelizeHash = this.camelizeHash;
     const candidates = this.get('ajax').request('/datasets', {data: params});
     return candidates.then(function(doc) {

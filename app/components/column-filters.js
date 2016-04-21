@@ -91,14 +91,3 @@ export default Ember.Component.extend({
   }
 
 });
-
-// operatorMap: {
-//   'eq': '=',
-//   'gt': '>',
-//   'ge': '>=',
-//   'lt': '<',
-//   'le': '<=',
-//   'ne': '!=',
-//   'ilike': 'LIKE',
-//   'in': 'IN'
-// },
