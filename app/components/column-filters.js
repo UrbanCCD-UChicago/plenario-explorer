@@ -2,10 +2,9 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
 
-
-
   init() {
     this._super(...arguments);
+    this.renderFilters();
     this.resetActiveFilter();
     this.populateFields();
     this.populateOperators();
@@ -29,29 +28,6 @@ export default Ember.Component.extend({
     this.set('fieldOptions', fieldOptions);
   },
 
-  operators: ['=', '>', '>=','<','<=','!=', 'LIKE','IN'],
-
-  // operatorMap: {
-  //   'eq': '=',
-  //   'gt': '>',
-  //   'ge': '>=',
-  //   'lt': '<',
-  //   'le': '<=',
-  //   'ne': '!=',
-  //   'ilike': 'LIKE',
-  //   'in': 'IN'
-  // },
-
-  notComplete: Ember.computed('activeFilter.field',
-                              'activeFilter.op',
-                              'activeFilter.val',
-                              function() {
-    const filter = this.get('activeFilter');
-    return !Boolean(filter.field && filter.op && filter.val);
-  }),
-
-
-
   humanizeName(name) {
     return name.replace(/_/g, ' ')
       .replace(/(\w+)/g, function(match) {
@@ -59,15 +35,48 @@ export default Ember.Component.extend({
       });
   },
 
+  operators: ['=', '>', '>=','<','<=','!=', 'LIKE','IN'],
+
+  // Take in filters as JSON
+  // And operate on them internally as JS objects.
+  // When user adds or removes a filter,
+  // mutate the passed in JSON accordingly.
+
+  filterHashes: Ember.computed('filters', function() {
+    this.renderFilters();
+  }),
+
+  renderFilters() {
+    const filterJSON = this.get('filters');
+    this.set('filterHashes', JSON.parse(filterJSON));
+  },
+
+  mutateFilterJSON() {
+    const hashes = this.get('filterHashes');
+    this.set('filters', JSON.stringify(hashes));
+  },
+
   actions: {
     submit: function() {
-      this.get('filters').pushObject(this.get('activeFilter'));
+      this.get('filterHashes').pushObject(this.get('activeFilter'));
+      this.mutateFilterJSON();
       this.resetActiveFilter();
     },
     removeFilter: function(index) {
-      this.set('filters', this.get('filters').removeAt(index));
+      this.set('filterHashes', this.get('filterHashes').removeAt(index));
+      this.mutateFilterJSON();
     }
   },
+
+  // Manage the filter the user is currently editing
+
+  notComplete: Ember.computed('activeFilter.field',
+                              'activeFilter.op',
+                              'activeFilter.val',
+    function() {
+      const filter = this.get('activeFilter');
+      return !Boolean(filter.field && filter.op && filter.val);
+    }),
 
   makeNewFilter() {
     return Ember.Object.create({
@@ -79,10 +88,17 @@ export default Ember.Component.extend({
 
   resetActiveFilter() {
     this.set('activeFilter', this.makeNewFilter());
-  },
-
-  activeFilterChanged: Ember.observer('activeFilter', function() {
-    console.log(this.get('activeFilter'));
-  })
+  }
 
 });
+
+// operatorMap: {
+//   'eq': '=',
+//   'gt': '>',
+//   'ge': '>=',
+//   'lt': '<',
+//   'le': '<=',
+//   'ne': '!=',
+//   'ilike': 'LIKE',
+//   'in': 'IN'
+// },

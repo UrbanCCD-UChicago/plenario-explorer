@@ -16,13 +16,21 @@ export default Ember.Controller.extend({
   obs_date__ge: null,
   resolution: null,
   location_geom__within: null,
+  filters: null,
 
-  filtersArrived: Ember.observer('filters', function() {
-    const filters = this.get('filters');
-    this.set('filterHashes', JSON.parse(filters));
-  }),
+  // filtersArrived: Ember.observer('filters', function() {
+  //   const filters = this.get('filters');
+  //   //console.log(filters);
+  //   //console.log(JSON.parse(filters));
+  //   this.set('_filters', JSON.parse(filters));
+  // }),
 
   actions: {
+    refine() {
+      this.set('filters', JSON.stringify(this.get('_filters')));
+      //console.log(JSON.stringify(this.get('_filters')));
+    },
+
     submit(params) {
       // This will cause a transition to the event route,
       // but with different query parameters.
