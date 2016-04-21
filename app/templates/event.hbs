@@ -1,5 +1,12 @@
+<div class='col-md-12'>
+    <p><a href='#' id='back-to-explorer'>&lt; back to Explorer</a></p>
+</div>
 <div class="row">
   <div class="col-md-5">
+    <h3 class='detail-header'>
+      {{model.metadata.attribution}}: {{model.metadata.humanName}}
+  </h3>
+
     {{date-range startDate=obs_date__ge endDate=obs_date__le}}
     {{drop-downs agg=agg res=resolution}}
     {{column-filters filters=filters metadata=model.metadata}}
