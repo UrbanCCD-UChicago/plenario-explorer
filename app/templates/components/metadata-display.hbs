@@ -1,0 +1,37 @@
+<h4>Dataset details</h4>
+<table class="table">
+    <tbody>
+    <tr>
+        <td>Name:</td>
+        <td>{{m.humanName}}</td>
+    </tr>
+    <tr>
+        <td>Attribution:</td>
+        <td>{{m.attribution}}</td>
+    </tr>
+    <tr>
+        <td>Source:</td>
+        <td><a href="{{m.sourceUrl}}" target="_blank">{{m.sourceUrl}}</a></td>
+    </tr>
+    <tr>
+        <td>View:</td>
+        <td><a href="{{m.viewUrl}}" target="_blank">{{m.viewUrl}}</a></td>
+    </tr>
+
+    {{#if m.obsFrom}}
+        <tr>
+            <td>Time span available:</td>
+            <td>{{display-time m.obsFrom}} - {{display-time m.obsTo}}</td>
+        </tr>
+    {{/if}}
+
+    <tr>
+        <td>Update frequency:</td>
+        <td>{{m.updateFreq}}</td>
+    </tr>
+    <tr>
+        <td>Description:</td>
+        <td>{{m.description}}</td>
+    </tr>
+    </tbody>
+</table>

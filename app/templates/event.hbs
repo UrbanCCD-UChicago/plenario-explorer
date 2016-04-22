@@ -19,5 +19,7 @@
   <div class="col-md-7">
     {{heat-grid grid=model.grid datasetName=model.metadata.humanName}}
     {{high-charts classNames=chartClasses content=model.timeseries.series}}
+    {{metadata-display m=model.metadata}}
+
   </div>
 </div>
