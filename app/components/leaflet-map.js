@@ -25,6 +25,7 @@ export default Ember.Component.extend({
       this.addMap();
       this.addTiles();
       this.drawElements();
+      this.createLegend();
     });
   },
 
@@ -44,45 +45,23 @@ export default Ember.Component.extend({
 
   drawElements: function() {
     var layer = this.initLayer();
-    if (!layer) {
-      return;
-    }
-
-    // Display the vector layer.
     if (this.get('isDrawable')) {
-      this.displayDrawableLayer(layer);
+      // Even if layer is null,
+      // we still need to make a "hidden" layer
+      // for the user to draw on.
+      this.makeDrawableLayer(layer);
     }
-    else {
-      this.displayImmutableLayer(layer);
+    else if (!!layer) {
+      // Display an immutable layer
+      this.map.addLayer(layer);
     }
 
-    try {
+    // Whether it's mutable or immutable,
+    // If we have a layer we should zoom in on it.
+    if (!!layer) {
       this.map.fitBounds(layer.getBounds());
     }
-    catch (e) {
-      console.log('No layer to display');
-    }
-
-    // Display the map legend.
-    this.createLegend();
   },
-
-
-  // On subsequent renders,
-  // make sure we're zoomed in on the drawn geom.
-  shouldZoom: Ember.observer('zoom', function() {
-    if (this.get('zoom')){
-      let layer = this.map.drawnItems.getLayers()[0];
-      this.map.fitBounds(layer.getBounds());
-    }
-  }),
-
-  shouldReset: Ember.observer('geoJSON', function() {
-    if (!this.get('geoJSON')) {
-      this.map.setView([lat, lng], zoom);
-      this.map.drawnItems.clearLayers();
-    }
-  }),
 
   createLegend() {
     const div = this.get('legendDiv');
@@ -99,7 +78,6 @@ export default Ember.Component.extend({
     let layer;
     // Did the caller supply a layer to display as-is?
     let preformatted = this.get('layer');
-    console.log(preformatted);
     if (!!preformatted) {
       layer = preformatted;
     }
@@ -129,9 +107,7 @@ export default Ember.Component.extend({
     }
   },
 
-
-
-  displayDrawableLayer(layer) {
+  makeDrawableLayer(layer) {
     this.addDrawControl(layer);
     this.addDrawListeners();
   },
@@ -140,6 +116,8 @@ export default Ember.Component.extend({
     // Making the feature group an attribute of the map
     // so that event handlers that have access to the map
     // can get at it.
+    console.log('In addDrawControl');
+
     this.map.drawnItems = new L.FeatureGroup();
     if (layer) {
       this.map.drawnItems.addLayer(layer);
@@ -162,10 +140,6 @@ export default Ember.Component.extend({
       }
     });
     this.map.addControl(drawControl);
-  },
-
-  displayImmutableLayer(layer) {
-    this.map.addLayer(layer);
   },
 
   addDrawListeners() {
@@ -198,6 +172,25 @@ export default Ember.Component.extend({
   drawEdit(e){
     let layer = e.layers.getLayers()[0];
     this.reportDrawn(layer);
-  }
+  },
+
+  // On subsequent renders,
+  // make sure we're zoomed in on the drawn geom.
+  shouldZoom: Ember.observer('zoom', function() {
+    if (this.get('zoom')){
+      let layer = this.map.drawnItems.getLayers()[0];
+      this.map.fitBounds(layer.getBounds());
+    }
+  }),
+
+  shouldReset: Ember.observer('geoJSON', function() {
+    // Check for when we went from having geoJSON
+    // to not having geoJSON.
+    // That means the user drew something and deleted it.
+    if (!this.get('geoJSON')) {
+      this.map.setView([lat, lng], zoom);
+      this.map.drawnItems.clearLayers();
+    }
+  })
 
 });

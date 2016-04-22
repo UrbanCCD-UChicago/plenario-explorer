@@ -110,7 +110,4 @@ export default Ember.Controller.extend({
       // in which case go back to aggregate route.
     }
   }
-
-
-
 });
