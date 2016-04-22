@@ -19,17 +19,23 @@ const zoom = 10;
 const tileURL = 'https://{s}.tiles.mapbox.com/v3/datamade.hn83a654/{z}/{x}/{y}.png';
 
 export default Ember.Component.extend({
-  // On first render, create map, add tile layer, and add vector layer.
-  initMap: function() {
+  didInsertElement() {
+    this._super(...arguments);
+    Ember.run.scheduleOnce('afterRender', this, function() {
+      this.addMap();
+      this.addTiles();
+      this.drawElements();
+    });
+  },
+
+  addMap() {
     const map_options = {
       scrollWheelZoom: false,
       tapTolerance: 30,
       minZoom: 1
     };
     this.set('map', L.map('map', map_options).setView([lat, lng], zoom));
-    this.addTiles();
-    this.drawElements();
-  }.on('didInsertElement'),
+  },
 
   addTiles() {
     let tiles = L.tileLayer(tileURL);
@@ -51,7 +57,6 @@ export default Ember.Component.extend({
       catch (e) {
         console.log('No layer to display');
       }
-
     }
     this.createLegend();
   },
@@ -88,6 +93,7 @@ export default Ember.Component.extend({
     let layer;
     // Did the caller supply a layer to display as-is?
     let preformatted = this.get('layer');
+    console.log(preformatted);
     if (!!preformatted) {
       layer = preformatted;
     }

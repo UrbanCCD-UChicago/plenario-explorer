@@ -7,7 +7,7 @@ module.exports = function(defaults) {
     // Add options here
   });
 
-  app.import('bower_components/leaflet/dist/leaflet.js');
+  app.import('bower_components/leaflet/dist/leaflet-src.js');
   app.import('bower_components/leaflet/dist/leaflet.css');
   app.import('bower_components/leaflet-draw/dist/leaflet.draw.js');
   app.import('bower_components/leaflet-draw/dist/leaflet.draw.css');
