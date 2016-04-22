@@ -11,13 +11,15 @@ export default Ember.Component.extend({
   didInsertElement() {
     const self = this;
     this.$('input').datepicker({
-      keyboardNavigation: false
+      keyboardNavigation: true
     }).on('changeDate', function(e) {
+      console.log('changedate fired');
       self.set('date', dateFormat(e.date));
     });
   },
 
-  didReceiveAttrs() {
+  init() {
+    this._super(...arguments);
     this.setText();
   },
 
