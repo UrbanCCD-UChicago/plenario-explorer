@@ -4,6 +4,7 @@ import moment from 'moment';
 
 export default Ember.Controller.extend({
   query: Ember.inject.service(),
+  notify: Ember.inject.service(),
 
   queryParams: [
     'dataset_name',
@@ -23,7 +24,8 @@ export default Ember.Controller.extend({
   location_geom__within: null,
   filters: null,
 
-  queryParamsHash: Ember.computed('obs_date__le', 'obs_date__ge', 'agg', 'location_geom__within',
+  queryParamsHash: Ember.computed('obs_date__le', 'obs_date__ge',
+    'agg', 'location_geom__within', 'filters',
     function() {
       let params = this.getProperties(this.get('queryParams'));
       for (const key of Object.keys(params)) {
@@ -47,6 +49,10 @@ export default Ember.Controller.extend({
     this.launchWidgetQueries();
   }),
 
+  resetParams() {
+    this.set('filters', '[]');
+  },
+
   adjustDateRange() {
     // If the user did not explicitly specify start and end dates,
     // use the model's available range to pick a good default.
@@ -60,18 +66,28 @@ export default Ember.Controller.extend({
     }
   },
 
-  launchWidgetQueries() {
+  launchWidgetQueries(shouldRetry = true) {
     const qService = this.get('query');
     const qParams = this.get('queryParamsHash');
-    window.params = qParams;
+    const nService = this.get('notify');
     const name = qParams.dataset_name;
+
     Ember.RSVP.hash({
       timeseries: qService.timeseries(name, qParams),
       grid: qService.grid(name, qParams)
     }).then(result => {
-      // Find out where you need to check for undefined
-      // to inform user that her query was misformatted
-      console.log(result);
+      if (result.grid === undefined || result.timeseries === undefined) {
+        if (shouldRetry) {
+          this.resetParams();
+          nService.error("Plenario couldn't interpret your query. Filters reset.");
+          this.launchWidgetQueries(false);
+          return;
+        }
+        else {
+          nService.error('Unexpected state. Returning to the home page');
+          this.transitionToRoute('discover');
+        }
+      }
       this.set('timeseries', result.timeseries);
       this.set('grid', result.grid);
       this.set('loading', false);
@@ -80,6 +96,7 @@ export default Ember.Controller.extend({
 
   actions: {
     refine() {
+      this.set('loading', true);
       this.send('reload');
     },
 

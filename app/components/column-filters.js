@@ -42,12 +42,19 @@ export default Ember.Component.extend({
   // When user adds or removes a filter,
   // mutate the passed in JSON accordingly.
 
-  filterHashes: Ember.computed('filters', function() {
+  // filterHashes: Ember.computed('filters', function() {
+  //   console.log('Filter JSON changed');
+  //   return JSON.parse(this.get('filters'));
+  //   //this.renderFilters();
+  // }),
+  
+  filtersChanged: Ember.observer('filters', function() {
     this.renderFilters();
   }),
 
   renderFilters() {
     const filterJSON = this.get('filters');
+    console.log(filterJSON);
     this.set('filterHashes', JSON.parse(filterJSON));
   },
 

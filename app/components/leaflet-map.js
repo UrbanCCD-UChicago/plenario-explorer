@@ -44,20 +44,26 @@ export default Ember.Component.extend({
 
   drawElements: function() {
     var layer = this.initLayer();
+    if (!layer) {
+      return;
+    }
+
+    // Display the vector layer.
     if (this.get('isDrawable')) {
       this.displayDrawableLayer(layer);
     }
     else {
       this.displayImmutableLayer(layer);
     }
-    if (layer) {
-      try {
-        this.map.fitBounds(layer.getBounds());
-      }
-      catch (e) {
-        console.log('No layer to display');
-      }
+
+    try {
+      this.map.fitBounds(layer.getBounds());
     }
+    catch (e) {
+      console.log('No layer to display');
+    }
+
+    // Display the map legend.
     this.createLegend();
   },
 
