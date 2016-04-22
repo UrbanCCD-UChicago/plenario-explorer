@@ -101,6 +101,7 @@ export default Ember.Service.extend({
    * @param params
      */
   timeseries(name, params) {
+    params = Ember.copy(params);
     params['dataset_name'] = name;
     params = this._translateFilters(params);
     const ts = this.get('ajax').request('/detail-aggregate', {data: params});
@@ -141,9 +142,9 @@ export default Ember.Service.extend({
    * @param params
      */
   grid(name, params) {
+    params = Ember.copy(params);
     params['dataset_name'] = name;
     params = this._translateFilters(params);
-    console.log(params);
     const grid = this.get('ajax').request('/grid', {data: params});
     return grid.then(function(payload) {
       return payload;

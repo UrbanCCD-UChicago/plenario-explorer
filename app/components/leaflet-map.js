@@ -19,9 +19,24 @@ const zoom = 10;
 const tileURL = 'https://{s}.tiles.mapbox.com/v3/datamade.hn83a654/{z}/{x}/{y}.png';
 
 export default Ember.Component.extend({
-  // On first render, create map, add layer, and add controls
-  didInsertElement() {
-    this.initMap();
+  // On first render, create map, add tile layer, and add vector layer.
+  initMap: function() {
+    const map_options = {
+      scrollWheelZoom: false,
+      tapTolerance: 30,
+      minZoom: 1
+    };
+    this.set('map', L.map('map', map_options).setView([lat, lng], zoom));
+    this.addTiles();
+    this.drawElements();
+  }.on('didInsertElement'),
+
+  addTiles() {
+    let tiles = L.tileLayer(tileURL);
+    tiles.addTo(this.get('map'));
+  },
+
+  drawElements: function() {
     var layer = this.initLayer();
     if (this.get('isDrawable')) {
       this.displayDrawableLayer(layer);
@@ -30,27 +45,17 @@ export default Ember.Component.extend({
       this.displayImmutableLayer(layer);
     }
     if (layer) {
-      this.map.fitBounds(layer.getBounds());
+      try {
+        this.map.fitBounds(layer.getBounds());
+      }
+      catch (e) {
+        console.log('No layer to display');
+      }
+
     }
     this.createLegend();
   },
 
-  // didUpdateAttrs() {
-  //   console.log('Detected change!');
-  //   if (this.get('geoJSON')) {
-  //     console.log('Detected JSON');
-  //     var layer = this.initLayer();
-  //     if (this.get('isDrawable')) {
-  //       this.displayDrawableLayer(layer);
-  //     }
-  //     else {
-  //       this.displayImmutableLayer(layer);
-  //     }
-  //     if (layer) {
-  //       this.map.fitBounds(layer.getBounds());
-  //     }
-  //   }
-  // },
 
   // On subsequent renders,
   // make sure we're zoomed in on the drawn geom.
@@ -64,9 +69,7 @@ export default Ember.Component.extend({
   shouldReset: Ember.observer('geoJSON', function() {
     if (!this.get('geoJSON')) {
       this.map.setView([lat, lng], zoom);
-      //this.didInsertElement();
       this.map.drawnItems.clearLayers();
-      //this.initLayer();
     }
   }),
 
@@ -114,20 +117,7 @@ export default Ember.Component.extend({
     }
   },
 
-  initMap() {
-    const map_options = {
-      scrollWheelZoom: false,
-      tapTolerance: 30,
-      minZoom: 1
-    };
-    this.map = L.map('map', map_options).setView([lat, lng], zoom);
-    this.addTiles();
-  },
 
-  addTiles() {
-    let tiles = L.tileLayer(tileURL);
-    tiles.addTo(this.map);
-  },
 
   displayDrawableLayer(layer) {
     this.addDrawControl(layer);
