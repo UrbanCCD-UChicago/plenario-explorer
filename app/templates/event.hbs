@@ -6,7 +6,6 @@
     <h3 class='detail-header'>
       {{model.metadata.attribution}}: {{model.metadata.humanName}}
   </h3>
-
     {{date-range startDate=obs_date__ge endDate=obs_date__le}}
     {{drop-downs agg=agg res=resolution}}
     {{column-filters filters=filters metadata=model.metadata}}
@@ -17,6 +16,10 @@
       </button>
   </div>
   <div class="col-md-7">
+      <h3 class='detail-header' id="record-count">
+        {{#if model.timeseries}} {{model.timeseries.count}} {{else}} 0 {{/if}}
+          Records Found
+      </h3>
     {{heat-grid grid=model.grid datasetName=model.metadata.humanName}}
     {{high-charts classNames=chartClasses content=model.timeseries.series}}
     {{metadata-display m=model.metadata}}
