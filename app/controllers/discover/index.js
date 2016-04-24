@@ -2,8 +2,9 @@ import Ember from 'ember';
 
 export default Ember.Controller.extend({
   discoverController: Ember.inject.controller('discover'),
+  query: Ember.inject.service(),
   params: Ember.computed.reads('discover.queryParams'),
-  
+
   _detailTransition(pageName, datasetName) {
     let params = this.get('queryParams');
     delete params['obs_date__le'];
@@ -11,7 +12,7 @@ export default Ember.Controller.extend({
     params['dataset_name'] = datasetName;
     this.transitionToRoute(pageName, {queryParams: params});
   },
-  
+
   actions: {
     navigateToShape: function(name) {
       this._detailTransition('shape', name);
@@ -20,8 +21,7 @@ export default Ember.Controller.extend({
       this._detailTransition('event', name);
     },
     downloadShape: function(name, fileType) {
-      // Open new tab with raw download link.
-      window.open(`http://plenar.io/v1/api/shapes/${name}?data_type=${fileType}`);
+      this.get('query').rawShape(name, {file_type: fileType}, true);
     }
   }
 });

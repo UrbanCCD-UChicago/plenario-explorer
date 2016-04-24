@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import moment from 'moment';
-import QueryConverter from '../utils/query-converter';
+/* global URI */
 
 /**
  * Grabs and caches all dataset metadata.
@@ -14,7 +14,7 @@ export default Ember.Service.extend({
    * rather than use it in the application
    */
   openInNewTab(endpoint, params) {
-    const qString = new QueryConverter().fromHash(params).toQueryString();
+    const qString = URI('').addQuery(params).toString();
     window.open(`http://plenar.io/v1/api${endpoint}${qString}`);
   },
 
@@ -114,7 +114,6 @@ export default Ember.Service.extend({
      */
   timeseries(params, newTab=false) {
     params = Ember.copy(params);
-    params['dataset_name'] = name;
     params = this._translateFilters(params);
     const endpoint = '/detail-aggregate';
 
@@ -241,7 +240,15 @@ export default Ember.Service.extend({
    * return geoJSON of shape dataset
    * @param name
      */
-  rawShape(name, newTab=false) {
+  rawShape(name, params, newTab=false) {
+    const endpoint = `/shapes/${name}`;
+    if (newTab) {
+      this.openInNewTab(endpoint, params);
+    }
+    else {
+      // unimplemented
+      return null;
+    }
   },
 
   /**
@@ -251,9 +258,8 @@ export default Ember.Service.extend({
    * @param params
    * @param newTab
      */
-  rawEvents(name, params, newTab=false) {
+  rawEvents(params, newTab=false) {
     params = Ember.copy(params);
-    params['dataset_name'] = name;
     params = this._translateFilters(params);
     const endpoint = '/detail';
 

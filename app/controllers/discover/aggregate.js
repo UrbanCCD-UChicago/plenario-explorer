@@ -1,7 +1,7 @@
 import Ember from 'ember';
-import QueryConverter from '../../utils/query-converter';
 
 export default Ember.Controller.extend({
+  query: Ember.inject.service(),
   discoverController: Ember.inject.controller('discover'),
   qHash: Ember.computed.reads('discoverController.queryParamsHash'),
 
@@ -24,17 +24,17 @@ export default Ember.Controller.extend({
       this._detailTransition('event', name);
     },
     downloadShape: function(name, fileType) {
-      const qHash = this.get('qHash');
-      qHash['data_type'] = fileType;
-      const qString = new QueryConverter().fromHash(qHash).toQueryString();
-      window.open(`http://plenar.io/v1/api/shapes/${name}${qString}`);
+      let params = this.get('qHash');
+      params['data_type'] = fileType;
+      console.log(params);
+      this.get('query').rawShape(name, params, true);
     },
+
     downloadPoint: function(name, fileType) {
-      const qHash = this.get('qHash');
-      qHash['dataset_name'] = name;
-      qHash['data_type'] = fileType;
-      const qString = new QueryConverter().fromHash(qHash).toQueryString();
-      window.open(`http://plenar.io/v1/api/detail${qString}`);
+      let params = this.get('qHash');
+      params['dataset_name'] = name;
+      params['data_type'] = fileType;
+      this.get('query').rawEvents(params, true);
     }
   },
 
@@ -45,8 +45,6 @@ export default Ember.Controller.extend({
     // Launch a new set of timeseries queries from the new candidates.
     this.launchTimeseriesQueries();
   }),
-
-  query: Ember.inject.service(),
 
   /**
    * For each candidate dataset,
