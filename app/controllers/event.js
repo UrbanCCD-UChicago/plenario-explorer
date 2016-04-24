@@ -73,7 +73,7 @@ export default Ember.Controller.extend({
     const name = qParams.dataset_name;
 
     Ember.RSVP.hash({
-      timeseries: qService.timeseries(name, qParams),
+      timeseries: qService.timeseries(qParams),
       grid: qService.grid(name, qParams)
     }).then(result => {
       if (result.grid === undefined || result.timeseries === undefined) {
@@ -100,12 +100,28 @@ export default Ember.Controller.extend({
       this.send('reload');
     },
 
-    download(params, type) {
-      // Open a download in a new tab.
+    /**
+     * We expect 'type' to be one of the following strings:
+     * 'csvPoints': raw data, as CSV
+     * 'geoJSONPoints': raw data, as geoJSON
+     * 'grid': grid aggregation geoJSON
+     * 'timeseries' timeseries aggregation CSV
+     *
+     * @param type
+       */
+    download(type) {
+      let qParams = this.get('queryParamsHash');
+      const qService = this.get('query');
+
+      switch (type) {
+        case 'csvPoints':
+          qParams['data_type'] = 'csv';
+          qService.rawEvents(qParams, );
+      }
     },
 
     exit(params) {
-      // Go back to the discover
+      // Go back to the discover route
       // Unless geojson has been specified,
       // in which case go back to aggregate route.
     }

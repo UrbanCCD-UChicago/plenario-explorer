@@ -55,13 +55,13 @@ export default Ember.Controller.extend({
    * the timeseriesList to display.
    */
   launchTimeseriesQueries() {
-    let model = this.get('model');
+    let timeseriesList = this.get('timeseriesList');
     let arrivalOrder = 1;
-    model.pointDatasets.forEach((d)=>{
-      const datasetName = d.datasetName;
-      let qHash = this.get('qHash');
-      const tsPromise = this.get('query').timeseries(datasetName, qHash);
-      let timeseriesList = this.get('timeseriesList');
+
+    this.get('model').pointDatasets.forEach((d)=> {
+      let params = this.get('qHash');
+      Ember.assign(params, {dataset_name: d.datasetName});
+      const tsPromise = this.get('query').timeseries(params);
 
       tsPromise.then(function(value){
         if (value.count === 0) {

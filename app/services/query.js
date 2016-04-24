@@ -1,11 +1,22 @@
 import Ember from 'ember';
 import moment from 'moment';
+import QueryConverter from '../utils/query-converter';
 
 /**
  * Grabs and caches all dataset metadata.
  */
 export default Ember.Service.extend({
   ajax: Ember.inject.service(),
+
+  /**
+   * For when we want to redirect the user
+   * to download the data directly
+   * rather than use it in the application
+   */
+  openInNewTab(endpoint, params) {
+    const qString = new QueryConverter().fromHash(params).toQueryString();
+    window.open(`http://plenar.io/v1/api${endpoint}${qString}`);
+  },
 
   camelizeHash: function(hash) {
     let normalized = {};
@@ -99,21 +110,27 @@ export default Ember.Service.extend({
    *
    * @param name
    * @param params
+   * @param newTab
      */
-  timeseries(name, params) {
+  timeseries(params, newTab=false) {
     params = Ember.copy(params);
     params['dataset_name'] = name;
     params = this._translateFilters(params);
-    const ts = this.get('ajax').request('/detail-aggregate', {data: params});
-    const prepTimeseries = this.prepTimeseries;
-    return ts.then(function(payload) {
-      return {
-        series: prepTimeseries(payload.objects),
-        count: payload.count
-      };
-    }, function(reason) {
-      console.log(reason);
-    });
+    const endpoint = '/detail-aggregate';
+
+    if (newTab) {
+      this.openInNewTab(endpoint, params);
+    } else {
+      const ts = this.get('ajax').request(endpoint, {data: params});
+      return ts.then(payload => {
+        return {
+          series: this.prepTimeseries(payload.objects),
+          count: payload.count
+        };
+      }, function(reason) {
+        console.log(reason);
+      });
+    }
   },
 
   /**
@@ -140,17 +157,24 @@ export default Ember.Service.extend({
    *
    * @param name
    * @param params
+   * @param newTab
      */
-  grid(name, params) {
+  grid(name, params, newTab=false) {
     params = Ember.copy(params);
     params['dataset_name'] = name;
     params = this._translateFilters(params);
-    const grid = this.get('ajax').request('/grid', {data: params});
-    return grid.then(function(payload) {
-      return payload;
-    }, function(reason) {
-      console.log(reason);
-    });
+    const endpoint = '/grid';
+    if (newTab) {
+      this.openInNewTab(endpoint, params);
+    }
+    else {
+      const grid = this.get('ajax').request(endpoint, {data: params});
+      return grid.then(function(payload) {
+        return payload;
+      }, function(reason) {
+        console.log(reason);
+      });
+    }
   },
 
   _translateFilters(params) {
@@ -191,11 +215,9 @@ export default Ember.Service.extend({
    * @param params
      */
   eventCandidates(params) {
-
-    const camelizeHash = this.camelizeHash;
     const candidates = this.get('ajax').request('/datasets', {data: params});
-    return candidates.then(function(doc) {
-      return doc.objects.map(camelizeHash);
+    return candidates.then(doc => {
+      return doc.objects.map(this.camelizeHash);
     }, function(reason) {
       console.log(`Event candidate query failed: ${reason}`);
     });
@@ -207,10 +229,9 @@ export default Ember.Service.extend({
    * @param params
      */
   shapeSubsets(params) {
-    const self = this;
     const subsets = this.get('ajax').request('/shapes', {data: params});
-    return subsets.then(function(doc) {
-      return doc.objects.map(self.camelizeHash);
+    return subsets.then(doc => {
+      return doc.objects.map(this.camelizeHash);
     }, function(reason) {
       console.log(`Shape subset query failed: ${reason}`);
     });
@@ -220,6 +241,33 @@ export default Ember.Service.extend({
    * return geoJSON of shape dataset
    * @param name
      */
-  rawShape(name) {
+  rawShape(name, newTab=false) {
+  },
+
+  /**
+   * Return CSV or GeoJSON of events
+   *
+   * @param name
+   * @param params
+   * @param newTab
+     */
+  rawEvents(name, params, newTab=false) {
+    params = Ember.copy(params);
+    params['dataset_name'] = name;
+    params = this._translateFilters(params);
+    const endpoint = '/detail';
+
+    if (newTab) {
+      this.openInNewTab(endpoint, params);
+    } else {
+      const events = this.get('ajax').request(endpoint, {data: params});
+      return events.then(payload => {
+        // Don't currently call this from any route.
+        // Would be useful for putting markers on a map.
+        return payload;
+      }, function(reason) {
+        console.log(reason);
+      });
+    }
   }
 });
