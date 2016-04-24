@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import humanizeName from '../utils/humanize-name';
 
 export default Ember.Component.extend({
 
@@ -23,16 +24,9 @@ export default Ember.Component.extend({
     const meta = this.get('metadata');
     const fieldOptions = meta.columns.map(col => {
       const name = col.field_name;
-      return {computerName: name, humanName: this.humanizeName(name)};
+      return {computerName: name, humanName: humanizeName(name)};
     });
     this.set('fieldOptions', fieldOptions);
-  },
-
-  humanizeName(name) {
-    return name.replace(/_/g, ' ')
-      .replace(/(\w+)/g, function(match) {
-        return match.charAt(0).toUpperCase() + match.slice(1);
-      });
   },
 
   operators: ['=', '>', '>=','<','<=','!=', 'LIKE','IN'],
@@ -42,19 +36,13 @@ export default Ember.Component.extend({
   // When user adds or removes a filter,
   // mutate the passed in JSON accordingly.
 
-  // filterHashes: Ember.computed('filters', function() {
-  //   console.log('Filter JSON changed');
-  //   return JSON.parse(this.get('filters'));
-  //   //this.renderFilters();
-  // }),
-  
   filtersChanged: Ember.observer('filters', function() {
     this.renderFilters();
   }),
 
   renderFilters() {
     const filterJSON = this.get('filters');
-    console.log(filterJSON);
+    //console.log(filterJSON);
     this.set('filterHashes', JSON.parse(filterJSON));
   },
 

@@ -1,6 +1,6 @@
 <h3>Filters</h3>
 {{#each filterHashes as |filter index|}}
-  <p>{{filter.field}} {{filter.op}} {{filter.val}}
+  <p>{{humanize filter.field}} {{filter.op}} {{filter.val}}
       &nbsp;&nbsp;<button {{action "removeFilter" index}} class="btn btn-default btn-sm pull-right">Remove Filter</button>
       &nbsp;&nbsp;
   </p>
