@@ -21,7 +21,7 @@ export default Ember.Controller.extend({
       this._detailTransition('event', name);
     },
     downloadShape: function(name, fileType) {
-      this.get('query').rawShape(name, {file_type: fileType}, true);
+      this.get('query').rawShape(name, {data_type: fileType}, true);
     }
   }
 });
