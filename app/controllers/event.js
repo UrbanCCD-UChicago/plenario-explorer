@@ -44,6 +44,7 @@ export default Ember.Controller.extend({
    to grab the widgets' data from here.
    */
   modelArrived: Ember.observer('model', function() {
+    console.log('In event');
     this.adjustDateRange();
     this.launchWidgetQueries();
   }),
@@ -69,11 +70,11 @@ export default Ember.Controller.extend({
     const qService = this.get('query');
     const qParams = this.get('queryParamsHash');
     const nService = this.get('notify');
-    const name = qParams.dataset_name;
+    //const name = qParams.dataset_name;
 
     Ember.RSVP.hash({
       timeseries: qService.timeseries(qParams),
-      grid: qService.grid(name, qParams)
+      grid: qService.grid(qParams)
     }).then(result => {
       if (result.grid === undefined || result.timeseries === undefined) {
         if (shouldRetry) {

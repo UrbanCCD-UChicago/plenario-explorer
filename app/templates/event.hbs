@@ -32,9 +32,9 @@
       <h4>API queries</h4>
       <p>View the API queries that are used on this page. <a href='/api-docs/'>Read the API docs</a>.</p>
       <ul class=''>
-          <li><a class='download-geojson' target="_blank" href=""><code>/v1/api/grid/&hellip;</code></a></li>
-          <li><a href="" target="_blank"><code>/v1/api/detail-aggregate/&hellip;</code></a></li>
-          <li><a href="" target="_blank"><code>/v1/api/detail/&hellip;</code></a></li>
+          <li><a {{action "download" "grid"}}><code>/v1/api/grid/&hellip;</code></a></li>
+          <li><a {{action "download" "timeseries"}}><code>/v1/api/detail-aggregate/&hellip;</code></a></li>
+          <li><a {{action "download" "geoJSONPoints"}}><code>/v1/api/detail/&hellip;</code></a></li>
       </ul>
 
   </div>

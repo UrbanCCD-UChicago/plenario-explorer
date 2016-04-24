@@ -158,9 +158,8 @@ export default Ember.Service.extend({
    * @param params
    * @param newTab
      */
-  grid(name, params, newTab=false) {
+  grid(params, newTab=false) {
     params = Ember.copy(params);
-    params['dataset_name'] = name;
     params = this._translateFilters(params);
     const endpoint = '/grid';
     if (newTab) {
