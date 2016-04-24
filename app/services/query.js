@@ -193,7 +193,8 @@ export default Ember.Service.extend({
       }
     }
     delete params['filters'];
-    return Ember.merge(params, filterAPIFormatted);
+    Ember.assign(params, filterAPIFormatted);
+    return params;
   },
 
   operatorMap: {

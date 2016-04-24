@@ -62,5 +62,6 @@ export default function(defaultOptions) {
       }
     }
   };
-  return Ember.merge(defaultOptions, options);
+  Ember.assign(defaultOptions, options);
+  return defaultOptions;
 }
