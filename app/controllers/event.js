@@ -70,7 +70,6 @@ export default Ember.Controller.extend({
     const qService = this.get('query');
     const qParams = this.get('queryParamsHash');
     const nService = this.get('notify');
-    //const name = qParams.dataset_name;
 
     Ember.RSVP.hash({
       timeseries: qService.timeseries(qParams),
@@ -131,10 +130,13 @@ export default Ember.Controller.extend({
       }
     },
 
-    exit(params) {
-      // Go back to the discover route
-      // Unless geojson has been specified,
-      // in which case go back to aggregate route.
+    exit() {
+      const params = this.get('queryParamsHash');
+      if (this.get('location_geom__within')) {
+        this.transitionToRoute('discover.aggregate', {queryParams: params});
+      } else {
+        this.transitionToRoute('discover.index', {queryParams: params});
+      }
     }
   }
 });
