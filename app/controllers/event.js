@@ -42,7 +42,6 @@ export default Ember.Controller.extend({
    the metadata.
    We need to launch the appropriate calls
    to grab the widgets' data from here.
-
    */
   modelArrived: Ember.observer('model', function() {
     this.adjustDateRange();
@@ -116,7 +115,18 @@ export default Ember.Controller.extend({
       switch (type) {
         case 'csvPoints':
           qParams['data_type'] = 'csv';
-          qService.rawEvents(qParams, );
+          qService.rawEvents(qParams, true);
+          break;
+        case 'geoJSONPoints':
+          qParams['data_type'] = 'geojson';
+          qService.rawEvents(qParams, true);
+          break;
+        case 'grid':
+          qService.grid(qParams, true);
+          break;
+        case 'timeseries':
+          qService.timeseries(qParams, true);
+          break;
       }
     },
 

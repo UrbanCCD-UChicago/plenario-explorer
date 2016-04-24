@@ -22,7 +22,7 @@ export default Ember.Component.extend({
     },
     {
       "title": "Download",
-      "template": "point-download-link"
+      "template": "timeseries-download-link"
     },
     {
       "isHidden": true,
