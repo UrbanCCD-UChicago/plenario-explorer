@@ -24,6 +24,10 @@ export default Ember.Controller.extend({
       return this.getProperties(this.get('queryParams'));
     }),
 
+  queryParamsClone() {
+    return Ember.copy(this.get('queryParamsHash'));
+  },
+  
   _zoomIn() {
     this.set('zoom', true);
     const self = this;

@@ -3,7 +3,10 @@ import Ember from 'ember';
 export default Ember.Controller.extend({
   query: Ember.inject.service(),
   discoverController: Ember.inject.controller('discover'),
-  qHash: Ember.computed.reads('discoverController.queryParamsHash'),
+
+  queryParamsClone() {
+    return this.get('discoverController').queryParamsClone();
+  },
 
   timeseriesList: [],
 
@@ -12,18 +15,19 @@ export default Ember.Controller.extend({
       this.send("reload");
     },
     navigateToShape: function(name) {
-      this.transitionToRoute(`/shape/${name}`);
+      this.transitionToRoute('shape', name);
     },
     navigateToPoint: function(name) {
-      this.transitionToRoute(`/event/${name}`, {queryParams: this.get('qHash')});
+      const params = this.queryParamsClone();
+      this.transitionToRoute('event', name, {queryParams: params});
     },
     downloadShape: function(name, fileType) {
-      let params = this.get('qHash');
+      let params = this.queryParamsClone();
       params['data_type'] = fileType;
       this.get('query').rawShape(name, params, true);
     },
     downloadPoint: function(name, fileType) {
-      let params = this.get('qHash');
+      let params = this.queryParamsClone();
       params['dataset_name'] = name;
       params['data_type'] = fileType;
       this.get('query').rawEvents(params, true);
@@ -49,7 +53,7 @@ export default Ember.Controller.extend({
     let arrivalOrder = 1;
 
     this.get('model').pointDatasets.forEach((d)=> {
-      let params = this.get('qHash');
+      let params = this.queryParamsClone();
       Ember.assign(params, {dataset_name: d.datasetName});
       const tsPromise = this.get('query').timeseries(params);
 

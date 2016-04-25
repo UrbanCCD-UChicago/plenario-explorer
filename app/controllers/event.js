@@ -21,6 +21,7 @@ export default Ember.Controller.extend({
     'obs_date__le', 'obs_date__ge', 'location_geom__within',
     function() {
       let params = this.getProperties(this.get('queryParams'));
+      console.log(params);
       params['dataset_name'] = this.get('model').datasetName;
       for (const key of Object.keys(params)) {
         if (!params[key]) {
