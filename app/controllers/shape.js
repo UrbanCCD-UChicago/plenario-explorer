@@ -30,6 +30,7 @@ export default Ember.Controller.extend({
   ),
 
   modelArrived: Ember.observer('model', function() {
+    console.log(this.get('loading'));
     this.fetchShapeJSON();
   }),
 
@@ -37,6 +38,7 @@ export default Ember.Controller.extend({
     // Check metadata to confirm that num_shapes falls below
     // arbitrary threshold.
     const datasetName = this.get('dataset_name');
+    console.log(`Fetching ${datasetName}.`);
     this.get('query').rawShape(datasetName, {}).then(payload => {
       this.set('geoJSON', payload);
       this.set('loading', false);
