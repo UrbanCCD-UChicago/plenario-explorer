@@ -4,11 +4,6 @@ export default Ember.Route.extend({
 
   query: Ember.inject.service(),
 
-  setupController(controller, model) {
-    this._super(controller, model);
-    controller.set('loading', true);
-  },
-
   actions: {
     reload: function() {
       this.refresh();

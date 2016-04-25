@@ -15,8 +15,6 @@ export default Ember.Controller.extend({
   obs_date__ge: null,
   location_geom__within: null,
 
-  loading: true,
-
   queryParamsHash: Ember.computed('filters', 'agg', 'resolution',
     'obs_date__le', 'obs_date__ge', 'location_geom__within',
     function() {
@@ -39,8 +37,7 @@ export default Ember.Controller.extend({
    to grab the widgets' data from here.
    */
   modelArrived: Ember.observer('model', function() {
-    console.log('In event');
-
+    this.set('loading', true);
     this.adjustDateRange();
     this.launchWidgetQueries();
   }),
@@ -65,7 +62,6 @@ export default Ember.Controller.extend({
   launchWidgetQueries(shouldRetry = true) {
     const qService = this.get('query');
     const qParams = this.get('queryParamsHash');
-    console.log(qParams);
     const nService = this.get('notify');
 
     Ember.RSVP.hash({
