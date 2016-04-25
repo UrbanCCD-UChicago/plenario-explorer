@@ -9,12 +9,9 @@ Router.map(function() {
   this.route('discover', function() {
     this.route('aggregate');
   });
-  this.route('aggregate');
-  this.route('points');
-  this.route('display', {path: 'display/:dataset_name'});
-  this.route('event');
+  this.route('event', {path: '/event/:dataset_name'});
+  this.route('shape', {path: '/shape/:dataset_name'});
   this.route('loading');
-  this.route('shape');
 });
 
 export default Router;

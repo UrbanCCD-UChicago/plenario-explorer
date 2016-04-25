@@ -104,7 +104,7 @@ export default Ember.Component.extend({
         const props = feature.properties;
         if (props) {
           let table = '<table>';
-          for (const key of Ember.keys(props)) {
+          for (const key of Object.keys(props)) {
             table += `<tr><td>${key}&nbsp;</td><td>&nbsp;${props[key]}</td></tr>`;
           }
           table += '</table>';
@@ -192,6 +192,7 @@ export default Ember.Component.extend({
   // make sure we're zoomed in on the drawn geom.
   shouldZoom: Ember.observer('zoom', function() {
     if (this.get('zoom')){
+
       let layer = this.map.drawnItems.getLayers()[0];
       this.map.fitBounds(layer.getBounds());
     }

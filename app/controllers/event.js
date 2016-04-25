@@ -6,28 +6,22 @@ export default Ember.Controller.extend({
   query: Ember.inject.service(),
   notify: Ember.inject.service(),
 
-  queryParams: [
-    'dataset_name',
-    'filters',
-    'agg',
-    'resolution',
-    'obs_date__le',
-    'obs_date__ge',
-    'location_geom__within'
-  ],
-
-  loading: true,
-  agg: null,
+  queryParams: ['filters', 'agg', 'resolution',
+                'obs_date__le', 'obs_date__ge', 'location_geom__within'],
+  filters: '[]',
+  agg: 'week',
+  resolution: 500,
   obs_date__le: null,
   obs_date__ge: null,
-  resolution: null,
   location_geom__within: null,
-  filters: null,
 
-  queryParamsHash: Ember.computed('obs_date__le', 'obs_date__ge',
-    'agg', 'location_geom__within', 'filters', 'dataset_name',
+  loading: true,
+
+  queryParamsHash: Ember.computed('filters', 'agg', 'resolution',
+    'obs_date__le', 'obs_date__ge', 'location_geom__within',
     function() {
       let params = this.getProperties(this.get('queryParams'));
+      params['dataset_name'] = this.get('model').datasetName;
       for (const key of Object.keys(params)) {
         if (!params[key]) {
           delete params[key];
@@ -70,6 +64,7 @@ export default Ember.Controller.extend({
   launchWidgetQueries(shouldRetry = true) {
     const qService = this.get('query');
     const qParams = this.get('queryParamsHash');
+    console.log(qParams);
     const nService = this.get('notify');
 
     Ember.RSVP.hash({
@@ -110,7 +105,7 @@ export default Ember.Controller.extend({
      * @param type
        */
     download(type) {
-      let qParams = this.get('queryParamsHash');
+      let qParams = this.get('queryParams');
       const qService = this.get('query');
 
       switch (type) {
@@ -132,7 +127,7 @@ export default Ember.Controller.extend({
     },
 
     exit() {
-      const params = this.get('queryParamsHash');
+      const params = this.get('queryParams');
       if (this.get('location_geom__within')) {
         this.transitionToRoute('discover.aggregate', {queryParams: params});
       } else {

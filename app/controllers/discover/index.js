@@ -1,24 +1,29 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-  discoverController: Ember.inject.controller('discover'),
+  //discoverController: Ember.inject.controller('discover'),
   query: Ember.inject.service(),
-  params: Ember.computed.reads('discover.queryParams'),
+  //params: Ember.computed.reads('discover.queryParamsHash'),
 
-  _detailTransition(pageName, datasetName) {
-    let params = this.get('queryParams');
-    delete params['obs_date__le'];
-    delete params['obs_date__ge'];
-    params['dataset_name'] = datasetName;
-    this.transitionToRoute(pageName, {queryParams: params});
-  },
+  // _detailTransition(pageName, datasetName) {
+  //   //const parent = this.get('discoverController');
+  //   //console.log(this.get('params'));
+  //   //let params = parent.get('queryParamsHash');
+  //   //console.log(parent.get('queryParamsHash'));
+  //   //parent.set('obs_date__le', null);
+  //   //parent.set('obs_date__ge', null);
+  //
+  //   //let params = this.get('params');
+  //   //params['dataset_name'] = datasetName;
+  //   this.transitionToRoute(pageName, {queryParams: {dataset_name: datasetName}});
+  // },
 
   actions: {
     navigateToShape: function(name) {
-      this._detailTransition('shape', name);
+      this.transitionToRoute(`/shape/${name}`);
     },
     navigateToPoint: function(name) {
-      this._detailTransition('event', name);
+      this.transitionToRoute(`/event/${name}`);
     },
     downloadShape: function(name, fileType) {
       this.get('query').rawShape(name, {data_type: fileType}, true);
