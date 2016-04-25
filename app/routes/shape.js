@@ -3,11 +3,6 @@ import Ember from 'ember';
 export default Ember.Route.extend({
   query: Ember.inject.service(),
   notify: Ember.inject.service(),
-  
-  setupController(controller, model) {
-    this._super(controller, model);
-    controller.set('loading', true);
-  },
 
   model(params) {
     const datasetName = params.dataset_name;

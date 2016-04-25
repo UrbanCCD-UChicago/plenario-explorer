@@ -25,6 +25,7 @@
       {{metadata-display m=model}}
 
     </div>
+
     <div class="col-md-7">
       {{#if loading}}
           <h3 class='detail-header'>Loading...</h3>
@@ -32,9 +33,18 @@
         {{leaflet-map}}
       {{else}}
           <h3 class='detail-header' id="record-count">
-              {{model.numShapes}} Records Found
+            {{model.numShapes}} Records Found
           </h3>
-        {{leaflet-map geoJSON=geoJSON}}
+        {{#if giveUp}}
+            <p>This shape dataset is too big to display in a web browser.
+                If you would like to view the shapes,
+                please download the file and open it in a GIS package
+                such as <a href = "http://www.qgis.org/en/site/">QGIS</a>.</p>
+
+        {{else}}
+          {{leaflet-map geoJSON=geoJSON}}
+        {{/if}}
+
       {{/if}}
 
     </div>
