@@ -19,7 +19,6 @@ export default Ember.Controller.extend({
     'obs_date__le', 'obs_date__ge', 'location_geom__within',
     function() {
       let params = this.getProperties(this.get('queryParams'));
-      console.log(params);
       params['dataset_name'] = this.get('model').datasetName;
       for (const key of Object.keys(params)) {
         if (!params[key]) {
@@ -29,6 +28,10 @@ export default Ember.Controller.extend({
       return params;
     }
   ),
+
+  queryParamsClone() {
+    return Ember.copy(this.get('queryParamsHash'));
+  },
 
   /*
    The model we get from the route is just
@@ -61,7 +64,7 @@ export default Ember.Controller.extend({
 
   launchWidgetQueries(shouldRetry = true) {
     const qService = this.get('query');
-    const qParams = this.get('queryParamsHash');
+    const qParams = this.queryParamsClone();
     const nService = this.get('notify');
 
     Ember.RSVP.hash({
@@ -102,7 +105,7 @@ export default Ember.Controller.extend({
      * @param type
        */
     download(type) {
-      let qParams = this.get('queryParamsHash');
+      let qParams = this.queryParamsClone();
       qParams['dataset_name'] = this.get('model').datasetName;
       const qService = this.get('query');
 
@@ -125,7 +128,7 @@ export default Ember.Controller.extend({
     },
 
     exit() {
-      const params = this.get('queryParams');
+      const params = this.queryParamsClone();
       if (this.get('location_geom__within')) {
         this.transitionToRoute('discover.aggregate', {queryParams: params});
       } else {

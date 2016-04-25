@@ -5,7 +5,6 @@ export default Ember.Route.extend({
   notify: Ember.inject.service('notify'),
   query: Ember.inject.service(),
   model() {
-    //console.log(params);
     const params = this.paramsFor('discover');
     return Ember.RSVP.hash({
       pointDatasets: this.get('query').eventCandidates(params),
@@ -14,7 +13,6 @@ export default Ember.Route.extend({
   },
   actions: {
     reload: function() {
-      console.log('Trying to reload model');
       this.refresh();
     }
   },
@@ -41,7 +39,6 @@ export default Ember.Route.extend({
       geoJSON = JSON.parse(geoJSONStr);
     }
     catch (err) {
-      console.log('Caught bad geoJSON');
       bailToIndex('Invalid JSON. ' + genericHelp);
     }
 
