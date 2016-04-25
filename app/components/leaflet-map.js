@@ -98,8 +98,22 @@ export default Ember.Component.extend({
       if (typeof(geoJSON) === 'string') {
         geoJSON = JSON.parse(geoJSON);
       }
-      // We should have a raw geoJSON object
-      return L.geoJson(geoJSON);
+
+      // Add popups
+      const onEachFeature = function(feature, layer) {
+        const props = feature.properties;
+        if (props) {
+          let table = '<table>';
+          for (const key of Ember.keys(props)) {
+            table += `<tr><td>${key}&nbsp;</td><td>&nbsp;${props[key]}</td></tr>`;
+          }
+          table += '</table>';
+          layer.bindPopup(table);
+        }
+      };
+      return L.geoJson(geoJSON, {
+        onEachFeature: onEachFeature
+      });
     }
     catch (e) {
       // Wasn't valid GeoJSON

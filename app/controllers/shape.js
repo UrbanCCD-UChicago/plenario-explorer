@@ -47,11 +47,18 @@ export default Ember.Controller.extend({
   },
 
   actions: {
-    download: function() {
-
+    download: function(type) {
+      const name = this.get('dataset_name');
+      this.get('query').rawShape(name, {data_type: type}, true);
     },
     exit: function() {
-
+      if (this.get('location_geom__within')) {
+        this.transitionToRoute('discover.aggregate', {
+          queryParams: this.get('queryParamsHash')
+        });
+      } else {
+        this.transitionToRoute('index');
+      }
     }
   }
 
