@@ -14,6 +14,7 @@ Router.map(function() {
   this.route('display', {path: 'display/:dataset_name'});
   this.route('event');
   this.route('loading');
+  this.route('shape');
 });
 
 export default Router;

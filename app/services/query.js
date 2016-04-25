@@ -239,6 +239,8 @@ export default Ember.Service.extend({
   /**
    * return geoJSON of shape dataset
    * @param name
+   * @param params
+   * @param newTab
      */
   rawShape(name, params, newTab=false) {
     const endpoint = `/shapes/${name}`;
@@ -246,8 +248,12 @@ export default Ember.Service.extend({
       this.openInNewTab(endpoint, params);
     }
     else {
-      // unimplemented
-      return null;
+      const shape = this.get('ajax').request(endpoint, {data: params});
+      return shape.then(payload => {
+        return payload;
+      }, reason => {
+        console.log(reason);
+      });
     }
   },
 
