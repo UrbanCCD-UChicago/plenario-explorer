@@ -25,7 +25,7 @@ export default Ember.Controller.extend({
   filters: null,
 
   queryParamsHash: Ember.computed('obs_date__le', 'obs_date__ge',
-    'agg', 'location_geom__within', 'filters',
+    'agg', 'location_geom__within', 'filters', 'dataset_name',
     function() {
       let params = this.getProperties(this.get('queryParams'));
       for (const key of Object.keys(params)) {
@@ -45,6 +45,7 @@ export default Ember.Controller.extend({
    */
   modelArrived: Ember.observer('model', function() {
     console.log('In event');
+
     this.adjustDateRange();
     this.launchWidgetQueries();
   }),

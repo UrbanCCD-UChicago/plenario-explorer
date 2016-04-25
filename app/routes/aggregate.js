@@ -17,6 +17,11 @@ export default Ember.Route.extend({
     }
   },
 
+  setupController(controller, model) {
+    this._super(controller, model);
+    controller.set('loading', true);
+  },
+
   /**
    * A place to impose restrictions on the query parameters
    * so that we can't enter aggregate with badly formatted params.
