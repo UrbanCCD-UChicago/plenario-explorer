@@ -58,7 +58,9 @@ export default Ember.Controller.extend({
 
     this.get('model').pointDatasets.forEach((d)=> {
       let params = this.get('qHash');
+      console.log(params);
       Ember.assign(params, {dataset_name: d.datasetName});
+      console.log(params);
       const tsPromise = this.get('query').timeseries(params);
 
       tsPromise.then(function(value){
