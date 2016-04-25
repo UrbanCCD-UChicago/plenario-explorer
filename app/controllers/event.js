@@ -10,7 +10,7 @@ export default Ember.Controller.extend({
                 'obs_date__le', 'obs_date__ge', 'location_geom__within'],
   filters: '[]',
   agg: 'week',
-  resolution: 500,
+  resolution: '500',
   obs_date__le: null,
   obs_date__ge: null,
   location_geom__within: null,
@@ -105,7 +105,8 @@ export default Ember.Controller.extend({
      * @param type
        */
     download(type) {
-      let qParams = this.get('queryParams');
+      let qParams = this.get('queryParamsHash');
+      qParams['dataset_name'] = this.get('model').datasetName;
       const qService = this.get('query');
 
       switch (type) {
