@@ -7,29 +7,21 @@ export default Ember.Controller.extend({
 
   timeseriesList: [],
 
-  _detailTransition(pageName, datasetName) {
-    let params = this.get('qHash');
-    params['dataset_name'] = datasetName;
-    this.transitionToRoute(pageName, {queryParams: params});
-  },
-
   actions: {
     submit: function() {
       this.send("reload");
     },
     navigateToShape: function(name) {
-      this._detailTransition('shape', name);
+      this.transitionToRoute(`/shape/${name}`);
     },
     navigateToPoint: function(name) {
-      this._detailTransition('event', name);
+      this.transitionToRoute(`/event/${name}`, {queryParams: this.get('qHash')});
     },
     downloadShape: function(name, fileType) {
       let params = this.get('qHash');
       params['data_type'] = fileType;
-      console.log(params);
       this.get('query').rawShape(name, params, true);
     },
-
     downloadPoint: function(name, fileType) {
       let params = this.get('qHash');
       params['dataset_name'] = name;
@@ -58,9 +50,7 @@ export default Ember.Controller.extend({
 
     this.get('model').pointDatasets.forEach((d)=> {
       let params = this.get('qHash');
-      console.log(params);
       Ember.assign(params, {dataset_name: d.datasetName});
-      console.log(params);
       const tsPromise = this.get('query').timeseries(params);
 
       tsPromise.then(function(value){

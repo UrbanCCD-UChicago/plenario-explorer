@@ -23,7 +23,7 @@ export default Ember.Controller.extend({
                                   'agg', 'location_geom__within', function() {
       return this.getProperties(this.get('queryParams'));
     }),
-  
+
   _zoomIn() {
     this.set('zoom', true);
     const self = this;
