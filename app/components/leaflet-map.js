@@ -202,7 +202,6 @@ export default Ember.Component.extend({
     // to not having geoJSON.
     // That means the user drew something and deleted it.
     if (!this.get('geoJSON')) {
-      this.map.setView([lat, lng], zoom);
       this.map.drawnItems.clearLayers();
     }
   })
