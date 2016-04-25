@@ -4,16 +4,15 @@ export default Ember.Controller.extend({
   query: Ember.inject.service(),
   notify: Ember.inject.service(),
 
-  giveUp: false,
-  loading: true,
-
   modelArrived: Ember.observer('model', function() {
     this.fetchShapeJSON();
     console.log(this.get('loading'));
+    console.log(this.get('giveUp'));
   }),
 
   fetchShapeJSON() {
     this.set('loading', true);
+    this.set('giveUp', false);
     // Check metadata to confirm that num_shapes falls below
     // arbitrary threshold.
     const meta = this.get('model');
@@ -47,7 +46,5 @@ export default Ember.Controller.extend({
       this.transitionToRoute('index');
     }
   }
-
-
 
 });
