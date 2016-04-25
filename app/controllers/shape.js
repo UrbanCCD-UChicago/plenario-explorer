@@ -3,6 +3,7 @@ import Ember from 'ember';
 export default Ember.Controller.extend({
   query: Ember.inject.service(),
   notify: Ember.inject.service(),
+  loading: true,
 
   queryParams: [
     'dataset_name',
@@ -38,10 +39,20 @@ export default Ember.Controller.extend({
     const datasetName = this.get('dataset_name');
     this.get('query').rawShape(datasetName, {}).then(payload => {
       this.set('geoJSON', payload);
+      this.set('loading', false);
     }, reason => {
       this.get('notify').error(`Could not fetch map data: ${reason}`);
+      this.set('loading', false);
     });
+  },
 
+  actions: {
+    download: function() {
+
+    },
+    exit: function() {
+
+    }
   }
 
 

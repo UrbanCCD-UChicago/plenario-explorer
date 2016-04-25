@@ -6,7 +6,6 @@
         <h3 class='detail-header'>
           {{model.attribution}}: {{model.humanName}}
         </h3>
-        <br/>
 
         <div class="btn-group">
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -15,12 +14,15 @@
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu">
-             <!--   <li><a {{action "download" "geoJSONPoints"}}><i class='fa fa-download'></i> Raw data (CSV, first 1,000 records)</a></li>
-                <li><a {{action "download" "csvPoints"}}><i class='fa fa-download'></i> Raw data (GeoJSON, first 1,000 records)</a></li>
-                <li><a {{action "download" "grid"}}><i class='fa fa-download'></i> Map grid (GeoJSON, with count aggregate)</a></li>
-                <li><a {{action "download" "timeseries"}}><i class='fa fa-download'></i> Time series (CSV)</a></li> -->
+                <li><a {{action "download" "geojson"}}><i class='fa fa-download'></i>GeoJSON</a></li>
+                <li><a {{action "download" "shapefile"}}><i class='fa fa-download'></i>ESRI Shapefile</a></li>
+                <li><a {{action "download" "kml"}}><i class='fa fa-download'></i>KML</a></li>
             </ul>
         </div>
+
+        <br/><br/>
+
+      {{metadata-display m=model}}
 
     </div>
     <div class="col-md-7">
@@ -30,9 +32,10 @@
         {{leaflet-map}}
       {{else}}
           <h3 class='detail-header' id="record-count">
-              Records Found
+              {{model.numShapes}} Records Found
           </h3>
-        {{metadata-display m=model}}
+        {{leaflet-map geoJSON=geoJSON}}
+
       {{/if}}
 
     </div>
