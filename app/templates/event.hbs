@@ -48,9 +48,9 @@
             {{#if timeseries}} {{timeseries.count}} {{else}} 0 {{/if}}
               Records Found
           </h3>
-        {{heat-grid grid=grid datasetName=model.humanName loading=loading}}
+        {{heat-grid grid=grid datasetName=model.humanName}}
         {{high-charts classNames=chartClasses content=timeseries.series}}
-          <h4>Dataset details</h4>
+        <h4>Dataset details</h4>
         {{metadata-display m=model}}
       {{/if}}
 
