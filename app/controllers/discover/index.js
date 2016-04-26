@@ -1,7 +1,37 @@
 import Ember from 'ember';
+import moment from 'moment';
 
 export default Ember.Controller.extend({
   query: Ember.inject.service(),
+  //
+  // init() {
+  //   this._super(...arguments);
+  //   const pointDatasets = this.get('model.pointDatasets');
+  //   const withoutSillyTimes = pointDatasets.map(d => {
+  //       const inFuture = moment(d.obsTo).isAfter(moment());
+  //       const inOldenTimes = moment(d.obsTo).isBefore('1899-12-31');
+  //       if (inFuture || inOldenTimes) {
+  //         d.obsFrom = null;
+  //         d.obsTo = null;
+  //       }
+  //       return d;
+  //   });
+  //   this.set('processedPointDatasets', withoutSillyTimes);
+  // },
+
+  modelArrived: Ember.observer('model', function() {
+    const pointDatasets = this.get('model.pointDatasets');
+    const withoutSillyTimes = pointDatasets.map(d => {
+      const inFuture = moment(d.obsTo).isAfter(moment());
+      const inOldenTimes = moment(d.obsTo).isBefore('1899-12-31');
+      if (inFuture || inOldenTimes) {
+        d.obsFrom = null;
+        d.obsTo = null;
+      }
+      return d;
+    });
+    this.set('processedPointDatasets', withoutSillyTimes);
+  }),
 
   actions: {
     navigateToShape: function(name) {

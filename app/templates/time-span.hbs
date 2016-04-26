@@ -1,2 +1,6 @@
-<strong>{{timespan record.obsFrom record.obsTo}}</strong>
-({{display-time record.obsFrom}} - {{display-time record.obsTo}})
+{{#if record.obsFrom}}
+  <strong>{{timespan record.obsFrom record.obsTo}}</strong>
+  ({{display-time record.obsFrom}} - {{display-time record.obsTo}})
+{{else}}
+  N/A
+{{/if}}
