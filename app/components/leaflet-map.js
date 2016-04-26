@@ -130,8 +130,6 @@ export default Ember.Component.extend({
     // Making the feature group an attribute of the map
     // so that event handlers that have access to the map
     // can get at it.
-    console.log('In addDrawControl');
-
     this.map.drawnItems = new L.FeatureGroup();
     if (layer) {
       this.map.drawnItems.addLayer(layer);
