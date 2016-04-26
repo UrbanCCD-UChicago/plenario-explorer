@@ -6,8 +6,6 @@ export default Ember.Controller.extend({
 
   modelArrived: Ember.observer('model', function() {
     this.fetchShapeJSON();
-    console.log(this.get('loading'));
-    console.log(this.get('giveUp'));
   }),
 
   fetchShapeJSON() {
