@@ -1,7 +1,13 @@
 # Ember-plenario
 
-This README outlines the details of collaborating on this Ember application.
-A short introduction of this app could easily go here.
+This is an [Ember](http://emberjs.com/) application that fetches data from the plenar.io API.
+Because it only communicates with Plenario through its API, you can run and develop it
+without a Plenario backend development environment.
+In theory, you could deploy this as a static page.
+However, it is meant to be deployed inside of the plenar.io [Flask application](https://github.com/UrbanCCD-UChicago/plenario),
+where it is stuffed inside of a div in a Jinja template.
+
+Below are instructions on how to set up your development environment.
 
 ## Prerequisites
 
