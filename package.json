@@ -1,8 +1,8 @@
 {
-  "name": "ember-plenario",
-  "version": "0.0.0",
-  "description": "Small description for ember-plenario goes here",
-  "private": true,
+  "name": "plenario-explorer",
+  "version": "0.1.0",
+  "description": "Ember frontend to discover and visualize datasets from plenar.io",
+  "private": false,
   "directories": {
     "doc": "doc",
     "test": "tests"
@@ -12,11 +12,18 @@
     "start": "ember server",
     "test": "ember test"
   },
-  "repository": "",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/UrbanCCD-UChicago/plenario-explorer.git"
+  },
   "engines": {
     "node": ">= 0.10.0"
   },
-  "author": "",
+  "author": {
+    "name" : "Will Engler",
+    "email" : "willengler@uchicago.edu",
+    "url" : "http://willengler.com/"
+  },
   "license": "MIT",
   "devDependencies": {
     "broccoli-asset-rev": "^2.2.0",
