@@ -2,7 +2,7 @@
 
 module.exports = function(environment) {
   var ENV = {
-    modulePrefix: 'ember-plenario',
+    modulePrefix: 'plenario-explorer',
     environment: environment,
     baseURL: '/',
     locationType: 'auto',

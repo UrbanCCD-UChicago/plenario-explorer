@@ -12,6 +12,7 @@ L.Icon.Default.imagePath = '/assets/images';
 Ember.MODEL_FACTORY_INJECTIONS = true;
 
 App = Ember.Application.extend({
+  rootElement: '#ember-app',
   modulePrefix: config.modulePrefix,
   podModulePrefix: config.podModulePrefix,
   Resolver
