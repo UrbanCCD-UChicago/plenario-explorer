@@ -1,4 +1,4 @@
-# Ember-plenario
+# Plenario Explorer
 
 This is an [Ember](http://emberjs.com/) application that fetches data from the plenar.io API.
 Because it only communicates with Plenario through its API, you can run and develop it
