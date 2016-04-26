@@ -2,13 +2,22 @@
     <div class='col-md-6'>
         <div class="form-group">
             <label for="start-date-filter">Start date</label>
-          {{date-picker id="start-date-filter" date=startDate}}
+          {{#if override}}
+            {{date-picker id="start-date-filter" date=startDate}}
+          {{else}}
+            {{date-picker id="start-date-filter" date=startDate}}
+          {{/if}}
         </div>
     </div>
     <div class='col-md-6'>
         <div class="form-group">
             <label for="end-date-filter">End date</label>
-          {{date-picker id="end-date-filter" date=endDate}}
+          {{#if override}}
+            {{date-picker id="end-date-filter" date=endDate}}
+          {{else}}
+            {{date-picker id="end-date-filter" date=endDate}}
+          {{/if}}
+
         </div>
     </div>
 </div>

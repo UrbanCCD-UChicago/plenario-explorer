@@ -27,12 +27,19 @@ export default Ember.Controller.extend({
   queryParamsClone() {
     return Ember.copy(this.get('queryParamsHash'));
   },
-  
+
   _zoomIn() {
     this.set('zoom', true);
     const self = this;
     Ember.run.next(() => {
       self.set('zoom', false);
+    });
+  },
+
+  _resetDatePickers() {
+    this.set('override', true);
+    Ember.run.next(() => {
+      this.set('override', false);
     });
   },
 
@@ -59,6 +66,7 @@ export default Ember.Controller.extend({
         this.transitionToRoute('index');
       }
       this._resetParams();
+      this._resetDatePickers();
     }
   }
 });
