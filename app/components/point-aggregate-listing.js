@@ -28,6 +28,13 @@ export default Ember.Component.extend({
       "isHidden": true,
       "title": "Name Plaintext",
       "propertyName": "humanName"
+    },
+    {
+      "isHidden": true,
+      "title": "Arrival Order",
+      "propertyName": "arrivalOrder",
+      "sortPrecedence": 1,
+      "sortDirection": "asc"
     }
   ],
   customMessages: {
@@ -35,7 +42,6 @@ export default Ember.Component.extend({
     "tableSummary": "Showing %@ - %@ of %@",
     "noDataToShow": "Could not find any data within your filters"
   },
-  sortProperties: Ember.A(['arrivalOrder:asc']),
   pageSizeValues: Ember.A([5, 10, 25, 50]),
   customClasses: {"globalFilterWrapper": "pull-left bottom-breathe"}
 });

@@ -17,6 +17,7 @@
     "datatables.net-bs": "^1.10.11",
     "bootswatch": "3.3.6",
     "urijs": "uri.js#^1.17.1",
-    "spin.js": "^2.3.2"
+    "spin.js": "^2.3.2",
+    "font-awesome": "~4.5.0"
   }
 }

@@ -11,6 +11,11 @@ body {
   height: 165px;
 }
 
+
+#plenario-logo {
+  display: inline;
+}
+
 .panel-group { margin-bottom: 5px;}
 
 .panel-heading a {
