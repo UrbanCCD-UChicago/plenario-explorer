@@ -263,29 +263,6 @@ body {
   opacity: 0.7;
 }
 
-
-/* branding styles */
-.navbar-brand {
-  font-size: 21px;
-}
-.navbar-brand img {
-  position:relative;
-  top: -2px;
-  margin-right: 6px;
-  opacity: 0.85;
-}
-
-.navbar-brand:hover img {
-  opacity: 1;
-}
-
-.navbar-brand .alpha {
-  font-size: 0.5em;
-  position: relative;
-  top: 5px;
-  left: 1px;
-}
-
 /* examples page */
 .example textarea {
   max-width: 100%;
