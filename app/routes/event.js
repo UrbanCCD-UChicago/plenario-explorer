@@ -10,14 +10,7 @@ export default Ember.Route.extend({
     }
   },
 
-  beforeModel(transition) {
-    window.trans = transition;
-    console.log(transition);
-  },
-
-  model(params, transition) {
-    console.log(params);
-    console.log(transition.queryParams);
+  model(params) {
     return this.get('query').eventMetadata(params.dataset_name).then(meta => {
       return meta;
     });
