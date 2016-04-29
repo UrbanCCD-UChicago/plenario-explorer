@@ -7,7 +7,7 @@ import config from './config/environment';
 
 let App;
 
-L.Icon.Default.imagePath = '/assets/images';
+L.Icon.Default.imagePath = 'http://ember-prototype.s3-website-us-east-1.amazonaws.com/assets/images';
 
 Ember.MODEL_FACTORY_INJECTIONS = true;
 
