@@ -53,6 +53,21 @@ body {
   padding-right: 15px;
 }
 
+/* branding styles */
+.navbar-brand {
+  font-size: 21px;
+}
+.navbar-brand img {
+  position:relative;
+  top: -2px;
+  margin-right: 6px;
+  opacity: 0.85;
+}
+
+.navbar-brand:hover img {
+  opacity: 1;
+}
+
 /* Custom page header */
 .header {
   border-bottom: 1px solid #e5e5e5;
