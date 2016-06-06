@@ -59,7 +59,9 @@ export default Ember.Controller.extend({
         this.get('aggController').send('submit');
       }
       // Refocus map on user-drawn shape.
-      this._zoomIn();
+      if (this.get('location_geom__within')) {
+        this._zoomIn();
+      }
     },
     reset: function() {
       if (! this._inIndex()) {
