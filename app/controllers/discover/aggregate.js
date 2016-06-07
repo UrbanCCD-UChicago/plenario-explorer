@@ -4,7 +4,7 @@ export default Ember.Controller.extend({
   query: Ember.inject.service(),
   discoverController: Ember.inject.controller('discover'),
 
-  searchingDatasets: true,
+  searchingDatasets: false,
 
   queryParamsClone() {
     return this.get('discoverController').queryParamsClone();
