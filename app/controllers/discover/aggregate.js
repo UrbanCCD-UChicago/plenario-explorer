@@ -6,6 +6,8 @@ export default Ember.Controller.extend({
 
   searchingDatasets: true,
 
+  linkParameters: {},
+
   queryParamsClone() {
     return this.get('discoverController').queryParamsClone();
   },
@@ -42,6 +44,8 @@ export default Ember.Controller.extend({
     this.get('timeseriesList').clear();
     // Launch a new set of timeseries queries from the new candidates.
     this.launchTimeseriesQueries();
+
+    this.set('linkParameters', $.param(this.queryParamsClone()));
   }),
 
   /**

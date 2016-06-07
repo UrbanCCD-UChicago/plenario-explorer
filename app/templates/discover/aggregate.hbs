@@ -2,6 +2,8 @@
   {{timeseriesList.length}} {{pluralize 'Event Dataset' timeseriesList.length}} Found {{#if searchingDatasets}}and counting...{{/if}}
 </strong></p>
 {{point-aggregate-listing
+linkParameters=linkParameters
+targetLinkRoute="event"
 displayLink=(action "navigateToPoint")
 downloadLink=(action "downloadPoint")
 pointDatasets=timeseriesList
@@ -11,6 +13,8 @@ displayTrends=true}}
   {{model.shapeDatasets.length}} {{pluralize 'Shape Dataset' model.shapeDatasets.length}} Found
 </strong></p>
 {{shape-listing
+linkParameters=linkParameters
+targetLinkRoute="shape"
 displayLink=(action "navigateToShape")
 downloadLink=(action "downloadShape")
 shapeDatasets=model.shapeDatasets}}

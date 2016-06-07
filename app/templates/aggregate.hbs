@@ -5,6 +5,7 @@
   {{timeseriesList.length}} {{pluralize 'Event Dataset' timeseriesList.length}} Found
 </strong></p>
 {{point-aggregate-listing
+  targetLinkRoute="event"
   displayLink=(action "navigateToPoint")
   downloadLink=(action "downloadPoint")
   pointDatasets=timeseriesList}}
@@ -13,6 +14,7 @@
   {{model.shapeDatasets.length}} {{pluralize 'Shape Dataset' model.shapeDatasets.length}} Found
 </strong></p>
 {{shape-listing
+  targetLinkRoute="shape"
   displayLink=(action "navigateToShape")
   downloadLink=(action "downloadShape")
   shapeDatasets=model.shapeDatasets}}
