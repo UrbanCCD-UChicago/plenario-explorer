@@ -1,5 +1,5 @@
 <p class="lead"><strong>
-  {{timeseriesList.length}} {{pluralize 'Event Dataset' timeseriesList.length}} Found
+  {{timeseriesList.length}} {{pluralize 'Event Dataset' timeseriesList.length}} Found {{#if searchingDatasets}}and counting...{{/if}}
 </strong></p>
 {{point-aggregate-listing
 displayLink=(action "navigateToPoint")
