@@ -50,5 +50,14 @@ export default Ember.Route.extend({
     if (!isPolygonOrLine) {
       bailToIndex('Geometry must be a polygon or line. ' + genericHelp);
     }
+
+    //Start a spinner cue (whose toggle lives in controllers/discover.js,
+    //and whose DOM lives in templates/discover.hbs)
+    this.controllerFor('discover').set('loadingMeta', true);
+  },
+
+  afterModel(){
+    //Stop the spinner
+    this.controllerFor('discover').set('loadingMeta', false);
   }
 });

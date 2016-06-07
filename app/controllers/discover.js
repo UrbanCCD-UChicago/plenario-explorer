@@ -3,6 +3,9 @@ import moment from 'moment';
 import dateFormat from '../utils/date-format';
 
 export default Ember.Controller.extend({
+
+  loadingMeta: false,
+
   aggController: Ember.inject.controller('discover.aggregate'),
 
   queryParams: ['obs_date__le', 'obs_date__ge','agg', 'location_geom__within', 'center'],
@@ -23,12 +26,10 @@ export default Ember.Controller.extend({
 
   queryParamsHash: Ember.computed('obs_date__le', 'obs_date__ge',
                                   'agg', 'center', 'location_geom__within', function() {
-      console.log(this.getProperties(this.get('queryParams')))
       return this.getProperties(this.get('queryParams'));
     }),
 
   queryParamsClone() {
-    console.log(this.get('queryParamsHash'));
     return Ember.copy(this.get('queryParamsHash'));
   },
 
@@ -66,7 +67,6 @@ export default Ember.Controller.extend({
       if (this.get('location_geom__within')) {
         this._zoomIn();
       }
-
     },
     reset: function() {
       if (! this._inIndex()) {
