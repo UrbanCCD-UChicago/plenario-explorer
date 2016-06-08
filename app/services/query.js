@@ -30,8 +30,8 @@ export default Ember.Service.extend({
   },
 
 
-  injectExplorerURL: function(route, params, obj) {
-    Ember.assign(obj, {'queryURL': `${route}/${obj.datasetName}?${$.param(params)}`})
+  injectExplorerData: function(route, params, obj) {
+    Ember.assign(obj, {'explorerData': {'route': route, 'queryParams': params}})
     return obj
   },
 
@@ -46,8 +46,16 @@ export default Ember.Service.extend({
 
   _getMetadata(type) {
     const camelizeHash = this.camelizeHash;
+    const injectExplorerData = this.injectExplorerData;
+    let route = "event";
+    if (type == "events") {
+      route = "event";
+    }
+    else if (type == "shapes"){
+      route = "shape";
+    }
     return this.get(type).then(function(doc) {
-      return doc.objects.map(camelizeHash);
+      return doc.objects.map(v => injectExplorerData(route, undefined, camelizeHash(v)));
     },function(reason) {
       console.log(`Failed to load ${type}. Reason: ${reason}.`);
     });
@@ -223,7 +231,7 @@ export default Ember.Service.extend({
     const candidates = this.get('ajax').request('/datasets', {data: params});
     return candidates.then(doc => {
       return doc.objects.map(v => {
-        return this.injectExplorerURL("event", params, this.camelizeHash(v));
+        return this.injectExplorerData("event", params, this.camelizeHash(v));
       });
     }, function(reason) {
       console.log(`Event candidate query failed: ${reason}`);
@@ -239,7 +247,7 @@ export default Ember.Service.extend({
     const subsets = this.get('ajax').request('/shapes', {data: params});
     return subsets.then(doc => {
       return doc.objects.map(v => {
-        return this.injectExplorerURL("shape", params, this.camelizeHash(v));
+        return this.injectExplorerData("shape", params, this.camelizeHash(v));
       });
     }, function(reason) {
       console.log(`Shape subset query failed: ${reason}`);

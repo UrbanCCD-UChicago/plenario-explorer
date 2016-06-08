@@ -1,1 +1,11 @@
-<a href="{{record.queryURL}}" {{action displayLink record.datasetName}}>{{record.humanName}}</a>
+{{#if record.explorerData.queryParams}}
+  {{#link-to record.explorerData.route record.datasetName
+    (query-params
+      location_geom__within=record.explorerData.queryParams.location_geom__within
+      obs_date__le=record.explorerData.queryParams.obs_date__le
+      obs_date__ge=record.explorerData.queryParams.obs_date__ge
+      agg=record.explorerData.queryParams.agg
+    )}}{{record.humanName}}{{/link-to}}
+{{else}}
+  {{#link-to record.explorerData.route record.datasetName}}{{record.humanName}}{{/link-to}}
+{{/if}}
