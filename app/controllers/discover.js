@@ -3,24 +3,29 @@ import moment from 'moment';
 import dateFormat from '../utils/date-format';
 
 export default Ember.Controller.extend({
+
+  loadingMeta: false,
+
   aggController: Ember.inject.controller('discover.aggregate'),
 
-  queryParams: ['obs_date__le', 'obs_date__ge','agg', 'location_geom__within'],
+  queryParams: ['obs_date__le', 'obs_date__ge','agg', 'location_geom__within', 'center'],
 
   'obs_date__le': dateFormat(moment().toString()),
   'obs_date__ge': dateFormat(moment().subtract(90, 'days').toString()),
   'agg': 'week',
+  'center': 'chicago',
   'location_geom__within': null,
 
   _resetParams() {
     this.set('obs_date__le', dateFormat(moment().toString()));
     this.set('obs_date__ge', dateFormat(moment().subtract(90, 'days').toString()));
     this.set('agg', 'week');
+    this.set('center', 'chicago');
     this.set('location_geom__within', null);
   },
 
   queryParamsHash: Ember.computed('obs_date__le', 'obs_date__ge',
-                                  'agg', 'location_geom__within', function() {
+                                  'agg', 'center', 'location_geom__within', function() {
       return this.getProperties(this.get('queryParams'));
     }),
 

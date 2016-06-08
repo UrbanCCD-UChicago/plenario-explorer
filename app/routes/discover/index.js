@@ -7,5 +7,5 @@ export default Ember.Route.extend({
       pointDatasets: this.get('query').allEventMetadata(),
       shapeDatasets: this.get('query').allShapeMetadata()
     });
-  }
+  },
 });

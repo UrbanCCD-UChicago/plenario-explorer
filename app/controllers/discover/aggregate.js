@@ -4,6 +4,8 @@ export default Ember.Controller.extend({
   query: Ember.inject.service(),
   discoverController: Ember.inject.controller('discover'),
 
+  searchingDatasets: false,
+
   queryParamsClone() {
     return this.get('discoverController').queryParamsClone();
   },
@@ -49,8 +51,14 @@ export default Ember.Controller.extend({
    * the timeseriesList to display.
    */
   launchTimeseriesQueries() {
+    this.set('searchingDatasets', true);
+
     let timeseriesList = this.get('timeseriesList');
     let arrivalOrder = 1;
+
+    let eligible = this.get('model').pointDatasets.length;
+    let processed = 0;
+    let discoverAggregateController = this;
 
     this.get('model').pointDatasets.forEach((d)=> {
       let params = this.queryParamsClone();
@@ -59,6 +67,7 @@ export default Ember.Controller.extend({
 
       tsPromise.then(function(value){
         if (value.count === 0) {
+          eligible--;
           return;  // Empty timeseries. Don't display it.
         }
         d['count'] = value.count;
@@ -66,6 +75,11 @@ export default Ember.Controller.extend({
         d['arrivalOrder'] = arrivalOrder;
         arrivalOrder++;
         timeseriesList.pushObject(d);
+        processed++
+        if(processed == eligible)
+        {
+          discoverAggregateController.set('searchingDatasets', false);
+        }
       }, function(reason){
         console.log(reason);
       });

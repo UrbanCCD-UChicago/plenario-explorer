@@ -12,13 +12,16 @@ import Ember from 'ember';
 //  the main query pages and layer + legend for grid display)
 
 
-// Chi-town
+// Chi-town...our beloved default view.
 const lat = 41.795509;
 const lng = -87.581916;
 const zoom = 10;
 const tileURL = 'https://{s}.tiles.mapbox.com/v3/datamade.hn83a654/{z}/{x}/{y}.png';
 
 export default Ember.Component.extend({
+
+  center: [[lat, lng], zoom],
+
   didInsertElement() {
     this._super(...arguments);
     Ember.run.scheduleOnce('afterRender', this, function() {
@@ -35,7 +38,7 @@ export default Ember.Component.extend({
       tapTolerance: 30,
       minZoom: 1
     };
-    this.set('map', L.map('map', map_options).setView([lat, lng], zoom));
+    this.set('map', L.map('map', map_options).setView(...this.get('center')));
   },
 
   addTiles() {
@@ -203,6 +206,12 @@ export default Ember.Component.extend({
     if (!this.get('geoJSON')) {
       this.map.drawnItems.clearLayers();
     }
-  })
+  }),
+
+  //If center changes, then recenter the map
+  changedCenter: Ember.observer('center', function() {
+    const location = this.get('center');
+    this.get('map').setView(new L.LatLng(...this.get('center')[0]), this.get('center')[1]);
+  }),
 
 });
