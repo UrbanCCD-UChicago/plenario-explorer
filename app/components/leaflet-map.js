@@ -20,10 +20,7 @@ const tileURL = 'https://{s}.tiles.mapbox.com/v3/datamade.hn83a654/{z}/{x}/{y}.p
 
 export default Ember.Component.extend({
 
-  init()
-  {
-    this._super(...arguments);
-  },
+  center: [[lat, lng], zoom],
 
   didInsertElement() {
     this._super(...arguments);
@@ -41,13 +38,7 @@ export default Ember.Component.extend({
       tapTolerance: 30,
       minZoom: 1
     };
-    if(this.get('center') in this.cities){
-      this.set('map', L.map('map', map_options));
-      this.centerMapOnCity(this.get('center'));
-    }
-    else{
-      this.set('map', L.map('map', map_options).setView([lat, lng], zoom));
-    }
+    this.set('map', L.map('map', map_options).setView(...this.get('center')));
   },
 
   addTiles() {
@@ -217,28 +208,10 @@ export default Ember.Component.extend({
     }
   }),
 
-  //ids for cities, their locations and zoom.
-  cities: {
-    "chicago": {location: [41.795509, -87.581916], zoom: 10},
-    "newyork": {location:[40.7268362,-74.0017699], zoom: 10},
-    "seattle": {location:[47.6076397,-122.3258644], zoom: 11},
-    "sanfrancisco": {location:[37.7618864,-122.4406926], zoom: 12},
-    "austin": {location:[30.3075693,-97.7399898], zoom: 10},
-    "denver": {location:[39.7534338,-104.890141], zoom: 11},
-    "bristol": {location:[51.4590572,-2.5909956], zoom: 11}
-  },
-
-  //If the 'center' query parameter changes, then recenter the map
+  //If center changes, then recenter the map
   changedCenter: Ember.observer('center', function() {
-    const city = this.get('center');
-    if(city in this.get('cities'))
-    {
-      this.centerMapOnCity(city);
-    }
+    const location = this.get('center');
+    this.get('map').setView(new L.LatLng(...this.get('center')[0]), this.get('center')[1]);
   }),
-
-  centerMapOnCity(city) {
-    this.get('map').setView(new L.LatLng(...this.get(`cities.${city}.location`)), this.get(`cities.${city}.zoom`));
-  }
 
 });
