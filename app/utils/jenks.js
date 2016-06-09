@@ -1,4 +1,5 @@
 // From https://gist.github.com/tmcw/4977508
+
 // Thanks @tmcw!
 // # [Jenks natural breaks optimization](http://en.wikipedia.org/wiki/Jenks_natural_breaks_optimization)
 //

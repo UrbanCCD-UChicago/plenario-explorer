@@ -11,14 +11,5 @@ test('it renders', function(assert) {
 
   this.render(hbs`{{submit-or-reset}}`);
 
-  assert.equal(this.$().text().trim(), '');
-
-  // Template block usage:"
-  this.render(hbs`
-    {{#submit-or-reset}}
-      template block text
-    {{/submit-or-reset}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
+  assert.notEqual(this.$().text().trim(), '');
 });

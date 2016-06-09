@@ -5,6 +5,6 @@ module('Unit | Utility | prep timeseries');
 
 // Replace this with your real tests.
 test('it works', function(assert) {
-  let result = prepTimeseries();
+  let result = prepTimeseries( [{count: 3, datetime: '2016-12-06'}]);
   assert.ok(result);
 });

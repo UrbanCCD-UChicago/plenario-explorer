@@ -12,13 +12,4 @@ test('it renders', function(assert) {
   this.render(hbs`{{resolution-dropdown}}`);
 
   assert.equal(this.$().text().trim(), '');
-
-  // Template block usage:"
-  this.render(hbs`
-    {{#resolution-dropdown}}
-      template block text
-    {{/resolution-dropdown}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
 });
