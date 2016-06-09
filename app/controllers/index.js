@@ -1,6 +1,6 @@
 import Ember from 'ember';
-import moment from 'moment';
-import dateFormat from '../utils/date-format';
+//import moment from 'moment';
+//import dateFormat from '../utils/date-format';
 
 export default Ember.Controller.extend({
   // obs_date__ge: dateFormat(moment().subtract(90, 'days').toString()),

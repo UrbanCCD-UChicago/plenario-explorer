@@ -160,7 +160,9 @@ export default function jenks(data, n_classes) {
     return kclass;
   }
 
-  if (n_classes > data.length) return null;
+  if (n_classes > data.length) {
+    return null;
+  }
 
   // sort data in numerical order, since this is expected
   // by the matrices function

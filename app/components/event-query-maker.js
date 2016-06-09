@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import moment from 'moment';
 
 export default Ember.Component.extend({
   // I'm gonna start out by duplicating a lot from aggregate-query-maker

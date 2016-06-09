@@ -210,7 +210,6 @@ export default Ember.Component.extend({
 
   //If center changes, then recenter the map
   changedCenter: Ember.observer('center', function() {
-    const location = this.get('center');
     this.get('map').setView(new L.LatLng(...this.get('center')[0]), this.get('center')[1]);
   }),
 
