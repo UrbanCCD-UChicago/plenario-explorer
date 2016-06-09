@@ -1,4 +1,4 @@
-import prepTimeseries from 'ember-plenario/utils/prep-timeseries';
+import prepTimeseries from 'plenario-explorer/utils/prep-timeseries';
 import { module, test } from 'qunit';
 
 module('Unit | Utility | prep timeseries');

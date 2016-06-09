@@ -1,4 +1,4 @@
-import humanizeName from 'ember-plenario/utils/humanize-name';
+import humanizeName from 'plenario-explorer/utils/humanize-name';
 import { module, test } from 'qunit';
 
 module('Unit | Utility | humanize name');

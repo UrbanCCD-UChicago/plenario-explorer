@@ -1,4 +1,4 @@
-import jenks from 'ember-plenario/utils/jenks';
+import jenks from 'plenario-explorer/utils/jenks';
 import { module, test } from 'qunit';
 
 module('Unit | Utility | jenks');
