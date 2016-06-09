@@ -11,14 +11,5 @@ test('it renders', function(assert) {
 
   this.render(hbs`{{event-query-maker}}`);
 
-  assert.equal(this.$().text().trim(), '');
-
-  // Template block usage:"
-  this.render(hbs`
-    {{#event-query-maker}}
-      template block text
-    {{/event-query-maker}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
+  assert.equal(this.$().text(), '');
 });

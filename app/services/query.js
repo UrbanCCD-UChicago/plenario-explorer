@@ -31,14 +31,14 @@ export default Ember.Service.extend({
 
 
   injectExplorerData: function(route, params, obj) {
-    Ember.assign(obj, {'explorerData': {'route': route, 'queryParams': params}})
-    return obj
+    Ember.assign(obj, {'explorerData': {'route': route, 'queryParams': params}});
+    return obj;
   },
 
   init() {
     this._super(...arguments);
     const eventParams = {
-      data: {include_columns: true}
+      data: {include_columns: true} //TODO: remove this parameter
     };
     this.set('events', this.get('ajax').request('/datasets', eventParams));
     this.set('shapes', this.get('ajax').request('/shapes'));
@@ -48,10 +48,10 @@ export default Ember.Service.extend({
     const camelizeHash = this.camelizeHash;
     const injectExplorerData = this.injectExplorerData;
     let route = "event";
-    if (type == "events") {
+    if (type === "events") {
       route = "event";
     }
-    else if (type == "shapes"){
+    else if (type === "shapes"){
       route = "shape";
     }
     return this.get(type).then(function(doc) {

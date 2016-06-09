@@ -1,4 +1,4 @@
-import dateFormat from 'ember-plenario/utils/date-format';
+import dateFormat from 'plenario-explorer/utils/date-format';
 import { module, test } from 'qunit';
 
 module('Unit | Utility | date format');
