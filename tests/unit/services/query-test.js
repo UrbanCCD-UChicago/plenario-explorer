@@ -1,8 +1,9 @@
 import { moduleFor, test } from 'ember-qunit';
 
-moduleFor('service:api-query', 'Unit | Service | api query', {
+moduleFor('service:query', 'Unit | Service | query', {
   // Specify the other units that are required for this test.
   // needs: ['service:foo']
+  needs: ['service:ajax']
 });
 
 // Replace this with your real tests.

@@ -12,13 +12,4 @@ test('it renders', function(assert) {
   this.render(hbs`{{shape-dataset}}`);
 
   assert.equal(this.$().text().trim(), '');
-
-  // Template block usage:"
-  this.render(hbs`
-    {{#shape-dataset}}
-      template block text
-    {{/shape-dataset}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
 });

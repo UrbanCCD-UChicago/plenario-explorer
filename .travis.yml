@@ -1,23 +1,31 @@
----
 language: node_js
 node_js:
-  - "0.12"
-
-sudo: false
-
+- node
+sudo: required
 cache:
   directories:
-    - node_modules
-
+  - node_modules
 before_install:
-  - export PATH=/usr/local/phantomjs-2.0.0/bin:$PATH
-  - "npm config set spin false"
-  - "npm install -g npm@^2"
-
+- npm config set spin false
+- npm install -g npm@^2
+- export DISPLAY=:99.0
+- sh -e /etc/init.d/xvfb start
 install:
-  - npm install -g bower
-  - npm install
-  - bower install
-
+- npm install -g bower
+- npm install -g ember
+- npm install
+- bower install
 script:
-  - npm test
+- ember test
+after_success:
+- ember build -prod
+deploy:
+  provider: s3
+  access_key_id:
+    secure: WxTB6cq1+3hz+BTsm3V1kQapW96YdRb8fjBXD1n05mqbsEPRPROqWiM5HDrXwMD1Dy3f8Yf8AtWVkzqLCDHLaCqKxVQBIwq6EzzPbQCv9vV6uEW/mDvMEZf91Ue1purUxk43s6g6k8wRZqrV4g/4/9dG6T9EAavXFH/JbLKVuHUd5kx2HALnyHhlWBmBO0SCN/nBONsdUS87fJyjhJoIOXmbxspV3r4T8b/GhLJ5LPB2Nv6Z5NaO2YGP9jUOWnwDAO6zVTiQMWw9a0jge9sdm0UJmO86MGVIYy8fTNcTLXkSaUyQJsQzd7o/SjOaSm3UxkhxTlqqx6pjxE41Kd8FXSe+KH8ChOHk836YHECsUpSTDwMJ83BaAf098DZNTH3NC5SyZ4hs1D9bjLdhZxKIIIrrKoIClljt3RCw7+dLrSbKiYodVQlQV7w3rSez3LbRFW4G2KNQ4RpjDknKQ9BwhwU4QQjKAMCDgv0Z3bwIxo8rby8nMYadfdWClELJZ09bv2H72x6sTdwe1jh8KbbovZck+9Q7cSdYYRgVJa2AaozVb1bJWRDVi4FhbvgKZEUocbHBDIQyAS119UuhoVRL9NPzWKA6P2XMgtPGd55NHRIS/47f6hUzVmctj6cp0Z8/Y1EERnNTsvtGHqVlelca1NXfJ2B+PCbgxrH8YLkObjQ=
+  secret_access_key:
+    secure: iyuu8kHNqNU+p2Syq2mxTYmNLpgAOGZyXbvCQx46G3JXf31a98iIHSR+cIOxrVb1vuMR6Cy7wlWN2bzerxbGO5KHdFxDapGCWfa6lqBcWlRqTNyZbcza1JzFwhJ6qLr896sK7jdt7BnJyC9rYyeQFe72yxZ88pJAglV0C0yQKxAwXko1PYA2Jm97Zeym98xpqMjwoOlq1trJ44bl8FFH8KzOqIhaer3gyFOx6ZvJMb90UFaBm+/WzWURMrN9V41mz/aT2ZS92qJwEZ1V63+8AxzyPfeATKXXXL72IYuDF28P7OJ4a1Y6MhBj15ryfyoNbCgfd3i2l1iVxs+QEaA4guSP+7QKoilF+Qmwh3VkwHCUJk42b4b5ajU2Cg9GjfScE7AZwbDtpRLOtYNabPlw0iIAfpruIQW8tv+4h969M68EkcVt7AeUPrtxdGXc7dU5/zhdQ3AlJIasQnwxNPeh6r6VfxylNOsMb3TXra/eHMFWPNNKpZQ1m+f/9iOyRHX5srwCBrcdSrdbH7CaBTHuI6mGOrPcfSRiiZu9qHD1vjSpdAByEaznfiUOZ3SRERBrYcM7bNkAah36DQZ8mZ83Z4EjUt4vIghpF4Mnt2oLXbz87hYQzIGSzdNSte2DrI1O1Mes8foWVKEErHFTozvpmmb8xUp/T+XYxDh8Z0Mfy48=
+  bucket: urbanccd-george-test
+  skip_cleanup: true
+  local-dir: dist
+  acl: public_read

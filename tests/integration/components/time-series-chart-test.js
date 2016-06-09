@@ -12,13 +12,4 @@ test('it renders', function(assert) {
   this.render(hbs`{{time-series-chart}}`);
 
   assert.equal(this.$().text().trim(), '');
-
-  // Template block usage:"
-  this.render(hbs`
-    {{#time-series-chart}}
-      template block text
-    {{/time-series-chart}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
 });

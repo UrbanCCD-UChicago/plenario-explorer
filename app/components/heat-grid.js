@@ -65,16 +65,18 @@ export default Ember.Component.extend({
     let from, to;
 
     labels.push('<i style="background-color:' + this.getColor(0) + '"></i> 0');
-    if (grades[2] == 1)
+    if (grades[2] === 1) {
       labels.push('<i style="background-color:' + this.getColor(1) + '"></i> 1');
-    else
+    }
+    else {
       labels.push('<i style="background-color:' + this.getColor(1) + '"></i> 1 &ndash; ' + grades[2]);
+    }
 
     for (var i = 2; i < grades.length; i++) {
       from = grades[i] + 1;
       to = grades[i + 1];
 
-      if (from == to) {
+      if (from === to) {
         labels.push(
           '<i style="background-color:' + this.getColor(from + 1) + '"></i> ' +
           from);

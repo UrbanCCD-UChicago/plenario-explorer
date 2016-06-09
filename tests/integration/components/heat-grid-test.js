@@ -9,16 +9,10 @@ test('it renders', function(assert) {
   // Set any properties with this.set('myProperty', 'value');
   // Handle any actions with this.on('myAction', function(val) { ... });"
 
-  this.render(hbs`{{heat-grid}}`);
+  this.get('model', {'humanName': '2013: ECAD Commercial Portfolio Manager Reported Data'});
+  this.set('grid', JSON.parse('{"type":"FeatureCollection","features":[{"geometry":{"type":"Polygon","coordinates":[[[-97.89631561826631,30.36412677006069],[-97.89631561826631,30.36862216228366],[-97.90152356164275,30.36862216228366],[-97.90152356164275,30.36412677006069],[-97.89631561826631,30.36412677006069]]]},"type":"Feature","properties":{"count":1}}]}'));
 
-  assert.equal(this.$().text().trim(), '');
-
-  // Template block usage:"
-  this.render(hbs`
-    {{#heat-grid}}
-      template block text
-    {{/heat-grid}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
+  this.render(hbs`{{heat-grid grid=grid datasetName=model.humanName}}`);
+  
+  assert.notEqual(this.$().text().trim(), '');
 });
