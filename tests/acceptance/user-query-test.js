@@ -20,15 +20,15 @@ moduleForAcceptance('Acceptance | user query');
 }*/
 
 test('front page loads properly with query parameters', function(assert) {
-  visit('discover?obs_date__ge=2010-06-01&obs_date__le=2017-07-02&agg=day&center=seattle');
+  visit('?obs_date__ge=2010-06-01&obs_date__le=2017-07-02&agg=day&center=seattle');
 
   andThen(function(){
-    assert.equal(currentRouteName(), 'discover.index');
-    assert.equal($('#submit-query').is('button'), true);
-    assert.equal($('#start-date-filter .form-control').val(), '06/01/2010');
-    assert.equal($('#end-date-filter .form-control').val(), '07/02/2017');
-    assert.equal($('#agg-select option:selected').text().trim(), 'day');
-    assert.equal($('#map-center-select option:selected').text().trim(), 'Seattle');
+    assert.equal(currentRouteName(), 'discover.index', "Front page fails to go to route discover.index.");
+    assert.equal($('#submit-query').is('button'), true, "Front page did not render properly: submit button is missing.");
+    assert.equal($('#start-date-filter .form-control').val(), '06/01/2010', "Query parameter was unable to set the start date.");
+    assert.equal($('#end-date-filter .form-control').val(), '07/02/2017', "Query parameter was unable to set the end date.");
+    assert.equal($('#agg-select option:selected').text().trim(), 'day', "Query parameter was unable to set the aggregation mode.");
+    assert.equal($('#map-center-select option:selected').text().trim(), 'Seattle', "Query parameter was unable to set the map center.");
   });
 });
 
@@ -52,8 +52,8 @@ test('user can make a query', function(assert) {
         //assert.equal($('#end-date-filter .form-control').val(), '07/02/2016');
         //assert.equal($('#agg-select option:selected').text().trim(), 'day');
         //assert.equal($('#point-aggregate-listing').is('div'), true);
-        assert.equal(currentRouteName(), 'discover.aggregate');
-        assert.equal($('#point-aggregate-listing').is('div'), true);
+        assert.equal(currentRouteName(), 'discover.aggregate', "Making a query fails to go to route discover.aggregate.");
+        assert.equal($('#point-aggregate-listing').is('div'), true, "Query did not complete properly; point aggregate listing is missing.");
       });
     });
   });
@@ -62,12 +62,12 @@ test('user can make a query', function(assert) {
 test('user can directly visit a query page with query parameters', function(assert){
   visit('/discover/aggregate?location_geom__within=%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Polygon%22%2C%22coordinates%22%3A%5B%5B%5B-87.67900943756104%2C41.821478516604024%5D%2C%5B-87.67900943756104%2C41.92680320648791%5D%2C%5B-87.56227970123291%2C41.92680320648791%5D%2C%5B-87.56227970123291%2C41.821478516604024%5D%2C%5B-87.67900943756104%2C41.821478516604024%5D%5D%5D%7D%7D&obs_date__ge=2010-06-01&obs_date__le=2017-07-02&center=seattle&agg=day');
   andThen(function(){
-    assert.equal(currentRouteName(), 'discover.aggregate');
-    assert.equal($('#point-aggregate-listing').is('div'), true);
-    assert.equal($('#start-date-filter .form-control').val(), '06/01/2010');
-    assert.equal($('#end-date-filter .form-control').val(), '07/02/2017');
-    assert.equal($('#agg-select option:selected').text().trim(), 'day');
-    assert.equal($('#map-center-select option:selected').text().trim(), 'Seattle');
+    assert.equal(currentRouteName(), 'discover.aggregate', "Query failed to load route discover.aggregate");
+    assert.equal($('#point-aggregate-listing').is('div'), true, "Query did not complete properly; point aggregate listing is missing.");
+    assert.equal($('#start-date-filter .form-control').val(), '06/01/2010', "Query parameter was unable to set the start date.");
+    assert.equal($('#end-date-filter .form-control').val(), '07/02/2017', "Query parameter was unable to set the end date.");
+    assert.equal($('#agg-select option:selected').text().trim(), 'day', "Query parameter was unable to set the aggregation mode.");
+    assert.equal($('#map-center-select option:selected').text().trim(), 'Seattle', "Query parameter was unable to set the map center.");
   });
 });
 
@@ -77,8 +77,8 @@ test('user can reset a query', function(assert){
     assert.equal($('#point-aggregate-listing').is('div'), true);
     click('#reset-query');
     andThen(function(){
-      assert.equal(currentURL(), '/discover');
-      assert.equal($('#point-aggregate-listing').is('div'), false);
+      assert.equal(currentURL(), '/discover', "Resetting the route failed to go back to bare /discover.");
+      assert.equal($('#point-aggregate-listing').is('div'), false, "Resetting the route failed; point aggregate listing from the query is still present.");
     });
   });
 });
