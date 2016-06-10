@@ -3,22 +3,6 @@ import moduleForAcceptance from 'plenario-explorer/tests/helpers/module-for-acce
 
 moduleForAcceptance('Acceptance | user query');
 
-/*function getParameterByName(name, url) {
-  if (!url) {
-    url = window.location.href;
-  }
-  name = name.replace(/[\[\]]/g, "\\$&");
-  var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-    results = regex.exec(url);
-  if (!results) {
-    return null;
-  }
-  if (!results[2]) {
-    return '';
-  }
-  return decodeURIComponent(results[2].replace(/\+/g, " "));
-}*/
-
 test('front page loads properly with query parameters', function(assert) {
   visit('?obs_date__ge=2010-06-01&obs_date__le=2017-07-02&agg=day&center=seattle');
 
@@ -44,14 +28,6 @@ test('user can make a query', function(assert) {
       click('#submit-query');
 
       andThen(function(){
-        //Query parameters aren't set in the URL during testing!
-        //I'll hold off on these until there's good way to test queryParams values.
-        //Perhaps these should be tested in the discover/index CONTROLLER instead,
-        //or even the aggregate-query-maker component
-        //assert.equal($('#start-date-filter .form-control').val(), '06/01/2010');
-        //assert.equal($('#end-date-filter .form-control').val(), '07/02/2016');
-        //assert.equal($('#agg-select option:selected').text().trim(), 'day');
-        //assert.equal($('#point-aggregate-listing').is('div'), true);
         assert.equal(currentRouteName(), 'discover.aggregate', "Making a query fails to go to route discover.aggregate.");
         assert.equal($('#point-aggregate-listing').is('div'), true, "Query did not complete properly; point aggregate listing is missing.");
       });
@@ -83,26 +59,11 @@ test('user can reset a query', function(assert){
   });
 });
 
-/*test('user can make a query and select a dataset', function(assert){
+test('event links from queries go to real pages', function(assert){
   visit('/discover/aggregate?location_geom__within=%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Polygon%22%2C%22coordinates%22%3A%5B%5B%5B-87.67900943756104%2C41.821478516604024%5D%2C%5B-87.67900943756104%2C41.92680320648791%5D%2C%5B-87.56227970123291%2C41.92680320648791%5D%2C%5B-87.56227970123291%2C41.821478516604024%5D%2C%5B-87.67900943756104%2C41.821478516604024%5D%5D%5D%7D%7D&obs_date__ge=2010-06-10&obs_date__le=2017-07-02');
   andThen(function(){
-    $('#point-aggregate-listing a:eq(0)').attr('id', 'selected-dataset-test');
-    $('#selected-dataset-test').attr('target', 'ember-testing-container');
-    click('#selected-dataset-test');
-    andThen(function(){
-      assert.equal(currentRouteName(), 'event');
-    });
+    assert.notEqual($('#point-aggregate-listing a:eq(0)').attr('href'), '', 'event links are empty!');
+    assert.notEqual($('#point-aggregate-listing a:eq(0)').attr('href'), '#', 'event links just go to #!');
+    assert.equal($('#point-aggregate-listing a:eq(0)').attr('href').indexOf('/event') > -1, true, 'event links fail to follow the event route!');
   });
-});*/
-
-/*
-test('user can recenter map', function(assert) {
-  visit('discover');
-  andThen(function() {
-    fillIn('#map-center-selector', 'seattle');
-
-    andThen(function(){
-      assert.equal(getParameterByName('center', currentURL()), 'seattle');
-    });
-  });
-});*/
+});

@@ -46,6 +46,10 @@ export default Ember.Component.extend({
     return list;
   }),
 
+  didUpdateAttrs() {
+    this.set('teleportState.center', this.get('center'));
+  },
+
   //If the 'center' query parameter changes, then recenter the map
   changedCenter: Ember.observer('teleportState.center', function() {
     const city = this.get('teleportState.center');
