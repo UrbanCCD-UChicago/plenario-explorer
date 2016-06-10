@@ -142,6 +142,7 @@ export default Ember.Service.extend({
         };
       }, function(reason) {
         console.log(reason);
+        return { error: reason };
       });
     }
   },

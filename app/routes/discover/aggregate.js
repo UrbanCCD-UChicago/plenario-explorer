@@ -29,6 +29,8 @@ export default Ember.Route.extend({
       self.get('notify').error(message);
     };
 
+    //*** VALIDATION STEPS: Logic here validates the query parameters before submitting the query. ***//
+
     // Check that location_geom__within is a valid polygon or line segment
     const genericHelp = 'Please draw a shape on the map before submitting.';
 
@@ -40,6 +42,7 @@ export default Ember.Route.extend({
     }
     catch (err) {
       bailToIndex('Invalid JSON. ' + genericHelp);
+      self.get('notify').info("Maybe try resetting your query?");
     }
 
     if (!GJV.isFeature(geoJSON)) {
@@ -50,6 +53,13 @@ export default Ember.Route.extend({
     if (!isPolygonOrLine) {
       bailToIndex('Geometry must be a polygon or line. ' + genericHelp);
     }
+
+    //Ensure that start date >= end date
+    if(new Date(params.obs_date__le) < new Date(params.obs_date__ge)){
+      bailToIndex('Problem while interpreting query: Start date should be before End date.')
+    }
+
+    //*** END VALIDATION STEPS ***//
 
     //Start a spinner cue (whose toggle lives in controllers/discover.js,
     //and whose DOM lives in templates/discover.hbs)

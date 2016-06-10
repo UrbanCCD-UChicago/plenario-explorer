@@ -2,6 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Controller.extend({
   query: Ember.inject.service(),
+  notify: Ember.inject.service('notify'),
   discoverController: Ember.inject.controller('discover'),
 
   searchingDatasets: false,
@@ -60,12 +61,29 @@ export default Ember.Controller.extend({
     let processed = 0;
     let discoverAggregateController = this;
 
+    let alreadyErrored = false;
+
     this.get('model').pointDatasets.forEach((d)=> {
       let params = this.queryParamsClone();
       Ember.assign(params, {dataset_name: d.datasetName});
       const tsPromise = this.get('query').timeseries(params);
 
-      tsPromise.then(function(value){
+      tsPromise.then(function (value) {
+
+        if (value.error) {
+            eligible--;
+          if (!alreadyErrored) {
+            discoverAggregateController.set('searchingDatasets', false);
+            discoverAggregateController.get('notify').error(`A problem occurred while processing your request: ${value.error.message}`)
+            if (value.error.message.indexOf('format') > -1) {
+              discoverAggregateController.get('notify').info('Maybe try resetting your query?')
+            }
+            discoverAggregateController.transitionToRoute('discover')
+            alreadyErrored = true;
+          }
+          return;
+        }
+
         if (value.count === 0) {
           eligible--;
           return;  // Empty timeseries. Don't display it.
@@ -79,7 +97,7 @@ export default Ember.Controller.extend({
         if(processed === eligible) {
           discoverAggregateController.set('searchingDatasets', false);
         }
-      }, function(reason){
+      }, function(reason) {
         console.log(reason);
       });
     });
