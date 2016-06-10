@@ -3,7 +3,7 @@ import Ember from 'ember';
 export function pluralize(params/*, hash*/) {
   let noun = params[0];
   let len = params[1];
-  if (len == 1) {
+  if (len === 1) {
     return noun;
   }
   else {

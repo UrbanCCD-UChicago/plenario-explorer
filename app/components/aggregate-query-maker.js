@@ -30,14 +30,18 @@ export default Ember.Component.extend({
     "bristol": {label: "Bristol, UK", location:[51.4590572,-2.5909956], zoom: 11}
   },
 
-  //IDs to populate the dropdwon box. Computed from the cities dict above.
+  //IDs to populate the dropdown box. Computed from the cities dict above.
   citiesList: Ember.computed('cities', function(){
     let list = Object.keys(this.get('cities')).map(key => {
       return {id: key, label: this.get(`cities.${key}.label`)};
-    })
+    });
     list.sort((first, second) => {
-      if(first.id < second.id) return -1;
-      else return 1;
+      if(first.id < second.id) {
+        return -1;
+      }
+      else {
+        return 1;
+      }
     });
     return list;
   }),

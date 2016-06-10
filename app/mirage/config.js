@@ -1,3 +1,5 @@
+//Not really used, so we'll just have jshint ignore these things during testing.
+/* jshint ignore:start */
 export default function() {
 
   this.get('http://plenar.io/v1/api/shapes', function(_, request){
@@ -184,3 +186,4 @@ export default function() {
     };
   });
 }
+/* jshint ignore:end */

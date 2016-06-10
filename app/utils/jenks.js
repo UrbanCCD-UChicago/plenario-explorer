@@ -1,4 +1,5 @@
 // From https://gist.github.com/tmcw/4977508
+
 // Thanks @tmcw!
 // # [Jenks natural breaks optimization](http://en.wikipedia.org/wiki/Jenks_natural_breaks_optimization)
 //
@@ -160,7 +161,9 @@ export default function jenks(data, n_classes) {
     return kclass;
   }
 
-  if (n_classes > data.length) return null;
+  if (n_classes > data.length) {
+    return null;
+  }
 
   // sort data in numerical order, since this is expected
   // by the matrices function

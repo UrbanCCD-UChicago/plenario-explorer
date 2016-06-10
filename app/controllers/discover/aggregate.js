@@ -75,9 +75,8 @@ export default Ember.Controller.extend({
         d['arrivalOrder'] = arrivalOrder;
         arrivalOrder++;
         timeseriesList.pushObject(d);
-        processed++
-        if(processed == eligible)
-        {
+        processed++;
+        if(processed === eligible) {
           discoverAggregateController.set('searchingDatasets', false);
         }
       }, function(reason){
