@@ -8,4 +8,9 @@ export default Ember.Route.extend({
       shapeDatasets: this.get('query').allShapeMetadata()
     });
   },
+
+  afterModel(){
+    //Stop the spinner once loaded.
+    this.controllerFor('discover').set('loadingMeta', false);
+  }
 });
