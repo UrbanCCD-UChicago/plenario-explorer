@@ -35,7 +35,7 @@ export default Ember.Controller.extend({
 
   //Central location to define all acceptable values for aggregate-query-maker
   //IDs for cities, their locations and zoom.
-  
+
   cities: {
     "chicago": {label: "Chicago", location: [41.795509, -87.581916], zoom: 10},
     "newyork": {label: "New York", location:[40.7268362,-74.0017699], zoom: 10},

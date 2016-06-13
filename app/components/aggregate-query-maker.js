@@ -1,13 +1,10 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
+  notify: Ember.inject.service('notify'),
 
   init() {
     this._super(...arguments);
-    const teleportState = Ember.Object.create({
-      center: this.get("center")
-    });
-    this.set('teleportState', teleportState);
     if(this.get('center'))
     {
       if(this.get('center') in this.get('cities'))
@@ -15,8 +12,12 @@ export default Ember.Component.extend({
         //Translate an initial location to coordinates
         //'centerCoords' is the raw-coordinates form of the human-readable 'center'
         this.set('centerCoords', [this.get(`cities.${this.get('center')}.location`), this.get(`cities.${this.get('center')}.zoom`)]);
+      } else {
+        this.get('notify').warning(`Unknown city "${this.get('center')}". Try selecting a city from the "Center map on" menu.`);
+        this.set('center', 'chicago');
       }
     }
+    this.set('teleportState', {center: this.get('center')});
   },
 
   cities: {},
@@ -41,7 +42,9 @@ export default Ember.Component.extend({
   changedCenter: Ember.observer('teleportState.center', function() {
     const city = this.get('teleportState.center');
     this.set('center', this.get('teleportState.center'));
-    this.set('centerCoords', [this.get(`cities.${city}.location`), this.get(`cities.${city}.zoom`)]);
+    if(city in this.get('cities')) {
+      this.set('centerCoords', [this.get(`cities.${city}.location`), this.get(`cities.${city}.zoom`)]);
+    }
   }),
 
   actions: {

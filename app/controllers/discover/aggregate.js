@@ -68,7 +68,7 @@ export default Ember.Controller.extend({
       discoverAggregateController.get('notify').error(`A problem occurred while processing your request: ${message}`);
       tipsMachine(message);
       discoverAggregateController.transitionToRoute('discover');
-    }
+    };
 
     let tipsMachine = function(message){
       if(message.toLowerCase().indexOf("empty")>-1 || message.toLowerCase().indexOf("format")>-1) {
@@ -76,9 +76,9 @@ export default Ember.Controller.extend({
       } else {
         discoverAggregateController.get('notify').info('Try resetting your query and starting over.');
       }
-    }
+    };
 
-    if(this.get('model').pointDatasets) {
+    if(this.get('model').pointDatasets.error) {
       queryError(this.get('model').pointDatasets.error.message);
       return;
     }
