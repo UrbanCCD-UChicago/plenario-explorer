@@ -60,12 +60,21 @@ export default Ember.Route.extend({
       bailToIndex('Unknown value for "agg". Try selecting a valid option from the "Aggregate by" dropdown.');
     }
 
+    //Ensure that obs_date__le and obs_date__ge are valid date objects.
+    if(isNaN((new Date(params.obs_date__ge)).getTime()))
+    {
+      bailToIndex('"obs_date__ge" does not specify a valid date. Please check this query parameter, or set a valid date using the "Start date" selector.');
+    }
+
+    if(isNaN((new Date(params.obs_date__le)).getTime()))
+    {
+      bailToIndex('"obs_date__le" does not specify a valid date. Please check this query parameter, or set a valid date using the "End date" selector.');
+    }
+
     //Ensure that start date >= end date
     if(new Date(params.obs_date__le) < new Date(params.obs_date__ge)){
       bailToIndex('Query error: Start date should be before End date.');
     }
-
-
 
     //*** END VALIDATION STEPS ***//
 
