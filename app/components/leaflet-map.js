@@ -102,7 +102,7 @@ export default Ember.Component.extend({
       }
 
       // Add popups
-      const onEachFeature = function(feature, layer) {
+      /*const onEachFeature = function(feature, layer) {
         const props = feature.properties;
         if (props) {
           let table = '<table>';
@@ -115,7 +115,9 @@ export default Ember.Component.extend({
       };
       return L.geoJson(geoJSON, {
         onEachFeature: onEachFeature
-      });
+      });*/
+      
+      return L.geoJson(geoJSON)
     }
     catch (e) {
       // Wasn't valid GeoJSON
@@ -192,8 +194,8 @@ export default Ember.Component.extend({
   // make sure we're zoomed in on the drawn geom.
   shouldZoom: Ember.observer('zoom', function() {
     if (this.get('zoom')){
-
       let layer = this.map.drawnItems.getLayers()[0];
+      layer.setStyle({color: '#03f'});
       this.map.fitBounds(layer.getBounds());
     }
   }),
