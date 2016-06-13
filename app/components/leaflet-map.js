@@ -116,8 +116,8 @@ export default Ember.Component.extend({
       return L.geoJson(geoJSON, {
         onEachFeature: onEachFeature
       });*/
-      
-      return L.geoJson(geoJSON)
+
+      return L.geoJson(geoJSON);
     }
     catch (e) {
       // Wasn't valid GeoJSON
