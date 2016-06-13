@@ -7,7 +7,7 @@
       {{model.attribution}}: {{model.humanName}}
   </h3>
     {{date-range startDate=obs_date__ge endDate=obs_date__le}}
-    {{drop-downs agg=agg res=resolution}}
+    {{drop-downs agg=agg res=resolution aggOptions=aggOptions resOptions=resOptions}}
     {{column-filters filters=filters metadata=model}}
     <br/>
 
