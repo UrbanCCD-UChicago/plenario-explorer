@@ -34,7 +34,6 @@ export default Ember.Component.extend({
 
   addMap() {
     const map_options = {
-      scrollWheelZoom: false,
       tapTolerance: 30,
       minZoom: 1
     };
