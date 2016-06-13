@@ -56,7 +56,7 @@ export default Ember.Route.extend({
 
     //Ensure that start date >= end date
     if(new Date(params.obs_date__le) < new Date(params.obs_date__ge)){
-      bailToIndex('Problem while interpreting query: Start date should be before End date.')
+      bailToIndex('Problem while interpreting query: Start date should be before End date.');
     }
 
     //*** END VALIDATION STEPS ***//

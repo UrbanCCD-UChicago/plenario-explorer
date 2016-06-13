@@ -74,11 +74,11 @@ export default Ember.Controller.extend({
             eligible--;
           if (!alreadyErrored) {
             discoverAggregateController.set('searchingDatasets', false);
-            discoverAggregateController.get('notify').error(`A problem occurred while processing your request: ${value.error.message}`)
+            discoverAggregateController.get('notify').error(`A problem occurred while processing your request: ${value.error.message}`);
             if (value.error.message.indexOf('format') > -1) {
-              discoverAggregateController.get('notify').info('Maybe try resetting your query?')
+              discoverAggregateController.get('notify').info('Maybe try resetting your query?');
             }
-            discoverAggregateController.transitionToRoute('discover')
+            discoverAggregateController.transitionToRoute('discover');
             alreadyErrored = true;
           }
           return;
