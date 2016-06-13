@@ -54,10 +54,18 @@ export default Ember.Route.extend({
       bailToIndex('Geometry must be a polygon or line. ' + genericHelp);
     }
 
+    //Check if the selected agg parameter is valid
+    if($.grep(this.controllerFor('discover').get('aggOptions'), function(e){ return e.label == params.agg; }).length == 0)
+    {
+      bailToIndex('Unknown value for "agg". Try selecting a valid option from the "Aggregate by" dropdown.');
+    }
+    
     //Ensure that start date >= end date
     if(new Date(params.obs_date__le) < new Date(params.obs_date__ge)){
-      bailToIndex('Problem while interpreting query: Start date should be before End date.');
+      bailToIndex('Query error: Start date should be before End date.');
     }
+
+    
 
     //*** END VALIDATION STEPS ***//
 
