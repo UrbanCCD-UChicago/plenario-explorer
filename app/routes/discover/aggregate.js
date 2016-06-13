@@ -29,6 +29,8 @@ export default Ember.Route.extend({
       self.get('notify').error(message);
     };
 
+    //*** VALIDATION STEPS: Logic here validates the query parameters before submitting the query. ***//
+
     // Check that location_geom__within is a valid polygon or line segment
     const genericHelp = 'Please draw a shape on the map before submitting.';
 
@@ -40,6 +42,7 @@ export default Ember.Route.extend({
     }
     catch (err) {
       bailToIndex('Invalid JSON. ' + genericHelp);
+      self.get('notify').info("Maybe try resetting your query?");
     }
 
     if (!GJV.isFeature(geoJSON)) {
@@ -50,6 +53,30 @@ export default Ember.Route.extend({
     if (!isPolygonOrLine) {
       bailToIndex('Geometry must be a polygon or line. ' + genericHelp);
     }
+
+    //Check if the selected agg parameter is valid
+    if($.grep(this.controllerFor('discover').get('aggOptions'), function(e){ return e.label === params.agg; }).length === 0)
+    {
+      bailToIndex('Unknown value for "agg". Try selecting a valid option from the "Aggregate by" dropdown.');
+    }
+
+    //Ensure that obs_date__le and obs_date__ge are valid date objects.
+    if(isNaN((new Date(params.obs_date__ge)).getTime()))
+    {
+      bailToIndex('"obs_date__ge" does not specify a valid date. Please check this query parameter, or set a valid date using the "Start date" selector.');
+    }
+
+    if(isNaN((new Date(params.obs_date__le)).getTime()))
+    {
+      bailToIndex('"obs_date__le" does not specify a valid date. Please check this query parameter, or set a valid date using the "End date" selector.');
+    }
+
+    //Ensure that start date >= end date
+    if(new Date(params.obs_date__le) < new Date(params.obs_date__ge)){
+      bailToIndex('Query error: Start date should be before End date.');
+    }
+
+    //*** END VALIDATION STEPS ***//
 
     //Start a spinner cue (whose toggle lives in controllers/discover.js,
     //and whose DOM lives in templates/discover.hbs)

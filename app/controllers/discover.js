@@ -33,6 +33,38 @@ export default Ember.Controller.extend({
     return Ember.copy(this.get('queryParamsHash'));
   },
 
+  //Central location to define all acceptable values for aggregate-query-maker
+  //IDs for cities, their locations and zoom.
+
+  cities: {
+    "chicago": {label: "Chicago", location: [41.795509, -87.581916], zoom: 10},
+    "newyork": {label: "New York", location:[40.7268362,-74.0017699], zoom: 10},
+    "seattle": {label: "Seattle", location:[47.6076397,-122.3258644], zoom: 11},
+    "sanfrancisco": {label: "San Francisco", location:[37.7618864,-122.4406926], zoom: 12},
+    "austin": {label: "Austin", location:[30.3075693,-97.7399898], zoom: 10},
+    "denver": {label: "Denver", location:[39.7534338,-104.890141], zoom: 11},
+    "bristol": {label: "Bristol, UK", location:[51.4590572,-2.5909956], zoom: 11}
+  },
+
+  aggOptions: ([
+    {id: 'day', label: 'day'},
+    {id: 'week', label: 'week'},
+    {id: 'month', label: 'month'},
+    {id: 'quarter', label: 'quarter'},
+    {id: 'year', label: 'year'}
+  ]),
+
+  resOptions: ([
+    {id: '100', label: '100 meters'},
+    {id: '200', label: '200 meters'},
+    {id: '300', label: '300 meters'},
+    {id: '400', label: '400 meters'},
+    {id: '500', label: '500 meters'},
+    {id: '1000', label: '1 kilometer'}
+  ]),
+
+  //------------- end of central aggregate-query-maker values ---------------//
+
   _zoomIn() {
     this.set('zoom', true);
     const self = this;

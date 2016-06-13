@@ -5,6 +5,7 @@ import moment from 'moment';
 export default Ember.Controller.extend({
   query: Ember.inject.service(),
   notify: Ember.inject.service(),
+  discoverController: Ember.inject.controller('discover'),
 
   queryParams: ['filters', 'agg', 'resolution',
                 'obs_date__le', 'obs_date__ge', 'location_geom__within'],
@@ -32,6 +33,15 @@ export default Ember.Controller.extend({
   queryParamsClone() {
     return Ember.copy(this.get('queryParamsHash'));
   },
+
+  //These centralized options are stored in the discover root controller
+  aggOptions: Ember.computed('discoverController', function() {
+    return this.get('discoverController').get('aggOptions');
+  }),
+
+  resOptions: Ember.computed('discoverController', function() {
+    return this.get('discoverController').get('resOptions');
+  }),
 
   /*
    The model we get from the route is just
