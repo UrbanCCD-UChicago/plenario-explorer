@@ -28,7 +28,7 @@ git clone git://github.com/boto/boto.git
 cd boto
 sudo python setup.py install
 cd ../
-rm -rf boto
+sudo rm -rf boto
 
 #
 # Set up credentials for boto
