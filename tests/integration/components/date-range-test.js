@@ -9,7 +9,7 @@ test('it renders', function(assert) {
   // Set any properties with this.set('myProperty', 'value');
   // Handle any actions with this.on('myAction', function(val) { ... });"
 
-  this.render(hbs`{{date-range}}`);
+  this.render(hbs`{{date-range startDate="2010-06-01" endDate="2016-07-02"}}`);
 
   assert.notEqual(this.$().text(), '');
 });

@@ -17,7 +17,7 @@ test('it renders', function(assert) {
     // NoOp
   });
 
-  this.render(hbs`{{aggregate-query-maker submit=(action mockSubmit) reset=(action mockReset)}}`);
+  this.render(hbs`{{aggregate-query-maker startDate="2010-06-01" endDate="2016-07-02" submit=(action mockSubmit) reset=(action mockReset)}}`);
 
   assert.notEqual(this.$().text(), '');
 

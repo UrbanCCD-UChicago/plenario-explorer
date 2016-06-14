@@ -142,6 +142,7 @@ export default Ember.Service.extend({
         };
       }, function(reason) {
         console.log(reason);
+        return { error: reason };
       });
     }
   },
@@ -235,6 +236,7 @@ export default Ember.Service.extend({
       });
     }, function(reason) {
       console.log(`Event candidate query failed: ${reason}`);
+      return {error: reason};
     });
   },
 
@@ -251,6 +253,7 @@ export default Ember.Service.extend({
       });
     }, function(reason) {
       console.log(`Shape subset query failed: ${reason}`);
+      return {error: reason};
     });
   },
 
