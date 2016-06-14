@@ -314,3 +314,12 @@ body {
 .has-success .control-label {
   color: inherit;
 }
+
+.rowbox {
+  padding: 10px 0;
+}
+
+h3 {
+  margin-bottom: 10px;
+  line-height: 1.2em;
+}

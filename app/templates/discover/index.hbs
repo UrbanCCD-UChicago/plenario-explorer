@@ -1,15 +1,20 @@
-<p class="lead"><strong>{{model.pointDatasets.length}}</strong>
-    Event Datasets Available to Query</p>
+<div class="row">
+    <div class="col-md-12">
+      <h3><strong>{{model.pointDatasets.length}}</strong>
+      Event Datasets Available to Query</h3>
+      {{point-index-listing
+      displayLink=(action "navigateToPoint")
+      pointDatasets=processedPointDatasets}}
+    </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <h3><strong>{{model.shapeDatasets.length}}</strong>
+        Shape Datasets Available to Query</h3>
 
-{{point-index-listing
-displayLink=(action "navigateToPoint")
-pointDatasets=processedPointDatasets}}
-
-<br/>
-<p class="lead"><strong>{{model.shapeDatasets.length}}</strong>
-    Shape Datasets Available to Query</p>
-
-{{shape-listing
-displayLink=(action "navigateToShape")
-downloadLink=(action "downloadShape")
-shapeDatasets=model.shapeDatasets}}
+    {{shape-listing
+    displayLink=(action "navigateToShape")
+    downloadLink=(action "downloadShape")
+    shapeDatasets=model.shapeDatasets}}
+  </div>
+</div>
