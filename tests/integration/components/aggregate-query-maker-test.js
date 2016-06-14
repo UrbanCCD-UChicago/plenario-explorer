@@ -5,7 +5,7 @@ moduleForComponent('aggregate-query-maker', 'Integration | Component | aggregate
   integration: true,
 });
 
-test('it renders', function(assert) {
+test('It renders.', function(assert) {
   // Set any properties with this.set('myProperty', 'value');
   // Handle any actions with this.on('myAction', function(val) { ... });"
 
@@ -19,11 +19,11 @@ test('it renders', function(assert) {
 
   this.render(hbs`{{aggregate-query-maker startDate="2010-06-01" endDate="2016-07-02" submit=(action mockSubmit) reset=(action mockReset)}}`);
 
-  assert.notEqual(this.$().text(), '');
+  assert.notEqual(this.$().text(), '', 'The component rendered correctly.');
 
 });
 
-test('parameters correctly control the component', function(assert){
+test('Parameters correctly control the component.', function(assert){
   this.set('start', '2010-06-10');
   this.set('end', '2016-07-20');
   this.set('agg', 'day');
@@ -57,8 +57,8 @@ test('parameters correctly control the component', function(assert){
 
   this.render(hbs`{{aggregate-query-maker startDate=start endDate=end agg=agg center=center cities=cities aggOptions=aggOptions centerCoords=centerCoords submit=(action mockSubmit) reset=(action mockReset)}}`);
 
-  assert.equal($("#start-date-filter .form-control").val(), "06/10/2010", "failed to correctly render component based on initial startDate parameter.");
-  assert.equal($("#end-date-filter .form-control").val(), "07/20/2016", "failed to correctly render component based on initial endDate parameter.");
-  assert.equal($("#agg-select option:selected").text().trim(), "day", "failed to correctly render component based on initial agg parameter.");
-  assert.equal($("#map-center-select option:selected").text().trim(), "Chicago", "failed to correctly render component based on initial center parameter.");
+  assert.equal($("#start-date-filter .form-control").val(), "06/10/2010", "Correctly rendered component based on initial startDate parameter.");
+  assert.equal($("#end-date-filter .form-control").val(), "07/20/2016", "Correctly rendered component based on initial endDate parameter.");
+  assert.equal($("#agg-select option:selected").text().trim(), "day", "Correctly rendered component based on initial agg parameter.");
+  assert.equal($("#map-center-select option:selected").text().trim(), "Chicago", "Correctly rendered component based on initial center parameter.");
  });
