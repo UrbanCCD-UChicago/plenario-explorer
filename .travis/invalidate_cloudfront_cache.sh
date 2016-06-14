@@ -43,7 +43,9 @@ echo "aws_secret_access_key = $2" >> ~/.boto
 CLOUDFRONT_DISTID=$3
 
 echo -e "\nSending invalidation requests...\n"
-for path in $(find dist/ -type f); do
+for path in $(find dist/ -type f -not \( -path "dist/fonts/*" -o -path "dist/tests/*" \)); do
+#Use the above fore a more efficient request - Use the below for a more complete request
+#for path in $(find dist/ -type f); do
 	echo ${path#dist};
         cfadmin invalidate $CLOUDFRONT_DISTID ${path#dist};
 done;
