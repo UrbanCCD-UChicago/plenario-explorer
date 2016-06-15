@@ -1,10 +1,10 @@
 <div class="data-table-container-container">
   <div class="data-table-container">
-    <table class="data-table table table-hover">
+    <table class="data-table table table-bordered table-hover">
       <thead>
         <tr>
             {{#each columnNames as |name|}}
-              <th><div class="data-table-sticky-header">{{name}}</div><span>{{name}}</span></th>
+              <th><div class="sticky">{{name}}</div><div class="reference">{{name}}</div></th>
             {{/each}}
         </tr>
       </thead>

@@ -333,48 +333,38 @@ h3 {
 }
 .data-table-container
 {
-  margin-top: 3.5em;
-  height: 40vh;
+  margin-top: 1.5em;
+  height: 50vh;
   display: inline-block;
   overflow-x: hidden;
   overflow-y: auto;
   min-width: 100%;
+  border: 1px solid darkgray;
 }
 
 .data-table
 {
-  table-layout: fixed;
   overflow: hidden;
+  background: white;
 }
 
-.data-table td, .data-table th, .data-table th div
+.data-table th .sticky
 {
-  width: 200px;
-  padding: 10px;
-  word-wrap: break-word;
-  overflow: hidden;
-}
-
-.data-table th div
-{
+  display: block;
+  white-space: nowrap;
   position: absolute;
   top: 0;
 }
 
-.data-table thead
+.data-table th .reference
 {
-  height: 0;
-}
-
-.data-table th span
-{
-  display: block;
   height: 0;
   color: transparent;
   -moz-user-select: none;
   -ms-user-select: none;
   -webkit-user-select: none;
   user-select: none;
+  white-space: nowrap;
 }
 
 a
