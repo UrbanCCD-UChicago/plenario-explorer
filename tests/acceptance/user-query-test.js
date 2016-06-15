@@ -3,6 +3,21 @@ import moduleForAcceptance from 'plenario-explorer/tests/helpers/module-for-acce
 
 moduleForAcceptance('Acceptance | user query');
 
+const geoJSON = encodeURIComponent(JSON.stringify({
+    "type": "Feature",
+    "properties": {},
+    "geometry": {
+      "type": "Polygon",
+      "coordinates": [[
+        [-87.68862247467041, 41.80510182643331],
+        [-87.68862247467041, 41.90432124806034],
+        [-87.55678653717041, 41.90432124806034],
+        [-87.55678653717041, 41.80510182643331],
+        [-87.68862247467041, 41.80510182643331]
+      ]]
+    }
+  }));
+
 test('Front page loads properly with query parameters.', function(assert) {
   visit('?obs_date__ge=2010-06-01&obs_date__le=2017-07-02&agg=day&center=seattle');
 
@@ -17,7 +32,8 @@ test('Front page loads properly with query parameters.', function(assert) {
 });
 
 test('User can make a query.', function(assert) {
-  visit('discover?location_geom__within=%7B"type"%3A"Feature"%2C"properties"%3A%7B%7D%2C"geometry"%3A%7B"type"%3A"Polygon"%2C"coordinates"%3A%5B%5B%5B-87.68862247467041%2C41.80510182643331%5D%2C%5B-87.68862247467041%2C41.90432124806034%5D%2C%5B-87.55678653717041%2C41.90432124806034%5D%2C%5B-87.55678653717041%2C41.80510182643331%5D%2C%5B-87.68862247467041%2C41.80510182643331%5D%5D%5D%7D%7D');
+  //location_geom__within is just an arbitrary shape so that /discover/aggregate will accept the query in the first place.
+  visit('discover?location_geom__within='+geoJSON);
   andThen(function() {
     fillIn('#start-date-filter input', '06/01/2010');
     fillIn('#end-date-filter input', '07/02/2016');
@@ -36,7 +52,7 @@ test('User can make a query.', function(assert) {
 });
 
 test('User can directly visit a query page with query parameters.', function(assert){
-  visit('/discover/aggregate?location_geom__within=%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Polygon%22%2C%22coordinates%22%3A%5B%5B%5B-87.67900943756104%2C41.821478516604024%5D%2C%5B-87.67900943756104%2C41.92680320648791%5D%2C%5B-87.56227970123291%2C41.92680320648791%5D%2C%5B-87.56227970123291%2C41.821478516604024%5D%2C%5B-87.67900943756104%2C41.821478516604024%5D%5D%5D%7D%7D&obs_date__ge=2010-06-01&obs_date__le=2017-07-02&center=seattle&agg=day');
+  visit('/discover/aggregate?location_geom__within='+geoJSON+'&obs_date__ge=2010-06-01&obs_date__le=2017-07-02&center=seattle&agg=day');
   andThen(function(){
     assert.equal(currentRouteName(), 'discover.aggregate', "Query routes to discover.aggregate");
     assert.equal($('#point-aggregate-listing').is('div'), true, "Query completes properly; point aggregate listing is present.");
@@ -48,7 +64,7 @@ test('User can directly visit a query page with query parameters.', function(ass
 });
 
 test('User can reset a query.', function(assert){
-  visit('/discover/aggregate?location_geom__within=%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Polygon%22%2C%22coordinates%22%3A%5B%5B%5B-87.67900943756104%2C41.821478516604024%5D%2C%5B-87.67900943756104%2C41.92680320648791%5D%2C%5B-87.56227970123291%2C41.92680320648791%5D%2C%5B-87.56227970123291%2C41.821478516604024%5D%2C%5B-87.67900943756104%2C41.821478516604024%5D%5D%5D%7D%7D&obs_date__ge=2010-06-10&obs_date__le=2017-07-02');
+  visit('/discover/aggregate?location_geom__within='+geoJSON+'&obs_date__ge=2010-06-10&obs_date__le=2017-07-02');
   andThen(function(){
     assert.equal($('#point-aggregate-listing').is('div'), true);
     click('#reset-query');
@@ -61,7 +77,7 @@ test('User can reset a query.', function(assert){
 });
 
 test('Event links from queries go to real pages.', function(assert){
-  visit('/discover/aggregate?location_geom__within=%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Polygon%22%2C%22coordinates%22%3A%5B%5B%5B-87.67900943756104%2C41.821478516604024%5D%2C%5B-87.67900943756104%2C41.92680320648791%5D%2C%5B-87.56227970123291%2C41.92680320648791%5D%2C%5B-87.56227970123291%2C41.821478516604024%5D%2C%5B-87.67900943756104%2C41.821478516604024%5D%5D%5D%7D%7D&obs_date__ge=2010-06-10&obs_date__le=2017-07-02');
+  visit('/discover/aggregate?location_geom__within='+geoJSON+'&obs_date__ge=2010-06-10&obs_date__le=2017-07-02');
   andThen(function(){
     assert.notEqual($('#point-aggregate-listing a:eq(0)').attr('href'), '', 'Event links are not empty.');
     assert.notEqual($('#point-aggregate-listing a:eq(0)').attr('href'), '#', 'Event links do not route to #.');
