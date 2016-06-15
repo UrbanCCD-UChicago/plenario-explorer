@@ -9,16 +9,9 @@ test('it renders', function(assert) {
   // Set any properties with this.set('myProperty', 'value');
   // Handle any actions with this.on('myAction', function(val) { ... });
 
-  this.render(hbs`{{data-table}}`);
+  this.set('columns', ['a', 'b', 'c']);
+  this.render(hbs`{{data-table columns=columns}}`);
 
-  assert.equal(this.$().text().trim(), '');
+  assert.notEqual(this.$().text().trim(), '');
 
-  // Template block usage:
-  this.render(hbs`
-    {{#data-table}}
-      template block text
-    {{/data-table}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
 });

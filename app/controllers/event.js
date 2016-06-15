@@ -53,7 +53,7 @@ export default Ember.Controller.extend({
     this.set('loading', true);
     this.adjustDateRange();
     this.launchWidgetQueries();
-    this.set('columns', this.get('model.columns').map(v => v.field_name))
+    this.set('columns', this.get('model.columns').map(v => v.field_name));
   }),
 
   resetParams() {
