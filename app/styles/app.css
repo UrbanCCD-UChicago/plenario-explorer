@@ -324,6 +324,16 @@ h3 {
   line-height: 1.2em;
 }
 
+a
+{
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+
+  -ms-word-break: break-all;
+  /* This is the dangerous one in WebKit, as it breaks things wherever */
+  word-break: break-all;
+}
+
 /* data-table component */
 .data-table-container-container
 {
@@ -367,12 +377,7 @@ h3 {
   white-space: nowrap;
 }
 
-a
+.data-table thead
 {
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-
-  -ms-word-break: break-all;
-  /* This is the dangerous one in WebKit, as it breaks things wherever */
-  word-break: break-all;
+  background: dimgray;
 }

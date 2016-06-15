@@ -9,8 +9,8 @@ test('it renders', function(assert) {
   // Set any properties with this.set('myProperty', 'value');
   // Handle any actions with this.on('myAction', function(val) { ... });
 
-  this.set('columns', ['a', 'b', 'c']);
-  this.render(hbs`{{data-table columns=columns}}`);
+  this.set('events', [{"a": "b"}]);
+  this.render(hbs`{{data-table events=events}}`);
 
   assert.notEqual(this.$().text().trim(), '');
 
