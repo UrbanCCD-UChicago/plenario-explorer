@@ -1,0 +1,22 @@
+<div class="data-table-container-container">
+  <div class="data-table-container">
+    <table class="data-table table table-hover">
+      <thead>
+        <tr>
+            {{#each columnNames as |name|}}
+              <th><div class="data-table-sticky-header">{{name}}</div><span>{{name}}</span></th>
+            {{/each}}
+        </tr>
+      </thead>
+      <tbody>
+        {{#each events as |row|}}
+          <tr>
+            {{#each columns as |column|}}
+              <td>{{get row column}}</td>
+            {{/each}}
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+</div>
