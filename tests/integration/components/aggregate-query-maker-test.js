@@ -9,15 +9,7 @@ test('It renders.', function(assert) {
   // Set any properties with this.set('myProperty', 'value');
   // Handle any actions with this.on('myAction', function(val) { ... });"
 
-  this.set('mockSubmit', () => {
-    // NoOp
-  });
-
-  this.set('mockReset', () => {
-    // NoOp
-  });
-
-  this.render(hbs`{{aggregate-query-maker startDate="2010-06-01" endDate="2016-07-02" submit=(action mockSubmit) reset=(action mockReset)}}`);
+  this.render(hbs`{{aggregate-query-maker}}`);
 
   assert.notEqual(this.$().text(), '', 'The component rendered correctly.');
 
@@ -28,14 +20,6 @@ test('Parameters correctly control the component.', function(assert){
   this.set('end', '2016-07-20');
   this.set('agg', 'day');
   this.set('center', 'chicago');
-
-  this.set('mockSubmit', () => {
-    // NoOp
-  });
-
-  this.set('mockReset', () => {
-    // NoOp
-  });
 
   this.set('cities', {
     "chicago": {label: "Chicago", location: [41.795509, -87.581916], zoom: 10},
@@ -55,7 +39,7 @@ test('Parameters correctly control the component.', function(assert){
     {id: 'year', label: 'year'}
   ]);
 
-  this.render(hbs`{{aggregate-query-maker startDate=start endDate=end agg=agg center=center cities=cities aggOptions=aggOptions centerCoords=centerCoords submit=(action mockSubmit) reset=(action mockReset)}}`);
+  this.render(hbs`{{aggregate-query-maker startDate=start endDate=end agg=agg center=center cities=cities aggOptions=aggOptions}}`);
 
   assert.equal($("#start-date-filter .form-control").val(), "06/10/2010", "Correctly rendered component based on initial startDate parameter.");
   assert.equal($("#end-date-filter .form-control").val(), "07/20/2016", "Correctly rendered component based on initial endDate parameter.");
