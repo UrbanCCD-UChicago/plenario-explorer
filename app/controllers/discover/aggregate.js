@@ -61,25 +61,27 @@ export default Ember.Controller.extend({
     let processed = 0;
     let discoverAggregateController = this;
 
-    let alreadyErrored = false;
-
-    let queryError = function(message){
-      discoverAggregateController.set('searchingDatasets', false);
-      discoverAggregateController.get('notify').error(`A problem occurred while processing your request: ${message}`);
-      tipsMachine(message);
-      discoverAggregateController.transitionToRoute('discover');
+    let queryError = function(error, goback=true){
+      discoverAggregateController.get('notify').error(`A problem occurred while processing your request: ${error.message}`);
+      tipsMachine(error);
+      if(goback){
+        discoverAggregateController.set('searchingDatasets', false);
+        discoverAggregateController.transitionToRoute('discover');
+      }
     };
 
-    let tipsMachine = function(message){
-      if(message.toLowerCase().indexOf("empty")>-1 || message.toLowerCase().indexOf("format")>-1) {
+    let tipsMachine = function(error){
+      if(error.message.toLowerCase().indexOf("format")>-1) {
         discoverAggregateController.get('notify').info('This means that the Plenar.io API could not understand your request. Please check your query parameters, or reset your query and start over.');
+      } else if(error.errors && error.errors.length > 0 && (error.errors[0].status === "504" || error.errors[0].status === "0")){
+        discoverAggregateController.get('notify').info('Some items in your request are taking too long to process. Try narrowing your search scope.');
       } else {
         discoverAggregateController.get('notify').info('Try resetting your query and starting over.');
       }
     };
 
     if(this.get('model').pointDatasets.error) {
-      queryError(this.get('model').pointDatasets.error.message);
+      queryError(this.get('model').pointDatasets.error);
       return;
     }
 
@@ -92,11 +94,8 @@ export default Ember.Controller.extend({
       tsPromise.then(function (value) {
 
         if (value.error) {
-            eligible--;
-          if (!alreadyErrored) {
-            queryError(value.error.message);
-            alreadyErrored = true;
-          }
+          eligible--;
+          queryError(value.error, false);
           return;
         }
 
@@ -113,6 +112,7 @@ export default Ember.Controller.extend({
         if(processed === eligible) {
           discoverAggregateController.set('searchingDatasets', false);
         }
+        //console.log(`Processed ${processed} of ${eligible} candidates.`);
       }, function(reason) {
         console.log(reason);
       });
