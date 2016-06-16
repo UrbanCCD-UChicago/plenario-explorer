@@ -6,6 +6,7 @@ export default Ember.Controller.extend({
   discoverController: Ember.inject.controller('discover'),
 
   searchingDatasets: false,
+  searchingShapes: false,
 
   queryParamsClone() {
     return this.get('discoverController').queryParamsClone();
@@ -34,21 +35,35 @@ export default Ember.Controller.extend({
       params['dataset_name'] = name;
       params['data_type'] = fileType;
       this.get('query').rawEvents(params, true);
+    },
+    loadPointDatasets: function(){
+      this.get('timeseriesList').clear();
+      this.launchTimeseriesQueries();
+    },
+    loadShapeDatasets: function(result){
+      this.set('shapeDatasets', result);
     }
   },
 
-  modelArrived: Ember.observer('model', function() {
-    // Clear the old set of timeseries derived from
-    // the dataset candidates.
-    this.get('timeseriesList').clear();
-    // Launch a new set of timeseries queries from the new candidates.
-    this.launchTimeseriesQueries();
+  modelArrived: Ember.observer('model', function(){
+    let pointDatasets = this.get('model').pointDatasets;
+    let shapeDatasets = this.get('model').shapeDatasets;
+    this.set('searchingShapes', true);
+
+    let self = this;
+    pointDatasets.then(function(){
+      self.send('loadPointDatasets');
+    });
+    shapeDatasets.then(function(result){
+      self.send('loadShapeDatasets', result);
+      self.set('searchingShapes', false);
+    });
   }),
 
   /**
    * For each candidate dataset,
    * query the matching timeseries
-   * and push datasets with nonempty timeseries onto
+   * and push datasets with nonempty detailAggregate onto
    * the timeseriesList to display.
    */
   launchTimeseriesQueries() {
@@ -57,6 +72,7 @@ export default Ember.Controller.extend({
     let timeseriesList = this.get('timeseriesList');
     let arrivalOrder = 1;
 
+    let pointDatasets = this.get('model').pointDatasets._result;
     let eligible = this.get('model').pointDatasets.length;
     let processed = 0;
     let discoverAggregateController = this;
@@ -78,12 +94,12 @@ export default Ember.Controller.extend({
       }
     };
 
-    if(this.get('model').pointDatasets.error) {
-      queryError(this.get('model').pointDatasets.error.message);
+    if(pointDatasets.error) {
+      queryError(pointDatasets.error.message);
       return;
     }
 
-    this.get('model').pointDatasets.forEach((d)=> {
+    pointDatasets.forEach((d)=> {
 
       let params = this.queryParamsClone();
       Ember.assign(params, {dataset_name: d.datasetName});

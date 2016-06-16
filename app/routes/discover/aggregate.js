@@ -6,10 +6,10 @@ export default Ember.Route.extend({
   query: Ember.inject.service(),
   model() {
     const params = this.paramsFor('discover');
-    return Ember.RSVP.hash({
+    return {
       pointDatasets: this.get('query').eventCandidates(params),
       shapeDatasets: this.get('query').shapeSubsets(params)
-    });
+    };
   },
   actions: {
     reload: function() {
