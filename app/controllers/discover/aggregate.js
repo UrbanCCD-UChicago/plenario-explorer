@@ -41,12 +41,14 @@ export default Ember.Controller.extend({
     },
     loadShapeDatasets: function(result){
       this.set('shapeDatasets', result);
+      this.set('searchingShapes', false);
     }
   },
 
   modelArrived: Ember.observer('model', function(){
     this.get('timeseriesList').clear();
-    
+    this.set('shapeDatasets', []);
+
     let pointDatasets = this.get('model').pointDatasets;
     let shapeDatasets = this.get('model').shapeDatasets;
     this.set('searchingShapes', true);
@@ -57,7 +59,6 @@ export default Ember.Controller.extend({
     });
     shapeDatasets.then(function(result){
       self.send('loadShapeDatasets', result);
-      self.set('searchingShapes', false);
     });
   }),
 
@@ -74,7 +75,7 @@ export default Ember.Controller.extend({
     let arrivalOrder = 1;
 
     let pointDatasets = this.get('model').pointDatasets._result;
-    let eligible = this.get('model').pointDatasets.length;
+    let eligible = pointDatasets.length;
     let processed = 0;
     let discoverAggregateController = this;
 
