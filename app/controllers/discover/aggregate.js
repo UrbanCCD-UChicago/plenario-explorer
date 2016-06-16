@@ -37,7 +37,6 @@ export default Ember.Controller.extend({
       this.get('query').rawEvents(params, true);
     },
     loadPointDatasets: function(){
-      this.get('timeseriesList').clear();
       this.launchTimeseriesQueries();
     },
     loadShapeDatasets: function(result){
@@ -46,6 +45,8 @@ export default Ember.Controller.extend({
   },
 
   modelArrived: Ember.observer('model', function(){
+    this.get('timeseriesList').clear();
+    
     let pointDatasets = this.get('model').pointDatasets;
     let shapeDatasets = this.get('model').shapeDatasets;
     this.set('searchingShapes', true);
