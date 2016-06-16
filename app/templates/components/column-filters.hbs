@@ -1,14 +1,11 @@
-<h3>Filters</h3>
+<h3 class="detail-header">Filters</h3>
 {{#each filterHashes as |filter index|}}
   <p>{{humanize filter.field}} {{filter.op}} {{filter.val}}
       &nbsp;&nbsp;<button {{action "removeFilter" index}} class="btn btn-default btn-sm pull-right">Remove Filter</button>
       &nbsp;&nbsp;
   </p>
 {{/each}}
-
-<br/>
-
-
+<div class="rowbox">
 {{#em-form formLayout="horizontal"
 submitButton=false
 model=activeFilter
@@ -36,3 +33,5 @@ validationIcons=false}}
   <input type="submit" disabled={{notComplete}} class="btn btn-info pull-right" value="Add Filter" />
 
 {{/em-form}}
+</div>
+<div style="height:0; width:100%; clear:both"></div>
