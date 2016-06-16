@@ -63,7 +63,7 @@ export default Ember.Controller.extend({
   /**
    * For each candidate dataset,
    * query the matching timeseries
-   * and push datasets with nonempty detailAggregate onto
+   * and push datasets with nonempty timeseries onto
    * the timeseriesList to display.
    */
   launchTimeseriesQueries() {
