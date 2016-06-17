@@ -83,12 +83,16 @@ test('Attempting to query with invalid startDate and endDate returns to index an
   });
 });
 
-test('Attempting to query with invalid JSON returns to index.', function(assert){
+test('Attempting to query with invalid JSON returns to index and issues an error.', function(assert){
   //Query with a location_geom__within that has been corrupted to yield invalid JSON.
   visit('/discover/aggregate?location_geom__within=%7B%22type%22%3A%22Feature%22%3A%7B%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Polygon%22%2C%22coordinates%22%3A%5B%5B%5B-87.80672550201416%2C41.74262728637672%5D%2C%5B-87.80672550201416%2C41.97582726102573%5D%2C%5B-87.45653629302979%2C41.97582726102573%5D%2C%5B-87.45653629302979%2C41.74262728637672%5D%2C%5B-87.80672550201416%2C41.74262728637672%5D%5D%5D%7D%7D');
   andThen(function() {
     assert.equal(currentRouteName(), 'discover.index', 'The page returns to index.');
-    //TODO: Add an assertion here that checks that a error was issued.
+    visit('/discover?location_geom__within=%7B%22type%22%3A%22Feature%22%3A%7B%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Polygon%22%2C%22coordinates%22%3A%5B%5B%5B-87.80672550201416%2C41.74262728637672%5D%2C%5B-87.80672550201416%2C41.97582726102573%5D%2C%5B-87.45653629302979%2C41.97582726102573%5D%2C%5B-87.45653629302979%2C41.74262728637672%5D%2C%5B-87.80672550201416%2C41.74262728637672%5D%5D%5D%7D%7D');
+    andThen(function(){
+      $('#submit-query').click();
+      assert.notEqual($('.message').text(), "", "The page issued an error.");
+    });
   });
 });
 
