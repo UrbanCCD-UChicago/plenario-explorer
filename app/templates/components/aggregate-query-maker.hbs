@@ -23,23 +23,23 @@
       </div>
 
       <div class="rowbox">
-        {{date-range startDate=startDate endDate=endDate override=override}}
-        {{drop-downs agg=agg aggOptions=aggOptions}}
+       {{date-range startDate=startDate endDate=endDate override=override}}
+       {{drop-downs agg=agg aggOptions=aggOptions}}
       </div>
-      {{submit-or-reset submit=(action submit) reset=(action reset)}}
+      {{submit-or-reset submit=submit reset=reset}}
       <div class="rowbox">
-        {{#em-form
-        submitButton=false
-        model=teleportState
-        validationIcons=false}}
+       {{#em-form
+       submitButton=false
+       model=teleportState
+       validationIcons=false}}
 
-          {{em-select
-          property="center"
-          content=citiesList
-          optionValuePath="id"
-          optionLabelPath="label"
-          label="Center map on"}}
-
+         {{em-select
+         property="center"
+         content=citiesList
+         optionValuePath="id"
+         optionLabelPath="label"
+         label="Center map on"
+         id="map-center-select"}}
         {{/em-form}}
       </div>
     </div>

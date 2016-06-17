@@ -4,14 +4,14 @@
       Event Datasets Available to Query</h3>
       {{point-index-listing
       displayLink=(action "navigateToPoint")
-      pointDatasets=processedPointDatasets}}
+      pointDatasets=processedPointDatasets
+      id="point-index-listing"}}
     </div>
 </div>
 <div class="row">
   <div class="col-md-12">
     <h3><strong>{{model.shapeDatasets.length}}</strong>
-        Shape Datasets Available to Query</h3>
-
+    Shape Datasets Available to Query</h3>
     {{shape-listing
     displayLink=(action "navigateToShape")
     downloadLink=(action "downloadShape")
