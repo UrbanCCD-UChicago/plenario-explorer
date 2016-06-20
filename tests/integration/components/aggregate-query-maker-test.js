@@ -1,11 +1,11 @@
-import { moduleForComponent, test } from 'ember-qunit';
+import {moduleForComponent, test} from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
 moduleForComponent('aggregate-query-maker', 'Integration | Component | aggregate query maker', {
   integration: true,
 });
 
-test('It renders.', function(assert) {
+test('It renders.', function (assert) {
   // Set any properties with this.set('myProperty', 'value');
   // Handle any actions with this.on('myAction', function(val) { ... });"
 
@@ -15,7 +15,7 @@ test('It renders.', function(assert) {
 
 });
 
-test('Parameters correctly control the component.', function(assert){
+test('Parameters correctly control the component.', function (assert) {
   this.set('start', '2010-06-10');
   this.set('end', '2016-07-20');
   this.set('agg', 'day');
@@ -35,4 +35,4 @@ test('Parameters correctly control the component.', function(assert){
   assert.equal($("#end-date-filter .form-control").val(), "07/20/2016", "Correctly rendered component based on initial endDate parameter.");
   assert.equal($("#agg-select option:selected").text().trim(), "day", "Correctly rendered component based on initial agg parameter.");
   assert.equal($("#map-center-select option:selected").text().trim(), "Chicago", "Correctly rendered component based on initial center parameter.");
- });
+});
