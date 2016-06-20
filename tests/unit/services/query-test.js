@@ -96,13 +96,13 @@ test('Successfully queries timeseries.', function(assert){
   //But for testing purposes, we need to standardize that to UTC time.
   assert.equal(moment.utc("2000-01-01+0000").valueOf(), "946684800000", "Moment constructor and valueOf() works as expected.");
 
-  let expectedSeries = testData.detailAggregateSanitation.objects.map(v => [moment(v.datetime+"0000").valueOf(), v.count]);
+  let expectedSeries = testData.detailAggregateRodents.objects.map(v => [moment(v.datetime+"0000").valueOf(), v.count]);
 
   let params2 = {};
-  Ember.assign(params2, params, {dataset_name: "311_service_requests_sanitation_code_complaints"});
+  Ember.assign(params2, params, {dataset_name: "311_service_requests_rodent_baiting"});
   let timeseries = service.timeseries(params2);
   return timeseries.then(function(result){
-    assert.equal(result.count, 3, "Query returns the expected number of datapoints.");
+    assert.equal(result.count, 2, "Query returns the expected number of datapoints.");
     assert.equal(JSON.stringify(result.series[0].data), JSON.stringify(expectedSeries), "Query service correctly converts datetime ISO date to epoch time.");
   });
 });
