@@ -8506,4 +8506,337 @@ export default function() {
       };
     }
   });
+
+  this.get('http://plenar.io/v1/api/detail', function(_, request){
+    if(request.queryParams.dataset_name==='speed_camera_locations'){
+      return {
+        meta: {
+          status: "ok",
+          query: {
+            location_geom__within: {
+              crs: {
+                type: "name",
+                properties: {
+                  name: "EPSG:4326"
+                }
+              },
+              type: "Polygon",
+              coordinates: [
+                [
+                  [
+                    -87.68862247467041,
+                    41.80510182643331
+                  ],
+                  [
+                    -87.68862247467041,
+                    41.90432124806034
+                  ],
+                  [
+                    -87.55678653717041,
+                    41.90432124806034
+                  ],
+                  [
+                    -87.55678653717041,
+                    41.80510182643331
+                  ],
+                  [
+                    -87.68862247467041,
+                    41.80510182643331
+                  ]
+                ]
+              ]
+            },
+            date__time_of_day_ge: 0,
+            obs_date__le: "2016-06-15T00:00:00",
+            data_type: "json",
+            obs_date__ge: "2010-06-01T00:00:00",
+            date__time_of_day_le: 23,
+            offset: 0
+          },
+          message: [],
+          total: 23
+        },
+        objects: [
+          {
+            address: "2108 S Western Ave (Speed Camera)",
+            first_approach: "SB",
+            second_approach: null,
+            go_live_date: "2014-04-25",
+            latitude: 41.8535726224302,
+            longitude: -87.6858278546488,
+            location: "(41.853572622430164, -87.6858278546488)"
+          },
+          {
+            address: "115 N Ogden (Speed Camera)",
+            first_approach: "NB",
+            second_approach: "SB",
+            go_live_date: "2014-01-25",
+            latitude: 41.8831915213911,
+            longitude: -87.6641146995552,
+            location: "(41.883191521391076, -87.66411469955516)"
+          },
+          {
+            address: "2335 W Cermak (Speed Camera)",
+            first_approach: "EB",
+            second_approach: null,
+            go_live_date: "2014-03-03",
+            latitude: 41.8519295233417,
+            longitude: -87.6846476625631,
+            location: "(41.85192952334165, -87.68464766256305)"
+          },
+          {
+            address: "3843 S Western Blvd (Speed Camera)",
+            first_approach: "NB",
+            second_approach: "SB",
+            go_live_date: "2013-09-07",
+            latitude: 41.8235311473356,
+            longitude: -87.6841140261617,
+            location: "(41.82353114733556, -87.6841140261617)"
+          },
+          {
+            address: "19 W Chicago Ave (Speed Camera)",
+            first_approach: "WB",
+            second_approach: null,
+            go_live_date: "2014-04-29",
+            latitude: 41.8965561071089,
+            longitude: -87.6290259038287,
+            location: "(41.89655610710888, -87.62902590382873)"
+          },
+          {
+            address: "140 N Ashland (Speed Camera)",
+            first_approach: "SB",
+            second_approach: null,
+            go_live_date: "2014-02-07",
+            latitude: 41.8845141970042,
+            longitude: -87.6670420941573,
+            location: "(41.88451419700416, -87.66704209415728)"
+          },
+          {
+            address: "629 State St (Speed Camera)",
+            first_approach: "NB",
+            second_approach: null,
+            go_live_date: "2013-11-25",
+            latitude: 41.8738495987443,
+            longitude: -87.6274478749732,
+            location: "(41.873849598744286, -87.62744787497319)"
+          },
+          {
+            address: "450 N Columbus Dr (Speed Camera)",
+            first_approach: "SB",
+            second_approach: null,
+            go_live_date: "2014-05-18",
+            latitude: 41.8901223525052,
+            longitude: -87.620416395137,
+            location: "(41.890122352505166, -87.62041639513696)"
+          },
+          {
+            address: "630 State St (Speed Camera)",
+            first_approach: "SB",
+            second_approach: null,
+            go_live_date: "2013-11-25",
+            latitude: 41.8738242049774,
+            longitude: -87.6277407594314,
+            location: "(41.87382420497741, -87.62774075943143)"
+          },
+          {
+            address: "449 N Columbus Dr (Speed Camera)",
+            first_approach: "NB",
+            second_approach: null,
+            go_live_date: "2014-05-18",
+            latitude: 41.890037755049,
+            longitude: -87.620179034271,
+            location: "(41.89003775504898, -87.62017903427099)"
+          },
+          {
+            address: "14 W Chicago Ave (Speed Camera)",
+            first_approach: "EB",
+            second_approach: null,
+            go_live_date: "2014-04-29",
+            latitude: 41.896779127474,
+            longitude: -87.6287812485988,
+            location: "(41.89677912747405, -87.6287812485988)"
+          },
+          {
+            address: "2115 S Western Ave (Speed Camera)",
+            first_approach: "NB",
+            second_approach: null,
+            go_live_date: "2014-04-25",
+            latitude: 41.8533849388499,
+            longitude: -87.6855296820395,
+            location: "(41.85338493884992, -87.68552968203949)"
+          },
+          {
+            address: "2326 W Cermak (Speed Camera)",
+            first_approach: "WB",
+            second_approach: null,
+            go_live_date: "2014-03-03",
+            latitude: 41.8521535050717,
+            longitude: -87.6843383891253,
+            location: "(41.85215350507168, -87.68433838912533)"
+          },
+          {
+            address: "1229 Western (Speed Camera)",
+            first_approach: "NB",
+            second_approach: null,
+            go_live_date: "2014-02-24",
+            latitude: 41.9038780793329,
+            longitude: -87.686902741762,
+            location: "(41.90387807933294, -87.68690274176198)"
+          },
+          {
+            address: "18 W Superior St (Speed Camera)",
+            first_approach: "EB",
+            second_approach: null,
+            go_live_date: "2014-03-28",
+            latitude: 41.8957790251679,
+            longitude: -87.6289252029411,
+            location: "(41.89577902516787, -87.62892520294106)"
+          },
+          {
+            address: "1226 Western (Speed Camera)",
+            first_approach: "SB",
+            second_approach: null,
+            go_live_date: "2014-02-24",
+            latitude: 41.9038171027511,
+            longitude: -87.6871949977686,
+            location: "(41.90381710275111, -87.6871949977686)"
+          },
+          {
+            address: "1440 W Cermak Rd (Speed Camera)",
+            first_approach: "WB",
+            second_approach: "EB",
+            go_live_date: "2014-09-02",
+            latitude: 41.8525018099582,
+            longitude: -87.6628103184323,
+            location: "(41.85250180995818, -87.66281031843234)"
+          },
+          {
+            address: "2329 Division (Speed Camera)",
+            first_approach: "EB",
+            second_approach: "WB",
+            go_live_date: "2014-02-24",
+            latitude: 41.9029294088538,
+            longitude: -87.6857618797195,
+            location: "(41.90292940885378, -87.68576187971952)"
+          },
+          {
+            address: "141 N Ashland (Speed Camera)",
+            first_approach: "NB",
+            second_approach: null,
+            go_live_date: "2014-02-07",
+            latitude: 41.8845174079481,
+            longitude: -87.6667483469732,
+            location: "(41.88451740794813, -87.66674834697315)"
+          },
+          {
+            address: "2080 W Pershing Rd (Speed Camera)",
+            first_approach: "EB",
+            second_approach: "WB",
+            go_live_date: "2013-09-07",
+            latitude: 41.8230013229658,
+            longitude: -87.6751435912894,
+            location: "(41.82300132296577, -87.67514359128938)"
+          },
+          {
+            address: "319 E Illinois St (Speed Camera)",
+            first_approach: "EB",
+            second_approach: null,
+            go_live_date: "2014-04-14",
+            latitude: 41.8909100957278,
+            longitude: -87.6193475214596,
+            location: "(41.89091009572781, -87.61934752145963)"
+          },
+          {
+            address: "2928 S Halsted (Speed Camera)",
+            first_approach: "NB",
+            second_approach: "SB",
+            go_live_date: "2014-01-18",
+            latitude: 41.8408126259238,
+            longitude: -87.6464926104953,
+            location: "(41.84081262592384, -87.64649261049526)"
+          },
+          {
+            address: "3200 S Archer Ave (Speed Camera)",
+            first_approach: "WB",
+            second_approach: "EB",
+            go_live_date: "2015-11-09",
+            latitude: 41.8359580184859,
+            longitude: -87.6687902665376,
+            location: "(41.83595801848586, -87.66879026653764)"
+          }
+        ]
+      };
+    } else if (request.queryParams.dataset_name === 'red_light_camera_locations') {
+      return {
+        meta: {
+          status: "ok",
+          query: {
+            location_geom__within: {
+              crs: {
+                type: "name",
+                properties: {
+                  name: "EPSG:4326"
+                }
+              },
+              type: "Polygon",
+              coordinates: [
+                [
+                  [
+                    -87.68862247467041,
+                    41.80510182643331
+                  ],
+                  [
+                    -87.68862247467041,
+                    41.90432124806034
+                  ],
+                  [
+                    -87.55678653717041,
+                    41.90432124806034
+                  ],
+                  [
+                    -87.55678653717041,
+                    41.80510182643331
+                  ],
+                  [
+                    -87.68862247467041,
+                    41.80510182643331
+                  ]
+                ]
+              ]
+            },
+            date__time_of_day_ge: 0,
+            obs_date__le: "2016-06-15T00:00:00",
+            data_type: "json",
+            obs_date__ge: "2010-06-01T00:00:00",
+            date__time_of_day_le: 23,
+            offset: 0
+          },
+          message: [],
+          total: 2
+        },
+        objects: [
+          {
+            intersection: "Illinois-Columbus",
+            first_approach: "NB",
+            second_approach: "SB",
+            third_approach: null,
+            go_live_date: "2010-10-28",
+            latitude: 41.891002,
+            longitude: -87.620224,
+            location: "(41.891002, -87.620224)"
+          },
+          {
+            intersection: "Clark-Chicago",
+            first_approach: "EB",
+            second_approach: "WB",
+            third_approach: null,
+            go_live_date: "2010-10-22",
+            latitude: 41.896635,
+            longitude: -87.631243,
+            location: "(41.896635, -87.631243)"
+          }
+        ]
+      };
+    }
+  });
 }

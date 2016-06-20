@@ -159,26 +159,26 @@ test('Successfully queries grid.', function(assert){
   });
 });
 
-/*
+
 test('Successfully retrieves raw data.', function(assert){
   let service = this.subject();
-
-  let events = service.eventCandidates(params);
-  let shapes = service.shapeSubsets(params);
-
-  return events.then(function(result) {
-    let params2 = {};
-    Ember.assign(params2, params, {dataset_name: result[0].datasetName});
-    let rawevents = service.rawEvents(params2);
-    return rawevents.then(function (result) {
-      assert.equal(result, "");
-      return shapes.then(function (result) {
-        let rawshapes = service.rawShape(result[0].datasetName, params);
-        return rawshapes.then(function (result) {
-          assert.equal(result, "");
-        })
-      });
-    });
+  let expectedRawData = {
+      intersection: "Illinois-Columbus",
+      first_approach: "NB",
+      second_approach: "SB",
+      third_approach: null,
+      go_live_date: "2010-10-28",
+      latitude: 41.891002,
+      longitude: -87.620224,
+      location: "(41.891002, -87.620224)"
+    };
+  let params2 = {};
+  Ember.assign(params2, params, {dataset_name: "red_light_camera_locations"});
+  let rawevents = service.rawEvents(params2);
+  return rawevents.then(function (result) {
+    assert.equal(result.objects.length, 2, "Query returns the expected number of data points.");
+    assert.equal(result.objects.length, result.meta.total, "Data is internally consistent.");
+    assert.equal(result.objects[0].toString(), expectedRawData.toString(), "Query returns the correct data.");
   });
 });
-*/
+
