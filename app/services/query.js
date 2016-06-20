@@ -37,10 +37,7 @@ export default Ember.Service.extend({
 
   init() {
     this._super(...arguments);
-    const eventParams = {
-      data: {include_columns: true} //TODO: remove this parameter
-    };
-    this.set('events', this.get('ajax').request('/datasets', eventParams));
+    this.set('events', this.get('ajax').request('/datasets'));
     this.set('shapes', this.get('ajax').request('/shapes'));
   },
 

@@ -79,9 +79,9 @@ test('User can reset a query.', function(assert){
 test('Event links from queries go to real pages.', function(assert){
   visit('/discover/aggregate?location_geom__within='+geoJSON+'&obs_date__ge=2010-06-10&obs_date__le=2017-07-02');
   andThen(function(){
-    assert.notEqual($('#point-aggregate-listing a:eq(0)').attr('href'), '', 'Event links are not empty.');
-    assert.notEqual($('#point-aggregate-listing a:eq(0)').attr('href'), '#', 'Event links do not route to #.');
-    assert.equal($('#point-aggregate-listing a:eq(0)').attr('href').indexOf('/event') > -1, true, 'Event links follow the event route!');
+    assert.notEqual($('#point-aggregate-listing a.ember-view:eq(0)').attr('href'), '', 'Event links are not empty.');
+    assert.notEqual($('#point-aggregate-listing a.ember-view:eq(0)').attr('href'), '#', 'Event links do not route to #.');
+    assert.equal($('#point-aggregate-listing a.ember-view:eq(0)').attr('href').indexOf('/event') > -1, true, 'Event links follow the event route!');
   });
 });
 
