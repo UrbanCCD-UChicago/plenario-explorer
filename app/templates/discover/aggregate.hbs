@@ -11,10 +11,15 @@
 </div>
 <div class="row">
   <div class="col-md-12">
-    <h3><strong>{{model.shapeDatasets.length}}</strong> {{pluralize 'Shape Dataset' model.shapeDatasets.length}} Found</h3>
+      <h3>
+        {{#if searchingShapes}}<i>loading shapes...</i>
+        {{else}}<strong>{{shapeDatasets.length}}</strong> {{pluralize 'Shape Dataset' shapeDatasets.length}} Found
+        {{/if}}
+      </h3>
     {{shape-listing
     displayLink=(action "navigateToShape")
     downloadLink=(action "downloadShape")
-    shapeDatasets=model.shapeDatasets}}
+    shapeDatasets=shapeDatasets}}
+    {{#if searchingShapes}}{{widget-spin}}{{/if}}
   </div>
 </div>
