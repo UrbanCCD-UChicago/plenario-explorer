@@ -1,22 +1,10 @@
 import { test } from 'qunit';
 import moduleForAcceptance from 'plenario-explorer/tests/helpers/module-for-acceptance';
+import testData from 'plenario-explorer/tests/helpers/test-data';
 
 moduleForAcceptance('Acceptance | user query');
 
-const geoJSON = encodeURIComponent(JSON.stringify({
-    "type": "Feature",
-    "properties": {},
-    "geometry": {
-      "type": "Polygon",
-      "coordinates": [[
-        [-87.68862247467041, 41.80510182643331],
-        [-87.68862247467041, 41.90432124806034],
-        [-87.55678653717041, 41.90432124806034],
-        [-87.55678653717041, 41.80510182643331],
-        [-87.68862247467041, 41.80510182643331]
-      ]]
-    }
-  }));
+const geoJSON = encodeURIComponent(JSON.stringify(testData.params.location_geom__within));
 
 test('Front page loads properly with query parameters.', function(assert) {
   visit('?obs_date__ge=2010-06-01&obs_date__le=2017-07-02&agg=day&center=seattle');

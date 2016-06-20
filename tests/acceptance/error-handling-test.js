@@ -1,22 +1,10 @@
 import { test } from 'qunit';
 import moduleForAcceptance from 'plenario-explorer/tests/helpers/module-for-acceptance';
+import testData from 'plenario-explorer/tests/helpers/test-data';
 
 moduleForAcceptance('Acceptance | error handling');
 
-const geoJSON = encodeURIComponent(JSON.stringify({
-  "type": "Feature",
-  "properties": {},
-  "geometry": {
-    "type": "Polygon",
-    "coordinates": [[
-      [-87.68862247467041, 41.80510182643331],
-      [-87.68862247467041, 41.90432124806034],
-      [-87.55678653717041, 41.90432124806034],
-      [-87.55678653717041, 41.80510182643331],
-      [-87.68862247467041, 41.80510182643331]
-    ]]
-  }
-}));
+const geoJSON = encodeURIComponent(JSON.stringify(testData.params.location_geom__within));
 
 test('Visits to a non-page will be redirected to the index.', function(assert) {
   visit('/gjagiojgioawejpgawgihawpoeghawpeogawehip');
