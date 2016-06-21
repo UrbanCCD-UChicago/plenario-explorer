@@ -1,0 +1,28 @@
+<div id="container-container" class="data-table-container-container" style="height: 0vh">
+  <div id="container" class="data-table-container">
+    <table class="data-table table table-bordered table-hover">
+      <thead>
+        <tr>
+            {{#each columnNames as |name|}}
+              <th><div class="sticky">{{name}}</div><div class="reference">{{name}}</div></th>
+            {{/each}}
+        </tr>
+      </thead>
+      <tbody>
+        {{#each events as |row|}}
+          <tr>
+            {{#each columns as |column|}}
+              <td>{{get row column}}</td>
+            {{/each}}
+          </tr>
+          <tr></tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+</div>
+{{#if showTable}}
+  <div style="width: 100%; text-align: center; margin-top: 12px;"><button style="display: inline-block" type="button" class="btn btn-info" {{action 'hideDatasetPreview'}}>Hide Dataset Preview</button></div>
+{{else}}
+  <div style="width: 100%; text-align: center; margin-top: 12px;"><button style="display: inline-block" type="button" class="btn btn-info" {{action 'showDatasetPreview'}}>Show Dataset Preview</button></div>
+{{/if}}
