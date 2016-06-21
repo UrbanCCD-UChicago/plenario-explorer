@@ -193,7 +193,7 @@ export default Ember.Component.extend({
   // On subsequent renders,
   // make sure we're zoomed in on the drawn geom.
   shouldZoom: Ember.observer('zoom', function() {
-    if (this.get('zoom')){
+    if (this.get('zoom') && this.map.drawnItems.getLayers().length > 0){
       let layer = this.map.drawnItems.getLayers()[0];
       layer.setStyle({color: '#03f'});
       this.map.fitBounds(layer.getBounds());

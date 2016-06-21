@@ -10,15 +10,15 @@ export default Ember.Controller.extend({
 
   queryParams: ['obs_date__le', 'obs_date__ge','agg', 'location_geom__within', 'center'],
 
-  'obs_date__le': dateFormat(moment().toString()),
-  'obs_date__ge': dateFormat(moment().subtract(90, 'days').toString()),
+  'obs_date__le': dateFormat(moment()),
+  'obs_date__ge': dateFormat(moment().subtract(90, 'days')),
   'agg': 'week',
   'center': 'chicago',
   'location_geom__within': null,
 
   _resetParams() {
-    this.set('obs_date__le', dateFormat(moment().toString()));
-    this.set('obs_date__ge', dateFormat(moment().subtract(90, 'days').toString()));
+    this.set('obs_date__le', dateFormat(moment()));
+    this.set('obs_date__ge', dateFormat(moment().subtract(90, 'days')));
     this.set('agg', 'week');
     this.set('center', 'chicago');
     this.set('location_geom__within', null);

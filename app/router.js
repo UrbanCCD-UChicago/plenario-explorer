@@ -13,6 +13,7 @@ Router.map(function() {
   this.route('shape', {path: '/shape/:dataset_name'});
   this.route('not-found', {path: '/*:path_name'});
   this.route('loading');
+  this.route('error', {path: '/error/:error_message'});
 });
 
 export default Router;

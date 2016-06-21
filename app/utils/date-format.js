@@ -2,15 +2,24 @@ import moment from 'moment';
 
 export default function dateFormat(dt, type) {
   let date = moment();
-  if(typeof dt === "string"){
-    if(dt.match(/[0-9]{4}-[0-9]{2}-[0-9]{2}/)){
-      date = moment(dt, 'YYYY-MM-DD');
-    } else if(dt.match(/[0-9]{2}\/[0-9]{2}\/[0-9]{4}/)){
-      date = moment(dt, 'MM/DD/YYYY');
-    }
-  } else if(dt instanceof Date){
+
+  let formats = [
+    moment.ISO_8601,
+    'YYYY-MM-DD',
+    'MM/DD/YYYY',
+    'YYYY/MM/DD',
+    'DD/MM/YYYY',
+  ];
+
+  if(dt instanceof Date){
+    date = moment(dt);
+  } else if(moment(dt, formats, true).isValid()){
+    date = moment(dt, formats, true);
+  } else {
+    console.warn("FIXME: Using an unsupported format in dateFormat: "+String(dt)+". Falling back to moment(<<anything>>), which is going to be deprecated.");
     date = moment(dt);
   }
+
   if (type === 'display') {
     return date.format('MM/DD/YYYY');
   }
