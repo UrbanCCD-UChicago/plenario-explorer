@@ -1,7 +1,7 @@
 /* global Ember */
 import {moduleFor, test} from 'ember-qunit';
 import startMirage from '../../helpers/setup-mirage-for-integration';
-import testData from 'plenario-explorer/tests/helpers/test-data';
+import testData from 'plenario-explorer/mirage/test-data';
 import moment from 'moment';
 
 //The Testing Datasets are defined in helpers/test-data.js

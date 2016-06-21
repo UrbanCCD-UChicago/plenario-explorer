@@ -1,6 +1,6 @@
 //Dummy datasets used purely for testing.
 //Import data from our central test data dump: test-data.js.
-import testData from 'plenario-explorer/tests/helpers/test-data';
+import testData from 'plenario-explorer/mirage/test-data';
 
 export default function () {
   this.get('http://plenar.io/v1/api/shapes', function () {

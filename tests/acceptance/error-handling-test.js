@@ -1,6 +1,6 @@
 import {test} from 'qunit';
 import moduleForAcceptance from 'plenario-explorer/tests/helpers/module-for-acceptance';
-import testData from 'plenario-explorer/tests/helpers/test-data';
+import testData from 'plenario-explorer/mirage/test-data';
 
 moduleForAcceptance('Acceptance | error handling');
 
