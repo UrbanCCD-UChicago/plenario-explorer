@@ -37,6 +37,7 @@ export default Ember.Controller.extend({
   //IDs for cities, their locations and zoom.
 
   cities: {
+    "00default": {label: "Select a city to teleport to it.", location: [41.795509, -87.581916], zoom: 10},
     "chicago": {label: "Chicago", location: [41.795509, -87.581916], zoom: 10},
     "newyork": {label: "New York", location:[40.7268362,-74.0017699], zoom: 10},
     "seattle": {label: "Seattle", location:[47.6076397,-122.3258644], zoom: 11},
