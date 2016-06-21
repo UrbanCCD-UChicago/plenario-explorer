@@ -79,7 +79,8 @@ export default Ember.Controller.extend({
 
     Ember.RSVP.hash({
       timeseries: qService.timeseries(qParams),
-      grid: qService.grid(qParams)
+      grid: qService.grid(qParams),
+      events: qService.rawEvents(qParams)
     }).then(result => {
       if (result.grid === undefined || result.timeseries === undefined) {
         if (shouldRetry) {
@@ -95,6 +96,7 @@ export default Ember.Controller.extend({
       }
       this.set('timeseries', result.timeseries);
       this.set('grid', result.grid);
+      this.set('events', result.events.objects);
       this.set('loading', false);
     });
   },

@@ -323,3 +323,62 @@ h3 {
   margin-bottom: 10px;
   line-height: 1.2em;
 }
+
+a
+{
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+
+  -ms-word-break: break-all;
+  /* This is the dangerous one in WebKit, as it breaks things wherever */
+  word-break: break-all;
+}
+
+/* data-table component */
+.data-table-container-container
+{
+  position: relative;
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+.data-table-container
+{
+  margin-top: 1.5em;
+  height: 50vh;
+  display: inline-block;
+  overflow-x: hidden;
+  overflow-y: auto;
+  min-width: 100%;
+  border: 1px solid darkgray;
+}
+
+.data-table
+{
+  overflow: hidden;
+  background: white;
+}
+
+.data-table th .sticky
+{
+  display: block;
+  white-space: nowrap;
+  position: absolute;
+  top: 0;
+}
+
+.data-table th .reference
+{
+  height: 0;
+  color: transparent;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.data-table thead
+{
+  background: dimgray;
+}

@@ -32,14 +32,6 @@
         </ul>
       </div>
     </div>
-    <hr />
-    <h4>API queries</h4>
-    <p>View the API queries that are used on this page. <a href='/api-docs/'>Read the API docs</a>.</p>
-    <ul class=''>
-        <li><a {{action "download" "grid"}}><code>/v1/api/grid/&hellip;</code></a></li>
-        <li><a {{action "download" "timeseries"}}><code>/v1/api/detail-aggregate/&hellip;</code></a></li>
-        <li><a {{action "download" "geoJSONPoints"}}><code>/v1/api/detail/&hellip;</code></a></li>
-    </ul>
   </div>
   <div class="col-md-7">
       {{#if loading}}
@@ -53,10 +45,34 @@
           </h3>
         {{heat-grid grid=grid datasetName=model.humanName}}
         {{high-charts classNames=chartClasses content=timeseries.series}}
-        <hr />
-        <h4>Dataset details</h4>
-        {{metadata-display m=model}}
       {{/if}}
-
   </div>
+</div>
+<div class="row rowbox">
+    <hr />
+    <div class="col-md-12">
+      <h3 class='detail-header'>Dataset Preview <i>{{#if loading}}(loading...){{else}}({{events.length}} entries loaded){{/if}}</i></h3>
+      {{#if loading}}
+        {{widget-spin}}
+          <div style="height: 40vh"></div>
+      {{else}}
+        {{data-table events=events}}
+      {{/if}}
+    </div>
+</div>
+<div class="row rowbox">
+    <hr />
+    <div class="col-md-5">
+        <h4>API queries</h4>
+        <p>View the API queries that are used on this page. <a href='/api-docs/'>Read the API docs</a>.</p>
+        <ul class=''>
+            <li><a {{action "download" "grid"}}><code>/v1/api/grid/&hellip;</code></a></li>
+            <li><a {{action "download" "timeseries"}}><code>/v1/api/detail-aggregate/&hellip;</code></a></li>
+            <li><a {{action "download" "geoJSONPoints"}}><code>/v1/api/detail/&hellip;</code></a></li>
+        </ul>
+    </div>
+    <div class="col-md-7">
+      <h4>Dataset details</h4>
+      {{metadata-display m=model}}
+    </div>
 </div>

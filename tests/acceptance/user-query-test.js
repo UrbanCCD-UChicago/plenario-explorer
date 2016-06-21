@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import {test} from 'qunit';
 import moduleForAcceptance from 'plenario-explorer/tests/helpers/module-for-acceptance';
 import testData from 'plenario-explorer/mirage/test-data';
@@ -55,12 +56,16 @@ test('User can reset a query.', function (assert) {
   visit('/discover/aggregate?location_geom__within=' + geoJSON + '&obs_date__ge=2010-06-10&obs_date__le=2017-07-02');
   andThen(function () {
     assert.equal($('#point-aggregate-listing').is('div'), true);
-    click('#reset-query');
-    andThen(function () {
-      assert.equal(currentURL(), '/discover', "Resetting the route returns to /discover.");
-      assert.equal($('#point-aggregate-listing').is('div'), false, "Resetting the route succeeded; point aggregate listing is no longer present.");
-      assert.equal($('#point-index-listing').is('div'), true, "Resetting the route succeeded; point index listing is now present.");
-    });
+    return Ember.run.later(function(){ //Wait for everything to stop moving
+      click('#reset-query');
+      andThen(function () {
+        return Ember.run.later(function(){
+          assert.equal(currentURL(), '/discover', "Resetting the route returns to /discover.");
+          assert.equal($('#point-aggregate-listing').is('div'), false, "Resetting the route succeeded; point aggregate listing is no longer present.");
+          assert.equal($('#point-index-listing').is('div'), true, "Resetting the route succeeded; point index listing is now present.");
+        });
+      });
+    }, 1000);
   });
 });
 
@@ -89,6 +94,14 @@ test('Changing the map center selection changes the actual map.', function (asse
         });
       });
     });
+  });
+});
+
+
+test('User can directly specify a map center coordinates via the URL.', function(assert){
+  visit('/discover?center=51.89426503878691,1.4826178550720215,15');
+  andThen(function(){
+    assert.notEqual($('#map').find('img[src$="/15/16518/10839.png"]').length, 0, "Map uses coordinates to center on Sealand.");  //Sealand map tile
   });
 });
 
