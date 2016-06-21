@@ -3,8 +3,8 @@ import Ember from 'ember';
 //import dateFormat from '../utils/date-format';
 
 export default Ember.Controller.extend({
-  // obs_date__ge: dateFormat(moment().subtract(90, 'days').toString()),
-  // obs_date__le: dateFormat(moment().toString()),
+  // obs_date__ge: dateFormat(moment().subtract(90, 'days')),
+  // obs_date__le: dateFormat(moment()),
   // agg: 'week',
   // location_geom__within: null,
   //

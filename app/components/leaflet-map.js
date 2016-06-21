@@ -29,6 +29,11 @@ export default Ember.Component.extend({
       this.addTiles();
       this.drawElements();
       this.createLegend();
+
+      let self = this;
+      this.map.on('moveend', function(){ //Setup listener that signals the parent component when the map changes.
+        self.updateCenter(self);
+      });
     });
   },
 
@@ -193,7 +198,7 @@ export default Ember.Component.extend({
   // On subsequent renders,
   // make sure we're zoomed in on the drawn geom.
   shouldZoom: Ember.observer('zoom', function() {
-    if (this.get('zoom')){
+    if (this.get('zoom') && this.map.drawnItems.getLayers().length > 0){
       let layer = this.map.drawnItems.getLayers()[0];
       layer.setStyle({color: '#03f'});
       this.map.fitBounds(layer.getBounds());
@@ -213,5 +218,13 @@ export default Ember.Component.extend({
   changedCenter: Ember.observer('center', function() {
     this.get('map').setView(new L.LatLng(...this.get('center')[0]), this.get('center')[1]);
   }),
+
+  //Scope here seems a bit different, eh?
+  //It's because it's bound to a map event ('moveend') way up in didInsertElement
+  updateCenter(self) {
+    if(!(self.map.getCenter().lat === this.get('center')[0][0] && self.map.getCenter().lng === this.get('center')[0][1] && self.map.getZoom() === this.get('center')[1])) {
+      self.sendAction('mapMovedByUser', [[self.map.getCenter().lat, self.map.getCenter().lng], self.map.getZoom()]);
+    }
+  },
 
 });

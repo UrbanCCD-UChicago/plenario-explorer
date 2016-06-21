@@ -22,3 +22,9 @@ App = Ember.Application.extend({
 loadInitializers(App, config.modulePrefix);
 
 export default App;
+
+Ember.onerror = function (error) {
+  console.log('GLOBAL ERROR:', error.message);
+  window.location = `/error/${error.message}`;  //TODO: Quick and dirty redirect...
+                                                //TODO: Need to figure out how to transition to route from here.
+};

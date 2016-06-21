@@ -10,15 +10,15 @@ export default Ember.Controller.extend({
 
   queryParams: ['obs_date__le', 'obs_date__ge','agg', 'location_geom__within', 'center'],
 
-  'obs_date__le': dateFormat(moment().toString()),
-  'obs_date__ge': dateFormat(moment().subtract(90, 'days').toString()),
+  'obs_date__le': dateFormat(moment()),
+  'obs_date__ge': dateFormat(moment().subtract(90, 'days')),
   'agg': 'week',
   'center': 'chicago',
   'location_geom__within': null,
 
   _resetParams() {
-    this.set('obs_date__le', dateFormat(moment().toString()));
-    this.set('obs_date__ge', dateFormat(moment().subtract(90, 'days').toString()));
+    this.set('obs_date__le', dateFormat(moment()));
+    this.set('obs_date__ge', dateFormat(moment().subtract(90, 'days')));
     this.set('agg', 'week');
     this.set('center', 'chicago');
     this.set('location_geom__within', null);
@@ -37,6 +37,7 @@ export default Ember.Controller.extend({
   //IDs for cities, their locations and zoom.
 
   cities: {
+    "00default": {label: "Select a city to teleport to it.", location: [41.795509, -87.581916], zoom: 10},
     "chicago": {label: "Chicago", location: [41.795509, -87.581916], zoom: 10},
     "newyork": {label: "New York", location:[40.7268362,-74.0017699], zoom: 10},
     "seattle": {label: "Seattle", location:[47.6076397,-122.3258644], zoom: 11},
