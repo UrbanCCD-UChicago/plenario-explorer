@@ -25,6 +25,13 @@ export default App;
 
 Ember.onerror = function (error) {
   console.log('GLOBAL ERROR:', error.message);
-  window.location = `/error/${error.message}`;  //TODO: Quick and dirty redirect...
-                                                //TODO: Need to figure out how to transition to route from here.
+  //Not all errors are really serious enough to
+  //suddenly take the user out of the flow.
+  //So we whitelist error keywords here.
+  if (error.message.toLowerCase().indexOf('fatal') > -1 ||
+    error.message.toLowerCase().indexOf('malformed') > -1) {
+    window.location = `/error/${error.message}`;
+  }
+  //TODO: Quick and dirty redirect...
+  //TODO: Need to figure out how to transition to route from here.
 };
