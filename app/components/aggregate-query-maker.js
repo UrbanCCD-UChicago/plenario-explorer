@@ -12,7 +12,11 @@ export default Ember.Component.extend({
         //Translate an initial location to coordinates
         //'centerCoords' is the raw-coordinates form of the human-readable 'center'
         this.set('centerCoords', [this.get(`cities.${this.get('center')}.location`), this.get(`cities.${this.get('center')}.zoom`)]);
+      } else if (this.get('center').split(',').length === 3) {
+        let splits = this.get('center').split(',');
+        this.set('centerCoords', [[parseFloat(splits[0]), parseFloat(splits[1])], parseFloat(splits[2])]);
       } else {
+        console.log(this.get('center'));
         this.get('notify').warning(`Unknown city "${this.get('center')}". Try selecting a city from the "Center map on" menu.`);
         this.set('center', 'chicago');
       }
@@ -56,6 +60,14 @@ export default Ember.Component.extend({
     dismissIntro(){
       $("#collapse-intro").collapse("hide");
     },
+    mapMovedByUser(newcenter){
+      let self = this;
+      if(!(this.get('center') in this.get('cities') && this.get('centerCoords') === newcenter)) {
+        Ember.run.next(function () {
+          self.set('center', newcenter);
+        });
+      }
+    }
   },
 
 });
