@@ -50,18 +50,6 @@
 </div>
 <div class="row rowbox">
     <hr />
-    <div class="col-md-12">
-      <h3 class='detail-header'>Dataset Preview <i>{{#if loading}}(loading...){{else}}({{events.length}} entries loaded){{/if}}</i></h3>
-      {{#if loading}}
-        {{widget-spin}}
-          <div style="height: 40vh"></div>
-      {{else}}
-        {{data-table events=events}}
-      {{/if}}
-    </div>
-</div>
-<div class="row rowbox">
-    <hr />
     <div class="col-md-5">
         <h4>API queries</h4>
         <p>View the API queries that are used on this page. <a href='/api-docs/'>Read the API docs</a>.</p>
@@ -74,5 +62,17 @@
     <div class="col-md-7">
       <h4>Dataset details</h4>
       {{metadata-display m=model}}
+    </div>
+</div>
+<div class="row rowbox">
+    <hr />
+    <div class="col-md-12">
+        <h3 class='detail-header'>Dataset Preview <i>{{#if loading}}(loading...){{else}}({{events.length}} entries loaded){{/if}}</i></h3>
+      {{#if loading}}
+        {{widget-spin}}
+          <div style="height: 40vh"></div>
+      {{else}}
+        {{data-table events=events}}
+      {{/if}}
     </div>
 </div>

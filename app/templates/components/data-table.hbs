@@ -1,5 +1,5 @@
-<div class="data-table-container-container">
-  <div class="data-table-container">
+<div id="container-container" class="data-table-container-container" style="height: 0vh">
+  <div id="container" class="data-table-container">
     <table class="data-table table table-bordered table-hover">
       <thead>
         <tr>
@@ -21,3 +21,8 @@
     </table>
   </div>
 </div>
+{{#if showTable}}
+  <div style="width: 100%; text-align: center; margin-top: 12px;"><button style="display: inline-block" type="button" class="btn btn-info" {{action 'hideDatasetPreview'}}>Hide Dataset Preview</button></div>
+{{else}}
+  <div style="width: 100%; text-align: center; margin-top: 12px;"><button style="display: inline-block" type="button" class="btn btn-info" {{action 'showDatasetPreview'}}>Show Dataset Preview</button></div>
+{{/if}}
