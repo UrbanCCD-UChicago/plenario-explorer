@@ -30,9 +30,21 @@ export default Ember.Component.extend({
       this.drawElements();
       this.createLegend();
 
+      //Setup listeners that signal the parent component when the map changes.
       let self = this;
-      this.map.on('moveend', function(){ //Setup listener that signals the parent component when the map changes.
+      this.map.on('moveend', function(){
         self.updateCenter(self);
+
+        //Also turn off the autopilot flag, since it's done moving.
+        //Note that this comes AFTER updateCenter (so that panning
+        //movement from autopilot doesn't cause the center to change again)
+        Ember.run.next(function(){
+          if (self.isDestroyed) { return; } //Workaround to fix testing.
+          self.set('autopilot', false);
+        });
+      });
+      this.map.on('resize', function(){ //Don't consider map resizes user interaction.
+        self.set('autopilot', true);
       });
     });
   },
@@ -201,6 +213,7 @@ export default Ember.Component.extend({
     if (this.get('zoom') && this.map.drawnItems.getLayers().length > 0){
       let layer = this.map.drawnItems.getLayers()[0];
       layer.setStyle({color: '#03f'});
+      this.set('autopilot', true);
       this.map.fitBounds(layer.getBounds());
     }
   }),
@@ -214,15 +227,23 @@ export default Ember.Component.extend({
     }
   }),
 
+  //This autopilot flag is an internal signal to updateCenter to determine
+  //whether the map movement was due to the user dragging/scrolling the map
+  //or if it was initiated by an automatic change in center.
+  autopilot: false,
+
   //If center changes, then recenter the map
   changedCenter: Ember.observer('center', function() {
-    this.get('map').setView(new L.LatLng(...this.get('center')[0]), this.get('center')[1]);
+    this.set('autopilot', true);
+    let self = this;
+    self.get('map').setView(new L.LatLng(...self.get('center')[0]), self.get('center')[1]);
+    //Autopilot is stopped after map is done moving. See listeners above.
   }),
 
   //Scope here seems a bit different, eh?
   //It's because it's bound to a map event ('moveend') way up in didInsertElement
   updateCenter(self) {
-    if(!(self.map.getCenter().lat === this.get('center')[0][0] && self.map.getCenter().lng === this.get('center')[0][1] && self.map.getZoom() === this.get('center')[1])) {
+    if(!this.get('autopilot')) {
       self.sendAction('mapMovedByUser', [[self.map.getCenter().lat, self.map.getCenter().lng], self.map.getZoom()]);
     }
   },

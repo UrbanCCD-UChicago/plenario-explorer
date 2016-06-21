@@ -16,7 +16,6 @@ export default Ember.Component.extend({
         let splits = this.get('center').split(',');
         this.set('centerCoords', [[parseFloat(splits[0]), parseFloat(splits[1])], parseFloat(splits[2])]);
       } else {
-        console.log(this.get('center'));
         this.get('notify').warning(`Unknown city "${this.get('center')}". Try selecting a city from the "Center map on" menu.`);
         this.set('center', 'chicago');
       }
@@ -62,11 +61,10 @@ export default Ember.Component.extend({
     },
     mapMovedByUser(newcenter){
       let self = this;
-      if(!(this.get('center') in this.get('cities') && this.get('centerCoords') === newcenter)) {
-        Ember.run.next(function () {
-          self.set('center', newcenter);
-        });
-      }
+      Ember.run.next(function () {
+        if (self.isDestroyed) { return; } //Workaround to fix testing
+        self.set('center', newcenter);
+      });
     }
   },
 
