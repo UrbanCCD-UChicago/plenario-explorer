@@ -25,6 +25,10 @@ export default App;
 
 Ember.onerror = function (error) {
   console.log('GLOBAL ERROR:', error.message);
-  window.location = `/error/${error.message}`;  //TODO: Quick and dirty redirect...
-                                                //TODO: Need to figure out how to transition to route from here.
+  window.location = `/explore/error/${error.message}`;  
+	//TODO: Quick and dirty redirect...
+	//This will route to, in any case, to either a 404 or error page
+	//and will nicely deposit the user back to the explore index.
+	//as long as the root is /explore.
+        //TODO: Need to figure out how to transition to route from here.
 };
