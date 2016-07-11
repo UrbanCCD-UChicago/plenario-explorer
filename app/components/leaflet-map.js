@@ -120,9 +120,9 @@ export default Ember.Component.extend({
       }
 
       // Add popups
-      /*const onEachFeature = function(feature, layer) {
+      const onEachFeature = function(feature, layer) {
         const props = feature.properties;
-        if (props) {
+        if (props && Object.keys(props).length > 0) {
           let table = '<table>';
           for (const key of Object.keys(props)) {
             table += `<tr><td>${key}&nbsp;</td><td>&nbsp;${props[key]}</td></tr>`;
@@ -131,11 +131,10 @@ export default Ember.Component.extend({
           layer.bindPopup(table);
         }
       };
+
       return L.geoJson(geoJSON, {
         onEachFeature: onEachFeature
-      });*/
-
-      return L.geoJson(geoJSON);
+      });
     }
     catch (e) {
       // Wasn't valid GeoJSON
