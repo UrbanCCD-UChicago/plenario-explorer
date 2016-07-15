@@ -300,4 +300,30 @@ export default Ember.Service.extend({
       });
     }
   },
+
+  /**
+   * Return streaming download of a large CSV or GeoJSON of events
+   *
+   * @param name
+   * @param params
+   * @param newTab
+   */
+  dataDump(params, newTab = false) {
+    params = Ember.copy(params);
+    params = this._translateFilters(params);
+    const endpoint = '/datadump';
+
+    if (newTab) {
+      this.openInNewTab(endpoint, params);
+    } else {
+      const events = this.get('ajax').request(endpoint, {data: params});
+      return events.then(payload => {
+        // Don't currently call this from any route.
+        // Would be useful for putting markers on a map.
+        return payload;
+      }, function (reason) {
+        console.log(reason);
+      });
+    }
+  },
 });

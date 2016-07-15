@@ -128,6 +128,14 @@ export default Ember.Controller.extend({
           qParams['data_type'] = 'geojson';
           qService.rawEvents(qParams, true);
           break;
+        case 'csvPointsDump':
+          qParams['data_type'] = 'csv';
+          qService.dataDump(qParams, true);
+          break;
+        case 'geoJSONPointsDump':
+          qParams['data_type'] = 'geojson';
+          qService.dataDump(qParams, true);
+          break;
         case 'grid':
           qService.grid(qParams, true);
           break;
