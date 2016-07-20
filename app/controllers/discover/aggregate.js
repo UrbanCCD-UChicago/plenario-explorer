@@ -81,7 +81,7 @@ export default Ember.Controller.extend({
 
     let queryError = function(error, goback=true){
       if(!goback) {
-        discoverAggregateController.get('notify').warn(`Not all datasets were queried successfully: ${error.message}`);
+        discoverAggregateController.get('notify').warning(`Not all datasets were queried successfully: ${error.message}`);
       } else {
         discoverAggregateController.get('notify').error(`Error while processing request: ${error.message}`);
       }
