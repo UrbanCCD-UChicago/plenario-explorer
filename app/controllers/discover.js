@@ -88,6 +88,19 @@ export default Ember.Controller.extend({
 
   actions: {
     submit: function() {
+      if(this.get('submitCooldown')) {
+        console.log("Cooldown active.");
+        return;
+      }
+
+      // Implement a cooldown on the submit button to
+      // prevent double-clicks from reloading the query
+      // before a new one begins (resulting in undefined behavior)
+      this.set('submitCooldown', true);
+      Ember.run.later(this, function(){
+        this.set('submitCooldown', false);
+      }, 500);
+
       // Reflect to find if we need to transition,
       if (this._inIndex()) {
         this.transitionToRoute('discover.aggregate');

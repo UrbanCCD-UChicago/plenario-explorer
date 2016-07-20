@@ -65,7 +65,7 @@ test('User can reset a query.', function (assert) {
           assert.equal($('#point-index-listing').is('div'), true, "Resetting the route succeeded; point index listing is now present.");
         });
       });
-    }, 10);
+    }, 1000);
   });
 });
 

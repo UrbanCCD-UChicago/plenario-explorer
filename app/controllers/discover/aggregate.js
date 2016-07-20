@@ -80,7 +80,11 @@ export default Ember.Controller.extend({
     let discoverAggregateController = this;
 
     let queryError = function(error, goback=true){
-      discoverAggregateController.get('notify').error(`A problem occurred while processing your request: ${error.message}`);
+      if(!goback) {
+        discoverAggregateController.get('notify').warning(`Not all datasets were queried successfully: ${error.message}`);
+      } else {
+        discoverAggregateController.get('notify').error(`Error while processing request: ${error.message}`);
+      }
       tipsMachine(error);
       if(goback){
         discoverAggregateController.set('searchingDatasets', false);
@@ -93,6 +97,8 @@ export default Ember.Controller.extend({
         discoverAggregateController.get('notify').info('This means that the Plenar.io API could not understand your request. Please check your query parameters, or reset your query and start over.');
       } else if(error.errors && error.errors.length > 0 && (error.errors[0].status === "504" || error.errors[0].status === "0")){
         discoverAggregateController.get('notify').info('Some items in your request are taking too long to process. Try narrowing your search scope.');
+      } else if(error.message.toLowerCase().indexOf("server error")>-1) {
+        return;
       } else {
         discoverAggregateController.get('notify').info('Try resetting your query and starting over.');
       }
