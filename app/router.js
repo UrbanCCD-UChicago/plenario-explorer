@@ -11,6 +11,7 @@ Router.map(function() {
   });
   this.route('event', {path: '/event/:dataset_name'});
   this.route('shape', {path: '/shape/:dataset_name'});
+  this.route('download');
   this.route('not-found', {path: '/*:path_name'});
   this.route('loading');
   this.route('error', {path: '/error/:error_message'});

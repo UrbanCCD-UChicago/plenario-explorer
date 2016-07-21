@@ -8,6 +8,8 @@ import moment from 'moment';
 export default Ember.Service.extend({
   ajax: Ember.inject.service(),
 
+  queryRoot: "http://plenario-app-testy-brawndo.us-east-1.elasticbeanstalk.com",
+
   /**
    * For when we want to redirect the user
    * to download the data directly
@@ -15,7 +17,8 @@ export default Ember.Service.extend({
    */
   openInNewTab(endpoint, params) {
     const qString = URI('').addQuery(params).toString();
-    window.open(`http://plenar.io/v1/api${endpoint}${qString}`);
+    //window.open(`http://plenar.io/v1/api${endpoint}${qString}`);
+    window.open(`${this.queryRoot}/v1/api${endpoint}${qString}`);
   },
 
   camelizeHash: function (hash) {
@@ -302,7 +305,7 @@ export default Ember.Service.extend({
   },
 
   /**
-   * Return streaming download of a large CSV or GeoJSON of events
+   * Create a job for a large CSV or GeoJSON download of events
    *
    * @param name
    * @param params
@@ -326,4 +329,32 @@ export default Ember.Service.extend({
       });
     }
   },
+
+  /**
+   * Fetch the large CSV or GeoJSON download of events
+   *
+   * @param name
+   * @param params
+   * @param newTab
+   */
+  getDataDump(ticket, type) {
+    const endpoint = `/datadump/${ticket}`;
+    this.openInNewTab(endpoint, {data_type: type});
+  },
+
+  /**
+   * Return job information
+   *
+   * @param ticket
+   */
+  job(ticket) {
+    const endpoint = '/jobs/'+ticket;
+    const job = this.get('ajax').request(endpoint);
+    return job.then(payload => {
+      return payload;
+    }, function (reason) {
+        console.log(reason);
+    });
+  },
+
 });
