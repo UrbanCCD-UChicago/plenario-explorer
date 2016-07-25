@@ -320,13 +320,7 @@ export default Ember.Service.extend({
       this.openInNewTab(endpoint, params);
     } else {
       const events = this.get('ajax').request(endpoint, {data: params});
-      return events.then(payload => {
-        // Don't currently call this from any route.
-        // Would be useful for putting markers on a map.
-        return payload;
-      }, function (reason) {
-        console.log(reason);
-      });
+      return events;
     }
   },
 
@@ -350,11 +344,7 @@ export default Ember.Service.extend({
   job(ticket) {
     const endpoint = '/jobs/'+ticket;
     const job = this.get('ajax').request(endpoint);
-    return job.then(payload => {
-      return payload;
-    }, function (reason) {
-        console.log(reason);
-    });
+    return job;
   },
 
 });

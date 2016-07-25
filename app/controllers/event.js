@@ -132,13 +132,13 @@ export default Ember.Controller.extend({
           let queryCSV = Ember.copy(qParams);
           Ember.assign(queryCSV, {data_type: "csv"});
           console.log(queryCSV);
-          this.transitionToRoute('download', {queryParams: queryCSV});
+          this.transitionToRoute('datadump', {queryParams: queryCSV});
           break;
           break;
         case 'geoJSONPointsDump':
           let queryJSON = Ember.copy(qParams);
           Ember.assign(queryJSON, {data_type: "json"});
-          this.transitionToRoute('download', {queryParams: queryJSON});
+          this.transitionToRoute('datadump', {queryParams: queryJSON});
           break;
         case 'grid':
           qService.grid(qParams, true);
