@@ -134,7 +134,6 @@ export default Ember.Controller.extend({
           console.log(queryCSV);
           this.transitionToRoute('datadump', {queryParams: queryCSV});
           break;
-          break;
         case 'geoJSONPointsDump':
           let queryJSON = Ember.copy(qParams);
           Ember.assign(queryJSON, {data_type: "json"});

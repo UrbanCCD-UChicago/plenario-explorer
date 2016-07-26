@@ -5,7 +5,7 @@ export default Ember.Route.extend({
     return params;
   },
 
-  resetController(controller, isExiting, transition) {
+  resetController(controller, isExiting) {
     if (isExiting) {
       controller.set('ticket', "");
       controller.set('link', "");

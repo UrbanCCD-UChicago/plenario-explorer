@@ -73,7 +73,7 @@ export default Ember.Controller.extend({
           this.updateProgress();
         }
       }).catch(reason => {
-        console.log(reason)
+        console.log(reason);
         if(reason.errors && reason.errors[0].status === "404") {
           this.transitionToRoute('not-found', "404");
         }

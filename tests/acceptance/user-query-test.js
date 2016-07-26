@@ -56,10 +56,10 @@ test('User can reset a query.', function (assert) {
   visit('/discover/aggregate?location_geom__within=' + geoJSON + '&obs_date__ge=2010-06-10&obs_date__le=2017-07-02');
   andThen(function () {
     assert.equal($('#point-aggregate-listing').is('div'), true);
-    return Ember.run.later(function(){ //Wait for everything to stop moving
+    return Ember.run.later(function () { //Wait for everything to stop moving
       click('#reset-query');
       andThen(function () {
-        return Ember.run.later(function(){
+        return Ember.run.later(function () {
           assert.equal(currentURL(), '/discover', "Resetting the route returns to /discover.");
           assert.equal($('#point-aggregate-listing').is('div'), false, "Resetting the route succeeded; point aggregate listing is no longer present.");
           assert.equal($('#point-index-listing').is('div'), true, "Resetting the route succeeded; point index listing is now present.");
@@ -98,9 +98,9 @@ test('Changing the map center selection changes the actual map.', function (asse
 });
 
 
-test('User can directly specify a map center coordinates via the URL.', function(assert){
+test('User can directly specify a map center coordinates via the URL.', function (assert) {
   visit('/discover?center=51.89426503878691,1.4826178550720215,15');
-  andThen(function(){
+  andThen(function () {
     assert.notEqual($('#map').find('img[src$="/15/16518/10839.png"]').length, 0, "Map uses coordinates to center on Sealand.");  //Sealand map tile
   });
 });
@@ -123,6 +123,46 @@ test('Changing selection on the front page changes query parameters.', function 
           });
         });
       });
+    });
+  });
+});
+
+test('User can make a datadump.', function (assert) {
+  visit('/event/311_service_requests_rodent_baiting?obs_date__ge=08-01-2015&obs_date__le=01-01-2016');
+  click(".download-selection:eq(3)");
+  andThen(function () {
+    assert.equal(currentURL().indexOf("/datadump") > -1, true, "Download targets /datadump page.");
+    andThen(function () {
+      let counter = 0;
+      function checkProcessing() {
+        Ember.run.later(this, function () {
+          if (currentURL().indexOf("/datadump/") < 0 || currentURL().indexOf("dataset_name") > -1) {
+            if (counter < 30) {
+              counter++;
+              checkProcessing();
+              return;
+            }
+          }
+          assert.equal(currentURL().indexOf("/datadump/") > -1, true, "Datadump transitions to ticketed endpoint (work has started); URL path evidence.");
+          assert.equal(currentURL().indexOf("dataset_name") < 0, true, "Datadump transitions to ticketed endpoint (work has started); Query parameter evidence.");
+
+          counter = 0;
+          function checkComplete() {
+            Ember.run.later(this, function () {
+              if ($("#download-button").prop('disabled')) {
+                if (counter < 180) {
+                  counter++;
+                  checkProcessing();
+                  return;
+                }
+              }
+              assert.equal($("#download-button").prop("disabled"), false, "Download button is enabled; datadump is complete.");
+            }, 1000);
+          }
+          return checkComplete();
+        }, 1000);
+      }
+      return checkProcessing();
     });
   });
 });
