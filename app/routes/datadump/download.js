@@ -10,12 +10,17 @@ export default Ember.Route.extend({
       controller.set('ticket', "");
       controller.set('link', "");
       controller.set('started', false);
-      controller.set('complere', false);
+      controller.set('complete', false);
       controller.set('failed', false);
       controller.set('progress', 0);
       controller.set('parts', 0);
       controller.set('total', Infinity);
       controller.set('dowork', false);
+      controller.set('queueTime', undefined);
+      controller.set('startTime', undefined);
+      controller.set('elapsed', "0s");
+      controller.set('remainingTime', undefined);
+      controller.set('remaining', "Unknown");
     }
   }
 });

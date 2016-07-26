@@ -29,6 +29,5 @@ export default Ember.Controller.extend({
         this.replaceRoute('datadump.download', ticket["ticket"], {queryParams: {data_type: this.get('data_type')}});
       });
     });
-  })
-
+  }),
 });
