@@ -6,6 +6,8 @@ export default Ember.Controller.extend({
   blacklist : ['data_type'],
   query: Ember.inject.service(),
 
+  reload: false,
+
   queryParamsHash: Ember.computed('filters', 'agg', 'resolution',
     'obs_date__le', 'obs_date__ge', 'location_geom__within', 'dataset_name',
     function() {
@@ -25,6 +27,10 @@ export default Ember.Controller.extend({
 
   modelArrived: Ember.observer('model', function () {
     Ember.run.next(this, function(){
+      // Reload to force-drop ongoing aggregate queries, allowing dataDump to start.
+      if(this.get('reload')) {
+        location.reload();
+      }
       this.get('query').dataDump(this.queryParamsClone()).then(ticket => {
         this.replaceRoute('datadump.download', ticket["ticket"], {queryParams: {data_type: this.get('data_type')}});
       });
