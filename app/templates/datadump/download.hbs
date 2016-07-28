@@ -20,6 +20,9 @@
             <p>Your datadump is queued and ready for construction.</p>
         {{/if}}
       {{/if}}
+      {{#if connectionLost}}
+        <p style="color: crimson"><i>Lost connection to server, refreshing...</i></p>
+      {{/if}}
     </div>
 </div>
 <div class="row">
@@ -81,7 +84,11 @@
         {{#if failed}}
             <button id="download-button" type="button" class="btn btn-warning btn-large disabled">Datadump failed.</button>
         {{else}}
-            <button id="download-button" type="button" class="btn btn-info btn-large disabled">Constructing Datadump...</button>
+          {{#if started}}
+            <button id="download-button" type="button" {{action "download"}} class="btn btn-info btn-large">Download Parital Datadump</button>
+          {{else}}
+                  <button id="download-button" type="button" class="btn btn-info btn-large disabled">Starting Datadump...</button>
+          {{/if}}
         {{/if}}
       {{/if}}
     </div>

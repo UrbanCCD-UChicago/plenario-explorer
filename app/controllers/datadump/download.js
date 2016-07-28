@@ -14,31 +14,32 @@ export default Ember.Controller.extend({
   parts: 0,
   total: Infinity,
   dowork: false,
+  connectionLost: false,
 
   queueTime: undefined,
   elapsed: "0s",
 
   modelArrived: Ember.observer('model', function () {
     this.set('dowork', true);
-    Ember.run.schedule("afterRender",this,function() {
-      $("#datadump-link").click(function(){
+    Ember.run.schedule("afterRender", this, function () {
+      $("#datadump-link").click(function () {
         $(this).select();
       });
     });
     this.set('ticket', this.get('model').ticket);
-    Ember.run.next(this, function(){
+    Ember.run.next(this, function () {
       this.set('link', window.location.href);
     });
     this.updateProgress();
   }),
 
-  style: Ember.computed('progress', function() {
+  style: Ember.computed('progress', function () {
     return Ember.String.htmlSafe("width: " + this.get('progress') + "%");
   }),
 
   updateProgress() {
     Ember.run.later(this, function () {
-      if(!this.dowork) {
+      if (!this.dowork) {
         return;
       }
       const jobQuery = this.get('query').job(String(this.get('ticket')));
@@ -49,11 +50,11 @@ export default Ember.Controller.extend({
           return;
         }
 
-        if(!this.queueTime) {
+        if (!this.queueTime) {
           this.set('queueTime', moment.utc(job['status']['meta']['queueTime']));
         }
         let elapsed = moment.duration(moment().diff(this.queueTime));
-        this.set('elapsed', (elapsed.hours()>0?elapsed.hours()+"h ":"")+(elapsed.minutes()>0||elapsed.hours()>0?elapsed.minutes()+"m ":"")+elapsed.seconds()+"s");
+        this.set('elapsed', (elapsed.hours() > 0 ? elapsed.hours() + "h " : "") + (elapsed.minutes() > 0 || elapsed.hours() > 0 ? elapsed.minutes() + "m " : "") + elapsed.seconds() + "s");
 
         if (job['status']['progress']) {
           this.set('parts', job['status']['progress']['done']);
@@ -64,7 +65,7 @@ export default Ember.Controller.extend({
           }
           if (job['status']['status'] === 'success') {
             elapsed = moment.duration(moment.utc(job['status']['meta']['endTime']).diff(this.queueTime));
-            this.set('elapsed', (elapsed.hours()>0?elapsed.hours()+"h ":"")+(elapsed.minutes()>0||elapsed.hours()>0?elapsed.minutes()+"m ":"")+elapsed.seconds()+"s");
+            this.set('elapsed', (elapsed.hours() > 0 ? elapsed.hours() + "h " : "") + (elapsed.minutes() > 0 || elapsed.hours() > 0 ? elapsed.minutes() + "m " : "") + elapsed.seconds() + "s");
             this.set('complete', true);
           } else {
             this.updateProgress();
@@ -74,8 +75,15 @@ export default Ember.Controller.extend({
         }
       }).catch(reason => {
         console.log(reason);
-        if(reason.errors && reason.errors[0].status === "404") {
-          this.transitionToRoute('not-found', "404");
+        if (reason.errors) {
+          if (reason.errors[0].status === "404") {
+            this.transitionToRoute('not-found', "404");
+          } else if (reason.errors[0].status.slice(0, 2) === "50") {
+            this.set("connectionLost", true);
+            Ember.run.later(function () {
+              location.reload();
+            }, 5000);
+          }
         }
       });
     }, 1000);
