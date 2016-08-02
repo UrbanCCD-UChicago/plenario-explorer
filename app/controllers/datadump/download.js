@@ -6,6 +6,7 @@ export default Ember.Controller.extend({
   query: Ember.inject.service(),
 
   ticket: "",
+  worker: null,
   link: "",
   started: false,
   complete: false,
@@ -18,6 +19,7 @@ export default Ember.Controller.extend({
 
   queueTime: undefined,
   elapsed: "0s",
+  remaining: "calculating...",
 
   modelArrived: Ember.observer('model', function () {
     this.set('dowork', true);
@@ -56,16 +58,24 @@ export default Ember.Controller.extend({
         let elapsed = moment.duration(moment().diff(this.queueTime));
         this.set('elapsed', (elapsed.hours() > 0 ? elapsed.hours() + "h " : "") + (elapsed.minutes() > 0 || elapsed.hours() > 0 ? elapsed.minutes() + "m " : "") + elapsed.seconds() + "s");
 
+        if (job['status']['status'] === "processing") {
+          this.set('worker', job['status']['meta']['workers'][job['status']['meta']['workers'].length-1]);
+        }
+
         if (job['status']['progress']) {
           this.set('parts', job['status']['progress']['done']);
           this.set('total', job['status']['progress']['total']);
           this.set('progress', parseInt(this.parts / this.total * 100));
           if (this.parts > 0) {
             this.set('started', true);
+            const starttime = moment.utc(job['status']['meta']['lastStartTime'] ? job['status']['meta']['lastStartTime'] : job['status']['meta']['startTime']);
+            const remaining = moment.duration((this.total-this.parts)/(this.parts/moment().diff(starttime)));
+            this.set('remaining', (remaining.hours() > 0 ? remaining.hours() + "h " : "") + (remaining.minutes() > 0 || remaining.hours() > 0 ? remaining.minutes() + "m " : "") + remaining.seconds() + "s");
           }
           if (job['status']['status'] === 'success') {
             elapsed = moment.duration(moment.utc(job['status']['meta']['endTime']).diff(this.queueTime));
             this.set('elapsed', (elapsed.hours() > 0 ? elapsed.hours() + "h " : "") + (elapsed.minutes() > 0 || elapsed.hours() > 0 ? elapsed.minutes() + "m " : "") + elapsed.seconds() + "s");
+            this.set('remaining', "0s");
             this.set('complete', true);
           } else {
             this.updateProgress();

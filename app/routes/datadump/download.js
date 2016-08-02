@@ -8,6 +8,7 @@ export default Ember.Route.extend({
   resetController(controller, isExiting) {
     if (isExiting) {
       controller.set('ticket', "");
+      controller.set('worker', null);
       controller.set('link', "");
       controller.set('started', false);
       controller.set('complete', false);
@@ -19,8 +20,7 @@ export default Ember.Route.extend({
       controller.set('queueTime', undefined);
       controller.set('startTime', undefined);
       controller.set('elapsed', "0s");
-      controller.set('remainingTime', undefined);
-      controller.set('remaining', "Unknown");
+      controller.set('remaining', "calculating...");
     }
   }
 });
