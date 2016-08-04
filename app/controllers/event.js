@@ -6,6 +6,7 @@ export default Ember.Controller.extend({
   query: Ember.inject.service(),
   notify: Ember.inject.service(),
   discoverController: Ember.inject.controller('discover'),
+  datadumpIndexController: Ember.inject.controller('datadump.index'),
 
   queryParams: ['filters', 'agg', 'resolution',
                 'obs_date__le', 'obs_date__ge', 'location_geom__within'],
@@ -127,6 +128,20 @@ export default Ember.Controller.extend({
         case 'geoJSONPoints':
           qParams['data_type'] = 'geojson';
           qService.rawEvents(qParams, true);
+          break;
+        case 'csvPointsDump':
+          let queryCSV = Ember.copy(qParams);
+          Ember.assign(queryCSV, {data_type: "csv"});
+          // Reload to force-drop ongoing aggregate queries, allowing dataDump to start.
+          this.get('datadumpIndexController').set('reload', true);
+          this.transitionToRoute('datadump', {queryParams: queryCSV});
+          break;
+        case 'geoJSONPointsDump':
+          let queryJSON = Ember.copy(qParams);
+          Ember.assign(queryJSON, {data_type: "json"});
+          // Reload to force-drop ongoing aggregate queries, allowing dataDump to start.
+          this.get('datadumpIndexController').set('reload', true);
+          this.transitionToRoute('datadump', {queryParams: queryJSON});
           break;
         case 'grid':
           qService.grid(qParams, true);

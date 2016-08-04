@@ -8,6 +8,8 @@ import moment from 'moment';
 export default Ember.Service.extend({
   ajax: Ember.inject.service(),
 
+  queryRoot: "http://plenar.io",
+
   /**
    * For when we want to redirect the user
    * to download the data directly
@@ -15,7 +17,8 @@ export default Ember.Service.extend({
    */
   openInNewTab(endpoint, params) {
     const qString = URI('').addQuery(params).toString();
-    window.open(`http://plenar.io/v1/api${endpoint}${qString}`);
+    //window.open(`http://plenar.io/v1/api${endpoint}${qString}`);
+    window.open(`${this.queryRoot}/v1/api${endpoint}${qString}`);
   },
 
   camelizeHash: function (hash) {
@@ -300,4 +303,48 @@ export default Ember.Service.extend({
       });
     }
   },
+
+  /**
+   * Create a job for a large CSV or GeoJSON download of events
+   *
+   * @param name
+   * @param params
+   * @param newTab
+   */
+  dataDump(params, newTab = false) {
+    params = Ember.copy(params);
+    params = this._translateFilters(params);
+    const endpoint = '/datadump';
+
+    if (newTab) {
+      this.openInNewTab(endpoint, params);
+    } else {
+      const events = this.get('ajax').request(endpoint, {data: params});
+      return events;
+    }
+  },
+
+  /**
+   * Fetch the large CSV or GeoJSON download of events
+   *
+   * @param name
+   * @param params
+   * @param newTab
+   */
+  getDataDump(ticket, type) {
+    const endpoint = `/datadump/${ticket}`;
+    this.openInNewTab(endpoint, {data_type: type});
+  },
+
+  /**
+   * Return job information
+   *
+   * @param ticket
+   */
+  job(ticket) {
+    const endpoint = '/jobs/'+ticket;
+    const job = this.get('ajax').request(endpoint);
+    return job;
+  },
+
 });

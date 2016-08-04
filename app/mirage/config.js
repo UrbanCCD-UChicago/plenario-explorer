@@ -34,4 +34,7 @@ export default function () {
       return testData.detailRodents;
     }
   });
+
+  this.passthrough('http://plenar.io/v1/api/datadump');
+  this.passthrough('http://plenar.io/v1/api/jobs');
 }

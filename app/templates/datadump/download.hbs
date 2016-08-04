@@ -1,0 +1,107 @@
+{{outlet}}
+<div class="row">
+    <div class="col-md-12 text-center" style="margin: 5% 0">
+      {{#if failed}}
+          <h1>Darn, something went wrong.</h1>
+          <p>Please try again later. If the issue persists, <a
+                  href="https://github.com/UrbanCCD-UChicago/plenario/issues">let us know!</a></p>
+          <p>Job Ticket: {{ticket}}</p>
+      {{else}}
+        {{#if worker}}
+          {{#if started}}
+            {{#if complete}}
+                <h1>Your datadump is ready!</h1>
+                <p>Click the button below to download it.</p>
+                <p><i>~ Made with &lt;3, {{worker}}</i></p>
+            {{else}}
+                <h1>Your datadump is on its way!</h1>
+                <p>Worker "{{worker}}" is building it just for you!</p>
+            {{/if}}
+          {{else}}
+              <h1>Preparing datadump...</h1>
+              <p>Worker "{{worker}}" has begun analyzing your datadump.</p>
+          {{/if}}
+          {{#if connectionLost}}
+              <p style="color: crimson"><i>Lost connection to server, refreshing...</i></p>
+          {{/if}}
+        {{else}}
+            <h1>Waiting for workers...</h1>
+            <p>Your datadump has been queued and is ready for construction.</p>
+        {{/if}}
+      {{/if}}
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 text-center">
+      {{#if started}}
+        {{#if complete}}
+            <p>Time Elapsed: {{elapsed}}</p>
+            <div class="progress" style="margin: 0 5%">
+                <div class="progress-bar" role="progressbar" aria-valuenow="100"
+                     aria-valuemin="0" aria-valuemax="100" style="width:100%">
+                    100%&nbsp;&nbsp;&nbsp;(computed {{parts}} of {{total}} parts)
+                </div>
+            </div>
+        {{else}}
+            <p>Time Elapsed: {{elapsed}} | Remaining: {{remaining}}</p>
+            <div class="progress" style="margin: 0 5%">
+                <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar"
+                     aria-valuenow="{{progress}}"
+                     aria-valuemin="0" aria-valuemax="100" style={{style}}>
+                  {{progress}}%&nbsp;&nbsp;&nbsp;(computed {{parts}} of {{total}} parts)
+                </div>
+            </div>
+        {{/if}}
+      {{else}}
+        <p>Time Elapsed: {{elapsed}}</p>
+        {{#if failed}}
+            <div class="progress" style="margin: 0 5%">
+                <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="100"
+                     aria-valuemin="0" aria-valuemax="100" style="width:100%">
+                    Job failed.
+                </div>
+            </div>
+        {{else}}
+            <div class="progress" style="margin: 0 5%">
+                <div class="progress-bar progress-bar-striped progress-bar-info active" role="progressbar"
+                     aria-valuenow="100"
+                     aria-valuemin="0" aria-valuemax="100" style="width:100%">
+                  {{#if worker}}
+                      Calculating...
+                  {{else}}
+                      Waiting...
+                  {{/if}}
+                </div>
+            </div>
+        {{/if}}
+      {{/if}}
+    </div>
+</div>
+{{#unless failed}}
+    <div class="row">
+        <div class="col-md-12 text-center" style="margin: 5% 0 0 0">
+            <form class="form-group">
+                <label>Link to this datadump (expires in 3 hours):</label>
+                <input id="datadump-link" type="text" class="form-control"
+                       style="width: 50%; margin: 0 auto; text-align: center" value={{link}}/>
+            </form>
+        </div>
+    </div>
+{{/unless}}
+<div class="row">
+    <div class="col-md-12 text-center" style="margin: 5% 0">
+      {{#if complete}}
+          <button id="download-button" type="button" {{action "download"}} class="btn btn-primary btn-large">Download Datadump</button>
+      {{else}}
+        {{#if failed}}
+            <button id="download-button" type="button" class="btn btn-warning btn-large disabled">Datadump failed.</button>
+        {{else}}
+          {{#if started}}
+            <button id="download-button" type="button" class="btn btn-info btn-large disabled">Constructing Datadump...</button>
+          {{else}}
+                  <button id="download-button" type="button" class="btn btn-info btn-large disabled">Starting Datadump...</button>
+          {{/if}}
+        {{/if}}
+      {{/if}}
+    </div>
+</div>

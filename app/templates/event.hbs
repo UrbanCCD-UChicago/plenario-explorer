@@ -25,10 +25,17 @@
           <span class="caret"></span>
       </button>
         <ul class="dropdown-menu" role="menu">
-            <li><a {{action "download" "csvPoints"}}><i class='fa fa-download'></i> Raw data (CSV, first 1,000 records)</a></li>
-            <li><a {{action "download" "geoJSONPoints"}}><i class='fa fa-download'></i> Raw data (GeoJSON, first 1,000 records)</a></li>
-            <li><a {{action "download" "grid"}}><i class='fa fa-download'></i> Map grid (GeoJSON, with count aggregate)</a></li>
-            <li><a {{action "download" "timeseries"}}><i class='fa fa-download'></i> Time series (CSV)</a></li>
+            <style>
+                .download-selection {
+                    cursor: pointer;
+                }
+            </style>
+            <li><a class="download-selection" {{action "download" "csvPoints"}}><i class='fa fa-download'></i> Quick Raw Data (CSV, first 1,000 records)</a></li>
+            <li><a class="download-selection" {{action "download" "geoJSONPoints"}}><i class='fa fa-download'></i> Quick Raw Data (GeoJSON, first 1,000 records)</a></li>
+            <li><a class="download-selection" {{action "download" "csvPointsDump"}}><i class='fa fa-download'></i> Complete Raw Data (CSV, everything)</a></li>
+            <li><a class="download-selection" {{action "download" "geoJSONPointsDump"}}><i class='fa fa-download'></i> Complete Raw Data (GeoJSON, everything)</a></li>
+            <li><a class="download-selection" {{action "download" "grid"}}><i class='fa fa-download'></i> Map Grid (GeoJSON, with count aggregate)</a></li>
+            <li><a class="download-selection" {{action "download" "timeseries"}}><i class='fa fa-download'></i> Time Series (CSV)</a></li>
         </ul>
       </div>
     </div>
