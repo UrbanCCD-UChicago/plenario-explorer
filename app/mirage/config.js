@@ -3,15 +3,15 @@
 import testData from 'plenario-explorer/mirage/test-data';
 
 export default function () {
-  this.get('http://plenario-app-testy-brawndo.us-east-1.elasticbeanstalk.com/v1/api/shapes', function () {
+  this.get('http://plenar.io/v1/api/shapes', function () {
     return testData.shapesData;
   });
 
-  this.get('http://plenario-app-testy-brawndo.us-east-1.elasticbeanstalk.com/v1/api/datasets', function () {
+  this.get('http://plenar.io/v1/api/datasets', function () {
     return testData.eventData;
   });
 
-  this.get('http://plenario-app-testy-brawndo.us-east-1.elasticbeanstalk.com/v1/api/detail-aggregate', function (_, request) {
+  this.get('http://plenar.io/v1/api/detail-aggregate', function (_, request) {
     if (request.queryParams.dataset_name === "311_service_requests_sanitation_code_complaints") {
       return testData.detailAggregateSanitation;
     } else if (request.queryParams.dataset_name === "311_service_requests_rodent_baiting") {
@@ -19,7 +19,7 @@ export default function () {
     }
   });
 
-  this.get('http://plenario-app-testy-brawndo.us-east-1.elasticbeanstalk.com/v1/api/grid', function (_, request) {
+  this.get('http://plenar.io/v1/api/grid', function (_, request) {
     if (request.queryParams.dataset_name === "311_service_requests_sanitation_code_complaints") {
       return testData.gridSanitation;
     } else if (request.queryParams.dataset_name === "311_service_requests_rodent_baiting") {
@@ -27,7 +27,7 @@ export default function () {
     }
   });
 
-  this.get('http://plenario-app-testy-brawndo.us-east-1.elasticbeanstalk.com/v1/api/detail', function (_, request) {
+  this.get('http://plenar.io/v1/api/detail', function (_, request) {
     if (request.queryParams.dataset_name === '311_service_requests_sanitation_code_complaints') {
       return testData.detailSanitation;
     } else if (request.queryParams.dataset_name === '311_service_requests_rodent_baiting') {
@@ -35,6 +35,6 @@ export default function () {
     }
   });
 
-  this.passthrough('http://plenario-app-testy-brawndo.us-east-1.elasticbeanstalk.com/v1/api/datadump');
-  this.passthrough('http://plenario-app-testy-brawndo.us-east-1.elasticbeanstalk.com/v1/api/jobs');
+  this.passthrough('http://plenar.io/v1/api/datadump');
+  this.passthrough('http://plenar.io/v1/api/jobs');
 }
