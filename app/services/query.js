@@ -8,7 +8,7 @@ import moment from 'moment';
 export default Ember.Service.extend({
   ajax: Ember.inject.service(),
 
-  queryRoot: "http://plenario-app-testy-brawndo.us-east-1.elasticbeanstalk.com",
+  queryRoot: "http://plenar.io",
 
   /**
    * For when we want to redirect the user
