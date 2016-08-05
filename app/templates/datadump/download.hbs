@@ -12,14 +12,16 @@
             {{#if complete}}
                 <h1>Your datadump is ready!</h1>
                 <p>Click the button below to download it.</p>
-                <p><i>~ Made with &lt;3, {{worker}}</i></p>
+                <!--<p><i>~ Made with &lt;3, {{worker}}</i></p>-->
             {{else}}
                 <h1>Your datadump is on its way!</h1>
-                <p>Worker "{{worker}}" is building it just for you!</p>
+                <!--<p>Worker "{{worker}}" is building it just for you!</p>-->
+                <p>We're constructing it right now just for you!</p>
             {{/if}}
           {{else}}
               <h1>Preparing datadump...</h1>
-              <p>Worker "{{worker}}" has begun analyzing your datadump.</p>
+              <!--<p>Worker "{{worker}}" has begun analyzing your datadump.</p>-->
+              <p>A worker has begun analyzing your datadump.</p>
           {{/if}}
           {{#if connectionLost}}
               <p style="color: crimson"><i>Lost connection to server, refreshing...</i></p>
