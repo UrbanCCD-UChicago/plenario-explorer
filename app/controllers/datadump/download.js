@@ -58,7 +58,7 @@ export default Ember.Controller.extend({
         let elapsed = moment.duration(moment().diff(this.queueTime));
         this.set('elapsed', (elapsed.hours() > 0 ? elapsed.hours() + "h " : "") + (elapsed.minutes() > 0 || elapsed.hours() > 0 ? elapsed.minutes() + "m " : "") + elapsed.seconds() + "s");
 
-        if (job['status']['status'] === "processing") {
+        if (job['status']['status'] === "processing" || job['status']['status'] === "success") {
           this.set('worker', job['status']['meta']['workers'][job['status']['meta']['workers'].length-1]);
         }
 
