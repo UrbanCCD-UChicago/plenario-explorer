@@ -22,6 +22,8 @@ export default Ember.Component.extend({
 
   center: [[lat, lng], zoom],
 
+  nodes: Ember.inject.service('node-meta'),
+
   didInsertElement() {
     this._super(...arguments);
     Ember.run.scheduleOnce('afterRender', this, function() {
@@ -110,6 +112,7 @@ export default Ember.Component.extend({
   },
 
   geoJSONtoLayer(geoJSON) {
+    var nodes = this.get('nodes');
     // Return valid Leaflet layer or null
     if (!geoJSON){
       return null;
@@ -129,6 +132,11 @@ export default Ember.Component.extend({
           }
           table += '</table>';
           layer.bindPopup(table);
+
+          layer.on({ click: marker => {
+            var nodeID = marker.latlng.lat + " " + marker.latlng.lng;
+            nodes.select(nodeID);
+          }});
         }
       };
 
@@ -247,5 +255,4 @@ export default Ember.Component.extend({
       self.sendAction('mapMovedByUser', [[self.map.getCenter().lat, self.map.getCenter().lng], self.map.getZoom()]);
     }
   },
-
 });

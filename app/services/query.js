@@ -42,6 +42,7 @@ export default Ember.Service.extend({
     this._super(...arguments);
     this.set('events', this.get('ajax').request('/datasets'));
     this.set('shapes', this.get('ajax').request('/shapes'));
+    // this.set('nodes', this.get('ajax').request('/nodes'));
   },
 
   _getMetadata(type) {

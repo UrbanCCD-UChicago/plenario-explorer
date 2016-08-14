@@ -15,3 +15,11 @@
 /libpeerconnection.log
 npm-debug.log
 testem.log
+
+# Visual Studio
+.vscodeignore
+jsconfig.json
+ember.d.ts
+
+# IntelliJ
+.idea/

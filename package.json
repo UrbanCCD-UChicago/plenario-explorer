@@ -54,10 +54,12 @@
     "ember-resolver": "^2.0.3",
     "ember-spin-spinner": "0.2.4",
     "ember-truth-helpers": "1.2.0",
+    "ember-websockets": "4.0.1",
     "geojson-validation": "^0.1.6",
     "highcharts": "4.2.3",
     "leaflet": "0.7.7",
     "loader.js": "^4.0.0",
+    "mock-socket": "4.0.1",
     "moment": "2.11.2",
     "moment-timezone": "0.5.0"
   },
