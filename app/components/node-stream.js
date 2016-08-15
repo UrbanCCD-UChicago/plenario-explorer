@@ -6,11 +6,13 @@ export default Ember.Component.extend({
 
     actions: {
         connect() {
-            this.get('socket').willRender();
+            var nodes = this.get('nodes');
+            console.log("Streaming data for " + nodes.selectedNodes);
+            this.get('socket').open({});
         },
 
         disconnect() {
-            this.get('socket').willDestroyElement();
+            this.get('socket').close();
         }
     }
 });

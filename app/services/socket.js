@@ -5,21 +5,25 @@ export default Ember.Service.extend({
 
     // Inject the socket-io service into the object
     io: Ember.inject.service('socket-io'),
-    // Socket address to listen for 
-    url: "localhost:8081",
+    serverUrl: 'localhost:8081',
 
-    willRender() {
-        // Create the actual socket
-        const socket = this.get('io').socketFor(this.get('url'));
+    /**
+     * Open a connection to the socket.io server with connection arguments
+     * specifying what node data to stream.
+     * 
+     * @param {Object} connectionArgs
+     */
+    open(connectionArgs) {
+        var serverUrl = this.get('serverUrl');
+        const socket = this.get('io').socketFor(serverUrl, connectionArgs);
 
-        // Define socket event handlers, args: event name, callback, context
         socket.on('connect', this.onConnect, this);
-        socket.on('message', this.onMessage);
+        socket.on('message', this.onMessage, this);
         socket.on('data', this.onData, this);
     },
 
-    willDestroyElement() {
-        const socket = this.get('io').socketFor(this.get('url'));
+    close() {
+        const socket = this.get('io').socketFor(this.get('serverUrl'));
 
         // Remove listeners from the event pool so they can't be invoked
         socket.off('connect', this.onConnect);
@@ -40,5 +44,6 @@ export default Ember.Service.extend({
     onData(event) {
         console.log("Received the filtered data, now displaying...");
         console.log(event);
+        return event;
     },
 });
