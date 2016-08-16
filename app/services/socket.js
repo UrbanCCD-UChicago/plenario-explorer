@@ -5,45 +5,33 @@ export default Ember.Service.extend({
 
     // Inject the socket-io service into the object
     io: Ember.inject.service('socket-io'),
+
+    connectionArgs: {},
     serverUrl: 'localhost:8081',
 
-    /**
-     * Open a connection to the socket.io server with connection arguments
-     * specifying what node data to stream.
-     * 
-     * @param {Object} connectionArgs
-     */
-    open(connectionArgs) {
+    open() {
         var serverUrl = this.get('serverUrl');
+        var connectionArgs = this.get('connectionArgs');
         const socket = this.get('io').socketFor(serverUrl, connectionArgs);
-
         socket.on('connect', this.onConnect, this);
-        socket.on('message', this.onMessage, this);
         socket.on('data', this.onData, this);
+
+        console.log("socket.open()");
+        console.log("socket.serverUrl: " + serverUrl);
+        console.log("socket.connectionArgs: " + connectionArgs);
     },
 
     close() {
+        console.log("socket.close()");
         const socket = this.get('io').socketFor(this.get('serverUrl'));
-
-        // Remove listeners from the event pool so they can't be invoked
         socket.off('connect', this.onConnect);
-        socket.off('message', this.onMessage);
         socket.off('data', this.onData);
     },
 
     onConnect(event) {
         console.log("Connection opened! Requesting last hour of sensor data");
-        console.log(event);
+        console.log(this.get('connectionArgs'));
     },
 
-    onMessage(event) {
-        console.log("Received a message.");
-        console.log(event);
-    },
-
-    onData(event) {
-        console.log("Received the filtered data, now displaying...");
-        console.log(event);
-        return event;
-    },
+    onData(event) {}
 });

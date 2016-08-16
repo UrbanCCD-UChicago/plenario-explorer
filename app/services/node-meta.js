@@ -9,5 +9,6 @@ export default Ember.Service.extend({
             selectedNodes.removeObject(node);
         else
             selectedNodes.push(node);
+        console.log('node-meta.selectedNodes: ' + selectedNodes);
     }
 });

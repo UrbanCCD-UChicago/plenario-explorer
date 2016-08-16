@@ -2,19 +2,20 @@ Streaming:
     ✔ Set up an event which initiates a sockets.io stream @done
     ✔ Set up a dummy emitter @done
     ✔ Successfully begin receiving data through the stream @done
-    ☐ Get the disconnect event working
+    ✔ Get the disconnect event working @done
 Map:
     ✔ Add a map to the stream view @done
-    ☐ Get node metainformation and locations
-        ☐ Create a /nodes endpoint
-        ☐ Call to plenar.io/v1/api/nodes 
-    ☐ Add marker functionality to our leaflet wrapper
-        ☐ onClick: Toggle the node's selected status
+    ✔ Get node metainformation and locations @done
+        ✔ Create a /nodes endpoint @done
+        ✔ Call to plenar.io/v1/api/nodes @done
+    ✔ Add marker functionality to our leaflet wrapper @done
+        ✔ onClick: Toggle the node's selected status @done
         ☐ onClick: Toggle the node's color
-    ☐ Add markers for each existing node
+    ✔ Add markers for each existing node @done
 Route:
     ✔ Add a new route for the node-stream page @done
     ✔ Add a new view for the node-stream page @done
     ☐ Add support for query arguments in router.js
 Visualization:
+    ☐ On connect, pass an object holding a packet of node information
     ☐ Plot a simple line graph for each feature of interest

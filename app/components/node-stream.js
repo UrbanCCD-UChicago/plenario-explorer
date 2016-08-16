@@ -1,18 +1,41 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-    nodes: Ember.inject.service('node-meta'),
-    socket: Ember.inject.service('socket'),
+    /**
+     * So what's the issue?
+     * 
+     * Updating my data attribute doesn't trigger any changes
+     * to the live-chart component!
+     */
+
+    nodeMeta: Ember.inject.service('node-meta'),
+    socketService: Ember.inject.service('socket'),
+    data: Ember.A([]),
+
+    init() {
+        this._super(...arguments);
+        // this.set('data', Ember.A(['foo']));
+    },
 
     actions: {
         connect() {
-            var nodes = this.get('nodes');
-            console.log("Streaming data for " + nodes.selectedNodes);
-            this.get('socket').open({});
+            var socket = this.get('socketService');
+            var data = this.get('data');
+            var nodesSelected = this.get('nodeMeta').selectedNodes;
+            var connectionArgs = {"node_ids": nodesSelected};
+
+            socket.onData = event => { data.push(event.results); 
+                console.log(event);
+                console.log(data); };
+
+            socket.connectionArgs = connectionArgs;
+            socket.open();
         },
 
         disconnect() {
-            this.get('socket').close();
+            var socket = this.get('socketService');
+            socket.close();
         }
-    }
+    },
+
 });
