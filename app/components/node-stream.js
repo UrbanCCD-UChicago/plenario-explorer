@@ -20,19 +20,13 @@ export default Ember.Component.extend({
 
     init() {
       this._super(...arguments);
-      this.set('streamingObservations',
-        [{
-          'data': Ember.A([]),
-          'name': 'electricThings'
-        }]);
-
       const socket = this.get('io').socketFor('localhost:8081');
 
       const appendObservations = function (newObs) {
-        let hash = this.get('streamingObservations');
-        hash[0]['data'].pushObject([moment(), newObs.results]);
+        const series = this.get('streamingObservations');
+        series.pushObject([moment(), newObs.results]);
         this.set('streamingSeries', [{
-          'data': hash[0]['data'].toArray(),
+          'data': series.toArray(),
           'name': ''
         }]);
       };
