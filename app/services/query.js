@@ -8,7 +8,9 @@ import moment from 'moment';
 export default Ember.Service.extend({
   ajax: Ember.inject.service(),
 
-  queryRoot: "http://plenar.io",
+  // Used to generate URLs for redirecting.
+  // Repeats information in ajax service.
+  queryRoot: "http://plenario-app-venusaur.us-east-1.elasticbeanstalk.com",
 
   /**
    * For when we want to redirect the user
@@ -17,7 +19,6 @@ export default Ember.Service.extend({
    */
   openInNewTab(endpoint, params) {
     const qString = URI('').addQuery(params).toString();
-    //window.open(`http://plenar.io/v1/api${endpoint}${qString}`);
     window.open(`${this.queryRoot}/v1/api${endpoint}${qString}`);
   },
 
@@ -32,7 +33,7 @@ export default Ember.Service.extend({
     return normalized;
   },
 
-
+  // Kludge for enabling right-click
   injectExplorerData: function (route, params, obj) {
     Ember.assign(obj, {'explorerData': {'route': route, 'queryParams': params}});
     return obj;
@@ -42,6 +43,7 @@ export default Ember.Service.extend({
     this._super(...arguments);
     this.set('events', this.get('ajax').request('/datasets'));
     this.set('shapes', this.get('ajax').request('/shapes'));
+    this.set('nodes', this.get('ajax').request('/sensor-networks/ArrayOfThings/nodes'));
   },
 
   _getMetadata(type) {
@@ -103,6 +105,10 @@ export default Ember.Service.extend({
   shapeMetadata(name) {
     const allEventDatasets = this._getMetadata('shapes');
     return this._findDataset(name, allEventDatasets);
+  },
+
+  allNodeMetadata() {
+    return this.get('nodes').then(nodeMeta => nodeMeta.data.map(geoJSONify));
   },
 
   _findDataset(name, datasets) {
@@ -348,3 +354,18 @@ export default Ember.Service.extend({
   },
 
 });
+
+function geoJSONify(json) {
+  return {
+    "type": "Feature",
+    "properties": {
+      "name": json.id,
+      "info": json.info,
+      "popupContent": "I'm a node."
+    },
+    "geometry": {
+      "type": "Point",
+      "coordinates": [json.location.lat, json.location.lon]
+    }
+  };
+}
