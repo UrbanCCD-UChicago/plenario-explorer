@@ -10,7 +10,7 @@ export default Ember.Route.extend({
         var ajaxPromise = ajax.request('/sensor-networks/ArrayOfThings/nodes');
 
         return ajaxPromise.then(result => {
-            
+
             // JSON => GeoJSON
             result = result.data.map(function(json) {
                 return {

@@ -28,10 +28,6 @@ export default Ember.Service.extend({
         socket.off('data', this.onData);
     },
 
-    onConnect(event) {
-        console.log("Connection opened! Requesting last hour of sensor data");
-        console.log(this.get('connectionArgs'));
-    },
-
+    onConnect(event) {},
     onData(event) {}
 });

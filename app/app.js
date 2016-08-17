@@ -24,7 +24,8 @@ loadInitializers(App, config.modulePrefix);
 export default App;
 
 Ember.onerror = function (error) {
-  console.log('GLOBAL ERROR:', error.message);
+  // console.log('GLOBAL ERROR:', error.message);
+  console.log(error.stack);
   if(error.message.toLowerCase().indexOf("uri")>-1) {
     window.location = `/explore/error/${error.message}`;
   }

@@ -135,6 +135,8 @@ export default Ember.Component.extend({
 
           layer.on({ click: marker => {
             var nodeID = marker.latlng.lat + " " + marker.latlng.lng;
+            console.log(marker);
+            console.log(this.$());
             nodes.select(nodeID);
           }});
         }

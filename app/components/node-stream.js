@@ -10,24 +10,30 @@ export default Ember.Component.extend({
 
     nodeMeta: Ember.inject.service('node-meta'),
     socketService: Ember.inject.service('socket'),
-    data: Ember.A([]),
 
     init() {
         this._super(...arguments);
-        // this.set('data', Ember.A(['foo']));
+        this.set('data', Ember.A([]));
+        this.set('computedData', Ember.computed(function () {
+            this.get('data');
+        }));
+    },
+
+    didRender() {
+        Ember.debug(this.get('data'));
     },
 
     actions: {
         connect() {
-            var socket = this.get('socketService');
-            var data = this.get('data');
-            var nodesSelected = this.get('nodeMeta').selectedNodes;
             var connectionArgs = {"node_ids": nodesSelected};
+            var nodesSelected = this.get('nodeMeta').selectedNodes;
+            var socket = this.get('socketService');
 
-            socket.onData = event => { data.push(event.results); 
-                console.log(event);
-                console.log(data); };
-
+            socket.onConnect = () => {console.log("Connection established!")},
+            socket.onData = event => {
+                this.get('data').push(event.results);
+                Ember.debug(this.get('computedData'));
+            };
             socket.connectionArgs = connectionArgs;
             socket.open();
         },
