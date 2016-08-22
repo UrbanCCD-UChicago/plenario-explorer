@@ -10,7 +10,9 @@ export default Ember.Service.extend({
 
   // Used to generate URLs for redirecting.
   // Repeats information in ajax service.
-  queryRoot: "http://plenario-app-venusaur.us-east-1.elasticbeanstalk.com",
+  queryRoot: Ember.computed('ajax', function() {
+    return this.get('ajax').host;
+  }),  //"http://plenario-app-venusaur.us-east-1.elasticbeanstalk.com",
 
   /**
    * For when we want to redirect the user
@@ -355,17 +357,16 @@ export default Ember.Service.extend({
 
 });
 
-function geoJSONify(json) {
+function geoJSONify(obj) {
   return {
     "type": "Feature",
     "properties": {
-      "name": json.id,
-      "info": json.info,
-      "popupContent": "I'm a node."
+      "name": obj.id,
+      "info": obj.info,
     },
     "geometry": {
       "type": "Point",
-      "coordinates": [json.location.lat, json.location.lon]
+      "coordinates": [obj.location.lon, obj.location.lat]
     }
   };
 }
