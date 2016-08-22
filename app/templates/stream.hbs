@@ -1,4 +1,9 @@
-{{leaflet-map geoJSON=model selectedNodes=model.selected}}
+{{leaflet-map
+  geoJSON=model.nodes
+  selectedNodes=model.selected
+  clicked=(action "onClick")
+}}
+
 <br>
 <h1>Selected Nodes</h1>
 <h3>{{model.selected}}</h3>

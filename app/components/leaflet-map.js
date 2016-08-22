@@ -22,8 +22,6 @@ export default Ember.Component.extend({
 
   center: [[lat, lng], zoom],
 
-  nodes: Ember.inject.service('node-meta'),
-
   didInsertElement() {
     this._super(...arguments);
     Ember.run.scheduleOnce('afterRender', this, function() {
@@ -112,7 +110,6 @@ export default Ember.Component.extend({
   },
 
   geoJSONtoLayer(geoJSON) {
-    var nodes = this.get('nodes');
     // Return valid Leaflet layer or null
     if (!geoJSON){
       return null;
@@ -123,6 +120,7 @@ export default Ember.Component.extend({
       }
 
       // Add popups
+      const clicked = this.get('clicked');
       const onEachFeature = function(feature, layer) {
         const props = feature.properties;
         if (props && Object.keys(props).length > 0) {
@@ -134,9 +132,8 @@ export default Ember.Component.extend({
           layer.bindPopup(table);
 
           layer.on({ click: marker => {
-            var nodeID = marker.latlng.lat + " " + marker.latlng.lng;
-            console.log(marker);
-            nodes.select(nodeID);
+            // Action up.
+            clicked(marker);
           }});
         }
       };
