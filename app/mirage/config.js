@@ -1,6 +1,7 @@
 //Dummy datasets used purely for testing.
 //Import data from our central test data dump: test-data.js.
 import testData from 'plenario-explorer/mirage/test-data';
+import sensorData from 'plenario-explorer/mirage/sensor-data';
 
 export default function () {
   this.get('http://plenar.io/v1/api/shapes', function () {
@@ -33,6 +34,22 @@ export default function () {
     } else if (request.queryParams.dataset_name === '311_service_requests_rodent_baiting') {
       return testData.detailRodents;
     }
+  });
+
+  this.get('http://plenar.io/v1/api/sensor-networks/ArrayOfThings/sensors', function() {
+    return sensorData.sensors;
+  });
+
+  this.get('http://plenar.io/v1/api/sensor-networks/ArrayOfThings/nodes', function() {
+    return sensorData.nodes;
+  });
+
+  this.get('http://plenar.io/v1/api/sensor-networks/ArrayOfThings', function() {
+    return sensorData.network;
+  });
+
+  this.get('http://plenar.io/v1/api/sensor-networks/ArrayOfThings/features-of-interest', function() {
+    return sensorData.featuresOfInterest;
   });
 
   this.passthrough('http://plenar.io/v1/api/datadump');
