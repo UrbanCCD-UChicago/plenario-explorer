@@ -120,6 +120,14 @@ export default Ember.Service.extend({
     return io.socketFor(connectionUrl);
   },
 
+  getSensorObservations(nodeId, networkId, sensorList) {
+    const params = {data: {'sensors': sensorList.join(',')}};
+    const path = `/sensor-networks/${networkId}/nodes/${nodeId}/query`;
+    return this.get('ajax').request(path, params).then(response => {
+      return response.data;
+    });
+  },
+
   _findDataset(name, datasets) {
     return datasets.then(function (dsets) {
       for (const key in dsets) {

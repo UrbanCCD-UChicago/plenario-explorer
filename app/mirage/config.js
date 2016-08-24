@@ -1,7 +1,7 @@
 //Dummy datasets used purely for testing.
 //Import data from our central test data dump: test-data.js.
 import testData from 'plenario-explorer/mirage/test-data';
-import sensorData from 'plenario-explorer/mirage/sensor-data';
+import {sensorData, generateGasObservations, generateTempObservations} from 'plenario-explorer/mirage/sensor-data';
 
 export default function () {
   this.get('http://plenar.io/v1/api/shapes', function () {
@@ -51,6 +51,27 @@ export default function () {
   this.get('http://plenar.io/v1/api/sensor-networks/ArrayOfThings/features-of-interest', function() {
     return sensorData.featuresOfInterest;
   });
+
+  this.get('http://plenar.io/v1/api/sensor-networks/ArrayOfThings/nodes/00A/query', function(_, request) {
+    const sensor = request.queryParams.sensors;
+    return generateObservations('00A', sensor);
+  });
+
+  this.get('http://plenar.io/v1/api/sensor-networks/ArrayOfThings/nodes/00A/query', function(_, request) {
+    const sensor = request.queryParams.sensors;
+    return generateObservations('00B', sensor);
+  });
+
+  function generateObservations(id, sensor) {
+    let observations;
+    if (sensor === 'tempx') {
+      observations = generateTempObservations(id);
+    }
+    else if (sensor === 'gasx'){
+      observations = generateGasObservations(id);
+    }
+    return {'data': observations};
+  }
 
   this.passthrough('http://plenar.io/v1/api/datadump');
   this.passthrough('http://plenar.io/v1/api/jobs');

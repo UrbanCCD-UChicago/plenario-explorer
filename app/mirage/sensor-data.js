@@ -1,3 +1,49 @@
+import moment from 'moment';
+
+function generateTimestamps() {
+  // Get 5 minutes of timestamps at 30 second sampling rate
+  const now = moment();
+  const timestamps = [];
+  for (let secondsAgo = 30; secondsAgo <= 300; secondsAgo += 30) {
+    timestamps.push(now.subtract(secondsAgo, 'seconds').format());
+  }
+  return timestamps;
+}
+
+function generateTempObservations(nodeId) {
+  const timestamps = generateTimestamps();
+  return timestamps.map(ts => {
+    return {
+      "feature_of_interest":"temperature",
+      "node_id":nodeId,
+      "sensor":"tempx",
+      "results":{
+        "temperature": Math.floor(Math.random() * 100)
+      },
+      "datetime":ts
+    };
+  });
+}
+
+function generateGasObservations(nodeId) {
+  const timestamps = generateTimestamps();
+  return timestamps.map(ts => {
+    return {
+      "feature_of_interest":"gasconcentration",
+      "node_id":nodeId,
+      "sensor":"gasx",
+      "results":{
+        "co":null,
+        "so2":null,
+        "o3":null,
+        "h2s":Math.floor(Math.random() * 100),
+        "no2":null
+      },
+      "datetime":ts
+    };
+  });
+}
+
 const sensorData = {
   nodes: {
     "data":
@@ -15,7 +61,7 @@ const sensorData = {
         },
         "network_name":"ArrayOfThings",
         "id":"00A",
-        "sensors": ["trs4", "xr9"],
+        "sensors": ["tempx", "gasx"],
         "location":{
           "lat":41.8781,
           "lon":-87.6298,
@@ -34,7 +80,7 @@ const sensorData = {
         },
         "network_name":"ArrayOfThings",
         "id":"00B",
-        "sensors": ["trs4", "xr9"],
+        "sensors": ["tempx", "gasx"],
         "location":{
           "lat":41.8851,
           "lon":-87.7468
@@ -52,7 +98,7 @@ const sensorData = {
           "accuracy": "+-3% of reading"
         },
         "name": "Temperature",
-        "id": "trs4",
+        "id": "tempx",
         "observed_properties": [
           "temperature.temperature"
         ]
@@ -64,7 +110,7 @@ const sensorData = {
           "accuracy": "+-3% of reading"
         },
         "name": "Hydrogen Sulfide",
-        "id": "xr9",
+        "id": "gasx",
         "observed_properties": [
           "gasConcentration.H2S"
         ]
@@ -106,7 +152,7 @@ const sensorData = {
           "contact":"admin@aot.org"
         },
         "nodes":[
-          "00A"
+          "00A", "00B"
         ],
         "features_of_interest":[
           "gasConcentration",
@@ -118,4 +164,4 @@ const sensorData = {
   }
 };
 
-export default sensorData;
+export {sensorData, generateGasObservations, generateTempObservations};
