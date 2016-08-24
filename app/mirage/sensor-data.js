@@ -43,41 +43,6 @@ const sensorData = {
     ]
   },
 
-  // nodesMocked: {
-  //   'data':
-  //   [
-  //     {
-  //       "type": "Feature",
-  //       "properties": {
-  //         "network_name": "ArrayOfThings",
-  //         "id": "00A"
-  //       },
-  //       "geometry": {
-  //         "type": "Point",
-  //         "coordinates": [
-  //           -87.6298,
-  //           41.8781
-  //         ]
-  //       }
-  //     },
-  //     {
-  //       "type": "Feature",
-  //       "properties": {
-  //         "network_name": "ArrayOfThings",
-  //         "id": "00B",
-  //         "sensors": []
-  //       },
-  //       "geometry": {
-  //         "type": "Point",
-  //         "coordinates": [
-  //           -87.7468,
-  //           41.8851
-  //         ]
-  //       }
-  //     }
-  //   ]
-  // },
-
   sensors: {
     "data": [
       {

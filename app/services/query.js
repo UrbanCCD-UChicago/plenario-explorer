@@ -7,12 +7,11 @@ import moment from 'moment';
  */
 export default Ember.Service.extend({
   ajax: Ember.inject.service(),
+  io: Ember.inject.service('socket-io'),
 
-  // Used to generate URLs for redirecting.
-  // Repeats information in ajax service.
   queryRoot: Ember.computed('ajax', function() {
     return this.get('ajax').host;
-  }),  //"http://plenario-app-venusaur.us-east-1.elasticbeanstalk.com",
+  }),
 
   /**
    * For when we want to redirect the user
@@ -111,6 +110,14 @@ export default Ember.Service.extend({
 
   allNodeMetadata() {
     return this.get('nodes').then(nodeMeta => nodeMeta.data.map(geoJSONify));
+
+  },
+
+  getSocketForNode(nodeId, networkId, foiList) {
+    const io = this.get('io');
+    const features = foiList.join(',');
+    const connectionUrl = `http://streaming.plenar.io?sensorNetwork=${networkId}?nodes=${nodeId}?features_of_interest=${features}`;
+    return io.socketFor(connectionUrl);
   },
 
   _findDataset(name, datasets) {
@@ -363,6 +370,7 @@ function geoJSONify(obj) {
     "properties": {
       "name": obj.id,
       "info": obj.info,
+      "sensors": obj.sensors
     },
     "geometry": {
       "type": "Point",
