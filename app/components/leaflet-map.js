@@ -22,6 +22,13 @@ export default Ember.Component.extend({
 
   center: [[lat, lng], zoom],
 
+  SelectedIcon: L.Icon.extend({
+    options: {
+      iconUrl: '/assets/images/marker-red.png',
+      iconRetinaUrl: '/assets/images/marker-red-2x.png'
+    }
+  }),
+
   didInsertElement() {
     this._super(...arguments);
     Ember.run.scheduleOnce('afterRender', this, function() {
@@ -119,6 +126,7 @@ export default Ember.Component.extend({
         geoJSON = JSON.parse(geoJSON);
       }
 
+      const selectedIcon = new this.SelectedIcon();
       // Add popups
       const clicked = this.get('clicked');
       const onEachFeature = function(feature, layer) {
@@ -130,9 +138,12 @@ export default Ember.Component.extend({
           }
           table += '</table>';
           layer.bindPopup(table);
-
-          layer.on({ click: marker => {
+          console.log(feature, layer);
+          layer.on({ click: function(marker) {
             // Action up.
+            console.log(this);
+            console.log(marker);
+            this.setIcon(selectedIcon);
             clicked(marker);
           }});
         }
