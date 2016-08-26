@@ -1,7 +1,8 @@
 {{
-  leaflet-map
+  leaflet-nodes
   geoJSON=model.nodes
-  clicked=(action "onClick")
+  selectionAction=(action "onSelect")
+  selectedNode=selectedNode
 }}
 
 {{node-chart node=selectedNode}}

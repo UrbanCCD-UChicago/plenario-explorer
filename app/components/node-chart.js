@@ -82,7 +82,7 @@ export default Ember.Component.extend({
     // };
 
     const logObservations = function(newObs) {
-      console.log(newObs);
+      //console.log(newObs);
     };
 
     socket.on('data', logObservations, this);
