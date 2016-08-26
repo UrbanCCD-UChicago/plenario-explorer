@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import moment from 'moment';
+import {sensorData} from '../mirage/sensor-data';
 /* global URI */
 
 /**
@@ -108,15 +109,26 @@ export default Ember.Service.extend({
     return this._findDataset(name, allEventDatasets);
   },
 
+  // For promising a synchronous return value
+  promisify(data) {
+    return new Ember.RSVP.Promise(function(resolve, reject){
+      resolve(data);
+    });
+  },
+
   allNodeMetadata() {
-    return this.get('nodes').then(nodeMeta => nodeMeta.data.map(geoJSONify));
+    //return this.get('nodes').then(nodeMeta => nodeMeta.data.map(geoJSONify));
+    return this.promisify(sensorData.nodes).
+    then(nodeMeta => {
+      return nodeMeta.data.map(geoJSONify);
+    });
 
   },
 
-  getSocketForNode(nodeId, networkId, foiList) {
+  getSocketForNode(nodeId, networkId) { //, foiList) {
     const io = this.get('io');
-    const features = foiList.join(',');
-    const connectionUrl = `http://streaming.plenar.io?sensorNetwork=${networkId}?nodes=${nodeId}?features_of_interest=${features}`;
+    // const features = foiList.join(',');
+    const connectionUrl = `ws://localhost:8081?sensorNetwork=${networkId}&nodes=${nodeId}`;
     return io.socketFor(connectionUrl);
   },
 
