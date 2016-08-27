@@ -65,6 +65,10 @@ const sensorData = {
         "location":{
           "lat":41.8781,
           "lon":-87.6298,
+        },
+        "curatedMapping": {
+          "temperature.temperature": "tempx",
+          "gasConcentration.H2S": "gasx"
         }
       },
       {
@@ -84,6 +88,10 @@ const sensorData = {
         "location":{
           "lat":41.8851,
           "lon":-87.7468
+        },
+        "curatedMapping": {
+          "temperature.temperature": "tempx",
+          "gasConcentration.H2S": "gasx"
         }
       }
     ]
@@ -161,7 +169,14 @@ const sensorData = {
         "name":"ArrayOfThings"
       }
     ]
-  }
+  },
+
+  // curationMap: {
+  //   "data": {
+  //     "temperature.temperature": "tempx",
+  //     "gasConcentration.H2S": "gasx"
+  //   }
+  // }
 };
 
 export {sensorData, generateGasObservations, generateTempObservations};

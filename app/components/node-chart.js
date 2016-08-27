@@ -1,91 +1,101 @@
 import Ember from 'ember';
-import moment from 'moment';
-
-
-    // Use all params to construct connection
-    // Create Datastructure that maps foi name
-    // to E.A for all FOIs.
-
-
-    // Can use #each-in hbs helper to iterate over FOI name and array
+//import moment from 'moment';
 
 export default Ember.Component.extend({
-  //io: Ember.inject.service('socket-io'),
   query: Ember.inject.service('query'),
 
-
-
-  //serverUrl: 'localhost:8081',
-
-  // streamingObservations: Ember.A([]),
-
-  // Need to observe node,
-  // And initiate new connection when it changes
-
-  Stream: Ember.Object.extend({
-    init() {
-      const [nodeId, networkId, foiList] = this.getProperties('nodeId', 'networkId', 'foiList');
-      const socket = this.get('query').getSocketForNode(nodeId, networkId, foiList);
-
-      // Assign each feature of interest an observable array
-      // CORRECTION: I'll need to flatmap the FOI observed_properties
-      const observationMap = {};
-      foiList.forEach(featureName => {
-        observationMap[featureName] = Ember.A([]);
-      });
-      this.set('observationMap', observationMap);
-    },
-
-    appendObservations(newObs) {
-      const series = this.get('observationMap');
-      series.pushObject([moment(), newObs.results]);
-      this.set('streamingSeries', [{
-        'data': series.toArray(),
-        'name': ''
-      }]);
+  /**
+   Create mapping from sensor name
+   to all observed properties we want to take from it.
+   'sensor' => ['foi.property1', 'foi.property2']
+   **/
+  sensorMapObserver: Ember.on('didReceiveAttrs', Ember.observer('node.curatedMapping', function() {
+    const sensorMap = new Map(), curation = this.get('node.curatedMapping');
+    console.log(this.get('node'));
+    for (let property of Object.keys(curation)) {
+      const sensorName = curation[property];
+      let propertyList = sensorMap.get(sensorName);
+      if (!propertyList) {
+        propertyList = [];
+        sensorMap.set(sensorName, propertyList);
+      }
+      propertyList.push(property);
     }
+    this.set('sensorMap', sensorMap);
+    console.log(sensorMap);
+  })),
 
-//socket.on('data', appendObservations, this);
+  seedTimeline(timeline, nodeId, sensor) {
+    const q = this.get('query');
+    q.getSensorObservations(nodeId, 'ArrayOfThings', sensor)
+    .then(observations => {
+      // Streaming observations might "beat" the historical observations in,
+      // so throw historical observations onto front.
+      timeline.unshift(...observations);
+    });
+  },
+
+  /**
+   * Create the data structure that will be used to store live observations.
+   * foi: {property: [observations]}
+   * **/
+  streams: Ember.computed('sensorMap', function() {
+    const sensorMap = this.get('sensorMap'),
+      streams = {},
+      nodeId = this.get('node.id');
+    // Leaf-level map from observed property
+    // to observable array of observations.
+    sensorMap.forEach((list, sensor) => {
+      for (let namespacedProperty of list) {
+        // Split on first `.` only.
+        // Can have weird cases like particulate.2.5
+        // for particulate matter of length 2.5
+        const [foi, property] = namespacedProperty.split('.', 2);
+        if (!(foi in streams)) {
+          streams[foi] = {};
+        }
+        const timeline = Ember.A([]);
+        streams[foi][property] = timeline;
+        this.seedTimeline(timeline, nodeId, sensor);
+      }
+    });
+    return streams;
+  }),
+
+  socket: Ember.computed('node.id', 'sensorMap', function () {
+    // Close old socket?
+    const id = this.get('node.id'), sensorMap = this.get('sensorMap');
+    const socket = this.get('query').getSocketForNode(id, ...sensorMap.keys());
+    socket.on('data', this.appendObservation);
 
   }),
 
-  // connection: Ember.computed('node', function(){
-    // Wipe out the old records when the node changes
-    //this.set('streamingObservations', Ember.A([]));
-    /*
-      Add query params based on identity of node a la
-     var socket = require('socket.io-client')('http://streaming.plenar.io?sensor_network=ArrayOfThings&' +
-     'features_of_interest=temperature&' +
-     'nodes=00A,00B&' +
-     'sensors=HTU21D');
-     */
-    //const socket = this.get('io').socketFor('localhost:8081');
+  appendObservation(newObs) {
+    const streams = this.get('streams');
+    const foi = newObs.feature_of_interest;
+    if (!(foi in streams)) {
+      return; // We don't care about this feature.
+    }
+    // Throw onto correct stream...
+    const results = newObs.results;
+    const sensorMap = this.get('sensorMap');
+    for (let property in results) {
+      const shouldAdd = `${foi}.${property}` in sensorMap.get(newObs.sensor);
+      if (shouldAdd) {
+        streams[foi][property].pushObject(results[property]);
+        console.log(streams[foi][property]);
+      }
+    }
+  }
 
-  // }),
 
-  init() {
-    this._super(...arguments);
-    // this.get('query').getSensorObservations('00A', 'ArrayOfThings', ['gasx'])
-    //   .then(observations => {console.log(observations);});
-
-    const socket = this.get('query').getSocketForNode('00A', 'ArrayOfThings');
-
-    //const socket = this.get('io').socketFor('localhost:8081');
-
-    // const appendObservations = function (newObs) {
-    //   const series = this.get('streamingObservations');
+    // appendObservations(newObs) {
+    //   const series = this.get('observationMap');
     //   series.pushObject([moment(), newObs.results]);
     //   this.set('streamingSeries', [{
     //     'data': series.toArray(),
     //     'name': ''
     //   }]);
-    // };
+    // }
 
-    const logObservations = function(newObs) {
-      //console.log(newObs);
-    };
-
-    socket.on('data', logObservations, this);
-
-  }
 });

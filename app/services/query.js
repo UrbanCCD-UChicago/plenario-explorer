@@ -122,8 +122,12 @@ export default Ember.Service.extend({
     then(nodeMeta => {
       return nodeMeta.data.map(geoJSONify);
     });
-
   },
+
+  // getCuration() {
+  //   return this.promisify(sensorData.curationMap).
+  //   then(resp => {return resp.data;});
+  // },
 
   getSocketForNode(nodeId, networkId) { //, foiList) {
     const io = this.get('io');
@@ -133,6 +137,9 @@ export default Ember.Service.extend({
   },
 
   getSensorObservations(nodeId, networkId, sensorList) {
+    if (typeof sensorList === 'string') {
+      sensorList = [sensorList];
+    }
     const params = {data: {'sensors': sensorList.join(',')}};
     const path = `/sensor-networks/${networkId}/nodes/${nodeId}/query`;
     return this.get('ajax').request(path, params).then(response => {
@@ -385,16 +392,14 @@ export default Ember.Service.extend({
 });
 
 function geoJSONify(obj) {
+  const {lon, lat} = obj.location;
+
   return {
     "type": "Feature",
-    "properties": {
-      "name": obj.id,
-      "info": obj.info,
-      "sensors": obj.sensors
-    },
+    "properties": obj,
     "geometry": {
       "type": "Point",
-      "coordinates": [obj.location.lon, obj.location.lat]
+      "coordinates": [lon, lat]
     }
   };
 }

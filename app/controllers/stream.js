@@ -1,11 +1,22 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-  selectedNode: '00A',
+  modelArrived: Ember.observer('model', function() {
+    const nodeList = this.get('model.nodes');
+    console.log(nodeList);
+    const nodeTuples = nodeList.map(node => {
+      return [node.properties.id, node.properties];
+    });
+    const nodeMap = new Map(nodeTuples);
+    console.log(nodeMap);
+    this.set('nodeMap', nodeMap);
+    this.set('selectedNode', nodeMap.get('00A'));
+  }),
 
   actions: {
     onSelect(nodeId) {
-      this.set('selectedNode', nodeId);
+      const newNode = this.get('nodeMap').get(nodeId);
+      this.set('selectedNode', newNode);
     }
   }
 });
