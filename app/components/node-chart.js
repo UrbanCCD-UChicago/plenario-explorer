@@ -24,17 +24,13 @@ export default Ember.Component.extend({
     return sensorMap;
   }),
 
-  seedTimeline(timeline, nodeId, sensor, foi) {
+  seedTimeline(timeline, nodeId, sensor) {
     const q = this.get('query');
     q.getSensorObservations(nodeId, 'ArrayOfThings', sensor)
     .then(observations => {
       // Streaming observations might "beat" the historical observations in,
       // so throw historical observations onto front.
-      console.log(observations);
-      const numericalParts = observations.map(obs => {
-          return obs.results[foi];
-      });
-      timeline.unshift(...numericalParts);
+      timeline.unshift(...observations);
     });
   },
 
@@ -59,7 +55,7 @@ export default Ember.Component.extend({
         }
         const timeline = Ember.A([]);
         streams[foi][property] = timeline;
-        this.seedTimeline(timeline, nodeId, sensor, foi);
+        this.seedTimeline(timeline, nodeId, sensor);
       }
     });
     return streams;
@@ -90,7 +86,7 @@ export default Ember.Component.extend({
       const shouldAdd = sensorMap.get(newObs.sensor).includes(`${foi}.${property}`);
       if (shouldAdd) {
         // console.log()
-        streams[foi][property].pushObject(results[property]);
+        streams[foi][property].pushObject(results);
         console.log(streams[foi][property]);
       }
     }
