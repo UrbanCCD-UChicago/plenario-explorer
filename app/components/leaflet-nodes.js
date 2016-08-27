@@ -36,6 +36,7 @@ export default LeafletBase.extend({
 
   updateHighlight() {
     const selected = this.get('selectedNode');
+    console.log(selected);
     if (!selected) {return;}
 
     // Clear highlight from previously selected node
@@ -60,14 +61,12 @@ export default LeafletBase.extend({
     const selectionAction = this.get('selectionAction');
     const nodeIdToMarker = new Map();
     const addSelectionListeners = function(feature, marker) {
-      const nodeId = feature.properties.name;
+      const nodeId = feature.properties.id;
       nodeIdToMarker.set(nodeId, marker);
-      marker.on({click: event => {
-          // Demeter will strike me down in righteous fury.
-          const nodeId = event.target.feature.properties.name;
-          selectionAction(nodeId);
-        }
-      });
+      marker.on(
+        {
+          click: () => {selectionAction(nodeId);}
+        });
     };
 
     this.set('nodeIdToMarker', nodeIdToMarker);
