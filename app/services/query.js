@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import moment from 'moment';
-import {sensorData} from '../mirage/sensor-data';
+import {sensorData, generateTempObservations, generateGasObservations} from '../mirage/sensor-data';
+import ENV from 'plenario-explorer/config/environment';
 /* global URI */
 
 /**
@@ -124,14 +125,8 @@ export default Ember.Service.extend({
     });
   },
 
-  // getCuration() {
-  //   return this.promisify(sensorData.curationMap).
-  //   then(resp => {return resp.data;});
-  // },
-
-  getSocketForNode(nodeId, networkId) { //, foiList) {
+  getSocketForNode(nodeId, networkId) {
     const io = this.get('io');
-    // const features = foiList.join(',');
     const connectionUrl = `ws://localhost:8081?sensorNetwork=${networkId}&nodes=${nodeId}`;
     return io.socketFor(connectionUrl);
   },
@@ -139,6 +134,12 @@ export default Ember.Service.extend({
   getSensorObservations(nodeId, networkId, sensorList) {
     if (typeof sensorList === 'string') {
       sensorList = [sensorList];
+    }
+
+    if (ENV.environment === 'development') {
+      const func = sensorList.contains('gasx') ?
+        generateGasObservations : generateTempObservations;
+      return this.promisify(func(nodeId));
     }
     const params = {data: {'sensors': sensorList.join(',')}};
     const path = `/sensor-networks/${networkId}/nodes/${nodeId}/query`;
