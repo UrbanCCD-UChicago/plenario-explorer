@@ -11,7 +11,7 @@ export default Ember.Component.extend({
    **/
   sensorMap: Ember.computed('node.curatedMapping', function() {
     const sensorMap = new Map(), curation = this.get('node.curatedMapping');
-    console.log(this.get('node'));
+    // console.log(this.get('node'));
     for (let property of Object.keys(curation)) {
       const sensorName = curation[property];
       let propertyList = sensorMap.get(sensorName);
@@ -24,19 +24,23 @@ export default Ember.Component.extend({
     return sensorMap;
   }),
 
-  seedTimeline(timeline, nodeId, sensor) {
+  seedTimeline(timeline, nodeId, sensor, property) {
     const q = this.get('query');
     q.getSensorObservations(nodeId, 'ArrayOfThings', sensor)
     .then(observations => {
       // Streaming observations might "beat" the historical observations in,
       // so throw historical observations onto front.
-      timeline.unshift(...observations);
+      const trimmed = observations.map(obs => {
+        return {'val': obs.results[property],
+          'datetime': obs.datetime};
+      });
+      timeline.unshift(...trimmed);
     });
   },
 
   /**
    * Create the data structure that will be used to store live observations.
-   * foi: {property: [observations]}
+   * foi: {property: [observations], prop2: [observations]}
    * **/
   streams: Ember.computed('sensorMap', function() {
     const sensorMap = this.get('sensorMap'),
@@ -55,7 +59,7 @@ export default Ember.Component.extend({
         }
         const timeline = Ember.A([]);
         streams[foi][property] = timeline;
-        this.seedTimeline(timeline, nodeId, sensor);
+        this.seedTimeline(timeline, nodeId, sensor, property);
       }
     });
     return streams;
@@ -65,7 +69,7 @@ export default Ember.Component.extend({
     We need to trigger this ourselves.
    */
   openSocket: Ember.on('didReceiveAttrs',Ember.observer('node.id', 'sensorMap', function() {
-    console.log('Opening socket');
+    // console.log('Opening socket');
     // Close old socket?
     const id = this.get('node.id'), sensorMap = this.get('sensorMap');
     const socket = this.get('query').getSocketForNode(id, ...sensorMap.keys());
@@ -73,7 +77,7 @@ export default Ember.Component.extend({
   })),
 
   appendObservation(newObs) {
-    console.log('Got obs', newObs);
+    // console.log('Got obs', newObs);
     const streams = this.get('streams');
     const foi = newObs.feature_of_interest;
     if (!(foi in streams)) {
@@ -86,19 +90,13 @@ export default Ember.Component.extend({
       const shouldAdd = sensorMap.get(newObs.sensor).includes(`${foi}.${property}`);
       if (shouldAdd) {
         // console.log()
-        streams[foi][property].pushObject(results);
-        console.log(streams[foi][property]);
+        const record = {'val': results[property], 'datetime': newObs.datetime};
+        streams[foi][property].pushObject(record);
+        // console.log(streams[foi][property]);
       }
     }
   }
 
-    // appendObservations(newObs) {
-    //   const series = this.get('observationMap');
-    //   series.pushObject([moment(), newObs.results]);
-    //   this.set('streamingSeries', [{
-    //     'data': series.toArray(),
-    //     'name': ''
-    //   }]);
-    // }
+
 
 });

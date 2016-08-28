@@ -22,7 +22,7 @@ function generateTempObservation(nodeId) {
 
 function generateGasObservation(nodeId) {
   return {
-    "feature_of_interest":"gasconcentration",
+    "feature_of_interest":"gasConcentration",
     "node_id":nodeId,
     "sensor":"gasx",
     "results":{

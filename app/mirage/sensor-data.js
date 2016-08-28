@@ -68,7 +68,7 @@ const sensorData = {
         },
         "curatedMapping": {
           "temperature.temperature": "tempx",
-          "gasConcentration.H2S": "gasx"
+          "gasConcentration.h2s": "gasx"
         }
       },
       {
@@ -91,7 +91,7 @@ const sensorData = {
         },
         "curatedMapping": {
           "temperature.temperature": "tempx",
-          "gasConcentration.H2S": "gasx"
+          "gasConcentration.h2s": "gasx"
         }
       }
     ]
@@ -120,7 +120,7 @@ const sensorData = {
         "name": "Hydrogen Sulfide",
         "id": "gasx",
         "observed_properties": [
-          "gasConcentration.H2S"
+          "gasConcentration.h2s"
         ]
       }
     ]
@@ -133,7 +133,7 @@ const sensorData = {
         "observed_properties":[
           {
             "type":"numeric",
-            "name":"H2S",
+            "name":"h2s",
             "unit":"ppm",
             "description":"Hydrogen Sulfide concentration"
           }
@@ -174,7 +174,7 @@ const sensorData = {
   // curationMap: {
   //   "data": {
   //     "temperature.temperature": "tempx",
-  //     "gasConcentration.H2S": "gasx"
+  //     "gasConcentration.h2s": "gasx"
   //   }
   // }
 };
