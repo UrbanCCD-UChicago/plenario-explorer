@@ -10,6 +10,7 @@ export default Ember.Component.extend({
    'sensor' => ['foi.property1', 'foi.property2']
    **/
   sensorMap: Ember.computed('node.curatedMapping', function() {
+    // TODO: Get curatedMapping from proper source (model)
     const sensorMap = new Map(), curation = this.get('node.curatedMapping');
     // console.log(this.get('node'));
     for (let property of Object.keys(curation)) {

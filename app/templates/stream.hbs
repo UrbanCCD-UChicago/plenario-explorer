@@ -1,8 +1,18 @@
-{{
-  leaflet-nodes
-  geoJSON=model.nodes
-  selectionAction=(action "onSelect")
-  selectedNode=selectedNode.id
-}}
+<div class="row">
+    <div class='col-md-5'>
+      {{node-meta meta=selectedNode.properties.metadata}}
+    </div>
 
-{{node-chart node=selectedNode}}
+    <div class='col-md-7 half-height'>
+      {{
+        leaflet-nodes
+        geoJSON=model.nodes
+        selectionAction=(action "onSelect")
+        selectedNode=selectedNode.id
+      }}
+    </div>
+</div>
+<div class="row">
+  {{node-chart node=selectedNode}}
+</div>
+

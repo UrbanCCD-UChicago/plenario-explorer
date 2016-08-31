@@ -119,9 +119,9 @@ export default Ember.Service.extend({
 
   allNodeMetadata() {
     //return this.get('nodes').then(nodeMeta => nodeMeta.data.map(geoJSONify));
-    return this.promisify(sensorData.nodes).
-    then(nodeMeta => {
-      return nodeMeta.data.map(geoJSONify);
+    return this.promisify(sensorData.nodes)
+      .then(nodeMeta => {
+      return nodeMeta.data;
     });
   },
 
@@ -391,16 +391,3 @@ export default Ember.Service.extend({
   },
 
 });
-
-function geoJSONify(obj) {
-  const {lon, lat} = obj.location;
-
-  return {
-    "type": "Feature",
-    "properties": obj,
-    "geometry": {
-      "type": "Point",
-      "coordinates": [lon, lat]
-    }
-  };
-}

@@ -29,7 +29,7 @@ function generateGasObservations(nodeId) {
   const timestamps = generateTimestamps();
   return timestamps.map(ts => {
     return {
-      "feature_of_interest":"gasconcentration",
+      "feature_of_interest":"gas_concentration",
       "node_id":nodeId,
       "sensor":"gasx",
       "results":{
@@ -49,49 +49,47 @@ const sensorData = {
     "data":
     [
       {
-        "info":{
-          "orientation":{
-            "value":"NE",
-            "unit":"Cardinal directions. One of N, NE, E, SE, S, SW, W, NW"
+        "type": "Feature",
+        "properties": {
+          "info": {
+            "orientation":{
+              "value":"NE",
+              "unit":"Cardinal directions. One of N, NE, E, SE, S, SW, W, NW"
+            },
+            "height":{
+              "value":5,
+              "unit":"meters"
+            }
           },
-          "height":{
-            "value":5,
-            "unit":"meters"
-          }
+          "sensors": ["tempx", "gasx"],
+          "id": "00A",
+          "network_name": "array_of_things"
         },
-        "network_name":"ArrayOfThings",
-        "id":"00A",
-        "sensors": ["tempx", "gasx"],
-        "location":{
-          "lat":41.8781,
-          "lon":-87.6298,
-        },
-        "curatedMapping": {
-          "temperature.temperature": "tempx",
-          "gasConcentration.h2s": "gasx"
+        "geometry": {
+          "type": "Point",
+          "coordinates": [-87.6298, 41.8781]
         }
       },
       {
-        "info":{
-          "orientation":{
-            "value":"NE",
-            "unit":"Cardinal directions. One of N, NE, E, SE, S, SW, W, NW"
+        "type": "Feature",
+        "properties": {
+          "info": {
+            "orientation":{
+              "value":"SW",
+              "unit":"Cardinal directions. One of N, NE, E, SE, S, SW, W, NW"
+            },
+            "height":{
+              "value":5,
+              "unit":"meters"
+            }
           },
-          "height":{
-            "value":5,
-            "unit":"meters"
-          }
+          "sensors": ["tempx", "gasx"],
+          "id": "00A",
+          "network_name": "array_of_things"
         },
-        "network_name":"ArrayOfThings",
-        "id":"00B",
-        "sensors": ["tempx", "gasx"],
-        "location":{
-          "lat":41.8851,
-          "lon":-87.7468
-        },
-        "curatedMapping": {
-          "temperature.temperature": "tempx",
-          "gasConcentration.h2s": "gasx"
+        "geometry": {
+          "type": "Point",
+          "coordinates": [-87.7468, 41.8851]
         }
       }
     ]
@@ -105,7 +103,7 @@ const sensorData = {
           "range": "0 to 20 ppm",
           "accuracy": "+-3% of reading"
         },
-        "name": "Temperature",
+        "name": "temperature",
         "id": "tempx",
         "observed_properties": [
           "temperature.temperature"
@@ -120,7 +118,7 @@ const sensorData = {
         "name": "Hydrogen Sulfide",
         "id": "gasx",
         "observed_properties": [
-          "gasConcentration.h2s"
+          "gas_concentration.h2s"
         ]
       }
     ]
@@ -129,7 +127,7 @@ const sensorData = {
   featuresOfInterest: {
     "data":[
       {
-        "name":"gasConcentration",
+        "name":"gas_concentration",
         "observed_properties":[
           {
             "type":"numeric",
@@ -163,20 +161,13 @@ const sensorData = {
           "00A", "00B"
         ],
         "features_of_interest":[
-          "gasConcentration",
+          "gas_concentration",
           "temperature"
         ],
         "name":"ArrayOfThings"
       }
     ]
   },
-
-  // curationMap: {
-  //   "data": {
-  //     "temperature.temperature": "tempx",
-  //     "gasConcentration.h2s": "gasx"
-  //   }
-  // }
 };
 
 export {sensorData, generateGasObservations, generateTempObservations};
