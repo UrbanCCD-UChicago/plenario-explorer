@@ -12,7 +12,7 @@ class Node {
    * Return all nodes post-processed into Node models.
    * @returns {Promise.<TResult>}
    */
-  all() {
+  static all() {
     const nodePromise = q.allNodeMetadata();
     return nodePromise.then(nodeResponse => {
       return nodeResponse.map(nodeRecord => {

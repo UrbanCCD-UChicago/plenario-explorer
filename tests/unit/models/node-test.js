@@ -1,4 +1,4 @@
-import {Node} from '../../../models/node'; //'../../models/node';
+import {Node} from '../../../models/node';
 import {module, test} from 'qunit';
 
 module('Unit | Model | Node');
@@ -32,7 +32,7 @@ const expectedMetadata = {
   "Height": "5 meters"
 };
 
-test('it works', function (assert) {
+test('Node constructor formats metadata', function (assert) {
   let node = new Node(mockNodeAPIRecord);
   assert.deepEqual(node.properties.metadata, expectedMetadata);
 });

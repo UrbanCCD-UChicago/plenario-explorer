@@ -1,9 +1,3 @@
-export default class ObservedProperty{
-  all() {
-    return allProperties;
-  }
-};
-
 const allProperties = [
   {
     id: 'temperature.temperature',
@@ -18,3 +12,9 @@ const allProperties = [
     sensor: 'gasx'
   },
 ];
+
+export default {
+  all() {
+    return allProperties;
+  }
+};
