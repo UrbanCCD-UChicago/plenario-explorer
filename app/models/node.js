@@ -35,7 +35,7 @@ const transforms = {
   },
   'height': height => {
     // Height 7 meters
-    return ['Height', `${height.value} ${height.units}`];
+    return ['Height', `${height.value} ${height.unit}`];
   }
 };
 
