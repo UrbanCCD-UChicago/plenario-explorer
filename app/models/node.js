@@ -13,12 +13,10 @@ class Node {
    * @returns {Promise.<TResult>}
    */
   static all() {
-    const nodePromise = q.allNodeMetadata();
-    return nodePromise.then(nodeResponse => {
-      return nodeResponse.map(nodeRecord => {
-        return new Node(nodeRecord);
-      });
-    });
+    return q.allNodeMetadata()
+    .then(nodeResponse => 
+      nodeResponse.map(nodeRecord => new Node(nodeRecord))
+    );
   }
 }
 
@@ -29,14 +27,8 @@ class Node {
  * to see in a metadata table.
  */
 const transforms = {
-  'orientation': orientation => {
-    // Facing NW
-    return ['Facing', orientation.value];
-  },
-  'height': height => {
-    // Height 7 meters
-    return ['Height', `${height.value} ${height.unit}`];
-  }
+  'orientation': orientation => ['Facing', orientation.value],
+  'height': height => ['Height', `${height.value} ${height.unit}`]
 };
 
 function humanizeMetadata(metadata) {
