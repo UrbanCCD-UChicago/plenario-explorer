@@ -8,6 +8,7 @@ export default Ember.Controller.extend({
     });
     const nodeMap = new Map(nodeTuples);
     this.set('nodeMap', nodeMap);
+    // TODO: Move magic node id to environment config
     this.set('selectedNode', nodeMap.get('00A'));
   }),
 

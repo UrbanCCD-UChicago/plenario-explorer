@@ -2,23 +2,22 @@ import Ember from 'ember';
 
 const q = Ember.inject.service();
 
-class Node {
-  constructor(nodeGeoJSON) {
+const Node = Ember.Object.extend({
+  query: Ember.inject.service(),
+
+  init() {
+    const nodeGeoJSON = this.get('nodeGeoJSON');
     Ember.merge(this, nodeGeoJSON);
     this.properties.metadata = humanizeMetadata(nodeGeoJSON.properties.info);
-  }
+  },
 
-  /**
-   * Return all nodes post-processed into Node models.
-   * @returns {Promise.<TResult>}
-   */
-  static all() {
+  all() {
     return q.allNodeMetadata()
-    .then(nodeResponse => 
-      nodeResponse.map(nodeRecord => new Node(nodeRecord))
+    .then(nodeResponse =>
+      nodeResponse.map(nodeRecord => Node.create({nodeGeoJSON: nodeRecord}))
     );
   }
-}
+});
 
 /**
  * Collection of functions that take a potential

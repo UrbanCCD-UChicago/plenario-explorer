@@ -33,6 +33,6 @@ const expectedMetadata = {
 };
 
 test('Node constructor formats metadata', function (assert) {
-  let node = new Node(mockNodeAPIRecord);
+  let node = Node.create({nodeGeoJSON: mockNodeAPIRecord});
   assert.deepEqual(node.properties.metadata, expectedMetadata);
 });

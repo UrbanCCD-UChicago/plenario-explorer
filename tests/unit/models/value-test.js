@@ -1,7 +1,7 @@
-import {Observation} from '../../../models/observation';
+import {Value} from '../../../models/value';
 import {module, test} from 'qunit';
 
-module('Unit | Model | Observation');
+module('Unit | Model | Value');
 
 const mockObservationAPIRecord =
 {
@@ -20,7 +20,7 @@ const mockObservationAPIRecord =
 
 
 test('extracts observations from API record', function (assert) {
-  const observations = Observation.adaptFromAPI(mockObservationAPIRecord);
+  const observations = Value.adaptFromAPI(mockObservationAPIRecord);
   assert.equal(observations.length, 2);
   const idToValue = {};
   for (let obs of observations) {

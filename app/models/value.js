@@ -1,6 +1,6 @@
 import Ember from 'ember';
 
-class Observation {
+class Value {
   constructor(initHash) {
     Ember.merge(this, initHash);
     this.id = `${this.featureOfInterest}.${this.observedProperty}`;
@@ -24,8 +24,8 @@ class Observation {
     //   }
     const results = record.results;
 
-    // Construct one observation for each non-null observed property
-    const observations = [];
+    // Construct one value for each non-null observed property
+    const values = [];
     // console.log(results);
     for (let obsProp of Object.keys(results)) {
       // console.log(obsProp);
@@ -35,12 +35,12 @@ class Observation {
       if (results[obsProp]) {
         initHash.observedProperty = obsProp;
         initHash.value = results[obsProp];
-        observations.push(new Observation(initHash));
+        values.push(new Value(initHash));
       }
     }
-    return observations;
+    return values;
   }
 
 }
 
-export {Observation};
+export {Value};

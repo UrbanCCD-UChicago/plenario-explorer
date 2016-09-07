@@ -131,7 +131,7 @@ export default Ember.Service.extend({
     return io.socketFor(connectionUrl);
   },
 
-  getSensorObservations(nodeId, networkId, sensorList) {
+  getSensorObservations(nodeId, networkId, sensorList, foiList) {
     if (typeof sensorList === 'string') {
       sensorList = [sensorList];
     }
