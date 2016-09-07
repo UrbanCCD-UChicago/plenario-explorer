@@ -19,7 +19,6 @@ export default E.Object.extend({
   seedStreams() {
     const q = this.get('query');
     // Generate the sensor and fois that need to be queried
-    console.log(this.get('sensorMap'));
     this.get('sensorMap').forEach((props, sensor) => {
       const fois = props.map(prop => prop.split('.', 2)[0]);
       const foiList = [...new Set(fois)].join(',');
@@ -42,7 +41,6 @@ export default E.Object.extend({
     const streams = this.get('streams');
     for (let val of vals) {
       if (streams.has(val.id)) {
-        console.log(streams.get(val.id));
         streams.get(val.id).pushObject(val);
       }
     }
@@ -52,7 +50,7 @@ export default E.Object.extend({
     const streams = this.get('streams');
     valCollections.forEach((values, property) => {
       if (streams.has(property)) {
-        streams.get(property).unshift(values);
+        streams.get(property).unshift(...values);
       }
     });
   }

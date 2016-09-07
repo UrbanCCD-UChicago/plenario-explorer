@@ -46,8 +46,8 @@ const queryStub = Ember.Service.extend({
           },
           "datetime": now
         };
-        // Return the observation in a half second
-        Ember.run.later(() => callback.call(context, obs), 500);
+        // Return the observation in a quarter second
+        Ember.run.later(() => callback.call(context, obs), 250);
 
       }
     };
@@ -74,24 +74,20 @@ moduleFor('model:stream-collection', 'Integration | Component | stream collectio
   beforeEach: function () {
     this.register('service:query', queryStub);
     this.register('service:curation', curationStub);
-    // Calling inject puts the service instance in the test's context,
-    // making it accessible as "locationService" within each test
     this.inject.service('query', { as: 'query' });
     this.inject.service('curation', { as: 'curation' });
-    console.log('Survived stubbing');
   }
 
 });
 
 test('it renders', function(assert) {
-  console.log(this.subject(), 'hey');
   const done = assert.async();
-  const someThing = this.subject();
+  const streamsCollection = this.subject();
   wait().then(() => {
-    console.log(someThing);
-    console.log(someThing.get('streams'));
-    console.log('Oh I get it');
-    assert.ok(false);
+    const streams = streamsCollection.get('streams');
+    assert.ok(streams.has('gas_concentration.h2s'));
+    const vals = streams.get('gas_concentration.h2s').mapBy('value');
+    assert.deepEqual(vals, [42, 45]);
     done();
   });
 });
