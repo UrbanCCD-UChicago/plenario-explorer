@@ -92,17 +92,6 @@ test('it initializes the streams', function(assert) {
   });
 });
 
-function createMockStream() {
-  const valueTimes = [
-    '2016-09-09T17:21:30+00:00',
-    '2016-09-09T17:22:30+00:00',
-    '2016-09-09T17:23:30+00:00',
-    '2016-09-09T17:24:30+00:00'
-  ];
-  const mockValues = valueTimes.map(time => ({'datetime': time}));
-  return Ember.A(mockValues);
-}
-
 const valueTimes = [
   '2016-09-09T17:21:30+00:00',
   '2016-09-09T17:22:30+00:00',
