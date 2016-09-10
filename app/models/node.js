@@ -1,9 +1,9 @@
 import Ember from 'ember';
 
-const q = Ember.inject.service();
+// const q = Ember.inject.service();
 
 const Node = Ember.Object.extend({
-  query: Ember.inject.service(),
+  // query: Ember.inject.service(),
 
   init() {
     const nodeGeoJSON = this.get('nodeGeoJSON');
@@ -11,12 +11,12 @@ const Node = Ember.Object.extend({
     this.properties.metadata = humanizeMetadata(nodeGeoJSON.properties.info);
   },
 
-  all() {
-    return q.allNodeMetadata()
-    .then(nodeResponse =>
-      nodeResponse.map(nodeRecord => Node.create({nodeGeoJSON: nodeRecord}))
-    );
-  }
+  // all() {
+  //   return q.allNodeMetadata()
+  //   .then(nodeResponse =>
+  //     nodeResponse.map(nodeRecord => Node.create({nodeGeoJSON: nodeRecord}))
+  //   );
+  // }
 });
 
 /**

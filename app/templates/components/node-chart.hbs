@@ -1,6 +1,5 @@
-{{#each-in streams as |foi props|}}
-  {{#each-in props as |prop observations|}}
+{{log streams}}
+{{#each-in streams as |prop observations|}}
     {{log prop}}
     {{stream-chart observations=observations property=prop }}
-  {{/each-in}}
 {{/each-in}}

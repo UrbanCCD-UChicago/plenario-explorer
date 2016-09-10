@@ -18,6 +18,10 @@ export default E.Object.extend({
     if (!this.get('windowMinutes')) {
       this.set('windowMinutes', 60);
     }
+  },
+
+  createFor(nodeId) {
+    this.set('nodeId', nodeId);
     const obsProps = this.get('curation').observedPropertiesFor(NETWORK);
 
     this.set('sensorMap', createSensorMap(obsProps));
@@ -25,6 +29,7 @@ export default E.Object.extend({
 
     this.seedStreams();
     this.initSocket();
+    return strMapToObj(this.get('streams'));
   },
 
   seedStreams() {
@@ -137,4 +142,16 @@ function createStreams(observedProperties) {
     prop => [prop.id, E.A([])]
   );
   return new Map(propStreamPairs);
+}
+
+// Vielen Dank, Herr Rauschmeyer
+// http://www.2ality.com/2015/08/es6-map-json.html
+function strMapToObj(strMap) {
+  let obj = Object.create(null);
+  for (let [k,v] of strMap) {
+    // We don’t escape the key '__proto__'
+    // which can cause problems on older engines
+    obj[k] = v;
+  }
+  return obj;
 }

@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import moment from 'moment';
+import {Node} from '../models/node';
 import {sensorData, generateTempObservations, generateGasObservations} from '../mirage/sensor-data';
 import ENV from 'plenario-explorer/config/environment';
 /* global URI */
@@ -119,9 +120,12 @@ export default Ember.Service.extend({
 
   allNodeMetadata() {
     //return this.get('nodes').then(nodeMeta => nodeMeta.data.map(geoJSONify));
+    // nodeResponse.map(nodeRecord => Node.create({nodeGeoJSON: nodeRecord}))
     return this.promisify(sensorData.nodes)
       .then(nodeMeta => {
-      return nodeMeta.data;
+      return nodeMeta.data.map(
+        nodeRecord => Node.create({nodeGeoJSON: nodeRecord})
+      );
     });
   },
 
