@@ -2,9 +2,11 @@ import moment from 'moment';
 
 function generateTimestamps() {
   // Get 5 minutes of timestamps at 30 second sampling rate
-  const now = moment();
+  const nowStamp = moment().format();
   const timestamps = [];
   for (let secondsAgo = 30; secondsAgo <= 300; secondsAgo += 30) {
+    console.log(secondsAgo);
+    const now = moment(nowStamp);
     timestamps.push(now.subtract(secondsAgo, 'seconds').format());
   }
   return timestamps.reverse();

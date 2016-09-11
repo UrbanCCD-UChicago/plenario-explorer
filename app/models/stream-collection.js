@@ -39,9 +39,13 @@ export default E.Object.extend({
       const fois = props.map(prop => prop.split('.', 2)[0]);
       const foiList = [...new Set(fois)].join(',');
       // TODO: add time constraint to only fetch last hour
-      q.getSensorObservations(this.get('nodeId'), NETWORK, sensor, foiList)
+      const nodeId = this.get('nodeId');
+      q.getSensorObservations(nodeId, NETWORK, sensor, foiList)
         .then(observations => {
-          const valCollections = splitObservationstoValues(observations);
+          console.log(observations);
+          const fromThisSensor = observations.filter(obs => obs.node_id === nodeId);
+          console.log(fromThisSensor);
+          const valCollections = splitObservationstoValues(fromThisSensor);
           this.prependValues(valCollections);
         });
     });
@@ -63,6 +67,8 @@ export default E.Object.extend({
   },
 
   appendObservation(obs) {
+    if (obs.node_id !== this.get('nodeId')) {return;}
+
     const vals = Value.adaptFromAPI(obs);
     const streams = this.get('streams');
     for (let val of vals) {

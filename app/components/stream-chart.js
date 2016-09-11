@@ -33,7 +33,14 @@ export default Ember.Component.extend({
         text: prop.name
       },
       xAxis: {
-        type: 'datetime'
+        type: 'datetime',
+        dateTimeLabelFormats: { // don't display the dummy year
+          second: '%l:%M:%S',
+          year: '%b'
+        },
+        labels: {
+          enabled: true
+        }
       },
       tooltip: {
         valueSuffix: prop.unit,
