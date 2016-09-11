@@ -4,6 +4,8 @@ import LeafletBase from './leaflet-base';
 
 export default LeafletBase.extend({
 
+  classNames: ['leaflet-nodes'],
+
   // Alternate icon color to signal selection
   SelectedIcon: L.Icon.extend({
     options: {

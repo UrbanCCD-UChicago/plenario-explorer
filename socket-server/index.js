@@ -14,7 +14,7 @@ function generateTempObservation(nodeId) {
     "node_id":nodeId,
     "sensor":"tempx",
     "results":{
-      "temperature": Math.floor(Math.random() * 100)
+      "temperature": 19 + Math.floor(Math.random() * 10)
     },
     "datetime":moment().format()
   };
@@ -29,7 +29,7 @@ function generateGasObservation(nodeId) {
       "co":null,
       "so2":null,
       "o3":null,
-      "h2s":Math.floor(Math.random() * 100),
+      "h2s":Math.random()*(3/4),
       "no2":null
     },
     "datetime":moment().format()

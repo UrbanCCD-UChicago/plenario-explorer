@@ -20,7 +20,7 @@ function generateTempObservations(nodeId) {
       "node_id":nodeId,
       "sensor":"tempx",
       "results":{
-        "temperature": Math.floor(Math.random() * 100)
+        "temperature": 19 + Math.floor(Math.random() * 10)
       },
       "datetime":ts
     };
@@ -38,7 +38,7 @@ function generateGasObservations(nodeId) {
         "co":null,
         "so2":null,
         "o3":null,
-        "h2s":Math.floor(Math.random() * 100),
+        "h2s": (Math.random()*(3/4)),
         "no2":null
       },
       "datetime":ts
@@ -69,7 +69,7 @@ const sensorData = {
         },
         "geometry": {
           "type": "Point",
-          "coordinates": [-87.6298, 41.8781]
+          "coordinates": [-87.675825, 41.852179]
         }
       },
       {
@@ -86,17 +86,38 @@ const sensorData = {
             }
           },
           "sensors": ["tempx", "gasx"],
-          "id": "00A",
+          "id": "00B",
           "network_name": "array_of_things"
         },
         "geometry": {
           "type": "Point",
-          "coordinates": [-87.7468, 41.8851]
+          "coordinates": [-87.634678, 41.878874]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "info": {
+            "orientation":{
+              "value":"SW",
+              "unit":"Cardinal directions. One of N, NE, E, SE, S, SW, W, NW"
+            },
+            "height":{
+              "value":5,
+              "unit":"meters"
+            }
+          },
+          "sensors": ["tempx", "gasx"],
+          "id": "00C",
+          "network_name": "array_of_things"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [-87.658195, 41.871716]
         }
       }
     ]
   },
-
   sensors: {
     "data": [
       {
