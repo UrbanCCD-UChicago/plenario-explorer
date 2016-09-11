@@ -39,7 +39,7 @@ function generateGasObservation(nodeId) {
 io.on('connection', function(socket){
   console.log('a user connected');
 
-  // Emit some data every 3 seconds
+  // Emit some data every 30 seconds
   setInterval(function () {
     socket.emit("data", generateGasObservation('00A'));
     socket.emit("data", generateGasObservation('00B'));
