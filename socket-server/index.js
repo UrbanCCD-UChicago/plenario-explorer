@@ -22,7 +22,7 @@ function generateTempObservation(nodeId) {
 
 function generateGasObservation(nodeId) {
   return {
-    "feature_of_interest":"gasConcentration",
+    "feature_of_interest":"gas_concentration",
     "node_id":nodeId,
     "sensor":"gasx",
     "results":{
@@ -45,7 +45,7 @@ io.on('connection', function(socket){
     socket.emit("data", generateGasObservation('00B'));
     socket.emit("data", generateTempObservation('00A'));
     socket.emit("data", generateTempObservation('00B'));
-  }, 3000);
+  }, 30000);
 });
 
 http.listen(8081, function(){

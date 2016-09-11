@@ -14,7 +14,7 @@ export default E.Object.extend({
     this._super(...arguments);
 
     // To prevent the charts from stretching into infinity,
-    // Only keep a set window of minutes on display
+    // only keep a set window of minutes on display
     if (!this.get('windowMinutes')) {
       this.set('windowMinutes', 60);
     }
@@ -47,6 +47,15 @@ export default E.Object.extend({
     });
   },
 
+  prependValues(valCollections) {
+    const streams = this.get('streams');
+    valCollections.forEach((values, property) => {
+      if (streams[property]) {
+        streams[property].unshiftObjects(values);
+      }
+    });
+  },
+
   initSocket() {
     const id = this.get('nodeId'), sensorMap = this.get('sensorMap');
     const socket = this.get('query').getSocketForNode(id, ...sensorMap.keys());
@@ -64,19 +73,8 @@ export default E.Object.extend({
         this.truncateHead(stream, windowBorder);
         // Add new observation
         stream.pushObject(val);
-        // Replace stream
-        // streams[val.id] = truncated;
       }
     }
-  },
-
-  prependValues(valCollections) {
-    const streams = this.get('streams');
-    valCollections.forEach((values, property) => {
-      if (streams[property]) {
-        streams[property].unshift(...values);
-      }
-    });
   },
 
   /**
@@ -90,13 +88,11 @@ export default E.Object.extend({
   truncateHead(stream, windowBorder) {
     // Find where times start to come after the border
     const idx = stream.findIndex(val => moment(val.datetime) > windowBorder);
-    // If all times are before the border
-    if (idx === -1) {
-      // Don't mutate
-      return E.A([]);
+    // If times are found before the border
+    if (idx !== -1) {
+      // Trim them
+      stream.removeObjects(0, idx + 1);
     }
-    stream.removeObjects(0, idx + 1);
-    // return stream.slice(idx);
   }
 });
 
@@ -144,21 +140,4 @@ function createStreams(observedProperties) {
     streamsObj[prop.id] = E.A([]);
   }
   return streamsObj;
-  // const propStreamPairs = observedProperties.map(
-  //   prop => [prop.id, E.A([])]
-  // );
-  //
-  // return new Map(propStreamPairs);
 }
-
-// // Vielen Dank, Herr Rauschmeyer
-// // http://www.2ality.com/2015/08/es6-map-json.html
-// function strMapToObj(strMap) {
-//   let obj = Object.create(null);
-//   for (let [k,v] of strMap) {
-//     // We don’t escape the key '__proto__'
-//     // which can cause problems on older engines
-//     obj[k] = v;
-//   }
-//   return obj;
-// }

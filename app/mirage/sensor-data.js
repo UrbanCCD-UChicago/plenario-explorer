@@ -7,7 +7,7 @@ function generateTimestamps() {
   for (let secondsAgo = 30; secondsAgo <= 300; secondsAgo += 30) {
     timestamps.push(now.subtract(secondsAgo, 'seconds').format());
   }
-  return timestamps;
+  return timestamps.reverse();
 }
 
 function generateTempObservations(nodeId) {
