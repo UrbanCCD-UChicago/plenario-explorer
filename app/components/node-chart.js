@@ -6,7 +6,9 @@ export default Ember.Component.extend({
   streams: Ember.computed('node', function() {
     const nodeId = this.get('node.id');
     const coll = Ember.getOwner(this).lookup('model:stream-collection');
-    return coll.createFor(nodeId);
+    const streams = coll.createFor(nodeId);
+    console.log(streams);
+    return streams;
     // return StreamCollection.create({nodeId: node.id});
   })
 

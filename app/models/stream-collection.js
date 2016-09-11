@@ -29,7 +29,7 @@ export default E.Object.extend({
 
     this.seedStreams();
     this.initSocket();
-    return strMapToObj(this.get('streams'));
+    return this.get('streams');
   },
 
   seedStreams() {
@@ -57,15 +57,15 @@ export default E.Object.extend({
     const vals = Value.adaptFromAPI(obs);
     const streams = this.get('streams');
     for (let val of vals) {
-      if (streams.has(val.id)) {
-        const stream = streams.get(val.id);
+      if (streams[val.id]) {
+        const stream = streams[val.id];
         // Remove observations that have fallen out of the time window
         const windowBorder = moment().subtract(this.get('windowMinutes'), 'minutes');
-        const truncated = this.truncateHead(stream, windowBorder);
+        this.truncateHead(stream, windowBorder);
         // Add new observation
-        truncated.pushObject(val);
+        stream.pushObject(val);
         // Replace stream
-        streams.set(val.id, truncated);
+        // streams[val.id] = truncated;
       }
     }
   },
@@ -73,8 +73,8 @@ export default E.Object.extend({
   prependValues(valCollections) {
     const streams = this.get('streams');
     valCollections.forEach((values, property) => {
-      if (streams.has(property)) {
-        streams.get(property).unshift(...values);
+      if (streams[property]) {
+        streams[property].unshift(...values);
       }
     });
   },
@@ -92,10 +92,11 @@ export default E.Object.extend({
     const idx = stream.findIndex(val => moment(val.datetime) > windowBorder);
     // If all times are before the border
     if (idx === -1) {
-      // Send back an empty stream
+      // Don't mutate
       return E.A([]);
     }
-    return stream.slice(idx);
+    stream.removeObjects(0, idx + 1);
+    // return stream.slice(idx);
   }
 });
 
@@ -133,25 +134,31 @@ function createSensorMap(observedProperties) {
 }
 
 /**
- * property id => Ember Array of Observations
+ *
  * @param observedProperties
- * @returns {Map}
+ * @returns {{}}
  */
 function createStreams(observedProperties) {
-  const propStreamPairs = observedProperties.map(
-    prop => [prop.id, E.A([])]
-  );
-  return new Map(propStreamPairs);
+  const streamsObj = {};
+  for (let prop of observedProperties) {
+    streamsObj[prop.id] = E.A([]);
+  }
+  return streamsObj;
+  // const propStreamPairs = observedProperties.map(
+  //   prop => [prop.id, E.A([])]
+  // );
+  //
+  // return new Map(propStreamPairs);
 }
 
-// Vielen Dank, Herr Rauschmeyer
-// http://www.2ality.com/2015/08/es6-map-json.html
-function strMapToObj(strMap) {
-  let obj = Object.create(null);
-  for (let [k,v] of strMap) {
-    // We don’t escape the key '__proto__'
-    // which can cause problems on older engines
-    obj[k] = v;
-  }
-  return obj;
-}
+// // Vielen Dank, Herr Rauschmeyer
+// // http://www.2ality.com/2015/08/es6-map-json.html
+// function strMapToObj(strMap) {
+//   let obj = Object.create(null);
+//   for (let [k,v] of strMap) {
+//     // We don’t escape the key '__proto__'
+//     // which can cause problems on older engines
+//     obj[k] = v;
+//   }
+//   return obj;
+// }

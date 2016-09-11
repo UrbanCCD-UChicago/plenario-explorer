@@ -1,5 +1,16 @@
 import Ember from 'ember';
 
+/**
+ * Object with properties:
+ * value
+ * observedProperty
+ * id (foi.property)
+ * featureOfInterest
+ * nodeId
+ * sensor
+ * datetime
+ */
+
 class Value {
   constructor(initHash) {
     Ember.merge(this, initHash);
