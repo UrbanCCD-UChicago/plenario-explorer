@@ -5,7 +5,7 @@ export default Ember.Service.extend({
   // curate their networks themselves.
   // For that we'd probably need some service where they can set it.
   // This service can fetch the curation from there.
-  observedPropertiesFor(networkName) {
+  observedPropertiesFor() {
     return [
       {
         id: 'temperature.temperature',

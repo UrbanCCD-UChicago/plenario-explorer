@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import moment from 'moment';
-import {Node} from '../models/node';
+import Node from '../models/node';
 import {sensorData, generateTempObservations, generateGasObservations} from '../mirage/sensor-data';
 import ENV from 'plenario-explorer/config/environment';
 /* global URI */
@@ -113,7 +113,7 @@ export default Ember.Service.extend({
 
   // For promising a synchronous return value
   promisify(data) {
-    return new Ember.RSVP.Promise(function(resolve, reject){
+    return new Ember.RSVP.Promise(function(resolve) {
       resolve(data);
     });
   },
@@ -135,7 +135,7 @@ export default Ember.Service.extend({
     return io.socketFor(connectionUrl);
   },
 
-  getSensorObservations(nodeId, networkId, sensorList, foiList) {
+  getSensorObservations(nodeId, networkId, sensorList) {
     if (typeof sensorList === 'string') {
       sensorList = [sensorList];
     }

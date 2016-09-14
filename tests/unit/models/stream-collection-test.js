@@ -83,10 +83,12 @@ moduleFor('model:stream-collection', 'Integration | Component | stream collectio
 test('it initializes the streams', function(assert) {
   const done = assert.async();
   const streamsCollection = this.subject();
+  // Effectively disables stream truncation
+  streamsCollection.set('windowMinutes', 5256000);
+  const streams = streamsCollection.createFor('00A');
   wait().then(() => {
-    const streams = streamsCollection.get('streams');
-    assert.ok(streams.has('gas_concentration.h2s'));
-    const vals = streams.get('gas_concentration.h2s').mapBy('value');
+    assert.ok('gas_concentration.h2s' in streams);
+    const vals = streams['gas_concentration.h2s'].mapBy('value');
     assert.deepEqual(vals, [42, 45]);
     done();
   });
@@ -99,32 +101,34 @@ const valueTimes = [
   '2016-09-09T17:24:30+00:00'
 ];
 const mockValues = valueTimes.map(time => ({'datetime': time}));
-const mockStream = Ember.A(mockValues);
 
 test('stream truncation works on expected case', function(assert) {
+  const mockStream = Ember.A(mockValues);
   const cutoffTime = moment('2016-09-09T17:22:31+00:00');
-  const truncated = this.subject().truncateHead(mockStream, cutoffTime);
-  assert.equal(2, truncated.length);
+  this.subject().truncateHead(mockStream, cutoffTime);
+  assert.equal(mockStream.length, 2);
 
   const expectedStillInWindow = valueTimes.slice(2);
-  assert.deepEqual(truncated.mapBy('datetime'), expectedStillInWindow);
+  assert.deepEqual(mockStream.mapBy('datetime'), expectedStillInWindow);
 });
 
 test('stream truncation works on empty stream', function(assert) {
   const emptyStream = Ember.A([]);
   const cutoffTime = moment('2016-09-09T17:22:31+00:00');
-  const truncated = this.subject().truncateHead(emptyStream, cutoffTime);
-  assert.deepEqual(truncated, Ember.A([]));
+  this.subject().truncateHead(emptyStream, cutoffTime);
+  assert.deepEqual(emptyStream, Ember.A([]));
 });
 
 test('stream truncation works when entire stream is old', function(assert) {
+  const mockStream = Ember.A(mockValues);
   const cutoffTime = moment('2016-09-09T17:25:31+00:00');
-  const truncated = this.subject().truncateHead(mockStream, cutoffTime);
-  assert.deepEqual(truncated, Ember.A([]));
+  this.subject().truncateHead(mockStream, cutoffTime);
+  assert.deepEqual(mockStream, Ember.A([]));
 });
 
 test('stream truncation works when entire stream is new', function(assert) {
+  const mockStream = Ember.A(mockValues);
   const cutoffTime = moment('2016-09-09T17:20:31+00:00');
-  const truncated = this.subject().truncateHead(mockStream, cutoffTime);
-  assert.deepEqual(truncated, mockStream);
+  this.subject().truncateHead(mockStream, cutoffTime);
+  assert.deepEqual(Ember.A(mockValues), mockStream);
 });

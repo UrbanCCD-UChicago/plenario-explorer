@@ -2,21 +2,14 @@ import Ember from 'ember';
 
 // const q = Ember.inject.service();
 
-const Node = Ember.Object.extend({
+export default Ember.Object.extend({
   // query: Ember.inject.service(),
 
   init() {
     const nodeGeoJSON = this.get('nodeGeoJSON');
     Ember.merge(this, nodeGeoJSON);
     this.properties.metadata = humanizeMetadata(nodeGeoJSON.properties.info);
-  },
-
-  // all() {
-  //   return q.allNodeMetadata()
-  //   .then(nodeResponse =>
-  //     nodeResponse.map(nodeRecord => Node.create({nodeGeoJSON: nodeRecord}))
-  //   );
-  // }
+  }
 });
 
 /**
@@ -41,5 +34,5 @@ function humanizeMetadata(metadata) {
   return humanized;
 }
 
-export {Node};
+// export {Node};
 

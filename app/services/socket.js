@@ -15,19 +15,14 @@ export default Ember.Service.extend({
         const socket = this.get('io').socketFor(serverUrl, connectionArgs);
         socket.on('connect', this.onConnect, this);
         socket.on('data', this.onData, this);
-
-        console.log("socket.open()");
-        console.log("socket.serverUrl: " + serverUrl);
-        console.log("socket.connectionArgs: " + connectionArgs);
     },
 
     close() {
-        console.log("socket.close()");
         const socket = this.get('io').socketFor(this.get('serverUrl'));
         socket.off('connect', this.onConnect);
         socket.off('data', this.onData);
     },
 
-    onConnect(event) {},
-    onData(event) {}
+    onConnect() {},
+    onData() {}
 });

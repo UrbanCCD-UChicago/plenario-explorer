@@ -1,4 +1,4 @@
-import {Node} from '../../../models/node';
+import Node from '../../../models/node';
 import {module, test} from 'qunit';
 
 module('Unit | Model | Node');

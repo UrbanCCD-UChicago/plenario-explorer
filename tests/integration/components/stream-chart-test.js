@@ -9,7 +9,9 @@ test('it renders', function(assert) {
   // Set any properties with this.set('myProperty', 'value');
   // Handle any actions with this.on('myAction', function(val) { ... });
 
+  // thu content = [];
   this.render(hbs`{{stream-chart}}`);
+
 
   assert.equal(this.$().text().trim(), '');
 

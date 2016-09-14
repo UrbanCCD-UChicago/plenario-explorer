@@ -42,9 +42,7 @@ export default E.Object.extend({
       const nodeId = this.get('nodeId');
       q.getSensorObservations(nodeId, NETWORK, sensor, foiList)
         .then(observations => {
-          console.log(observations);
           const fromThisSensor = observations.filter(obs => obs.node_id === nodeId);
-          console.log(fromThisSensor);
           const valCollections = splitObservationstoValues(fromThisSensor);
           this.prependValues(valCollections);
         });
@@ -92,13 +90,15 @@ export default E.Object.extend({
    * @param windowBorder moment object
    */
   truncateHead(stream, windowBorder) {
+    if (stream.length === 0) {return;}
     // Find where times start to come after the border
-    const idx = stream.findIndex(val => moment(val.datetime) > windowBorder);
-    // If times are found before the border
-    if (idx !== -1) {
-      // Trim them
-      stream.removeObjects(0, idx + 1);
+    let idx = stream.findIndex(val => moment(val.datetime) > windowBorder);
+    // If all the times are stale
+    if (idx === -1) {
+      idx = stream.length;
     }
+    // Trim them
+    stream.removeAt(0, idx);
   }
 });
 
