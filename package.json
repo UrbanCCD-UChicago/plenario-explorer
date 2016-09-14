@@ -64,6 +64,7 @@
     "moment-timezone": "0.5.0"
   },
   "dependencies": {
-    "babel-polyfill": "^6.7.4"
+    "babel-polyfill": "^6.7.4",
+    "shrinkwrap": "^0.4.0"
   }
 }
