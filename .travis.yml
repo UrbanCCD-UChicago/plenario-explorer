@@ -21,7 +21,7 @@ install:
 - npm install
 - bower install
 script:
-- ember test --server
+- ember test --skip-cleanup
 after_success:
 - ember build -prod
 deploy:
