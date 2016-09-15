@@ -11,14 +11,14 @@ export default Ember.Service.extend({
         id: 'temperature.temperature',
         name: 'Temperature',
         unit: '°C',
-        sensor: 'tempx'
-      },
-      {
-        id: 'gas_concentration.h2s',
-        name: 'Hydrogen Sulfide Concentration',
-        unit: 'ppm',
-        sensor: 'gasx'
-      },
+        sensor: 'SENSOR_DEV_4'
+      }//,
+      // {
+      //   id: 'gas_concentration.h2s',
+      //   name: 'Hydrogen Sulfide Concentration',
+      //   unit: 'ppm',
+      //   sensor: 'gasx'
+      // },
     ];
   }
 });

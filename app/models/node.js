@@ -1,14 +1,11 @@
 import Ember from 'ember';
 
-// const q = Ember.inject.service();
-
 export default Ember.Object.extend({
-  // query: Ember.inject.service(),
-
   init() {
     const nodeGeoJSON = this.get('nodeGeoJSON');
     Ember.merge(this, nodeGeoJSON);
-    this.properties.metadata = humanizeMetadata(nodeGeoJSON.properties.info);
+    const meta = nodeGeoJSON.properties.info;
+    this.properties.metadata = meta ? humanizeMetadata(meta) : {};
   }
 });
 
@@ -33,6 +30,3 @@ function humanizeMetadata(metadata) {
   }
   return humanized;
 }
-
-// export {Node};
-

@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import moment from 'moment';
 import Node from '../models/node';
-import {sensorData, generateTempObservations, generateGasObservations} from '../mirage/sensor-data';
+// import {sensorData, generateTempObservations, generateGasObservations} from '../mirage/sensor-data';
 import ENV from 'plenario-explorer/config/environment';
 /* global URI */
 
@@ -121,18 +121,36 @@ export default Ember.Service.extend({
   allNodeMetadata() {
     //return this.get('nodes').then(nodeMeta => nodeMeta.data.map(geoJSONify));
     // nodeResponse.map(nodeRecord => Node.create({nodeGeoJSON: nodeRecord}))
-    return this.promisify(sensorData.nodes)
-      .then(nodeMeta => {
-      return nodeMeta.data.map(
-        nodeRecord => Node.create({nodeGeoJSON: nodeRecord})
-      );
-    });
+    const qString = `/sensor-networks/${ENV.networkId}/nodes`;
+    return this.get('ajax').request(qString)
+    .then(nodeMeta =>
+      {
+        console.log(nodeMeta);
+        return nodeMeta.data.map(
+          nodeRecord => Node.create({nodeGeoJSON: nodeRecord})
+        );
+      }
+    );
+
+    // return this.promisify(sensorData.nodes)
+    //   .then(nodeMeta => {
+    //   return nodeMeta.data.map(
+    //     nodeRecord => Node.create({nodeGeoJSON: nodeRecord})
+    //   );
+    // });
   },
 
-  getSocketForNode(nodeId, networkId) {
+  getSocketForNode(networkId, nodeId, sensorList) {
     const io = this.get('io');
-    const connectionUrl = `ws://localhost:8081?sensorNetwork=${networkId}&nodes=${nodeId}`;
-    return io.socketFor(connectionUrl);
+    const host = 'http://streaming.plenar.io';
+    const connString = URI(host).addQuery({
+      sensor_network: networkId,
+      nodes: nodeId,
+      sensors: sensorList.join(',')
+    }).toString();
+
+    // const connectionUrl = `ws://localhost:8081?sensor_network=${networkId}&nodes=${nodeId}`;
+    return io.socketFor(connString);
   },
 
   getSensorObservations(nodeId, networkId, sensorList) {
@@ -140,13 +158,21 @@ export default Ember.Service.extend({
       sensorList = [sensorList];
     }
 
-    if (ENV.environment === 'development') {
-      const func = sensorList.contains('gasx') ?
-        generateGasObservations : generateTempObservations;
-      return this.promisify(func(nodeId));
-    }
-    const params = {data: {'sensors': sensorList.join(',')}};
-    const path = `/sensor-networks/${networkId}/nodes/${nodeId}/query`;
+    // if (ENV.environment === 'development') {
+    //   const func = sensorList.contains('gasx') ?
+    //     generateGasObservations : generateTempObservations;
+    //   return this.promisify(func(nodeId));
+    // }
+    // const start_datetime = moment().utc().subtract(1, 'hours').format();
+    const params = {
+      data: {
+        sensors: sensorList.join(','),
+        nodes: nodeId,
+        start_datetime: moment().utc().subtract(1, 'hours').format(),
+        end_datetime: moment().utc().format()
+      }
+    };
+    const path = `/sensor-networks/${networkId}/query`;
     return this.get('ajax').request(path, params).then(response => {
       return response.data;
     });

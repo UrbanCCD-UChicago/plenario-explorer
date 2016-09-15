@@ -19,6 +19,9 @@ module.exports = function(environment) {
     }
   };
 
+  ENV.networkId = 'plenario_development';
+  ENV.defaultNode = 'NODE_DEV_1';
+
   if (environment === 'development') {
     ENV['ember-cli-mirage'] = {
       enabled: false

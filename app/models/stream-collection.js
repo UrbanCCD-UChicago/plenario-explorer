@@ -1,6 +1,7 @@
 import E from 'ember';
 import {Value} from '../models/value';
-const NETWORK = 'array_of_things';
+import ENV from '../config/environment';
+const NETWORK = ENV.networkId;
 import moment from 'moment';
 
 /**
@@ -38,10 +39,10 @@ export default E.Object.extend({
     this.get('sensorMap').forEach((props, sensor) => {
       const fois = props.map(prop => prop.split('.', 2)[0]);
       const foiList = [...new Set(fois)].join(',');
-      // TODO: add time constraint to only fetch last hour
       const nodeId = this.get('nodeId');
       q.getSensorObservations(nodeId, NETWORK, sensor, foiList)
         .then(observations => {
+          if (observations.length === 0) {return;}
           const fromThisSensor = observations.filter(obs => obs.node_id === nodeId);
           const valCollections = splitObservationstoValues(fromThisSensor);
           this.prependValues(valCollections);
@@ -53,14 +54,18 @@ export default E.Object.extend({
     const streams = this.get('streams');
     valCollections.forEach((values, property) => {
       if (streams[property]) {
+        values.sort((v1, v2) =>
+          v1.datetime.localeCompare(v2.datetime)
+        );
         streams[property].unshiftObjects(values);
       }
     });
   },
 
   initSocket() {
-    const id = this.get('nodeId'), sensorMap = this.get('sensorMap');
-    const socket = this.get('query').getSocketForNode(id, ...sensorMap.keys());
+    const id = this.get('nodeId');
+    const sensorList = [...this.get('sensorMap').keys()];
+    const socket = this.get('query').getSocketForNode(NETWORK, id, sensorList);
     socket.on('data', this.appendObservation, this);
   },
 
@@ -105,12 +110,13 @@ export default E.Object.extend({
 function splitObservationstoValues(observations) {
   // Split each operation into a list of values
   const valLists = observations.map(obs => Value.adaptFromAPI(obs));
-  const someList = valLists[0];
   // Map from property id to list of values
-  const propertyPairs = someList.map(val => [val.id, [] ]);
-  const propMap = new Map(propertyPairs);
+  const propMap = new Map();
   for (let list of valLists) {
     for (let val of list) {
+      if (!propMap.has(val.id)) {
+        propMap.set(val.id, []);
+      }
       propMap.get(val.id).push(val);
     }
   }
