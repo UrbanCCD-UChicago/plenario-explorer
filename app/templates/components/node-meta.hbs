@@ -1,17 +1,8 @@
-{{log meta}}
 <table class="table">
   <tbody>
     <tr>
         <td>ID</td>
         <td>{{node.id}}</td>
-    </tr>
-    <tr>
-        <td>Intersection</td>
-        <td>Cermak and Damen</td>
-    </tr>
-    <tr>
-        <td>Neighborhood</td>
-        <td>Heart of Chicago</td>
     </tr>
     {{#each-in node.metadata as |key val|}}
       <tr>
@@ -20,6 +11,4 @@
       </tr>
     {{/each-in}}
   </tbody>
-
-
 </table>
