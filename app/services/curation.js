@@ -12,13 +12,31 @@ export default Ember.Service.extend({
         name: 'Temperature',
         unit: '°C',
         sensor: 'SENSOR_DEV_4'
-      }//,
-      // {
-      //   id: 'gas_concentration.h2s',
-      //   name: 'Hydrogen Sulfide Concentration',
-      //   unit: 'ppm',
-      //   sensor: 'gasx'
-      // },
+      },
+      {
+        id: 'humidity.humidity',
+        name: 'Relative Humidity',
+        unit: '%',
+        sensor: 'SENSOR_DEV_2'
+      },
+      {
+        id: 'gas_concentration.n2',
+        name: 'Nitrogen Concentration',
+        unit: 'ppm',
+        sensor: 'SENSOR_DEV_3'
+      },
+      {
+        id: 'gas_concentration.co2',
+        name: 'Carbon Dioxide Concentration',
+        unit: 'ppm',
+        sensor: 'SENSOR_DEV_3'
+      },
+      {
+        id: 'gas_concentration.o2',
+        name: 'Oxygen Concentration',
+        unit: 'ppm',
+        sensor: 'SENSOR_DEV_4'
+      }
     ];
   }
 });

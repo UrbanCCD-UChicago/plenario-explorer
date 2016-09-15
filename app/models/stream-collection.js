@@ -52,13 +52,27 @@ export default E.Object.extend({
 
   prependValues(valCollections) {
     const streams = this.get('streams');
-    valCollections.forEach((values, property) => {
-      if (streams[property]) {
-        values.sort((v1, v2) =>
-          v1.datetime.localeCompare(v2.datetime)
-        );
-        streams[property].unshiftObjects(values);
+
+    // Let go the properties that this
+    // node isn't reporting.
+    for (let prop of Object.keys(streams)) {
+      if (!valCollections.has(prop)) {
+        delete streams[prop];
       }
+    }
+
+    valCollections.forEach((values, property) => {
+      // Is this a curated property?
+      if (!streams[property]) {
+        return;
+      }
+      // Values not necessarily sorted chronologically by API 0_0
+      // TODO: Find out if that is the case or if you are crazy
+      values.sort((v1, v2) =>
+        v1.datetime.localeCompare(v2.datetime)
+      );
+      streams[property].unshiftObjects(values);
+
     });
   },
 
