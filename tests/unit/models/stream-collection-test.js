@@ -107,7 +107,7 @@ function format(dateStr) {
 
 test('stream truncation works on expected case', function(assert) {
   const mockStream = Ember.A(mockValues);
-  const cutoffTime = format('2016-09-09T17:22:31+00:00';
+  const cutoffTime = format('2016-09-09T17:22:31+00:00');
   this.subject().truncateHead(mockStream, cutoffTime);
   assert.equal(mockStream.length, 2);
 
