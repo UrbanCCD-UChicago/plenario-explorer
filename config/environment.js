@@ -23,9 +23,11 @@ module.exports = function(environment) {
   ENV.defaultNode = 'NODE_DEV_1';
 
   if (environment === 'development') {
+    ENV.host = 'http://plenario-app-venusaur.us-east-1.elasticbeanstalk.com';
     ENV['ember-cli-mirage'] = {
       enabled: false
     };
+
     // ENV.APP.LOG_RESOLVER = true;
     // ENV.APP.LOG_ACTIVE_GENERATION = true;
     // ENV.APP.LOG_TRANSITIONS = true;
@@ -34,6 +36,7 @@ module.exports = function(environment) {
   }
 
   if (environment === 'test') {
+    ENV.host = 'http://plenar.io';
     // Testem prefers this...
     ENV.baseURL = '/';
     ENV.locationType = 'none';
