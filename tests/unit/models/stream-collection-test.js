@@ -101,10 +101,13 @@ const valueTimes = [
   '2016-09-09T17:24:30+00:00'
 ];
 const mockValues = valueTimes.map(time => ({'datetime': time}));
+function format(dateStr) {
+  return moment(dateStr).utc().format();
+}
 
 test('stream truncation works on expected case', function(assert) {
   const mockStream = Ember.A(mockValues);
-  const cutoffTime = moment('2016-09-09T17:22:31+00:00');
+  const cutoffTime = format('2016-09-09T17:22:31+00:00';
   this.subject().truncateHead(mockStream, cutoffTime);
   assert.equal(mockStream.length, 2);
 
@@ -114,21 +117,21 @@ test('stream truncation works on expected case', function(assert) {
 
 test('stream truncation works on empty stream', function(assert) {
   const emptyStream = Ember.A([]);
-  const cutoffTime = moment('2016-09-09T17:22:31+00:00');
+  const cutoffTime = format('2016-09-09T17:22:31+00:00');
   this.subject().truncateHead(emptyStream, cutoffTime);
   assert.deepEqual(emptyStream, Ember.A([]));
 });
 
 test('stream truncation works when entire stream is old', function(assert) {
   const mockStream = Ember.A(mockValues);
-  const cutoffTime = moment('2016-09-09T17:25:31+00:00');
+  const cutoffTime = format('2016-09-09T17:25:31+00:00');
   this.subject().truncateHead(mockStream, cutoffTime);
   assert.deepEqual(mockStream, Ember.A([]));
 });
 
 test('stream truncation works when entire stream is new', function(assert) {
   const mockStream = Ember.A(mockValues);
-  const cutoffTime = moment('2016-09-09T17:20:31+00:00');
+  const cutoffTime = format('2016-09-09T17:20:31+00:00');
   this.subject().truncateHead(mockStream, cutoffTime);
   assert.deepEqual(Ember.A(mockValues), mockStream);
 });

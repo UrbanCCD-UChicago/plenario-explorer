@@ -78,7 +78,7 @@ export default E.Object.extend({
       if (streams[val.id]) {
         const stream = streams[val.id];
         // Remove observations that have fallen out of the time window
-        const windowBorder = moment().subtract(this.get('windowMinutes'), 'minutes');
+        const windowBorder = moment().subtract(this.get('windowMinutes'), 'minutes').utc().format();
         this.truncateHead(stream, windowBorder);
         // Add new observation
         stream.pushObject(val);
@@ -97,7 +97,7 @@ export default E.Object.extend({
   truncateHead(stream, windowBorder) {
     if (stream.length === 0) {return;}
     // Find where times start to come after the border
-    let idx = stream.findIndex(val => moment(val.datetime) > windowBorder);
+    let idx = stream.findIndex(val => val.datetime > windowBorder);
     // If all the times are stale
     if (idx === -1) {
       idx = stream.length;
