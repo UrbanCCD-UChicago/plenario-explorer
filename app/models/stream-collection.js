@@ -57,11 +57,6 @@ export default E.Object.extend({
       if (!streams[property]) {
         return;
       }
-      // Values not necessarily sorted chronologically by API 0_0
-      // TODO: Find out if that is the case or if you are crazy
-      values.sort((v1, v2) =>
-        v1.datetime.localeCompare(v2.datetime)
-      );
       streams[property].unshiftObjects(values);
 
     });
