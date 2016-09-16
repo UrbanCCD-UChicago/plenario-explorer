@@ -52,15 +52,6 @@ export default E.Object.extend({
 
   prependValues(valCollections) {
     const streams = this.get('streams');
-
-    // Let go the properties that this
-    // node isn't reporting.
-    for (let prop of Object.keys(streams)) {
-      if (!valCollections.has(prop)) {
-        delete streams[prop];
-      }
-    }
-
     valCollections.forEach((values, property) => {
       // Is this a curated property?
       if (!streams[property]) {
@@ -138,6 +129,9 @@ function splitObservationstoValues(observations) {
 }
 
 /**
+ * Creates a mapping from sensors to properties
+ * for EVERY curated sensor (not just the ones relevant to this node)
+ *
  * sensorName => [list, of, properties]
  * @param observedProperties
  * @returns {Map}

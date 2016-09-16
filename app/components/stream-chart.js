@@ -8,6 +8,11 @@ export default Ember.Component.extend({
   formattedSeries: Ember.observer('property.stream.@each', function() {
     // Go fetch the whole observation stream
     const observations = this.get('property.stream');
+    if (observations.length === 0) {
+      this.set('series', null);
+      return;
+    }
+
     // Translate to Highcharts format
     const series = observations.map(obs => {
       return [moment(obs.datetime + "+0000").valueOf(), obs.value];
