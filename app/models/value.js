@@ -19,9 +19,9 @@ class Value {
 
   static adaptFromAPI(record) {
     const initHashProto = {
-      'featureOfInterest': record.feature_of_interest,
-      'nodeId': record.node_id,
-      'sensor': record.sensor,
+      'featureOfInterest': record.feature_of_interest.toLowerCase(),
+      'nodeId': record.node_id.toLowerCase(),
+      'sensor': record.sensor.toLowerCase(),
       'datetime': record.datetime
     };
 
@@ -44,7 +44,7 @@ class Value {
       // Properties will frequently be null.
       // Best to just not pass those along.
       if (results[obsProp]) {
-        initHash.observedProperty = obsProp;
+        initHash.observedProperty = obsProp.toLowerCase();
         initHash.value = results[obsProp];
         values.push(new Value(initHash));
       }
