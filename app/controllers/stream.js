@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import ENV from 'plenario-explorer/config/environment';
+// import ENV from 'plenario-explorer/config/environment';
 
 export default Ember.Controller.extend({
   modelArrived: Ember.observer('model', function() {
@@ -9,8 +9,7 @@ export default Ember.Controller.extend({
     });
     const nodeMap = new Map(nodeTuples);
     this.set('nodeMap', nodeMap);
-    // TODO: Move magic node id to environment config
-    this.set('selectedNode', nodeMap.get(ENV.defaultNode));
+    this.set('selectedNode', nodeList[0].properties);
   }),
 
   actions: {
