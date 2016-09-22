@@ -153,6 +153,131 @@ export default Ember.Service.extend({
     return io.socketFor(connString);
   },
 
+  getHistoryFor(nodeId, sensorName, typesList) {
+    const times =
+      ["2016-09-20T16:00:00", "2016-09-20T17:00:00",
+        "2016-09-20T17:00:00", "2016-09-20T18:00:00"];
+
+    const response = times.map(time => {
+      const bucket = {
+        time_bucket: time
+      };
+      for (let type of typesList) {
+        const [,prop] = type.split('.');
+        bucket[prop] = {
+          avg: Math.random(),
+        };
+      }
+      return bucket;
+    });
+
+    return this.promisify(response);
+  },
+
+  //   const data = [
+  //     {
+  //       n2: {
+  //         count: 402,
+  //         avg: 0.502523721005823
+  //       },
+  //       co2: {
+  //         count: 402,
+  //         avg: 0.502330371954922
+  //       },
+  //       time_bucket: "2016-09-20T16:00:00"
+  //     },
+  //     {
+  //       n2: {
+  //         count: 79,
+  //         avg: 0.53705481311654
+  //       },
+  //       co2: {
+  //         count: 79,
+  //         avg: 0.465708553068294
+  //       },
+  //       time_bucket: "2016-09-20T17:00:00"
+  //     },
+  //     {
+  //       n2: {
+  //         count: 384,
+  //         avg: 0.488406588388477
+  //       },
+  //       co2: {
+  //         count: 384,
+  //         avg: 0.510351209163835
+  //       },
+  //       time_bucket: "2016-09-20T17:00:00"
+  //     },
+  //     {
+  //       n2: {
+  //         count: 77,
+  //         avg: 0.487088204325181
+  //       },
+  //       co2: {
+  //         count: 77,
+  //         avg: 0.4748888532846
+  //       },
+  //       time_bucket: "2016-09-20T18:00:00"
+  //     },
+  //     {
+  //       n2: {
+  //         count: 370,
+  //         avg: 0.501755669169705
+  //       },
+  //       co2: {
+  //         count: 370,
+  //         avg: 0.494957224548621
+  //       },
+  //       time_bucket: "2016-09-20T18:00:00"
+  //     },
+  //     {
+  //       n2: {
+  //         count: 77,
+  //         avg: 0.488548354503242
+  //       },
+  //       co2: {
+  //         count: 77,
+  //         avg: 0.504360766219885
+  //       },
+  //       time_bucket: "2016-09-20T19:00:00"
+  //     },
+  //     {
+  //       n2: {
+  //         count: 70,
+  //         avg: 0.549296032504842
+  //       },
+  //       co2: {
+  //         count: 70,
+  //         avg: 0.473253422405843
+  //       },
+  //       time_bucket: "2016-09-20T20:00:00"
+  //     },
+  //     {
+  //       n2: {
+  //         count: 387,
+  //         avg: 0.474261635845185
+  //       },
+  //       co2: {
+  //         count: 387,
+  //         avg: 0.492648390708664
+  //       },
+  //       time_bucket: "2016-09-20T19:00:00"
+  //     },
+  //     {
+  //       n2: {
+  //         count: 158,
+  //         avg: 0.50507048405078
+  //       },
+  //       co2: {
+  //         count: 158,
+  //         avg: 0.494640993510809
+  //       },
+  //       time_bucket: "2016-09-20T20:00:00"
+  //     }
+  //   ];
+  //   return this.promisify(data);
+  // },
+
   getSensorObservations(nodeId, networkId, sensorList) {
     if (typeof sensorList === 'string') {
       sensorList = [sensorList];

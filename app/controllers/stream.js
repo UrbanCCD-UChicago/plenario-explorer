@@ -1,5 +1,4 @@
 import Ember from 'ember';
-// import ENV from 'plenario-explorer/config/environment';
 
 export default Ember.Controller.extend({
   modelArrived: Ember.observer('model', function() {
@@ -9,13 +8,13 @@ export default Ember.Controller.extend({
     });
     const nodeMap = new Map(nodeTuples);
     this.set('nodeMap', nodeMap);
-    this.set('selectedNode', nodeList[0].properties);
+    this.set('selectedNodeMeta', nodeList[0].properties);
   }),
 
   actions: {
     onSelect(nodeId) {
       const newNode = this.get('nodeMap').get(nodeId);
-      this.set('selectedNode', newNode);
+      this.set('selectedNodeMeta', newNode);
     }
   }
 });

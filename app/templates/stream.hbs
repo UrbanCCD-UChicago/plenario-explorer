@@ -1,7 +1,6 @@
 <div class="row">
     <div class='col-md-5'>
-        {{log selectedNode}}
-      {{node-meta node=selectedNode}}
+      {{node-meta nodeMeta=selectedNodeMeta}}
     </div>
 
     <div class='col-md-7'>
@@ -9,11 +8,11 @@
         leaflet-nodes
         geoJSON=model.nodes
         selectionAction=(action "onSelect")
-        selectedNode=selectedNode.id
+        selectedNode=selectedNodeMeta.id
       }}
     </div>
 </div>
 <div class="row">
-  {{node-chart node=selectedNode}}
+  {{node-chart nodeMeta=selectedNodeMeta}}
 </div>
 

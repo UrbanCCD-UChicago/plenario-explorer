@@ -21,6 +21,10 @@ export default E.Object.extend({
     }
   },
 
+  /**
+   * @param nodeId
+   * @returns {Object<string, Array>}
+   */
   createFor(nodeId) {
     this.set('nodeId', nodeId);
     const obsProps = this.get('curation').observedPropertiesFor(NETWORK);
