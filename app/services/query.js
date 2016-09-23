@@ -155,12 +155,15 @@ export default Ember.Service.extend({
 
   getHistoryFor(nodeId, sensorName, typesList) {
     const ajax = this.get('ajax');
+    const aWeekAgo = moment().subtract(7, 'days').utc().format()
+
     const params = {
       data: {
         sensors: sensorName,
         node: nodeId,
         features_of_interest: typesList.join(','),
-        function: 'avg'
+        function: 'avg',
+        start_datetime: aWeekAgo
       }
     };
     const path = `/sensor-networks/${ENV.networkId}/aggregate`;
