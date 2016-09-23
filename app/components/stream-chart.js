@@ -81,7 +81,10 @@ export default Ember.Component.extend({
     };
     if (viewType === 'history') {
       // Day-long intervals
-      liveConfig.xAxis.tickInterval = 86400000;
+      const aDay = 86400000;
+      liveConfig.xAxis.tickInterval = aDay;
+      liveConfig.xAxis.minRange = aDay * 7;
+      liveConfig.xAxis.max = moment().valueOf();
       liveConfig.tooltip.dateTimeLabelFormats.hour = '%l %p - %b %e, %Y';
     }
     return liveConfig;
