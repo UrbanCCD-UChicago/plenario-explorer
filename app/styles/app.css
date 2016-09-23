@@ -322,8 +322,3 @@ h3 {
   margin-bottom: 10px;
   line-height: 1.2em;
 }
-
-.nodes-map {
-  /*visibility: hidden;*/
-  min-height: 250px !important;
-}

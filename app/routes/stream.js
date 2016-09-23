@@ -10,6 +10,9 @@ export default Ember.Route.extend({
         return {
           'nodes': nodes
         };
+      }).catch(err => {
+          this.transitionTo('index');
+          this.get('notify').error(`Data error: ${err}`);
       });
     }
 });

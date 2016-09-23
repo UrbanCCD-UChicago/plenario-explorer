@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-  viewType: 'history',
+  viewType: 'live',
 
   modelArrived: Ember.observer('model', function() {
     const nodeList = this.get('model.nodes');

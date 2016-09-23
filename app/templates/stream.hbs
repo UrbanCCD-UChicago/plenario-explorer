@@ -1,15 +1,32 @@
 <div class="row">
     <div class='col-md-5'>
-        <h1>Array of Things</h1>
-      {{#collapse-panel}}
-        <p>Next level lyft lo-fi mixtape, sartorial hot chicken normcore helvetica jianbing authentic coloring book blog. Distillery forage polaroid, viral leggings kogi truffaut air plant wayfarers umami. Flexitarian kickstarter live-edge irony put a bird on it, hoodie farm-to-table deep v cred crucifix beard. Hot chicken kogi live-edge helvetica keytar, iPhone scenester. Trust fund man braid microdosing, roof party hot chicken pork belly gluten-free PBR&B lumbersexual chia gastropub edison bulb hexagon. Flannel scenester fashion axe shabby chic snackwave cardigan, pabst vaporware next level aesthetic. Locavore +1 cardigan, try-hard tbh thundercats air plant.</p>
-      {{/collapse-panel}}
 
+        <div class="row">
+            <div class="col-xs-3">
+                </div>
+            <div class="col-xs-6">
+                <a href="http://arrayofthings.github.io/">
+                    <img src="/assets/images/ArrayofThingsLogo-small.png"
+                    class="img-responsive"/>
+                </a>
+            </div>
+            <div class="col-xs-3">
+            </div>
+        </div>
+      <br>
+      <p class=".lead">
+        Select a node to view live updates or long-term trends from each of its sensors.
+      </p>
+      <p>
+          <strong>{{model.nodes.length}}</strong> nodes available.
+      </p>
       {{node-meta nodeMeta=selectedNodeMeta}}
-      {{#bs-button-group value=viewType type="radio"}}
-        {{#bs-button value='live'}}Live View{{/bs-button}}
-        {{#bs-button value='history'}}History View{{/bs-button}}
-      {{/bs-button-group}}
+      <p>
+          Download data and create your own Array of Things applications with
+          <a href="http://canary-docs.s3-website-us-east-1.amazonaws.com/#sensor-network-data">
+              the Plenario API
+          </a>.
+      </p>
 
     </div>
 
@@ -23,6 +40,10 @@
     </div>
 </div>
 <div class="row">
+  {{#bs-button-group value=viewType type="radio" class=".center-block"}}
+    {{#bs-button value='live'}}Live View{{/bs-button}}
+    {{#bs-button value='history'}}History View{{/bs-button}}
+  {{/bs-button-group}}
   {{node-chart nodeMeta=selectedNodeMeta viewType=viewType}}
 </div>
 
