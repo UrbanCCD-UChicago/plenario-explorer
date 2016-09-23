@@ -14,19 +14,13 @@
             </div>
         </div>
       <br>
-      <p class=".lead">
+      <p class="lead">
         Select a node to view live updates or long-term trends from each of its sensors.
       </p>
       <p>
           <strong>{{model.nodes.length}}</strong> nodes available.
       </p>
       {{node-meta nodeMeta=selectedNodeMeta}}
-      <p>
-          Download data and create your own Array of Things applications with
-          <a href="http://canary-docs.s3-website-us-east-1.amazonaws.com/#sensor-network-data">
-              the Plenario API
-          </a>.
-      </p>
 
     </div>
 
@@ -45,5 +39,12 @@
     {{#bs-button value='history'}}History View{{/bs-button}}
   {{/bs-button-group}}
   {{node-chart nodeMeta=selectedNodeMeta viewType=viewType}}
+    <p class="well">
+        Download data and create your own Array of Things applications with
+        <a href="http://canary-docs.s3-website-us-east-1.amazonaws.com/#sensor-network-data">
+            the Plenario API
+        </a>.
+    </p>
+
 </div>
 
