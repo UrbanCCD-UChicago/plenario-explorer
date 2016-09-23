@@ -14,21 +14,28 @@ export default Ember.Component.extend({
     }
 
     // Translate to Highcharts format
-    const series = observations.map(obs => {
-      return [moment(obs.datetime + "+0000").valueOf(), obs.value];
+    const series = observations.map( ({datetime, value}) => {
+      if (typeof value === 'number') {
+        // Round to 3 decimal places.
+        // And pray to the IEEE gods for no weird floating point shit.
+        value = Math.round(value*1000)/1000;
+      }
+      return [moment(datetime).valueOf(), value];
     });
     // Throw it into Highcharts.
     // Be sure to transform to JS Array from Ember Array
     // so that Highcharts doesn't get confused.
     this.set('series', [{
+      showInLegend: false,
       data: series,
-      name: this.get('property.sensor')
+      name: 'Value' //this.get('property.sensor')
     }]);
   }),
 
   chartOptions: Ember.computed('property', function() {
+    const viewType = this.get('viewType');
     const prop = this.get('property');
-    return {
+    const liveConfig = {
       chart: {
         type: 'line',
       },
@@ -42,13 +49,20 @@ export default Ember.Component.extend({
           year: '%b'
         },
         labels: {
-          enabled: true
+          enabled: true,
         }
       },
       tooltip: {
         valueSuffix: prop.unit,
         dateTimeLabelFormats: {
-          second: '%l:%M:%S %p - %b %e, %Y'
+          millisecond: '%l:%M:%S %p - %b %e, %Y',
+          second: '%l:%M:%S %p - %b %e, %Y',
+          minute: '%l:%M:%S %p - %b %e, %Y',
+          hour: '%l:%M:%S %p - %b %e, %Y',
+          day: '%l:%M:%S %p - %b %e, %Y',
+          week: '%l:%M:%S %p - %b %e, %Y',
+          month: '%l:%M:%S %p - %b %e, %Y',
+          year: '%l:%M:%S %p - %b %e, %Y'
         }
       },
       yAxis: {
@@ -62,5 +76,11 @@ export default Ember.Component.extend({
       plotOptions: {
       }
     };
+    if (viewType === 'history') {
+      // Day-long intervals
+      liveConfig.xAxis.tickInterval = 86400000;
+    }
+    return liveConfig;
+
   })
 });
