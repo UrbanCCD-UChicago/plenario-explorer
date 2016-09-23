@@ -154,24 +154,36 @@ export default Ember.Service.extend({
   },
 
   getHistoryFor(nodeId, sensorName, typesList) {
-    const times =
-      ["2016-09-20T16:00:00", "2016-09-20T17:00:00",
-        "2016-09-20T18:00:00", "2016-09-20T19:00:00"];
-
-    const response = times.map(time => {
-      const bucket = {
-        time_bucket: time
-      };
-      for (let type of typesList) {
-        const [,prop] = type.split('.');
-        bucket[prop] = {
-          avg: Math.random(),
-        };
+    const ajax = this.get('ajax');
+    const params = {
+      data: {
+        sensors: sensorName,
+        node: nodeId,
+        features_of_interest: typesList.join(','),
+        function: 'avg'
       }
-      return bucket;
-    });
+    };
+    const path = `/sensor-networks/${ENV.networkId}/aggregate`;
+    return ajax.request(path, params).then(response => this.promisify(response.data));
 
-    return this.promisify(response);
+    // const times =
+    //   ["2016-09-20T16:00:00", "2016-09-20T17:00:00",
+    //     "2016-09-20T18:00:00", "2016-09-20T19:00:00"];
+    //
+    // const response = times.map(time => {
+    //   const bucket = {
+    //     time_bucket: time
+    //   };
+    //   for (let type of typesList) {
+    //     const [,prop] = type.split('.');
+    //     bucket[prop] = {
+    //       avg: Math.random(),
+    //     };
+    //   }
+    //   return bucket;
+    // });
+    //
+    // return this.promisify(response);
   },
 
   getSensorObservations(nodeId, networkId, sensorList) {

@@ -96,12 +96,16 @@ function addToHash(timeseries, timelineHash, types) {
 
   // Split bucket into one timeseries per type
   for (let bucket of timeseries) {
+    if ('count' in bucket) {continue;}
     const datetime = bucket.time_bucket;
     delete bucket.time_bucket;
     for (let prop of Object.keys(bucket)) {
+      const val = bucket[prop].avg;
+      if (!val) {continue;}
+
       const value = {
         datetime: datetime,
-        value: bucket[prop].avg
+        value: val
       };
       propsToTimeseries.get(prop).push(value);
     }
