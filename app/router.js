@@ -17,7 +17,7 @@ Router.map(function() {
   this.route('not-found', {path: '/*:path_name'});
   this.route('loading');
   this.route('error', {path: '/error/:error_message'});
-  this.route('stream');  // TODO: Add support for query arguments
+  this.route('stream');
 });
 
 export default Router;

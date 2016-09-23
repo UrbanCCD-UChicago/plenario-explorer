@@ -1,6 +1,8 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
+  queryParams: ['viewType', 'nodeId'],
+
   viewType: 'live',
 
   modelArrived: Ember.observer('model', function() {
@@ -10,13 +12,17 @@ export default Ember.Controller.extend({
     });
     const nodeMap = new Map(nodeTuples);
     this.set('nodeMap', nodeMap);
-    this.set('selectedNodeMeta', nodeList[0].properties);
+    this.set('nodeId', nodeList[0].properties.id);
+  }),
+
+  selectedNodeMeta: Ember.computed('nodeId', function() {
+    const nodeMap = this.get('nodeMap');
+    return nodeMap.get(this.get('nodeId'));
   }),
 
   actions: {
     onSelect(nodeId) {
-      const newNode = this.get('nodeMap').get(nodeId);
-      this.set('selectedNodeMeta', newNode);
+      this.set('nodeId', nodeId);
     }
   }
 });
