@@ -6,13 +6,13 @@ export default Ember.Component.extend({
   live: false,
 
   // Whenever the user selects a different node,
-  streams: Ember.computed('nodeMeta', function() {
+  streams: Ember.computed('nodeMeta', 'viewType', function() {
     const nodeMeta = this.get('nodeMeta');
     const obsProps = this.get('curation').observedPropertiesFor('array_of_things');
 
 
     let typeHash;
-    if (this.get('live')) {
+    if (this.get('viewType') === 'live') {
       // TODO: Stream manager is really more a service than a model...
       const coll = Ember.getOwner(this).lookup('model:stream-collection');
       // Fetch a new set of streams for that node.
@@ -30,14 +30,10 @@ export default Ember.Component.extend({
     // Insert all streams into the right observed property object.
     const propMap = {};
     for (let prop of obsProps) {
-      // Assign
       prop.stream = typeHash[prop.id];
       propMap[prop.id] = prop;
-      // obsProps[prop].stream = streams[prop];
     }
     return propMap;
-
-    // return coll.createFor(nodeId);
   })
 });
 
@@ -118,10 +114,6 @@ function addToHash(timeseries, timelineHash, types) {
     timelineHash[type].pushObjects(ts);
   }
 }
-
-// function propsPerFOI() {
-//
-// }
 
 function subMap(supersetMap, subsetKeys) {
   const subsetMap = new Map();

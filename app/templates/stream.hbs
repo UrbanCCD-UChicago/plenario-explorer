@@ -1,6 +1,11 @@
 <div class="row">
     <div class='col-md-5'>
       {{node-meta nodeMeta=selectedNodeMeta}}
+      {{#bs-button-group value=viewType type="radio"}}
+        {{#bs-button value='live'}}Live{{/bs-button}}
+        {{#bs-button value='history'}}History{{/bs-button}}
+      {{/bs-button-group}}
+
     </div>
 
     <div class='col-md-7'>
@@ -13,6 +18,6 @@
     </div>
 </div>
 <div class="row">
-  {{node-chart nodeMeta=selectedNodeMeta}}
+  {{node-chart nodeMeta=selectedNodeMeta viewType=viewType}}
 </div>
 

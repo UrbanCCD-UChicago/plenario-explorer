@@ -13,7 +13,7 @@ export default Ember.Component.extend({
   lat: 41.795509,
   lng: -87.581916,
   zoom: 10,
-  tileURL: 'https://{s}.tiles.mapbox.com/v3/datamade.hn83a654/{z}/{x}/{y}.png',
+  tileURL: 'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
 
   center: Ember.computed('lat', 'lng', 'zoom', function () {
     return [[this.get('lat'), this.get('lng')], this.get('zoom')];
