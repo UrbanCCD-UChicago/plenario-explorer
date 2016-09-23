@@ -25,10 +25,13 @@ export default Ember.Component.extend({
     // Throw it into Highcharts.
     // Be sure to transform to JS Array from Ember Array
     // so that Highcharts doesn't get confused.
+    const vType = this.get('viewType');
+    const tooltipName = vType === 'live' ? 'Value' : 'Average Over Hour';
+
     this.set('series', [{
       showInLegend: false,
       data: series,
-      name: 'Value' //this.get('property.sensor')
+      name: tooltipName
     }]);
   }),
 
@@ -53,7 +56,7 @@ export default Ember.Component.extend({
         }
       },
       tooltip: {
-        valueSuffix: prop.unit,
+        valueSuffix: ' ' + prop.unit,
         dateTimeLabelFormats: {
           millisecond: '%l:%M:%S %p - %b %e, %Y',
           second: '%l:%M:%S %p - %b %e, %Y',
@@ -79,6 +82,7 @@ export default Ember.Component.extend({
     if (viewType === 'history') {
       // Day-long intervals
       liveConfig.xAxis.tickInterval = 86400000;
+      liveConfig.tooltip.dateTimeLabelFormats.hour = '%l %p - %b %e, %Y';
     }
     return liveConfig;
 
