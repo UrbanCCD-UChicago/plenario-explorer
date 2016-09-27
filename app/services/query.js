@@ -1,7 +1,6 @@
 import Ember from 'ember';
 import moment from 'moment';
 import Node from '../models/node';
-// import {sensorData, generateTempObservations, generateGasObservations} from '../mirage/sensor-data';
 import ENV from 'plenario-explorer/config/environment';
 /* global URI */
 
@@ -212,6 +211,11 @@ export default Ember.Service.extend({
     return this.get('ajax').request(path, params).then(response => {
       return response.data;
     });
+  },
+
+  getCurationFor(networkId) {
+    const url = `http://sensor-curation.s3-website-us-east-1.amazonaws.com/${networkId}.json`;
+    return this.get('ajax').request(url).then(response => response);
   },
 
   _findDataset(name, datasets) {

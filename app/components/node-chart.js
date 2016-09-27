@@ -2,13 +2,13 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   query: Ember.inject.service(),
-  curation: Ember.inject.service(),
+  // curation: Ember.inject.service(),
   live: false,
 
   // Whenever the user selects a different node,
   streams: Ember.computed('nodeMeta', 'viewType', function() {
     const nodeMeta = this.get('nodeMeta');
-    const obsProps = this.get('curation').observedPropertiesFor('array_of_things');
+    const obsProps = cloneArray(this.get('curation'));
 
 
     let typeHash;
@@ -17,25 +17,76 @@ export default Ember.Component.extend({
       const coll = Ember.getOwner(this).lookup('model:stream-collection');
       // Fetch a new set of streams for that node.
       // Can make general s.t. streams is swappable with timeseries
-      typeHash = coll.createFor(nodeMeta.id);
+      typeHash = coll.createFor(nodeMeta.id, obsProps);
     }
     else {
       const allTypes = obsProps.mapBy('id');
-      const splitObsProps = this.get('curation').createSensorMapSplitByFeature();
+      const splitObsProps = createSensorMapSplitByFeature(obsProps);
       typeHash = createTimelines(splitObsProps, nodeMeta, this.get('query'), allTypes);
     }
-
-
 
     // Insert all streams into the right observed property object.
     const propMap = {};
     for (let prop of obsProps) {
+      // NEED TO CAST TO HASH
       prop.stream = typeHash[prop.id];
       propMap[prop.id] = prop;
     }
     return propMap;
   })
 });
+
+/**
+ * Creates a mapping from sensors to properties
+ * for EVERY curated sensor (not just the ones relevant to this node)
+ *
+ * sensorName => [list, of, properties]
+ * @param observedProperties
+ * @returns {Map}
+ */
+function createSensorMap(observedProperties) {
+  // All sensor names with an empty list
+  const sensorListPairs = observedProperties.map(prop => [prop.sensor, []]);
+  // Map ensures no duplicates
+  const sensorMap = new Map(sensorListPairs);
+  // Add all property ids to the sensor reporting them
+  for (let prop of observedProperties) {
+    const {sensor, id} = prop;
+    sensorMap.get(sensor).push(id);
+  }
+  return sensorMap;
+}
+
+/**
+ * Map with sensor names as keys,
+ * list of lists of properties segregated by feature
+ *
+ * sensor => {foi => type}
+ *
+ * @returns {Map<string, Array<Array>>}
+ **/
+function createSensorMapSplitByFeature(observedProperties) {
+  const unsplit = createSensorMap(observedProperties);
+  const sensorToFoi = new Map();
+
+  unsplit.forEach((types, sensor) => {
+    const foiToProp = new Map();
+    for (let type of types) {
+      const [foi,] = type.split('.');
+      // Have we seen this FOI before?
+      if (foiToProp.has(foi)) {
+        foiToProp.get(foi).push(type);
+      }
+      // First time
+      else {
+        foiToProp.set(foi, [type]);
+      }
+    }
+    sensorToFoi.set(sensor, foiToProp);
+  });
+
+  return sensorToFoi;
+}
 
 /**
  *
@@ -127,4 +178,12 @@ function subMap(supersetMap, subsetKeys) {
     }
   });
   return subsetMap;
+}
+/**
+ *
+ * @param arr Array<Object>
+ * @returns Array<Object>
+ */
+function cloneArray(arr) {
+  return arr.map(obj => Ember.copy(obj));
 }

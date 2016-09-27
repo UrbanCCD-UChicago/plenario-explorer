@@ -9,7 +9,7 @@ import moment from 'moment';
  */
 export default E.Object.extend({
   query: E.inject.service(),
-  curation: E.inject.service(),
+  // curation: E.inject.service(),
 
   init() {
     this._super(...arguments);
@@ -25,9 +25,9 @@ export default E.Object.extend({
    * @param nodeId
    * @returns {Object<string, Array>}
    */
-  createFor(nodeId) {
+  createFor(nodeId, obsProps) {
     this.set('nodeId', nodeId);
-    const obsProps = this.get('curation').observedPropertiesFor(NETWORK);
+    // const obsProps = this.get('curation').observedPropertiesFor(NETWORK);
 
     this.set('sensorMap', createSensorMap(obsProps));
     this.set('streams', createStreams(obsProps));
