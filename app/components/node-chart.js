@@ -2,14 +2,13 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   query: Ember.inject.service(),
-  // curation: Ember.inject.service(),
-  live: false,
 
   // Whenever the user selects a different node,
   streams: Ember.computed('nodeMeta', 'viewType', function() {
     const nodeMeta = this.get('nodeMeta');
+    // Clone observed properties
+    // because we are going to mutate this array.
     const obsProps = cloneArray(this.get('curation'));
-
 
     let typeHash;
     if (this.get('viewType') === 'live') {
@@ -28,7 +27,6 @@ export default Ember.Component.extend({
     // Insert all streams into the right observed property object.
     const propMap = {};
     for (let prop of obsProps) {
-      // NEED TO CAST TO HASH
       prop.stream = typeHash[prop.id];
       propMap[prop.id] = prop;
     }
