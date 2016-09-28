@@ -5,7 +5,7 @@ function generateTimestamps() {
   const nowStamp = moment().format();
   const timestamps = [];
   for (let secondsAgo = 30; secondsAgo <= 300; secondsAgo += 30) {
-    console.log(secondsAgo);
+    // console.log(secondsAgo);
     const now = moment(nowStamp);
     timestamps.push(now.subtract(secondsAgo, 'seconds').format());
   }
@@ -48,72 +48,52 @@ function generateGasObservations(nodeId) {
 
 const sensorData = {
   nodes: {
-    "data":
-    [
+    "meta": {
+      "query": {
+        "network_name": "plenario_development"
+      },
+      "message": [
+
+      ],
+      "total": 2
+    },
+    "data": [
       {
-        "type": "Feature",
-        "properties": {
-          "info": {
-            "orientation":{
-              "value":"NE",
-              "unit":"Cardinal directions. One of N, NE, E, SE, S, SW, W, NW"
-            },
-            "height":{
-              "value":5,
-              "unit":"meters"
-            }
-          },
-          "sensors": ["tempx", "gasx"],
-          "id": "00A",
-          "network_name": "array_of_things"
-        },
         "geometry": {
           "type": "Point",
-          "coordinates": [-87.675825, 41.852179]
+          "coordinates": [
+            -87.6598,
+            41.8781
+          ]
+        },
+        "type": "Feature",
+        "properties": {
+          "info": null,
+          "sensors": [
+            "sensor_dev_1",
+            "sensor_dev_4"
+          ],
+          "network_name": "plenario_development",
+          "id": "node_dev_1"
         }
       },
       {
-        "type": "Feature",
-        "properties": {
-          "info": {
-            "orientation":{
-              "value":"SW",
-              "unit":"Cardinal directions. One of N, NE, E, SE, S, SW, W, NW"
-            },
-            "height":{
-              "value":5,
-              "unit":"meters"
-            }
-          },
-          "sensors": ["tempx", "gasx"],
-          "id": "00B",
-          "network_name": "array_of_things"
-        },
         "geometry": {
           "type": "Point",
-          "coordinates": [-87.634678, 41.878874]
-        }
-      },
-      {
+          "coordinates": [
+            -87.6698,
+            41.8781
+          ]
+        },
         "type": "Feature",
         "properties": {
-          "info": {
-            "orientation":{
-              "value":"SW",
-              "unit":"Cardinal directions. One of N, NE, E, SE, S, SW, W, NW"
-            },
-            "height":{
-              "value":5,
-              "unit":"meters"
-            }
-          },
-          "sensors": ["tempx", "gasx"],
-          "id": "00C",
-          "network_name": "array_of_things"
-        },
-        "geometry": {
-          "type": "Point",
-          "coordinates": [-87.658195, 41.871716]
+          "info": null,
+          "sensors": [
+            "sensor_dev_2",
+            "sensor_dev_3"
+          ],
+          "network_name": "plenario_development",
+          "id": "node_dev_2"
         }
       }
     ]
@@ -174,23 +154,74 @@ const sensorData = {
   },
 
   network: {
+    "meta": {
+      "query": {
+        "network_name": "plenario_development"
+      },
+      "message": [
+
+      ],
+      "total": 1
+    },
     "data": [
       {
-        "info":{
-          "website":"aot.org",
-          "contact":"admin@aot.org"
+        "sensors": [
+          "sensor_dev_3",
+          "sensor_dev_2",
+          "sensor_dev_1",
+          "sensor_dev_4"
+        ],
+        "info": {
+          "description": "A developer network that does not contain any live nodes. Experimentation highly encouraged.",
+          "author": "Jesse"
         },
-        "nodes":[
-          "00A", "00B"
+        "nodes": [
+          "node_dev_1",
+          "node_dev_2"
         ],
-        "features_of_interest":[
+        "features_of_interest": [
+          "magnetic_field",
           "gas_concentration",
-          "temperature"
+          "temperature",
+          "relative_humidity"
         ],
-        "name":"ArrayOfThings"
+        "name": "plenario_development"
       }
     ]
-  },
+  }
 };
 
-export {sensorData, generateGasObservations, generateTempObservations};
+const curation = [
+  {
+    "id": "temperature.temperature",
+    "name": "Temperature",
+    "unit": "°C",
+    "sensor": "sensor_dev_4"
+  },
+  {
+    "id": "humidity.humidity",
+    "name": "Relative Humidity",
+    "unit": "%",
+    "sensor": "sensor_dev_2"
+  },
+  {
+    "id": "gas_concentration.n23",
+    "name": "Nitrogen Concentration3",
+    "unit": "ppm3",
+    "sensor": "sensor_dev_3"
+  },
+  {
+    "id": "gas_concentration.co2",
+    "name": "Carbon Dioxide Concentration",
+    "unit": "ppm",
+    "sensor": "sensor_dev_3"
+  },
+  {
+    "id": "gas_concentration.o2",
+    "name": "Oxygen Concentration",
+    "unit": "ppm",
+    "sensor": "sensor_dev_4"
+  }
+];
+
+export {sensorData, curation, generateGasObservations, generateTempObservations};

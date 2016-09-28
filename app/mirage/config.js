@@ -62,6 +62,10 @@ export default function () {
     return generateObservations('00B', sensor);
   });
 
+  this.get('http://plenar.io/v1/api/sensor-networks/plenario_development/nodes', function() {
+    return sensorData.nodes;
+  });
+
   function generateObservations(id, sensor) {
     let observations;
     if (sensor === 'tempx') {
@@ -75,4 +79,8 @@ export default function () {
 
   this.passthrough('http://plenar.io/v1/api/datadump');
   this.passthrough('http://plenar.io/v1/api/jobs');
+  this.passthrough('http://streaming.plenar.io/**');
+  this.passthrough('ws://streaming.plenar.io/**');
+  this.passthrough('http://plenar.io/v1/api/sensor-networks/**');
+  this.passthrough('http://sensor-curation.s3-website-us-east-1.amazonaws.com/plenario_development.json');
 }
