@@ -57,7 +57,7 @@ export default class MockNetwork {
    *   where each string is a result type
    *   (feature_of_interest.observed_property)
    *
-   * @returns Object as returned from /aggregate endpoint
+   * @returns Array as returned from /aggregate endpoint's data property
    */
   aggregate(typeIds, startMoment, endMoment) {
     // Assume we only have one FOI - as the endpoint requires
@@ -67,10 +67,11 @@ export default class MockNetwork {
       const bucket = {time_bucket: t};
       for (let prop of properties) {
         bucket[prop] = {
-          count: Math.round(Math.rand() * 100),
-          avg: Math.rand()
+          count: Math.round(Math.random() * 100),
+          avg: Math.random()
         };
       }
+      return bucket;
     });
   }
 
@@ -87,9 +88,11 @@ export default class MockNetwork {
     const timestamps = generateTimestamps(startMoment, endMoment, 30, 'seconds');
     const factories = this.observationFactories(sensors);
 
-    return timestamps.map(ts =>
+    const listPerTs = timestamps.map(ts =>
+      // Array of observations from each factory
       factories.map(f => f(nodeId, ts))
-    ).reduce(Array.prototype.concat, []);
+    );
+    return [].concat.apply([], listPerTs);
   }
 
   /**
@@ -109,7 +112,7 @@ export default class MockNetwork {
     );
 
   }
-};
+}
 
 function generateTimestamps(startMoment, endMoment, interval, unit) {
   // Generate timestamps at 30 second sampling rate.
