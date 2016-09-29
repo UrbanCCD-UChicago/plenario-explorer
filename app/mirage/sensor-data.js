@@ -98,97 +98,97 @@ const sensorData = {
       }
     ]
   },
-  sensors: {
-    "data": [
-      {
-        "info": {
-          "datasheet": "http://www.mcs.anl.gov/research/projects/waggle/downloads/datasheets/chemsense/so2.pdf",
-          "range": "0 to 20 ppm",
-          "accuracy": "+-3% of reading"
-        },
-        "name": "temperature",
-        "id": "tempx",
-        "observed_properties": [
-          "temperature.temperature"
-        ]
-      },
-      {
-        "info": {
-          "datasheet": "http://www.mcs.anl.gov/research/projects/waggle/downloads/datasheets/chemsense/h2s.pdf",
-          "range": "0 to 20 ppm",
-          "accuracy": "+-3% of reading"
-        },
-        "name": "Hydrogen Sulfide",
-        "id": "gasx",
-        "observed_properties": [
-          "gas_concentration.h2s"
-        ]
-      }
-    ]
-  },
-
-  featuresOfInterest: {
-    "data":[
-      {
-        "name":"gas_concentration",
-        "observed_properties":[
-          {
-            "type":"numeric",
-            "name":"h2s",
-            "unit":"ppm",
-            "description":"Hydrogen Sulfide concentration"
-          }
-        ]
-      },
-      {
-        "name":"temperature",
-        "observed_properties":[
-          {
-            "type":"double precision",
-            "name":"temperature",
-            "unit":"degrees Celsius"
-          }
-        ]
-      }
-    ]
-  },
-
-  network: {
-    "meta": {
-      "query": {
-        "network_name": "plenario_development"
-      },
-      "message": [
-
-      ],
-      "total": 1
-    },
-    "data": [
-      {
-        "sensors": [
-          "sensor_dev_3",
-          "sensor_dev_2",
-          "sensor_dev_1",
-          "sensor_dev_4"
-        ],
-        "info": {
-          "description": "A developer network that does not contain any live nodes. Experimentation highly encouraged.",
-          "author": "Jesse"
-        },
-        "nodes": [
-          "node_dev_1",
-          "node_dev_2"
-        ],
-        "features_of_interest": [
-          "magnetic_field",
-          "gas_concentration",
-          "temperature",
-          "relative_humidity"
-        ],
-        "name": "plenario_development"
-      }
-    ]
-  },
+  // sensors: {
+  //   "data": [
+  //     {
+  //       "info": {
+  //         "datasheet": "http://www.mcs.anl.gov/research/projects/waggle/downloads/datasheets/chemsense/so2.pdf",
+  //         "range": "0 to 20 ppm",
+  //         "accuracy": "+-3% of reading"
+  //       },
+  //       "name": "temperature",
+  //       "id": "tempx",
+  //       "observed_properties": [
+  //         "temperature.temperature"
+  //       ]
+  //     },
+  //     {
+  //       "info": {
+  //         "datasheet": "http://www.mcs.anl.gov/research/projects/waggle/downloads/datasheets/chemsense/h2s.pdf",
+  //         "range": "0 to 20 ppm",
+  //         "accuracy": "+-3% of reading"
+  //       },
+  //       "name": "Hydrogen Sulfide",
+  //       "id": "gasx",
+  //       "observed_properties": [
+  //         "gas_concentration.h2s"
+  //       ]
+  //     }
+  //   ]
+  // },
+  //
+  // featuresOfInterest: {
+  //   "data":[
+  //     {
+  //       "name":"gas_concentration",
+  //       "observed_properties":[
+  //         {
+  //           "type":"numeric",
+  //           "name":"h2s",
+  //           "unit":"ppm",
+  //           "description":"Hydrogen Sulfide concentration"
+  //         }
+  //       ]
+  //     },
+  //     {
+  //       "name":"temperature",
+  //       "observed_properties":[
+  //         {
+  //           "type":"double precision",
+  //           "name":"temperature",
+  //           "unit":"degrees Celsius"
+  //         }
+  //       ]
+  //     }
+  //   ]
+  // },
+  //
+  // network: {
+  //   "meta": {
+  //     "query": {
+  //       "network_name": "plenario_development"
+  //     },
+  //     "message": [
+  //
+  //     ],
+  //     "total": 1
+  //   },
+  //   "data": [
+  //     {
+  //       "sensors": [
+  //         "sensor_dev_3",
+  //         "sensor_dev_2",
+  //         "sensor_dev_1",
+  //         "sensor_dev_4"
+  //       ],
+  //       "info": {
+  //         "description": "A developer network that does not contain any live nodes. Experimentation highly encouraged.",
+  //         "author": "Jesse"
+  //       },
+  //       "nodes": [
+  //         "node_dev_1",
+  //         "node_dev_2"
+  //       ],
+  //       "features_of_interest": [
+  //         "magnetic_field",
+  //         "gas_concentration",
+  //         "temperature",
+  //         "relative_humidity"
+  //       ],
+  //       "name": "plenario_development"
+  //     }
+  //   ]
+  // },
   curation: [
     {
       "id": "temperature.temperature",

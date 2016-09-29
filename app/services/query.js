@@ -2,8 +2,10 @@ import Ember from 'ember';
 import moment from 'moment';
 import Node from '../models/node';
 import ENV from 'plenario-explorer/config/environment';
+import MockNetwork from '../mirage/mock-network'
+import {sensorData} from '../mirage/sensor-data';
 /* global URI */
-
+const network = new MockNetwork(sensorData.curation, sensorData.nodes.data);
 /**
  * Grabs and caches all dataset metadata.
  */
@@ -140,6 +142,12 @@ export default Ember.Service.extend({
   },
 
   getSocketForNode(networkId, nodeId, sensorList) {
+    const TEST = true;
+    if (TEST) {
+      // const network = new MockNetwork(sensorData.curation, sensorData.nodes.data);
+      return network.getMockSocket(nodeId);
+    }
+
     const io = this.get('io');
     const host = 'http://streaming.plenar.io';
     const connString = URI(host).addQuery({
@@ -192,6 +200,10 @@ export default Ember.Service.extend({
     if (typeof sensorList === 'string') {
       sensorList = [sensorList];
     }
+    const now = moment();
+    const anHourAgo = moment().subtract(1, 'hours');
+    const observations = network.observations(nodeId, sensorList, anHourAgo, now);
+    return Ember.RSVP.resolve(observations);
 
     // if (ENV.environment === 'development') {
     //   const func = sensorList.contains('gasx') ?

@@ -41,7 +41,48 @@ const curatedTypes = [
     "sensor": "sensor_dev_4"
   }
 ];
-const network = new MockNetwork(curatedTypes);
+const nodeMeta = [
+  {
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        -87.6598,
+        41.8781
+      ]
+    },
+    "type": "Feature",
+    "properties": {
+      "info": null,
+      "sensors": [
+        "sensor_dev_1",
+        "sensor_dev_4"
+      ],
+      "network_name": "plenario_development",
+      "id": "node_dev_1"
+    }
+  },
+  {
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        -87.6698,
+        41.8781
+      ]
+    },
+    "type": "Feature",
+    "properties": {
+      "info": null,
+      "sensors": [
+        "sensor_dev_2",
+        "sensor_dev_3"
+      ],
+      "network_name": "plenario_development",
+      "id": "node_dev_2"
+    }
+  }
+];
+
+const network = new MockNetwork(curatedTypes, nodeMeta);
 
 
 test('MockNetwork can be constructed', function (assert) {

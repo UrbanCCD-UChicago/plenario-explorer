@@ -1,6 +1,8 @@
 import {toFeaturesToTypes} from '../utils/sensor-map';
 import Type from '../models/type';
 import utc8601 from '../utils/utc-8601';
+import moment from 'moment';
+import Ember from 'ember';
 
 export default class MockNetwork {
   /**
@@ -8,8 +10,12 @@ export default class MockNetwork {
    * so that it can format plausible query responses.
    *
    */
-  constructor(curatedTypes) {
-    // Generate map from sensors to factories
+  constructor(curatedTypes, nodeMetadata) {
+    this.sensorToFactories = this._sensorToFactoriesMap(curatedTypes);
+    this.nodeToSensors = this._nodeToSensorsMap(nodeMetadata);
+  }
+
+  _sensorToFactoriesMap(curatedTypes) {
     const sensorToFeatureToTypes = toFeaturesToTypes(curatedTypes);
     // For each sensor, create an array of factories
     const sensorToFactories = new Map();
@@ -20,7 +26,12 @@ export default class MockNetwork {
       }
       sensorToFactories.set(sensor, factories);
     }
-    this.sensorToFactories = sensorToFactories;
+    return sensorToFactories;
+  }
+
+  _nodeToSensorsMap(nodeMetadata) {
+    const tuples = nodeMetadata.map(n => [n.properties.id, n.properties.sensors]);
+    return new Map(tuples);
   }
 
   /**
@@ -46,6 +57,7 @@ export default class MockNetwork {
     for (let prop of properties) {
       results[prop] = Math.random();
     }
+    return results;
   }
 
   /**
@@ -106,11 +118,49 @@ export default class MockNetwork {
    *
    */
   observationFactories(sensors) {
-    return sensors.reduce((factories, sensor) =>
-      factories.concat(this.sensorToFactories.get(sensor)),
-      []
-    );
+    const sToF = this.sensorToFactories;
+    let factories = [];
+    for (let s of sensors) {
+      if (sToF.has(s)) {
+        factories = factories.concat(sToF.get(s));
+      }
+    }
+    return factories;
+    // return sensors.reduce((factories, sensor) =>
+    //   factories.concat(this.sensorToFactories.get(sensor)),
+    //   []
+    // );
 
+  }
+
+  /**
+   * Returns mock socket with an on method.
+   * on(namespace, callback(observation), context)
+   * @returns {{on: (function(*, *, *=))}}
+   */
+  getMockSocket(nodeId) {
+    const sensors = this.nodeToSensors.get(nodeId);
+    const factories = this.observationFactories(sensors);
+
+    const mockSocket = {
+      on(_, callback, context) {
+        function emit() {
+          const now = utc8601(moment());
+          for (let f of factories) {
+            const obs = f(nodeId, now);
+            callback.call(context, obs);
+          }
+        }
+        const seconds = 3;
+        const ms = seconds*1000;
+        function emitOnDelay() {
+          emit();
+          Ember.run.later(emitOnDelay, ms);
+        }
+        emitOnDelay();
+      }
+    };
+    return mockSocket;
   }
 }
 
@@ -123,3 +173,4 @@ function generateTimestamps(startMoment, endMoment, interval, unit) {
   }
   return timestamps;
 }
+
