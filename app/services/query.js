@@ -2,10 +2,10 @@ import Ember from 'ember';
 import moment from 'moment';
 import Node from '../models/node';
 import ENV from 'plenario-explorer/config/environment';
-import MockNetwork from '../mirage/mock-network'
-import {sensorData} from '../mirage/sensor-data';
+// import MockNetwork from '../mirage/mock-network'
+import {sensorData, mockNetwork} from '../mirage/sensor-data';
 /* global URI */
-const network = new MockNetwork(sensorData.curation, sensorData.nodes.data);
+// const network = new MockNetwork(sensorData.curation, sensorData.nodes.data);
 /**
  * Grabs and caches all dataset metadata.
  */
@@ -120,8 +120,6 @@ export default Ember.Service.extend({
   },
 
   allNodeMetadata() {
-    //return this.get('nodes').then(nodeMeta => nodeMeta.data.map(geoJSONify));
-    // nodeResponse.map(nodeRecord => Node.create({nodeGeoJSON: nodeRecord}))
     const qString = `/sensor-networks/${ENV.networkId}/nodes`;
     return this.get('ajax').request(qString)
     .then(nodeMeta =>
@@ -132,20 +130,12 @@ export default Ember.Service.extend({
         );
       }
     );
-
-    // return this.promisify(sensorData.nodes)
-    //   .then(nodeMeta => {
-    //   return nodeMeta.data.map(
-    //     nodeRecord => Node.create({nodeGeoJSON: nodeRecord})
-    //   );
-    // });
   },
 
   getSocketForNode(networkId, nodeId, sensorList) {
-    const TEST = true;
-    if (TEST) {
+    if (ENV.environment === 'development') {
       // const network = new MockNetwork(sensorData.curation, sensorData.nodes.data);
-      return network.getMockSocket(nodeId);
+      return mockNetwork.getMockSocket(nodeId);
     }
 
     const io = this.get('io');
@@ -200,34 +190,36 @@ export default Ember.Service.extend({
     if (typeof sensorList === 'string') {
       sensorList = [sensorList];
     }
-    const now = moment();
-    const anHourAgo = moment().subtract(1, 'hours');
-    const observations = network.observations(nodeId, sensorList, anHourAgo, now);
-    return Ember.RSVP.resolve(observations);
-
     // if (ENV.environment === 'development') {
-    //   const func = sensorList.contains('gasx') ?
-    //     generateGasObservations : generateTempObservations;
-    //   return this.promisify(func(nodeId));
+    //   const now = moment();
+    //   const anHourAgo = moment().subtract(1, 'hours');
+    //   const observations = mockNetwork.observations(nodeId, sensorList, anHourAgo, now);
+    //   return Ember.RSVP.resolve(observations);
     // }
-    // const start_datetime = moment().utc().subtract(1, 'hours').format();
-    const params = {
-      data: {
-        sensors: sensorList.join(','),
-        nodes: nodeId,
-        start_datetime: moment().utc().subtract(1, 'hours').format(),
-        end_datetime: moment().utc().format()
-      }
-    };
-    const path = `/sensor-networks/${networkId}/query`;
-    return this.get('ajax').request(path, params).then(response => {
-      return response.data;
-    });
+    // else {
+      const params = {
+        data: {
+          sensors: sensorList.join(','),
+          nodes: nodeId,
+          start_datetime: moment().utc().subtract(1, 'hours').format(),
+          end_datetime: moment().utc().format()
+        }
+      };
+      const path = `/sensor-networks/${networkId}/query`;
+      return this.get('ajax').request(path, params).then(response => {
+        return response.data;
+      });
+    // }
   },
 
   getCurationFor(networkId) {
-    const url = `http://sensor-curation.s3-website-us-east-1.amazonaws.com/${networkId}.json`;
-    return this.get('ajax').request(url).then(response => response);
+    if (ENV.environment === 'development') {
+      return sensorData.curation;
+    }
+    else {
+      const url = `http://sensor-curation.s3-website-us-east-1.amazonaws.com/${networkId}.json`;
+      return this.get('ajax').request(url).then(response => response);
+    }
   },
 
   _findDataset(name, datasets) {

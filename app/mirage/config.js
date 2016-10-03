@@ -1,7 +1,6 @@
-//Dummy datasets used purely for testing.
-//Import data from our central test data dump: test-data.js.
 import testData from 'plenario-explorer/mirage/test-data';
-import {sensorData, generateGasObservations, generateTempObservations} from 'plenario-explorer/mirage/sensor-data';
+import {sensorData, mockNetwork} from 'plenario-explorer/mirage/sensor-data';
+import moment from 'moment';
 
 export default function () {
   this.get('http://plenar.io/v1/api/shapes', function () {
@@ -36,51 +35,33 @@ export default function () {
     }
   });
 
-  this.get('http://plenar.io/v1/api/sensor-networks/ArrayOfThings/sensors', function() {
-    return sensorData.sensors;
-  });
-
-  this.get('http://plenar.io/v1/api/sensor-networks/ArrayOfThings/nodes', function() {
-    return sensorData.nodes;
-  });
-
-  this.get('http://plenar.io/v1/api/sensor-networks/ArrayOfThings', function() {
-    return sensorData.network;
-  });
-
-  this.get('http://plenar.io/v1/api/sensor-networks/ArrayOfThings/features-of-interest', function() {
-    return sensorData.featuresOfInterest;
-  });
-
-  this.get('http://plenar.io/v1/api/sensor-networks/ArrayOfThings/nodes/00A/query', function(_, request) {
-    const sensor = request.queryParams.sensors;
-    return generateObservations('00A', sensor);
-  });
-
-  this.get('http://plenar.io/v1/api/sensor-networks/ArrayOfThings/nodes/00A/query', function(_, request) {
-    const sensor = request.queryParams.sensors;
-    return generateObservations('00B', sensor);
-  });
-
   this.get('http://plenar.io/v1/api/sensor-networks/plenario_development/nodes', function() {
     return sensorData.nodes;
   });
 
-  function generateObservations(id, sensor) {
-    let observations;
-    if (sensor === 'tempx') {
-      observations = generateTempObservations(id);
+  this.get('http://sensor-curation.s3-website-us-east-1.amazonaws.com/plenario_development.json', function() {
+    return sensorData.curation;
+  });
+
+  this.get('http://plenar.io/v1/api/sensor-networks/plenario_development/query', function(_, {queryParams}) {
+    // Just one id
+    const nodeId = queryParams.nodes.split(',')[0];
+    // Array of sensors
+    let sensors = queryParams.sensors;
+    if (typeof sensors === 'string') {
+      sensors = [sensors];
     }
-    else if (sensor === 'gasx'){
-      observations = generateGasObservations(id);
-    }
-    return {'data': observations};
-  }
+    const now = moment();
+    const hourAgo = moment().subtract(1, 'hours');
+    const observations = mockNetwork.observations(nodeId, sensors, hourAgo, now);
+    return {data: observations};
+  });
+
 
   this.passthrough('http://plenar.io/v1/api/datadump');
   this.passthrough('http://plenar.io/v1/api/jobs');
   this.passthrough('http://streaming.plenar.io/**');
   this.passthrough('ws://streaming.plenar.io/**');
-  this.passthrough('http://plenar.io/v1/api/sensor-networks/**');
-  this.passthrough('http://sensor-curation.s3-website-us-east-1.amazonaws.com/plenario_development.json');
+  // this.passthrough('http://plenar.io/v1/api/sensor-networks/**');
+  // this.passthrough('http://sensor-curation.s3-website-us-east-1.amazonaws.com/plenario_development.json');
 }

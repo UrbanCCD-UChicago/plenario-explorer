@@ -126,11 +126,6 @@ export default class MockNetwork {
       }
     }
     return factories;
-    // return sensors.reduce((factories, sensor) =>
-    //   factories.concat(this.sensorToFactories.get(sensor)),
-    //   []
-    // );
-
   }
 
   /**
