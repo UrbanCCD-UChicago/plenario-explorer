@@ -112,13 +112,6 @@ export default Ember.Service.extend({
     return this._findDataset(name, allEventDatasets);
   },
 
-  // For promising a synchronous return value
-  promisify(data) {
-    return new Ember.RSVP.Promise(function(resolve) {
-      resolve(data);
-    });
-  },
-
   allNodeMetadata() {
     const qString = `/sensor-networks/${ENV.networkId}/nodes`;
     return this.get('ajax').request(qString)
@@ -134,10 +127,8 @@ export default Ember.Service.extend({
 
   getSocketForNode(networkId, nodeId, sensorList) {
     if (ENV.environment === 'development') {
-      // const network = new MockNetwork(sensorData.curation, sensorData.nodes.data);
       return mockNetwork.getMockSocket(nodeId);
     }
-
     const io = this.get('io');
     const host = 'http://streaming.plenar.io';
     const connString = URI(host).addQuery({
@@ -145,8 +136,6 @@ export default Ember.Service.extend({
       nodes: nodeId,
       sensors: sensorList.join(',')
     }).toString();
-
-    // const connectionUrl = `ws://localhost:8081?sensor_network=${networkId}&nodes=${nodeId}`;
     return io.socketFor(connString);
   },
 
@@ -164,52 +153,26 @@ export default Ember.Service.extend({
       }
     };
     const path = `/sensor-networks/${ENV.networkId}/aggregate`;
-    return ajax.request(path, params).then(response => this.promisify(response.data));
-
-    // const times =
-    //   ["2016-09-20T16:00:00", "2016-09-20T17:00:00",
-    //     "2016-09-20T18:00:00", "2016-09-20T19:00:00"];
-    //
-    // const response = times.map(time => {
-    //   const bucket = {
-    //     time_bucket: time
-    //   };
-    //   for (let type of typesList) {
-    //     const [,prop] = type.split('.');
-    //     bucket[prop] = {
-    //       avg: Math.random(),
-    //     };
-    //   }
-    //   return bucket;
-    // });
-    //
-    // return this.promisify(response);
+    return ajax.request(path, params).then(response => Ember.RSVP.resolve(response.data));
   },
 
   getSensorObservations(nodeId, networkId, sensorList) {
     if (typeof sensorList === 'string') {
       sensorList = [sensorList];
     }
-    // if (ENV.environment === 'development') {
-    //   const now = moment();
-    //   const anHourAgo = moment().subtract(1, 'hours');
-    //   const observations = mockNetwork.observations(nodeId, sensorList, anHourAgo, now);
-    //   return Ember.RSVP.resolve(observations);
-    // }
-    // else {
-      const params = {
-        data: {
-          sensors: sensorList.join(','),
-          nodes: nodeId,
-          start_datetime: moment().utc().subtract(1, 'hours').format(),
-          end_datetime: moment().utc().format()
-        }
-      };
-      const path = `/sensor-networks/${networkId}/query`;
-      return this.get('ajax').request(path, params).then(response => {
-        return response.data;
-      });
-    // }
+
+    const params = {
+      data: {
+        sensors: sensorList.join(','),
+        nodes: nodeId,
+        start_datetime: moment().utc().subtract(1, 'hours').format(),
+        end_datetime: moment().utc().format()
+      }
+    };
+    const path = `/sensor-networks/${networkId}/query`;
+    return this.get('ajax').request(path, params).then(response => {
+      return response.data;
+    });
   },
 
   getCurationFor(networkId) {

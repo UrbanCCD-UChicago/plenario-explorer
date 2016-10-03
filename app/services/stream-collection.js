@@ -5,25 +5,19 @@ const NETWORK = ENV.networkId;
 import moment from 'moment';
 import {toTypes, subsetMap} from '../utils/sensor-map';
 
-/**
- * Parameter: nodeId
- */
-export default E.Object.extend({
+export default E.Service.extend({
   query: E.inject.service(),
-  // curation: E.inject.service(),
 
-  init() {
-    this._super(...arguments);
-
-    // To prevent the charts from stretching into infinity,
-    // only keep a set window of minutes on display
-    if (!this.get('windowMinutes')) {
-      this.set('windowMinutes', 60);
-    }
-  },
+  // To prevent the charts from stretching into infinity,
+  // only keep a set window of minutes on display
+  windowMinutes: 60,
 
   /**
+   * Return a hash mapping types to a mutable array
+   * of sensor values.
+   *
    * @param nodeMeta
+   * @param curatedTypes
    * @returns {Object<string, Array>}
    */
   createFor(nodeMeta, curatedTypes) {
@@ -37,6 +31,10 @@ export default E.Object.extend({
     return this.get('streams');
   },
 
+  /**
+   * Kick off queries into the recent past
+   * to populate the streams.
+   */
   seedStreams() {
     const q = this.get('query');
     // Generate the sensor and fois that need to be queried
@@ -54,18 +52,26 @@ export default E.Object.extend({
     });
   },
 
+  /**
+   * After a recent past history returns,
+   * throw its observations to the front of the correct array.
+   * Takes Map from type to Array of Values
+   * @param valCollections Map<string, Array<Value>>
+   */
   prependValues(valCollections) {
     const streams = this.get('streams');
-    valCollections.forEach((values, property) => {
-      // Is this a curated property?
-      if (!streams[property]) {
+    valCollections.forEach((values, type) => {
+      // Is this a curated type?
+      if (!streams[type]) {
         return;
       }
-      streams[property].unshiftObjects(values);
-
+      streams[type].unshiftObjects(values);
     });
   },
 
+  /**
+   * Create a socket for this node's sensors
+   */
   initSocket() {
     const id = this.get('nodeId');
     const sensorList = [...this.get('sensorMap').keys()];
@@ -73,6 +79,11 @@ export default E.Object.extend({
     socket.on('data', this.appendObservation, this);
   },
 
+  /**
+   * When a socket gets an observation,
+   * place it at the end of the correct stream.
+   * @param obs
+   */
   appendObservation(obs) {
     if (obs.node_id !== this.get('nodeId')) {return;}
 
@@ -111,6 +122,15 @@ export default E.Object.extend({
   }
 });
 
+/**
+ * Takes array of observations ordered in time,
+ * but potentially with a mix of types.
+ * Outputs Map from type
+ * to array of observations of that type.
+ *
+ * @param observations
+ * @returns {Map<type, Array<Value>>}
+ */
 function splitObservationstoValues(observations) {
   // Split each operation into a list of values
   const valLists = observations.map(obs => Value.adaptFromAPI(obs));

@@ -2,6 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   query: Ember.inject.service(),
+  streamCollection: Ember.inject.service(),
 
   // Whenever the user selects a different node,
   streams: Ember.computed('nodeMeta', 'viewType', function() {
@@ -12,8 +13,7 @@ export default Ember.Component.extend({
 
     let typeHash;
     if (this.get('viewType') === 'live') {
-      // TODO: Stream manager is really more a service than a model...
-      const coll = Ember.getOwner(this).lookup('model:stream-collection');
+      const coll = this.get('streamCollection');
       // Fetch a new set of streams for that node.
       // Can make general s.t. streams is swappable with timeseries
       typeHash = coll.createFor(nodeMeta, obsProps);

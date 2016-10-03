@@ -1,3 +1,7 @@
 {{#each-in streams as |propName propObj|}}
+  {{#if (eq viewType 'live')}}
     {{stream-chart property=propObj viewType=viewType}}
+  {{else}}
+    {{stream-chart property=propObj viewType=viewType}}
+  {{/if}}
 {{/each-in}}
