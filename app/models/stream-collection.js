@@ -3,6 +3,7 @@ import {Value} from '../models/value';
 import ENV from '../config/environment';
 const NETWORK = ENV.networkId;
 import moment from 'moment';
+import {toTypes, subsetMap} from '../utils/sensor-map';
 
 /**
  * Parameter: nodeId
@@ -22,15 +23,14 @@ export default E.Object.extend({
   },
 
   /**
-   * @param nodeId
+   * @param nodeMeta
    * @returns {Object<string, Array>}
    */
-  createFor(nodeId, obsProps) {
-    this.set('nodeId', nodeId);
-    // const obsProps = this.get('curation').observedPropertiesFor(NETWORK);
-
-    this.set('sensorMap', createSensorMap(obsProps));
-    this.set('streams', createStreams(obsProps));
+  createFor(nodeMeta, curatedTypes) {
+    this.set('nodeId', nodeMeta.id);
+    const allSensorsMap = toTypes(curatedTypes);
+    this.set('sensorMap', subsetMap(allSensorsMap, nodeMeta.sensors));
+    this.set('streams', createStreams(curatedTypes));
 
     this.seedStreams();
     this.initSocket();
@@ -125,27 +125,6 @@ function splitObservationstoValues(observations) {
     }
   }
   return propMap;
-}
-
-/**
- * Creates a mapping from sensors to properties
- * for EVERY curated sensor (not just the ones relevant to this node)
- *
- * sensorName => [list, of, properties]
- * @param observedProperties
- * @returns {Map}
- */
-function createSensorMap(observedProperties) {
-  // All sensor names with an empty list
-  const sensorListPairs = observedProperties.map(prop => [prop.sensor, []]);
-  // Map ensures no duplicates
-  const sensorMap = new Map(sensorListPairs);
-  // Add all property ids to the sensor reporting them
-  for (let prop of observedProperties) {
-    const {sensor, id} = prop;
-    sensorMap.get(sensor).push(id);
-  }
-  return sensorMap;
 }
 
 /**

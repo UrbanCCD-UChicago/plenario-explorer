@@ -66,4 +66,15 @@ function toFeaturesToTypes(curatedTypes) {
   return sensorToFoi;
 }
 
-export {toTypes, toFeaturesToTypes};
+function subsetMap(supersetMap, subsetKeys) {
+  const m = new Map();
+  supersetMap.forEach((val, key) => {
+    if (subsetKeys.includes(key)) {
+      m.set(key, val);
+    }
+  });
+  return m;
+}
+
+
+export {toTypes, toFeaturesToTypes, subsetMap};

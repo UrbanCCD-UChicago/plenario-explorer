@@ -16,7 +16,7 @@ export default Ember.Component.extend({
       const coll = Ember.getOwner(this).lookup('model:stream-collection');
       // Fetch a new set of streams for that node.
       // Can make general s.t. streams is swappable with timeseries
-      typeHash = coll.createFor(nodeMeta.id, obsProps);
+      typeHash = coll.createFor(nodeMeta, obsProps);
     }
     else {
       const allTypes = obsProps.mapBy('id');
