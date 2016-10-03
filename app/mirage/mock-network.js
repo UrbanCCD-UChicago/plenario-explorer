@@ -64,10 +64,12 @@ export default class MockNetwork {
    * Doesn't depend on curation.
    * We can spit back everything from the supplied types.
    *
-   * @param nodeId To be inserted verbatim into response.
-   * @param types Array<String>
+   * @param typeIds Array<String>
    *   where each string is a result type
    *   (feature_of_interest.observed_property)
+   *
+   * @param startMoment
+   * @param endMoment
    *
    * @returns Array as returned from /aggregate endpoint's data property
    */
@@ -109,7 +111,6 @@ export default class MockNetwork {
 
   /**
    *
-   * @param nodeId
    * @param sensors
    *
    * @returns Array<Function> Where each function will
