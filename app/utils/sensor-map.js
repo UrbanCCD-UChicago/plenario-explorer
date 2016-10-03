@@ -1,7 +1,15 @@
 /**
- * These functions take a list of curated types.
+ * Given a curated list of types
+ * and sensors that we care about,
+ * generates data structures about what types
+ * are relevant when querying particular sensors
+ * and features of interest.
+ *
  * Curated types are not maintained in the Plenario API.
  * They are maintained separately and stored as JSON on S3.
+ * (It's a nice abstraction for this particular web app,
+ * but probably not generally useful.)
+ *
  * A curated type looks like:
  * {
  *   "id": "temperature.temperature",
@@ -10,14 +18,6 @@
  *   "sensor": "sensor_dev_4"
  * }
  *
- */
-
-/**
- * Given a curated list of types
- * and sensors that we care about,
- * generates data structures about what types
- * are relevant when querying particular sensors
- * and features of interest.
  */
 export default class SensorMap {
   constructor(curatedTypes, sensors) {
@@ -33,6 +33,9 @@ export default class SensorMap {
         allTypes = allTypes.concat(types);
       }
       this.types = allTypes;
+    }
+    else {
+      this.types = curatedTypes.mapBy('id');
     }
   }
 }
