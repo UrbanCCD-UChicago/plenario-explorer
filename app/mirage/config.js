@@ -57,11 +57,20 @@ export default function () {
     return {data: observations};
   });
 
+  this.get('http://plenar.io/v1/api/sensor-networks/plenario_development/aggregate', function(_, {queryParams}){
+    let types = queryParams.features_of_interest;
+    if (typeof types === 'string') {
+      types = [types];
+    }
+    const now = moment();
+    const weekAgo = moment().subtract(7, 'days');
+    const history = mockNetwork.aggregate(types, weekAgo, now);
+    return {data: history};
+  });
+
 
   this.passthrough('http://plenar.io/v1/api/datadump');
   this.passthrough('http://plenar.io/v1/api/jobs');
   this.passthrough('http://streaming.plenar.io/**');
   this.passthrough('ws://streaming.plenar.io/**');
-  // this.passthrough('http://plenar.io/v1/api/sensor-networks/**');
-  // this.passthrough('http://sensor-curation.s3-website-us-east-1.amazonaws.com/plenario_development.json');
 }
