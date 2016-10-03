@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import {toFeaturesToTypes, subsetMap} from '../utils/sensor-map';
+import SensorMap from '../utils/sensor-map';
 
 export default Ember.Component.extend({
   query: Ember.inject.service(),
@@ -10,24 +10,26 @@ export default Ember.Component.extend({
     const nodeMeta = this.get('nodeMeta');
     // Clone observed properties
     // because we are going to mutate this array.
-    const obsProps = cloneArray(this.get('curation'));
+    const curatedTypes = cloneArray(this.get('curation'));
+    const {toFeaturesToTypes, types} = new SensorMap(curatedTypes, nodeMeta.sensors);
 
     let typeHash;
     if (this.get('viewType') === 'live') {
       const coll = this.get('streamCollection');
-      // Fetch a new set of streams for that node.
-      // Can make general s.t. streams is swappable with timeseries
-      typeHash = coll.createFor(nodeMeta, obsProps);
+      typeHash = coll.createFor(nodeMeta, curatedTypes);
     }
     else {
-      const allTypes = obsProps.mapBy('id');
-      const splitObsProps = toFeaturesToTypes(obsProps);
-      typeHash = createTimelines(splitObsProps, nodeMeta, this.get('query'), allTypes);
+      typeHash = createTimelines(
+        toFeaturesToTypes,
+        nodeMeta.id,
+        this.get('query'),
+        types
+      );
     }
 
     // Insert all streams into the right observed property object.
     const propMap = {};
-    for (let prop of obsProps) {
+    for (let prop of curatedTypes) {
       prop.stream = typeHash[prop.id];
       propMap[prop.id] = prop;
     }
@@ -37,30 +39,31 @@ export default Ember.Component.extend({
 
 /**
  *
- * @param sensorToFeatureToTypes Map<string, Map<string, Array>>
+ * @param toFeatureToTypes Map<string, Map<string, Array>>
  *  Map from sensor name to Array of full property names
- * @param nodeMeta
- *  Properties of a node (not full geoJSON)
+ * @param nodeId
+ *  Node unique id
  * @param qService
  *  Handle to query service
+ * @param allTypes
+ *  Array of types to be queried
  * @returns {Object<string, Array>}
  *  Object linking each relevant property name
  *  to a growable Ember Array of Values
  */
-function createTimelines(sensorToFeatureToTypes, nodeMeta, qService, allTypes) {
-  const typesFromThisNode = subsetMap(sensorToFeatureToTypes, nodeMeta.sensors);
+function createTimelines(toFeatureToTypes, nodeId, qService, allTypes) {
+
   const q = qService;
   const timelineHash = {};
   for (let type of allTypes) {
     timelineHash[type] = [];
   }
-
   // For each sensor,
-  typesFromThisNode.forEach((foiToTypes, sensor) => {
+  toFeatureToTypes.forEach((foiToTypes, sensor) => {
     // For each foi,
     foiToTypes.forEach((types) => {
       // Grab timeseries for foi
-      q.getHistoryFor(nodeMeta.id, sensor, types).then(timeseries => {
+      q.getHistoryFor(nodeId, sensor, types).then(timeseries => {
         // Add individual timeseries
         addToHash(timeseries, timelineHash, types);
       });
@@ -91,7 +94,6 @@ function addToHash(timeseries, timelineHash, types) {
      time_bucket: "2016-09-20T16:00:00"
    }
    */
-
   // Split bucket into one timeseries per type
   for (let bucket of timeseries) {
     if ('count' in bucket) {continue;}
@@ -108,7 +110,6 @@ function addToHash(timeseries, timelineHash, types) {
       propsToTimeseries.get(prop).push(value);
     }
   }
-
   // Push timeseries to provided hash
   const [foi,] = types[0].split('.');
   for (let [prop, ts] of propsToTimeseries) {

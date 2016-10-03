@@ -3,7 +3,7 @@ import {Value} from '../models/value';
 import ENV from '../config/environment';
 const NETWORK = ENV.networkId;
 import moment from 'moment';
-import {toTypes, subsetMap} from '../utils/sensor-map';
+import SensorMap from '../utils/sensor-map';
 
 export default E.Service.extend({
   query: E.inject.service(),
@@ -22,8 +22,8 @@ export default E.Service.extend({
    */
   createFor(nodeMeta, curatedTypes) {
     this.set('nodeId', nodeMeta.id);
-    const allSensorsMap = toTypes(curatedTypes);
-    this.set('sensorMap', subsetMap(allSensorsMap, nodeMeta.sensors));
+    const {toTypes} = new SensorMap(curatedTypes, nodeMeta.sensors);
+    this.set('sensorMap', toTypes);
     this.set('streams', createStreams(curatedTypes));
 
     this.seedStreams();

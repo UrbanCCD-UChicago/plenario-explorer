@@ -1,4 +1,4 @@
-import {toFeaturesToTypes} from '../utils/sensor-map';
+import SensorMap from '../utils/sensor-map';
 import Type from '../models/type';
 import utc8601 from '../utils/utc-8601';
 import moment from 'moment';
@@ -16,10 +16,10 @@ export default class MockNetwork {
   }
 
   _sensorToFactoriesMap(curatedTypes) {
-    const sensorToFeatureToTypes = toFeaturesToTypes(curatedTypes);
+    const {toFeaturesToTypes} = new SensorMap(curatedTypes);
     // For each sensor, create an array of factories
     const sensorToFactories = new Map();
-    for (let [sensor, featureToTypes] of sensorToFeatureToTypes.entries()){
+    for (let [sensor, featureToTypes] of toFeaturesToTypes.entries()){
       const factories = [];
       for (let [feature, types] of featureToTypes) {
         factories.push(this._makeFactory(sensor, feature, types));

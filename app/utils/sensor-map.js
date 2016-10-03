@@ -13,6 +13,31 @@
  */
 
 /**
+ * Given a curated list of types
+ * and sensors that we care about,
+ * generates data structures about what types
+ * are relevant when querying particular sensors
+ * and features of interest.
+ */
+export default class SensorMap {
+  constructor(curatedTypes, sensors) {
+    this.toTypes = _toTypes(curatedTypes);
+    this.toFeaturesToTypes = _toFeaturesToTypes(curatedTypes);
+    // If the user passed in a list of sensors,
+    // pare down to just those sensors.
+    if (sensors) {
+      this.toTypes = _subsetMap(sensors, this.toTypes);
+      this.toFeaturesToTypes = _subsetMap(sensors, this.toFeaturesToTypes);
+      let allTypes = [];
+      for (let types of this.toTypes.values()) {
+        allTypes = allTypes.concat(types);
+      }
+      this.types = allTypes;
+    }
+  }
+}
+
+/**
  * Creates a mapping from sensors to types
  * for EVERY curated sensor (not just the ones relevant to this node)
  *
@@ -20,7 +45,7 @@
  * @param curatedTypes
  * @returns {Map<string, Array<string>>}
  */
-function toTypes(curatedTypes) {
+function _toTypes(curatedTypes) {
   // All sensor names with an empty list
   const sensorListPairs = curatedTypes.map(prop => [prop.sensor, []]);
   // Map ensures no duplicates
@@ -41,8 +66,8 @@ function toTypes(curatedTypes) {
  *
  * @returns {Map<string, Map<string, Array>>}
  **/
-function toFeaturesToTypes(curatedTypes) {
-  const unsplit = toTypes(curatedTypes);
+function _toFeaturesToTypes(curatedTypes) {
+  const unsplit = _toTypes(curatedTypes);
   const sensorToFoi = new Map();
 
   unsplit.forEach((types, sensor) => {
@@ -66,7 +91,7 @@ function toFeaturesToTypes(curatedTypes) {
   return sensorToFoi;
 }
 
-function subsetMap(supersetMap, subsetKeys) {
+function _subsetMap(subsetKeys, supersetMap) {
   const m = new Map();
   supersetMap.forEach((val, key) => {
     if (subsetKeys.includes(key)) {
@@ -75,6 +100,3 @@ function subsetMap(supersetMap, subsetKeys) {
   });
   return m;
 }
-
-
-export {toTypes, toFeaturesToTypes, subsetMap};
