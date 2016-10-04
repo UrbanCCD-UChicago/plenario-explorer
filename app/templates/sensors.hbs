@@ -35,25 +35,26 @@
 </div>
 <div class="row">
   {{#bs-button-group value=viewType type="radio" class="btn-block"}}
-    {{#bs-button value='live'}}Live View{{/bs-button}}
-    {{#bs-button value='history'}}History View{{/bs-button}}
-    {{#bs-button value='download'}}Download{{/bs-button}}
+    {{#bs-button class="btn-info" value='live'}}Live View{{/bs-button}}
+    {{#bs-button class="btn-info" value='history'}}History View{{/bs-button}}
+    {{#bs-button class="btn-info" value='download'}}Download{{/bs-button}}
   {{/bs-button-group}}
-    <div class='col-md-12'>
-
+<div class='col-md-12'>
+  <br>
     {{#if (eq viewType 'live')}}
         <p>Observations from the last hour. New observations will appear live.</p>
     {{else if (eq viewType 'history')}}
         <p>Hourly averages over the last week.</p>
     {{else}}
-        <p>Download bulk data from a node.</p>
+        <p>Download bulk data from node <strong>{{selectedNodeMeta.id}}</strong>.</p>
     {{/if}}
 
     {{#unless (eq viewType 'download')}}
-      {{node-chart nodeMeta=selectedNodeMeta viewType=viewType curation=model.curation}}
+      {{node-chart nodeMeta=selectedNodeMeta viewType=viewType curatedTypes=model.curation.curatedTypes}}
     {{else}}
       {{node-download download=(action 'download') nodeId=selectedNodeMeta.id}}
     {{/unless}}
+      <br>
       <p class="well">
           Download data and create your own Array of Things applications with
           <a href="http://canary-docs.s3-website-us-east-1.amazonaws.com/#sensor-network-data">

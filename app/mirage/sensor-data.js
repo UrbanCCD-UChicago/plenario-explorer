@@ -52,41 +52,50 @@ const sensorData = {
       }
     ]
   },
-  curation: [
-    {
-      "id": "temperature.temperature",
-      "name": "Temperature",
-      "unit": "°C",
-      "sensor": "sensor_dev_4"
-    },
-    {
-      "id": "humidity.humidity",
-      "name": "Relative Humidity",
-      "unit": "%",
-      "sensor": "sensor_dev_2"
-    },
-    {
-      "id": "gas_concentration.n23",
-      "name": "Nitrogen Concentration3",
-      "unit": "ppm3",
-      "sensor": "sensor_dev_3"
-    },
-    {
-      "id": "gas_concentration.co2",
-      "name": "Carbon Dioxide Concentration",
-      "unit": "ppm",
-      "sensor": "sensor_dev_3"
-    },
-    {
-      "id": "gas_concentration.o2",
-      "name": "Oxygen Concentration",
-      "unit": "ppm",
-      "sensor": "sensor_dev_4"
-    }
-  ]
+  curation: {
+    curatedTypes: [
+      {
+        "id": "temperature.temperature",
+        "name": "Temperature",
+        "unit": "°C",
+        "sensor": "sensor_dev_4"
+      },
+      {
+        "id": "humidity.humidity",
+        "name": "Relative Humidity",
+        "unit": "%",
+        "sensor": "sensor_dev_2"
+      },
+      {
+        "id": "gas_concentration.n23",
+        "name": "Nitrogen Concentration3",
+        "unit": "ppm3",
+        "sensor": "sensor_dev_3"
+      },
+      {
+        "id": "gas_concentration.co2",
+        "name": "Carbon Dioxide Concentration",
+        "unit": "ppm",
+        "sensor": "sensor_dev_3"
+      },
+      {
+        "id": "gas_concentration.o2",
+        "name": "Oxygen Concentration",
+        "unit": "ppm",
+        "sensor": "sensor_dev_4"
+      }
+    ],
+    curatedFeatures: [
+      {
+        "id": "gas_concentration",
+        "name": "Gas Concentration",
+        "description": " "
+      }
+    ]
+  }
 };
 
-const mockNetwork = new MockNetwork(sensorData.curation, sensorData.nodes.data);
+const mockNetwork = new MockNetwork(sensorData.curation.curatedTypes, sensorData.nodes.data);
 
 
 export {sensorData, mockNetwork};

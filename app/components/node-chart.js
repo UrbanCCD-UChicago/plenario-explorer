@@ -10,7 +10,7 @@ export default Ember.Component.extend({
     const nodeMeta = this.get('nodeMeta');
     // Clone observed properties
     // because we are going to mutate this array.
-    const curatedTypes = cloneArray(this.get('curation'));
+    const curatedTypes = cloneArray(this.get('curatedTypes'));
     const {toFeaturesToTypes, types} = new SensorMap(curatedTypes, nodeMeta.sensors);
 
     let typeHash;
