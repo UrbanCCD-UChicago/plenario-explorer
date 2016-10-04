@@ -1,8 +1,10 @@
 import Ember from 'ember';
+import utc from '../utils/utc-8601';
+import moment from 'moment';
 
 export default Ember.Controller.extend({
   queryParams: ['viewType', 'nodeId'],
-
+  query: Ember.inject.service(),
   viewType: 'live',
 
   modelArrived: Ember.observer('model', function() {
@@ -23,6 +25,20 @@ export default Ember.Controller.extend({
   actions: {
     onSelect(nodeId) {
       this.set('nodeId', nodeId);
+    },
+    download() {
+      const params = {
+        networkId: 'plenario_development',
+        startDatetime: utc(moment().subtract(10, 'days')),
+        endDatetime: utc(moment()),
+        nodes: 'sensor_dev_1',
+        features: ['temperature', 'gas_concentration']
+      };
+      this.get('query').sensorDownload(params).then(resp => {
+        this.transitionToRoute('datadump.download', resp.ticket, {queryParams: {data_type: 'csv'}});
+      });
+      // this.transitionToRoute('datadump.download', 'e094ef726cede25091fea4b3bf4d783a', {queryParams: {data_type: 'csv'}});
+      // ticket["ticket"], {data: params}
     }
   }
 });

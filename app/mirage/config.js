@@ -69,8 +69,10 @@ export default function () {
   });
 
 
-  this.passthrough('http://plenar.io/v1/api/datadump');
-  this.passthrough('http://plenar.io/v1/api/jobs');
+  this.passthrough('http://plenar.io/v1/api/datadump/**');
+  this.passthrough('http://plenario-app-venusaur.us-east-1.elasticbeanstalk.com/v1/api/sensor-networks/**');
+  this.passthrough('http://plenario-app-venusaur.us-east-1.elasticbeanstalk.com/v1/api/**');
+  this.passthrough('http://plenar.io/v1/api/jobs/**');
   this.passthrough('http://streaming.plenar.io/**');
   this.passthrough('ws://streaming.plenar.io/**');
 }

@@ -405,15 +405,31 @@ export default Ember.Service.extend({
   },
 
   /**
+   * Analogue of dataDump for sensor data.
+   *
+   */
+  sensorDownload(params) {
+    // networkId, nodeId, features, startDatetime, endDatetime
+    const endpoint = `http://plenario-app-venusaur.us-east-1.elasticbeanstalk.com/v1/api/sensor-networks/${params.networkId}/download`;
+    const queryParams = {
+      nodes: params.nodeId,
+      features_of_interest: params.features.join(','),
+      start_datetime: params.startDatetime,
+      end_datetime: params.endDatetime
+    };
+    return this.get('ajax').request(endpoint, {data: queryParams});
+  },
+
+  /**
    * Fetch the large CSV or GeoJSON download of events
    *
    * @param name
    * @param params
    * @param newTab
    */
-  getDataDump(ticket, type) {
-    const endpoint = `/datadump/${ticket}`;
-    this.openInNewTab(endpoint, {data_type: type});
+  getDataDump(ticket) {
+    const endpoint = `http://plenario-app-venusaur.us-east-1.elasticbeanstalk.com/v1/api/datadump/${ticket}`;
+    window.open(endpoint);
   },
 
   /**
@@ -422,7 +438,7 @@ export default Ember.Service.extend({
    * @param ticket
    */
   job(ticket) {
-    const endpoint = '/jobs/'+ticket;
+    const endpoint = 'http://plenario-app-venusaur.us-east-1.elasticbeanstalk.com/v1/api/jobs/'+ticket;
     const job = this.get('ajax').request(endpoint);
     return job;
   },
