@@ -37,17 +37,23 @@
   {{#bs-button-group value=viewType type="radio" class="btn-block"}}
     {{#bs-button value='live'}}Live View{{/bs-button}}
     {{#bs-button value='history'}}History View{{/bs-button}}
+    {{#bs-button value='download'}}Download{{/bs-button}}
   {{/bs-button-group}}
-  {{#bs-button action='download'}}Download{{/bs-button}}
     <div class='col-md-12'>
 
     {{#if (eq viewType 'live')}}
-      <p>Observations from the last hour. New observations will appear live.</p>
-    {{else}}
+        <p>Observations from the last hour. New observations will appear live.</p>
+    {{else if (eq viewType 'history')}}
         <p>Hourly averages over the last week.</p>
+    {{else}}
+        <p>Download bulk data from a node.</p>
     {{/if}}
 
-    {{node-chart nodeMeta=selectedNodeMeta viewType=viewType curation=model.curation}}
+    {{#unless (eq viewType 'download')}}
+      {{node-chart nodeMeta=selectedNodeMeta viewType=viewType curation=model.curation}}
+    {{else}}
+      {{node-download download=(action 'download') nodeId=selectedNodeMeta.id}}
+    {{/unless}}
       <p class="well">
           Download data and create your own Array of Things applications with
           <a href="http://canary-docs.s3-website-us-east-1.amazonaws.com/#sensor-network-data">

@@ -26,14 +26,14 @@ export default Ember.Controller.extend({
     onSelect(nodeId) {
       this.set('nodeId', nodeId);
     },
-    download() {
-      const params = {
-        networkId: 'plenario_development',
-        startDatetime: utc(moment().subtract(10, 'days')),
-        endDatetime: utc(moment()),
-        nodes: 'sensor_dev_1',
-        features: ['temperature', 'gas_concentration']
-      };
+    download(params) {
+      // const params = {
+      //   networkId: 'plenario_development',
+      //   startDatetime: utc(moment().subtract(10, 'days')),
+      //   endDatetime: utc(moment()),
+      //   nodes: 'sensor_dev_1',
+      //   features: ['temperature', 'gas_concentration']
+      // };
       this.get('query').sensorDownload(params).then(resp => {
         this.transitionToRoute('datadump.download', resp.ticket, {queryParams: {data_type: 'csv'}});
       });
