@@ -8,22 +8,19 @@
           <p>Job Ticket: {{ticket}}</p>
       {{else}}
         {{#if complete}}
-            <h1>Your datadump is ready!</h1>
+            <h1>Your bulk export is ready!</h1>
             <p>Click the button below to download it.</p>
-            <!--<p><i>~ Made with &lt;3, {{worker}}</i></p>-->
         {{else}}
           {{#if started}}
-              <h1>Your datadump is on its way!</h1>
-              <!--<p>Worker "{{worker}}" is building it just for you!</p>-->
+              <h1>Your bulk export is on its way!</h1>
               <p>We're constructing it right now just for you!</p>
           {{else}}
             {{#if worker}}
-                <h1>Preparing datadump...</h1>
-                <!--<p>Worker "{{worker}}" has begun analyzing your datadump.</p>-->
-                <p>A worker has begun analyzing your datadump.</p>
+                <h1>Preparing bulk export...</h1>
+                <p>A worker has begun processing your bulk export.</p>
             {{else}}
                 <h1>Waiting for workers...</h1>
-                <p>Your datadump has been queued and is ready for construction.</p>
+                <p>Your bulk export has been queued and is ready for construction.</p>
             {{/if}}
           {{/if}}
         {{/if}}
@@ -39,7 +36,7 @@
         {{#if complete}}
             <p>Time Elapsed: {{elapsed}}</p>
             <div class="progress" style="margin: 0 5%">
-                <div class="progress-bar" role="progressbar" aria-valuenow="100"
+                <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="100"
                      aria-valuemin="0" aria-valuemax="100" style="width:100%">
                     100%&nbsp;&nbsp;&nbsp;(computed {{parts}} of {{total}} parts)
                 </div>
@@ -83,7 +80,7 @@
     <div class="row">
         <div class="col-md-12 text-center" style="margin: 5% 0 0 0">
             <form class="form-group">
-                <label>Link to this datadump (expires in 3 hours):</label>
+                <label>Link to this bulk export (expires in 3 hours):</label>
                 <input id="datadump-link" type="text" class="form-control"
                        style="width: 50%; margin: 0 auto; text-align: center" value={{link}}/>
             </form>
@@ -93,15 +90,15 @@
 <div class="row">
     <div class="col-md-12 text-center" style="margin: 5% 0">
       {{#if complete}}
-          <button id="download-button" type="button" {{action "download"}} class="btn btn-primary btn-large">Download Datadump</button>
+          <button id="download-button" type="button" {{action "download"}} class="btn btn-success btn-large">Download Bulk Export</button>
       {{else}}
         {{#if failed}}
-            <button id="download-button" type="button" class="btn btn-warning btn-large disabled">Datadump failed.</button>
+            <button id="download-button" type="button" class="btn btn-warning btn-large disabled">Bulk export failed.</button>
         {{else}}
           {{#if started}}
-            <button id="download-button" type="button" class="btn btn-info btn-large disabled">Constructing Datadump...</button>
+            <button id="download-button" type="button" class="btn btn-info btn-large disabled">Constructing Bulk export...</button>
           {{else}}
-                  <button id="download-button" type="button" class="btn btn-info btn-large disabled">Starting Datadump...</button>
+                  <button id="download-button" type="button" class="btn btn-info btn-large disabled">Starting Bulk export...</button>
           {{/if}}
         {{/if}}
       {{/if}}
