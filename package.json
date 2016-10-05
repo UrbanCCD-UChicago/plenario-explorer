@@ -58,6 +58,7 @@
     "ember-spin-spinner": "0.2.4",
     "ember-truth-helpers": "1.2.0",
     "ember-websockets": "4.0.1",
+    "mock-socket": "3.0.1",
     "geojson-validation": "0.1.6",
     "highcharts": "4.2.3",
     "leaflet": "0.7.7",
