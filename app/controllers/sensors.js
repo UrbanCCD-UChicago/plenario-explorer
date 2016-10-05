@@ -4,6 +4,7 @@ export default Ember.Controller.extend({
   queryParams: ['viewType', 'nodeId'],
   query: Ember.inject.service(),
   viewType: 'live',
+  notify: Ember.inject.service(),
 
   modelArrived: Ember.observer('model', function() {
     const nodeList = this.get('model.nodes');
@@ -29,7 +30,11 @@ export default Ember.Controller.extend({
     download(params) {
       this.get('query').sensorDownload(params).then(resp => {
         this.transitionToRoute('datadump.download', resp.ticket, {queryParams: {data_type: 'csv'}});
-      });
+      }).catch(() => {
+          this.get('notify').error('Could not process request. ' +
+            'Try double-checking your request, and email plenario@uchicago.edu if the problem persists.');
+        }
+      );
     }
   }
 });
