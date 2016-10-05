@@ -1,10 +1,32 @@
 import Ember from 'ember';
 import utc from '../utils/utc-8601';
 import moment from 'moment';
+import SensorMap from '../utils/sensor-map';
 //import dateFormat from '../utils/date-format';
 
 export default Ember.Component.extend({
   query: Ember.inject.service(),
+  availableFeatures: Ember.computed('curation', 'nodeMeta', function() {
+    // Clone curatedFeatures. We'll be mutating it.
+    let {curatedTypes, curatedFeatures} = this.get('curation');
+    curatedFeatures = curatedFeatures.map(obj => Ember.copy(obj));
+    const {sensors} = this.get('nodeMeta');
+    // Which features are represented in this node's sensors?
+    const availableFeatureNames =  new SensorMap(curatedTypes, sensors).features;
+    const availableSet = new Set(availableFeatureNames);
+    const availableFeatures = curatedFeatures.filter(({id}) => availableSet.has(id));
+    for (let feat of availableFeatures) {
+      feat.label = `${feat.name} - ${feat.description}.`;
+    }
+    return availableFeatures;
+  }),
+  selectedFeatures: Ember.computed('availableFeatures', function() {
+    const selected = {};
+    for (let {id} of this.get('availableFeatures')) {
+      selected[id] = false;
+    }
+    return selected;
+  }),
 
   actions: {
     download() {
@@ -20,11 +42,6 @@ export default Ember.Component.extend({
         features: ['temperature', 'gas_concentration']
       };
       this.get('download')(params);
-      // this.get('query').sensorDownload(params).then(resp => {
-      //   this.transitionToRoute('datadump.download', resp.ticket, {queryParams: {data_type: 'csv'}});
-      // });
-      // this.transitionToRoute('datadump.download', 'e094ef726cede25091fea4b3bf4d783a', {queryParams: {data_type: 'csv'}});
-      // ticket["ticket"], {data: params}
     }
   },
   // Seed date selectors

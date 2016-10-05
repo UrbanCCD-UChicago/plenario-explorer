@@ -52,7 +52,7 @@
     {{#unless (eq viewType 'download')}}
       {{node-chart nodeMeta=selectedNodeMeta viewType=viewType curatedTypes=model.curation.curatedTypes}}
     {{else}}
-      {{node-download download=(action 'download') nodeId=selectedNodeMeta.id}}
+      {{node-download download=(action 'download') nodeMeta=selectedNodeMeta curation=model.curation}}
     {{/unless}}
       <br>
       <p class="well">

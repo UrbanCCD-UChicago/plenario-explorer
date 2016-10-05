@@ -1,3 +1,5 @@
+import Type from '../models/type';
+
 /**
  * Given a curated list of types
  * and sensors that we care about,
@@ -37,6 +39,8 @@ export default class SensorMap {
     else {
       this.types = curatedTypes.mapBy('id');
     }
+    const repeatedFeatures = this.types.map(t => new Type(t).feature);
+    this.features = [...new Set(repeatedFeatures)];
   }
 }
 

@@ -89,7 +89,17 @@ const sensorData = {
       {
         "id": "gas_concentration",
         "name": "Gas Concentration",
-        "description": " "
+        "description": "parts per million concentration of gases that affect air quality, including nitrogen dioxide and ozone"
+      },
+      {
+        "id": "temperature",
+        "name": "Temperature",
+        "description": "temperature in degrees Celsius"
+      },
+      {
+        "id": "humidity",
+        "name": "Humidity",
+        "description": "relative humidity"
       }
     ]
   }
