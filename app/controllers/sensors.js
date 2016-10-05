@@ -12,7 +12,9 @@ export default Ember.Controller.extend({
     });
     const nodeMap = new Map(nodeTuples);
     this.set('nodeMap', nodeMap);
-    this.set('nodeId', nodeList[0].properties.id);
+    if (!this.get('nodeId')) {
+      this.set('nodeId', nodeList[0].properties.id);
+    }
   }),
 
   selectedNodeMeta: Ember.computed('nodeId', function() {
