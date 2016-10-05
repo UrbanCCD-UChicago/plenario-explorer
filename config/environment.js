@@ -23,11 +23,16 @@ module.exports = function(environment) {
   ENV.defaultNode = 'NODE_DEV_1';
 
   if (environment === 'development') {
-    // ENV.host = 'http://plenario-app-venusaur.us-east-1.elasticbeanstalk.com';
+
     ENV['ember-cli-mirage'] = {
-      enabled: true
+      enabled: false
     };
-    ENV.host = 'http://plenar.io';
+    if (ENV['ember-cli-mirage'].enabled) {
+      ENV.host = 'http://plenar.io';
+    } else {
+      ENV.host = 'http://plenario-app-venusaur.us-east-1.elasticbeanstalk.com';
+    }
+
     // ENV.APP.LOG_RESOLVER = true;
     // ENV.APP.LOG_ACTIVE_GENERATION = true;
     // ENV.APP.LOG_TRANSITIONS = true;
