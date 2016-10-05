@@ -1,11 +1,16 @@
 import Ember from 'ember';
 import SensorMap from '../utils/sensor-map';
+import moment from 'moment';
 
 export default Ember.Component.extend({
   query: Ember.inject.service(),
   streamCollection: Ember.inject.service(),
+  creationMoment: moment(),
 
-  // Whenever the user selects a different node,
+  /**
+   * Creates map from type ids to objects containing all curated type information
+   * plus a "stream" property containing an array of values of that type.
+   */
   streams: Ember.computed('nodeMeta', 'viewType', function() {
     const nodeMeta = this.get('nodeMeta');
     // Clone observed properties
