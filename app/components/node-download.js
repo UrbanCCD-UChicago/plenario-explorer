@@ -33,13 +33,15 @@ export default Ember.Component.extend({
       const to8601Date = dateStr => moment(dateStr).utc().format("YYYY-MM-DD");
       const startDate = to8601Date(this.get('startDate'));
       const endDate = to8601Date(this.get('endDate'));
+      const featureHash = this.get('selectedFeatures');
+      const features = Object.keys(featureHash).filter(f => featureHash[f]);
 
       const params = {
         networkId: 'plenario_development',
         startDatetime: startDate,
         endDatetime: endDate,
         nodes: this.get('nodeId'),
-        features: ['temperature', 'gas_concentration']
+        features: features
       };
       this.get('download')(params);
     }
