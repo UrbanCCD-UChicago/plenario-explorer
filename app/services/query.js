@@ -141,7 +141,7 @@ export default Ember.Service.extend({
 
   getHistoryFor(nodeId, sensorName, typesList) {
     const ajax = this.get('ajax');
-    const aWeekAgo = moment().subtract(7, 'days').utc().format()
+    const aWeekAgo = moment().subtract(7, 'days').utc().format();
 
     const params = {
       data: {

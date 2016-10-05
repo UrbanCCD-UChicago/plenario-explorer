@@ -1,5 +1,4 @@
 import MockNetwork from '../../../mirage/mock-network';
-import {sensorData} from '../../../mirage/sensor-data';
 import {module, test} from 'qunit';
 import moment from 'moment';
 
