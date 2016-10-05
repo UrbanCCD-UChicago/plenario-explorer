@@ -117,7 +117,6 @@ export default Ember.Service.extend({
     return this.get('ajax').request(qString)
     .then(nodeMeta =>
       {
-        console.log(nodeMeta);
         return nodeMeta.data.map(
           nodeRecord => Node.create({nodeGeoJSON: nodeRecord})
         );
@@ -126,7 +125,7 @@ export default Ember.Service.extend({
   },
 
   getSocketForNode(networkId, nodeId, sensorList) {
-    if (ENV.environment === 'development') {
+    if (ENV['ember-cli-mirage'].enabled) {
       return mockNetwork.getMockSocket(nodeId);
     }
     const io = this.get('io');
@@ -176,7 +175,7 @@ export default Ember.Service.extend({
   },
 
   getCurationFor(networkId) {
-    if (ENV.environment === 'development') {
+    if (ENV['ember-cli-mirage'].enabled) {
       return sensorData.curation;
     }
     else {

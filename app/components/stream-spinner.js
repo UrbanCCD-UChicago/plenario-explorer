@@ -14,7 +14,7 @@ export default Ember.Component.extend({
     return Object.values(this.get('streams')).mapBy('stream');
   }),
 
-  dataArrived: Ember.computed('streamArrays.@each', function() {
+  dataArrived: Ember.computed('streamArrays.@each.[]', function() {
     return this.get('streamArrays').some(s => s && s.length > 0);
   })
 });
