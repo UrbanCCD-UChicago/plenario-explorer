@@ -5,6 +5,7 @@ export default Ember.Controller.extend({
   query: Ember.inject.service(),
   viewType: 'live',
   notify: Ember.inject.service(),
+  refreshNodeChart: false,
 
   modelArrived: Ember.observer('model', function() {
     const nodeList = this.get('model.nodes');
@@ -26,6 +27,7 @@ export default Ember.Controller.extend({
   actions: {
     onSelect(nodeId) {
       this.set('nodeId', nodeId);
+      this.toggleProperty('refreshNodeChart');
     },
     download(params) {
       this.get('query').sensorDownload(params).then(resp => {

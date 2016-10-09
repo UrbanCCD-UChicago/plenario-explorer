@@ -50,7 +50,12 @@
     {{/if}}
 
     {{#unless (eq viewType 'download')}}
-      {{node-chart nodeMeta=selectedNodeMeta viewType=viewType curatedTypes=model.curation.curatedTypes}}
+      {{#if refreshNodeChart}}
+        {{node-chart nodeMeta=selectedNodeMeta viewType=viewType curatedTypes=model.curation.curatedTypes}}
+      {{else}}
+        {{node-chart nodeMeta=selectedNodeMeta viewType=viewType curatedTypes=model.curation.curatedTypes}}
+      {{/if}}
+
     {{else}}
       {{node-download download=(action 'download') nodeMeta=selectedNodeMeta curation=model.curation}}
     {{/unless}}
