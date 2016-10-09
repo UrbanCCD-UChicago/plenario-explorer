@@ -44,15 +44,18 @@ export default function () {
   });
 
   this.get('http://plenar.io/v1/api/sensor-networks/plenario_development/query', function(_, {queryParams}) {
-    const {node, feature} = queryParams;
+    // Note that this application always sends a singular node ID
+    // but the API accepts a comma separated list,
+    // hence singular-plural weirdness here.
+    const {nodes, feature} = queryParams;
     const now = moment();
     const hourAgo = moment().subtract(1, 'hours');
-    const observations = mockNetwork.observations(node, feature, hourAgo, now);
+    const observations = mockNetwork.observations(nodes, feature, hourAgo, now);
     return {data: observations};
   });
 
   this.get('http://plenar.io/v1/api/sensor-networks/plenario_development/aggregate', function(_, {queryParams}){
-    let types = queryParams.features_of_interest;
+    let types = queryParams.features;
     if (typeof types === 'string') {
       types = [types];
     }

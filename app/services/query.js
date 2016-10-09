@@ -146,7 +146,7 @@ export default Ember.Service.extend({
       data: {
         sensors: sensorName,
         node: nodeId,
-        features_of_interest: typesList.join(','),
+        features: typesList.join(','),
         function: 'avg',
         start_datetime: aWeekAgo
       }
@@ -159,7 +159,7 @@ export default Ember.Service.extend({
     const params = {
       data: {
         feature: feature,
-        node: nodeId,
+        nodes: nodeId,
         start_datetime: moment().utc().subtract(1, 'hours').format(),
         end_datetime: moment().utc().format()
       }
