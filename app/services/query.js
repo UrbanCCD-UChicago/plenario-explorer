@@ -155,19 +155,16 @@ export default Ember.Service.extend({
     return ajax.request(path, params).then(response => Ember.RSVP.resolve(response.data));
   },
 
-  getSensorObservations(nodeId, networkId, sensorList) {
-    if (typeof sensorList === 'string') {
-      sensorList = [sensorList];
-    }
-
+  getSensorObservations(nodeId, networkId, feature, sensor) {
     const params = {
       data: {
-        sensors: sensorList.join(','),
-        nodes: nodeId,
+        feature: feature,
+        node: nodeId,
         start_datetime: moment().utc().subtract(1, 'hours').format(),
         end_datetime: moment().utc().format()
       }
     };
+    if (sensor) {params.data.sensors = sensor;}
     const path = `/sensor-networks/${networkId}/query`;
     return this.get('ajax').request(path, params).then(response => {
       return response.data;

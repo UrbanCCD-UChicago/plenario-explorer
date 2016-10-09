@@ -11,22 +11,35 @@ export default class MockNetwork {
    *
    */
   constructor(curatedTypes, nodeMetadata) {
-    this.sensorToFactories = this._sensorToFactoriesMap(curatedTypes);
+    const sensorMap = new SensorMap(curatedTypes);
+    this.sensorToFactories = this._sensorToFactories(sensorMap.toFeaturesToTypes);
+    this.featureToFactory = this._featureToFactory(sensorMap.featuresToTypes);
     this.nodeToSensors = this._nodeToSensorsMap(nodeMetadata);
   }
 
-  _sensorToFactoriesMap(curatedTypes) {
-    const {toFeaturesToTypes} = new SensorMap(curatedTypes);
+  _sensorToFactories(toFeaturesToTypes) {
     // For each sensor, create an array of factories
     const sensorToFactories = new Map();
+    // const featureToFactory = new Map();
     for (let [sensor, featureToTypes] of toFeaturesToTypes.entries()){
       const factories = [];
       for (let [feature, types] of featureToTypes) {
-        factories.push(this._makeFactory(sensor, feature, types));
+        const factory = this._makeFactory(sensor, feature, types);
+        factories.push(factory);
+        // featureToFactory.set(feature, factory);
       }
       sensorToFactories.set(sensor, factories);
     }
     return sensorToFactories;
+  }
+
+  _featureToFactory(featureToTypes) {
+    const featureToFactory = new Map();
+    for (let [feat, types] of featureToTypes.entries()) {
+      const factory = this._makeFactory('unknown', feat, types);
+      featureToFactory.set(feat, factory);
+    }
+    return featureToFactory;
   }
 
   _nodeToSensorsMap(nodeMetadata) {
@@ -91,22 +104,23 @@ export default class MockNetwork {
 
   /**
    * @param nodeId To be inserted verbatim into response.
-   * @param sensors Array<String>
+   * @param feature string feature of interest
    * @param startMoment Moment when to start
    * @param endMoment Moment when to stop
    *
    * @returns Object as returned from /query endpoint
    *          with observations within the specified range
    */
-  observations(nodeId, sensors, startMoment, endMoment) {
+  observations(nodeId, feature, startMoment, endMoment) {
     const timestamps = generateTimestamps(startMoment, endMoment, 30, 'seconds');
-    const factories = this.observationFactories(sensors);
+    const factory = this.featureToFactory.get(feature);
+    return timestamps.map(ts => factory(nodeId, ts));
 
-    const listPerTs = timestamps.map(ts =>
+    // const listPerTs = timestamps.map(ts =>
       // Array of observations from each factory
-      factories.map(f => f(nodeId, ts))
-    );
-    return [].concat.apply([], listPerTs);
+      // factories.map(f => f(nodeId, ts))
+    // );
+    // return [].concat.apply([], listPerTs);
   }
 
   /**

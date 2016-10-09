@@ -41,6 +41,7 @@ export default class SensorMap {
     }
     const repeatedFeatures = this.types.map(t => new Type(t).feature);
     this.features = [...new Set(repeatedFeatures)];
+    this.featuresToTypes = _groupTypesByFeature(this.types);
   }
 }
 
@@ -78,24 +79,29 @@ function _toFeaturesToTypes(curatedTypes) {
   const sensorToFoi = new Map();
 
   unsplit.forEach((types, sensor) => {
-    const foiToType = new Map();
-    // Emulate a Python defaultdict
-    for (let type of types) {
-      const [foi,] = type.split('.');
-      // Have we seen this FOI before?
-      if (foiToType.has(foi)) {
-        // Yes. Append.
-        foiToType.get(foi).push(type);
-      }
-      // No, first time. Create.
-      else {
-        foiToType.set(foi, [type]);
-      }
-    }
+    const foiToType = _groupTypesByFeature(types);
     sensorToFoi.set(sensor, foiToType);
   });
 
   return sensorToFoi;
+}
+
+function _groupTypesByFeature(types) {
+  const featToType = new Map();
+  // Emulate a Python defaultdict
+  for (let type of types) {
+    const [foi,] = type.split('.');
+    // Have we seen this FOI before?
+    if (featToType.has(foi)) {
+      // Yes. Append.
+      featToType.get(foi).push(type);
+    }
+    // No, first time. Create.
+    else {
+      featToType.set(foi, [type]);
+    }
+  }
+  return featToType;
 }
 
 function _subsetMap(subsetKeys, supersetMap) {

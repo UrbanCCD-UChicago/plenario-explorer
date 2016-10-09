@@ -5,7 +5,6 @@ import moment from 'moment';
 export default Ember.Component.extend({
   query: Ember.inject.service(),
   streamCollection: Ember.inject.service(),
-  creationMoment: moment(),
 
   /**
    * Creates map from type ids to objects containing all curated type information

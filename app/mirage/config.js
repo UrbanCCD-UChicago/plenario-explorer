@@ -44,16 +44,10 @@ export default function () {
   });
 
   this.get('http://plenar.io/v1/api/sensor-networks/plenario_development/query', function(_, {queryParams}) {
-    // Just one id
-    const nodeId = queryParams.nodes.split(',')[0];
-    // Array of sensors
-    let sensors = queryParams.sensors;
-    if (typeof sensors === 'string') {
-      sensors = [sensors];
-    }
+    const {node, feature} = queryParams;
     const now = moment();
     const hourAgo = moment().subtract(1, 'hours');
-    const observations = mockNetwork.observations(nodeId, sensors, hourAgo, now);
+    const observations = mockNetwork.observations(node, feature, hourAgo, now);
     return {data: observations};
   });
 

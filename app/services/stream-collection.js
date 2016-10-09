@@ -3,6 +3,7 @@ import {Value} from '../models/value';
 import ENV from '../config/environment';
 const NETWORK = ENV.networkId;
 import moment from 'moment';
+import Type from '../models/type';
 import SensorMap from '../utils/sensor-map';
 
 export default E.Service.extend({
@@ -24,6 +25,9 @@ export default E.Service.extend({
     this.set('nodeId', nodeMeta.id);
     const {toTypes} = new SensorMap(curatedTypes, nodeMeta.sensors);
     this.set('sensorMap', toTypes);
+    // Names of types reported by sensors on this node
+    const validTypes = [].concat.apply([], [...toTypes.values()]);
+    curatedTypes = curatedTypes.filter(({id}) => validTypes.includes(id));
     this.set('streams', createStreams(curatedTypes));
 
     this.seedStreams();
@@ -37,18 +41,20 @@ export default E.Service.extend({
    */
   seedStreams() {
     const q = this.get('query');
+    const nodeId = this.get('nodeId');
     // Generate the sensor and fois that need to be queried
-    this.get('sensorMap').forEach((props, sensor) => {
-      const fois = props.map(prop => prop.split('.', 2)[0]);
-      const foiList = [...new Set(fois)].join(',');
-      const nodeId = this.get('nodeId');
-      q.getSensorObservations(nodeId, NETWORK, sensor, foiList)
-        .then(observations => {
-          if (observations.length === 0) {return;}
-          const fromThisSensor = observations.filter(obs => obs.node_id === nodeId);
-          const valCollections = splitObservationstoValues(fromThisSensor);
-          this.prependValues(valCollections);
-        });
+    this.get('sensorMap').forEach((types, sensor) => {
+      const features = types.map(type => new Type(type).feature);
+      const uniqFeatures = [...new Set(features)];
+      // Need to make one call per feature
+      const addToStream = observations => {
+        if (observations.length === 0) {return;}
+        const valCollections = splitObservationstoValues(observations);
+        this.prependValues(valCollections);
+      }
+      for (let f of uniqFeatures) {
+        q.getSensorObservations(nodeId, NETWORK, f, sensor).then(addToStream);
+      }
     });
   },
 
@@ -149,13 +155,13 @@ function splitObservationstoValues(observations) {
 
 /**
  *
- * @param observedProperties
+ * @param curatedTypes
  * @returns {{}}
  */
-function createStreams(observedProperties) {
+function createStreams(curatedTypes) {
   const streamsObj = {};
-  for (let prop of observedProperties) {
-    streamsObj[prop.id] = E.A([]);
+  for (let cType of curatedTypes) {
+    streamsObj[cType.id] = E.A([]);
   }
   return streamsObj;
 }
