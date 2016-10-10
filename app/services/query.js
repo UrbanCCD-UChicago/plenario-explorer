@@ -138,15 +138,18 @@ export default Ember.Service.extend({
     return io.socketFor(connString);
   },
 
-  getHistoryFor(nodeId, sensorName, typesList) {
+  getHistoryFor(nodeId, sensorName, type) {
     const ajax = this.get('ajax');
     const aWeekAgo = moment().subtract(7, 'days').utc().format();
+    // Could already be a string.
+    // If it's not, we want it to be a comma delimited list
+    type = type.toString();
 
     const params = {
       data: {
         sensors: sensorName,
         node: nodeId,
-        features: typesList.join(','),
+        feature: type,
         function: 'avg',
         start_datetime: aWeekAgo
       }
@@ -409,7 +412,7 @@ export default Ember.Service.extend({
     const endpoint = `http://plenario-app-venusaur.us-east-1.elasticbeanstalk.com/v1/api/sensor-networks/${params.networkId}/download`;
     const queryParams = {
       nodes: params.nodeId,
-      features_of_interest: params.features.join(','),
+      features: params.features.join(','),
       start_datetime: params.startDatetime,
       end_datetime: params.endDatetime
     };

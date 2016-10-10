@@ -55,13 +55,10 @@ export default function () {
   });
 
   this.get('http://plenar.io/v1/api/sensor-networks/plenario_development/aggregate', function(_, {queryParams}){
-    let types = queryParams.features;
-    if (typeof types === 'string') {
-      types = [types];
-    }
+    let type = queryParams.feature;
     const now = moment();
     const weekAgo = moment().subtract(7, 'days');
-    const history = mockNetwork.aggregate(types, weekAgo, now);
+    const history = mockNetwork.aggregate(type, weekAgo, now);
     return {data: history};
   });
 
