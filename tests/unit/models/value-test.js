@@ -5,7 +5,7 @@ module('Unit | Model | Value');
 
 const mockObservationAPIRecord =
 {
-  "feature_of_interest":"gas_concentration",
+  "feature":"gas_concentration",
   "node_id":'00A',
   "sensor":"gasx",
   "results":{

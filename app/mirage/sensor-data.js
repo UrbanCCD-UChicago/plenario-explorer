@@ -61,15 +61,15 @@ const sensorData = {
         "sensor": "sensor_dev_4"
       },
       {
-        "id": "humidity.humidity",
+        "id": "relative_humidity.humidity",
         "name": "Relative Humidity",
         "unit": "%",
         "sensor": "sensor_dev_2"
       },
       {
-        "id": "gas_concentration.n23",
-        "name": "Nitrogen Concentration3",
-        "unit": "ppm3",
+        "id": "gas_concentration.n2",
+        "name": "Nitrogen Concentration",
+        "unit": "ppm",
         "sensor": "sensor_dev_3"
       },
       {

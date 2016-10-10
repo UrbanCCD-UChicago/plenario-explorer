@@ -55,7 +55,7 @@ export default class MockNetwork {
   _makeFactory(sensor, feature, types) {
     return (nodeId, timestamp) => {
       return {
-        "feature_of_interest": feature,
+        "feature": feature,
         "node_id": nodeId,
         "sensor": sensor,
         "results": this._generateResults(types),
