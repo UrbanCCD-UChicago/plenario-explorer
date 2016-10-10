@@ -51,7 +51,7 @@ export default E.Service.extend({
         if (observations.length === 0) {return;}
         const valCollections = splitObservationstoValues(observations);
         this.prependValues(valCollections);
-      }
+      };
       for (let f of uniqFeatures) {
         q.getSensorObservations(nodeId, NETWORK, f, sensor).then(addToStream);
       }

@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import SensorMap from '../utils/sensor-map';
-import moment from 'moment';
 
 export default Ember.Component.extend({
   query: Ember.inject.service(),
