@@ -77,7 +77,7 @@ export default class MockNetwork {
    * Doesn't depend on curation.
    * We can spit back everything from the supplied types.
    *
-   * @param typeIds Array<String>
+   * @param type String
    *   where each string is a result type
    *   (feature_of_interest.observed_property)
    *
@@ -86,18 +86,17 @@ export default class MockNetwork {
    *
    * @returns Array as returned from /aggregate endpoint's data property
    */
-  aggregate(typeIds, startMoment, endMoment) {
+  aggregate(type, startMoment, endMoment) {
     // Assume we only have one FOI - as the endpoint requires
-    const properties = typeIds.map(t => new Type(t).property);
+    // const properties = typeIds.map(t => new Type(t).property);
     const timestamps = generateTimestamps(startMoment, endMoment, 1, 'hours');
+    const {property} = new Type(type);
     return timestamps.map(t => {
       const bucket = {time_bucket: t};
-      for (let prop of properties) {
-        bucket[prop] = {
-          count: Math.round(Math.random() * 100),
-          avg: Math.random()
-        };
-      }
+      bucket[property] = {
+        count: Math.round(Math.random() * 100),
+        avg: Math.random()
+      };
       return bucket;
     });
   }

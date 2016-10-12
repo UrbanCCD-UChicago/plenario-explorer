@@ -25,7 +25,7 @@ module.exports = function(environment) {
   if (environment === 'development') {
 
     ENV['ember-cli-mirage'] = {
-      enabled: false
+      enabled: true
     };
     if (ENV['ember-cli-mirage'].enabled) {
       ENV.host = 'http://plenar.io';
