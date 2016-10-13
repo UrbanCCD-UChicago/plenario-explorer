@@ -80,7 +80,9 @@
     <div class="row">
         <div class="col-md-12 text-center" style="margin: 5% 0 0 0">
             <form class="form-group">
-                <label>Link to this bulk export (expires in 3 hours):</label>
+                  <label>Save this link to check back later.
+                    (expires in 3 hours):
+                  </label>
                 <input id="datadump-link" type="text" class="form-control"
                        style="width: 50%; margin: 0 auto; text-align: center" value={{link}}/>
             </form>
@@ -93,12 +95,12 @@
           <button id="download-button" type="button" {{action "download"}} class="btn btn-success btn-large">Download Bulk Export</button>
       {{else}}
         {{#if failed}}
-            <button id="download-button" type="button" class="btn btn-warning btn-large disabled">Bulk export failed.</button>
+            <button id="download-button" type="button" class="btn btn-warning btn-large disabled">Bulk Export Failed.</button>
         {{else}}
           {{#if started}}
-            <button id="download-button" type="button" class="btn btn-info btn-large disabled">Constructing Bulk export...</button>
+            <button id="download-button" type="button" class="btn btn-info btn-large disabled">Constructing Bulk Export...</button>
           {{else}}
-                  <button id="download-button" type="button" class="btn btn-info btn-large disabled">Starting Bulk export...</button>
+                  <button id="download-button" type="button" class="btn btn-info btn-large disabled">Starting Bulk Export...</button>
           {{/if}}
         {{/if}}
       {{/if}}
