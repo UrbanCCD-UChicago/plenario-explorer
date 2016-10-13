@@ -13,6 +13,7 @@ export default Ember.Component.extend({
       return;
     }
 
+    const tzOffsetInMs = 60*1000*(new Date().getTimezoneOffset());
     // Translate to Highcharts format
     const series = observations.map( ({datetime, value}) => {
       if (typeof value === 'number') {
@@ -20,7 +21,8 @@ export default Ember.Component.extend({
         // And pray to the IEEE gods for no weird floating point shit.
         value = Math.round(value*1000)/1000;
       }
-      return [moment(datetime).valueOf(), value];
+
+      return [moment(datetime).valueOf() - tzOffsetInMs, value];
     });
     // Throw it into Highcharts.
     // Be sure to transform to JS Array from Ember Array
@@ -47,9 +49,15 @@ export default Ember.Component.extend({
       },
       xAxis: {
         type: 'datetime',
-        dateTimeLabelFormats: { // don't display the dummy year
-          second: '%l:%M:%S',
-          year: '%b'
+        dateTimeLabelFormats: {
+          millisecond: '%l:%M %p',
+          second: '%l:%M %p',
+          minute: '%l:%M %p',
+          hour: '%l:%M %p',
+          day: '%l:%M %p',
+          week: '%l:%M %p',
+          month: '%l:%M %p',
+          year: '%l:%M %p'
         },
         labels: {
           enabled: true,
