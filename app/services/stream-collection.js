@@ -91,8 +91,6 @@ export default E.Service.extend({
    * @param obs
    */
   appendObservation(obs) {
-    if (obs.node_id !== this.get('nodeId')) {return;}
-
     const vals = Value.adaptFromAPI(obs);
     const streams = this.get('streams');
     for (let val of vals) {

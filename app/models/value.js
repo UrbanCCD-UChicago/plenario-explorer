@@ -20,7 +20,7 @@ class Value {
   static adaptFromAPI(record) {
     const initHashProto = {
       'featureOfInterest': record.feature.toLowerCase(),
-      'nodeId': record.node_id.toLowerCase(),
+      'nodeId': record.node.toLowerCase(),
       'sensor': record.sensor.toLowerCase(),
       'datetime': record.datetime
     };
