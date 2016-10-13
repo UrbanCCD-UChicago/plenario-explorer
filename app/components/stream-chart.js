@@ -49,32 +49,14 @@ export default Ember.Component.extend({
       },
       xAxis: {
         type: 'datetime',
-        dateTimeLabelFormats: {
-          millisecond: '%l:%M %p',
-          second: '%l:%M %p',
-          minute: '%l:%M %p',
-          hour: '%l:%M %p',
-          day: '%l:%M %p',
-          week: '%l:%M %p',
-          month: '%l:%M %p',
-          year: '%l:%M %p'
-        },
+        dateTimeLabelFormats: setAllTimeLabels('%l:%M %p'),
         labels: {
           enabled: true,
         }
       },
       tooltip: {
         valueSuffix: ' ' + prop.unit,
-        dateTimeLabelFormats: {
-          millisecond: '%l:%M:%S %p - %b %e, %Y',
-          second: '%l:%M:%S %p - %b %e, %Y',
-          minute: '%l:%M:%S %p - %b %e, %Y',
-          hour: '%l:%M:%S %p - %b %e, %Y',
-          day: '%l:%M:%S %p - %b %e, %Y',
-          week: '%l:%M:%S %p - %b %e, %Y',
-          month: '%l:%M:%S %p - %b %e, %Y',
-          year: '%l:%M:%S %p - %b %e, %Y'
-        }
+        dateTimeLabelFormats: setAllTimeLabels('%l:%M:%S %p - %b %e, %Y')
       },
       yAxis: {
         title: {
@@ -93,9 +75,28 @@ export default Ember.Component.extend({
       liveConfig.xAxis.tickInterval = aDay;
       liveConfig.xAxis.minRange = aDay * 7;
       liveConfig.xAxis.max = moment().valueOf();
-      liveConfig.tooltip.dateTimeLabelFormats.hour = '%l %p - %b %e, %Y';
+      liveConfig.tooltip.dateTimeLabelFormats = setAllTimeLabels('%l %p - %b %e, %Y');
+      liveConfig.xAxis.dateTimeLabelFormats = setAllTimeLabels('%B %e');
     }
     return liveConfig;
 
   })
 });
+
+function setAllTimeLabels(label){
+  const timeTypes = [
+    'millisecond',
+    'second',
+    'minute',
+    'hour',
+    'day',
+    'week',
+    'month',
+    'year'
+  ];
+  const labels = {};
+  for (let t of timeTypes) {
+    labels[t] = label;
+  }
+  return labels;
+}
