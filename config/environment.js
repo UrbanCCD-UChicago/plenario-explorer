@@ -27,11 +27,7 @@ module.exports = function(environment) {
     ENV['ember-cli-mirage'] = {
       enabled: false
     };
-    if (ENV['ember-cli-mirage'].enabled) {
       ENV.host = 'http://plenar.io';
-    } else {
-      ENV.host = 'http://plenario-app-venusaur.us-east-1.elasticbeanstalk.com';
-    }
 
     // ENV.APP.LOG_RESOLVER = true;
     // ENV.APP.LOG_ACTIVE_GENERATION = true;
