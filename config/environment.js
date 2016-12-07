@@ -53,7 +53,7 @@ module.exports = function(environment) {
   }
 
   if (environment === 'production') {
-    ENV.host = 'http://plenario-app-venusaur.us-east-1.elasticbeanstalk.com';
+    ENV.host = 'http://plenar.io';
   }
 
   return ENV;

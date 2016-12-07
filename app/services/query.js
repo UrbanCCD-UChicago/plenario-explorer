@@ -409,7 +409,7 @@ export default Ember.Service.extend({
    */
   sensorDownload(params) {
     // networkId, nodeId, features, startDatetime, endDatetime
-    const endpoint = `http://plenario-app-venusaur.us-east-1.elasticbeanstalk.com/v1/api/sensor-networks/${params.networkId}/download`;
+    const endpoint = `http://plenar.io/v1/api/sensor-networks/${params.networkId}/download`;
     const queryParams = {
       nodes: params.nodeId,
       features: params.features.join(','),
@@ -427,7 +427,7 @@ export default Ember.Service.extend({
    * @param newTab
    */
   getDataDump(ticket) {
-    const endpoint = `http://plenario-app-venusaur.us-east-1.elasticbeanstalk.com/v1/api/datadump/${ticket}`;
+    const endpoint = `http://plenar.io/v1/api/datadump/${ticket}`;
     window.open(endpoint);
   },
 
@@ -437,7 +437,7 @@ export default Ember.Service.extend({
    * @param ticket
    */
   job(ticket) {
-    const endpoint = 'http://plenario-app-venusaur.us-east-1.elasticbeanstalk.com/v1/api/jobs/'+ticket;
+    const endpoint = 'http://plenar.io/v1/api/jobs/'+ticket;
     const job = this.get('ajax').request(endpoint);
     return job;
   },
