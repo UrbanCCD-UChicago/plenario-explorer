@@ -24,6 +24,7 @@ export default Ember.Component.extend({
 
       return [moment(datetime).valueOf() - tzOffsetInMs, value];
     });
+
     // Throw it into Highcharts.
     // Be sure to transform to JS Array from Ember Array
     // so that Highcharts doesn't get confused.
@@ -32,7 +33,7 @@ export default Ember.Component.extend({
 
     this.set('series', [{
       showInLegend: false,
-      data: series,
+      data: series.sort(),
       name: tooltipName
     }]);
   }),
