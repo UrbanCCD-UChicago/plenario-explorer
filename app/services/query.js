@@ -129,9 +129,9 @@ export default Ember.Service.extend({
       return mockNetwork.getMockSocket(nodeId);
     }
     const io = this.get('io');
-    const host = 'http://streaming.plenar.io';
+    const host = 'ws://streaming.plenar.io';
     const connString = URI(host).addQuery({
-      sensor_network: networkId,
+      network: networkId,
       nodes: nodeId,
       sensors: sensorList.join(',')
     }).toString();

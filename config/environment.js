@@ -19,15 +19,15 @@ module.exports = function(environment) {
     }
   };
 
-  ENV.networkId = 'plenario_development';
-  ENV.defaultNode = 'NODE_DEV_1';
+  ENV.networkId = 'array_of_things_chicago';
+  ENV.defaultNode = '0000001e0610ba72';
 
   if (environment === 'development') {
 
     ENV['ember-cli-mirage'] = {
       enabled: false
     };
-      ENV.host = 'http://plenar.io';
+      ENV.host = 'http://plenario-private.us-east-1.elasticbeanstalk.com';
 
     // ENV.APP.LOG_RESOLVER = true;
     // ENV.APP.LOG_ACTIVE_GENERATION = true;
@@ -37,7 +37,7 @@ module.exports = function(environment) {
   }
 
   if (environment === 'test') {
-    ENV.host = 'http://plenar.io';
+    ENV.host = 'http://plenario-private.us-east-1.elasticbeanstalk.com';
     // Testem prefers this...
     ENV.baseURL = '/';
     ENV.locationType = 'none';
@@ -53,7 +53,7 @@ module.exports = function(environment) {
   }
 
   if (environment === 'production') {
-    ENV.host = 'http://plenar.io';
+    ENV.host = 'http://plenario-private.us-east-1.elasticbeanstalk.com';
   }
 
   return ENV;

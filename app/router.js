@@ -16,7 +16,7 @@ Router.map(function() {
   });
   this.route('not-found', {path: '/*:path_name'});
   this.route('loading');
-  this.route('error', {path: '/error/:error_message'});
+  this.route('err', {path: '/error/:error_message'});
   this.route('sensors');
 });
 

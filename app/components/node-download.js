@@ -37,7 +37,7 @@ export default Ember.Component.extend({
       const features = Object.keys(featureHash).filter(f => featureHash[f]);
 
       const params = {
-        networkId: 'plenario_development',
+        networkId: 'array_of_things_chicago',
         startDatetime: startDate,
         endDatetime: endDate,
         nodes: this.get('nodeId'),
