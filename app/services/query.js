@@ -409,7 +409,7 @@ export default Ember.Service.extend({
    */
   sensorDownload(params) {
     // networkId, nodeId, features, startDatetime, endDatetime
-    const endpoint = `http://plenar.io/v1/api/sensor-networks/${params.networkId}/download`;
+    const endpoint = `${ENV.host}/v1/api/sensor-networks/${params.networkId}/download`;
     const queryParams = {
       nodes: params.nodeId,
       features: params.features.join(','),
