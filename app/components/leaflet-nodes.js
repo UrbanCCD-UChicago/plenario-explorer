@@ -9,15 +9,15 @@ export default LeafletBase.extend({
   // Alternate icon color to signal selection
   SelectedIcon: L.Icon.extend({
     options: {
-      iconUrl: '/assets/images/marker-red.png',
-      iconRetinaUrl: '/assets/images/marker-red-2x.png'
+      iconUrl: 'https://s3.amazonaws.com/ember-dev/assets/images/marker-red.png',
+      iconRetinaUrl: 'https://s3.amazonaws.com/ember-dev/assets/images/marker-red-2x.png'
     }
   }),
 
   DefaultIcon: L.Icon.extend({
     options: {
-      iconUrl: '/assets/images/marker-icon.png',
-      iconRetinaUrl: '/assets/images/marker-icon-2x.png'
+      iconUrl: 'https://s3.amazonaws.com/ember-dev/assets/images/marker-icon.png',
+      iconRetinaUrl: 'https://s3.amazonaws.com/ember-dev/assets/images/marker-icon-2x.png'
     }
   }),
 
