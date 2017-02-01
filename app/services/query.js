@@ -417,7 +417,7 @@ export default Ember.Service.extend({
       end_datetime: params.endDatetime
     };
     // return this.get('ajax').request(endpoint, {data: queryParams});
-    var query = endpoint + '?' + URI('').addQuery(params).toString();
+    var query = endpoint + '?' + URI('').addQuery(queryParams).toString();
     console.log('[services.query] sensorDownload.query: ' + query);
     return window.open(query);
   },

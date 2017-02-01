@@ -2,16 +2,18 @@ import testData from 'plenario-explorer/mirage/test-data';
 import {sensorData, mockNetwork} from 'plenario-explorer/mirage/sensor-data';
 import moment from 'moment';
 
+import ENV from 'plenario-explorer/config/environment';
+
 export default function () {
-  this.get('http://plenar.io/v1/api/shapes', function () {
+  this.get(ENV.host + '/v1/api/shapes', function () {
     return testData.shapesData;
   });
 
-  this.get('http://plenar.io/v1/api/datasets', function () {
+  this.get(ENV.host + '/v1/api/datasets', function () {
     return testData.eventData;
   });
 
-  this.get('http://plenar.io/v1/api/detail-aggregate', function (_, request) {
+  this.get(ENV.host + '/v1/api/detail-aggregate', function (_, request) {
     if (request.queryParams.dataset_name === "311_service_requests_sanitation_code_complaints") {
       return testData.detailAggregateSanitation;
     } else if (request.queryParams.dataset_name === "311_service_requests_rodent_baiting") {
@@ -19,7 +21,7 @@ export default function () {
     }
   });
 
-  this.get('http://plenar.io/v1/api/grid', function (_, request) {
+  this.get(ENV.host + '/v1/api/grid', function (_, request) {
     if (request.queryParams.dataset_name === "311_service_requests_sanitation_code_complaints") {
       return testData.gridSanitation;
     } else if (request.queryParams.dataset_name === "311_service_requests_rodent_baiting") {
@@ -27,7 +29,7 @@ export default function () {
     }
   });
 
-  this.get('http://plenar.io/v1/api/detail', function (_, request) {
+  this.get(ENV.host + '/v1/api/detail', function (_, request) {
     if (request.queryParams.dataset_name === '311_service_requests_sanitation_code_complaints') {
       return testData.detailSanitation;
     } else if (request.queryParams.dataset_name === '311_service_requests_rodent_baiting') {
@@ -35,7 +37,7 @@ export default function () {
     }
   });
 
-  this.get('http://plenar.io/v1/api/sensor-networks/plenario_development/nodes', function() {
+  this.get(ENV.host + '/v1/api/sensor-networks/plenario_development/nodes', function() {
     return sensorData.nodes;
   });
 
@@ -43,7 +45,7 @@ export default function () {
     return sensorData.curation;
   });
 
-  this.get('http://plenar.io/v1/api/sensor-networks/plenario_development/query', function(_, {queryParams}) {
+  this.get(ENV.host + '/v1/api/sensor-networks/plenario_development/query', function(_, {queryParams}) {
     // Note that this application always sends a singular node ID
     // but the API accepts a comma separated list,
     // hence singular-plural weirdness here.
@@ -54,7 +56,7 @@ export default function () {
     return {data: observations};
   });
 
-  this.get('http://plenar.io/v1/api/sensor-networks/plenario_development/aggregate', function(_, {queryParams}){
+  this.get(ENV.host + '/v1/api/sensor-networks/plenario_development/aggregate', function(_, {queryParams}){
     let type = queryParams.feature;
     const now = moment();
     const weekAgo = moment().subtract(7, 'days');

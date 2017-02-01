@@ -42,7 +42,8 @@ module.exports = function(environment) {
     ENV.baseURL = '/';
     ENV.locationType = 'none';
     ENV['ember-cli-mirage'] = {
-      enabled: true
+      enabled: true,
+      directory: 'app/mirage'
     };
 
     // keep test console output quieter
