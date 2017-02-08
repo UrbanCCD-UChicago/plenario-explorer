@@ -24,7 +24,7 @@ export default Ember.Service.extend({
    */
   openInNewTab(endpoint, params) {
     const qString = URI('').addQuery(params).toString();
-    window.open(`${this.queryRoot}/v1/api${endpoint}${qString}`);
+    window.open(`${this.get('queryRoot')}/v1/api${endpoint}${qString}`);
   },
 
   camelizeHash: function (hash) {
