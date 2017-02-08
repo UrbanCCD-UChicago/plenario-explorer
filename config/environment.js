@@ -27,7 +27,7 @@ module.exports = function(environment) {
     ENV['ember-cli-mirage'] = {
       enabled: false
     };
-      ENV.host = 'http://plenario-private.us-east-1.elasticbeanstalk.com';
+      ENV.host = 'http://plenar.io';
 
     // ENV.APP.LOG_RESOLVER = true;
     // ENV.APP.LOG_ACTIVE_GENERATION = true;
@@ -37,7 +37,7 @@ module.exports = function(environment) {
   }
 
   if (environment === 'test') {
-    ENV.host = 'http://plenario-private.us-east-1.elasticbeanstalk.com';
+    ENV.host = 'http://plenar.io';
     // Testem prefers this...
     ENV.baseURL = '/';
     ENV.locationType = 'none';
@@ -54,7 +54,7 @@ module.exports = function(environment) {
   }
 
   if (environment === 'production') {
-    ENV.host = 'http://plenario-private.us-east-1.elasticbeanstalk.com';
+    ENV.host = 'http://plenar.io';
   }
 
   return ENV;
