@@ -1,0 +1,11 @@
+{{#if (eq viewType 'live')}}
+  {{stream-spinner streams=streams}}
+  {{#each-in streams as |propName propObj|}}
+    {{stream-chart property=propObj viewType=viewType}}
+  {{/each-in}}
+{{else}}
+  {{stream-spinner streams=streams}}
+  {{#each-in streams as |propName propObj|}}
+    {{stream-chart property=propObj viewType=viewType}}
+  {{/each-in}}
+{{/if}}

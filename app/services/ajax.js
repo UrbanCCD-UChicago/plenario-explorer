@@ -1,7 +1,7 @@
 import AjaxService from 'ember-ajax/services/ajax';
+import ENV from 'plenario-explorer/config/environment';
 
 export default AjaxService.extend({
-  //IMPORTANT: Be sure to keep "host" in sync with "queryRoot" in the query service.
-  host: 'http://plenar.io',
+  host: ENV.host,
   namespace: '/v1/api'
 });

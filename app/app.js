@@ -3,6 +3,7 @@ import Resolver from './resolver';
 import "npm:babel-polyfill";
 import loadInitializers from 'ember-load-initializers';
 import config from './config/environment';
+Ember.assign = Object.assign;
 
 /* global L */
 
@@ -24,7 +25,8 @@ loadInitializers(App, config.modulePrefix);
 export default App;
 
 Ember.onerror = function (error) {
-  console.log('GLOBAL ERROR:', error.message);
+  // console.log('GLOBAL ERROR:', error.message);
+  console.log(error.stack);
   if(error.message.toLowerCase().indexOf("uri")>-1) {
     window.location = `/explore/error/${error.message}`;
   }

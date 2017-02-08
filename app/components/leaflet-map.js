@@ -22,6 +22,13 @@ export default Ember.Component.extend({
 
   center: [[lat, lng], zoom],
 
+  SelectedIcon: L.Icon.extend({
+    options: {
+      iconUrl: 'https://s3.amazonaws.com/ember-dev/assets/images/marker-red.png',
+      iconRetinaUrl: 'https://s3.amazonaws.com/ember-dev/assets/images/marker-red-2x.png'
+    }
+  }),
+
   didInsertElement() {
     this._super(...arguments);
     Ember.run.scheduleOnce('afterRender', this, function() {
@@ -119,7 +126,9 @@ export default Ember.Component.extend({
         geoJSON = JSON.parse(geoJSON);
       }
 
+      const selectedIcon = new this.SelectedIcon();
       // Add popups
+      const clicked = this.get('clicked');
       const onEachFeature = function(feature, layer) {
         const props = feature.properties;
         if (props && Object.keys(props).length > 0) {
@@ -129,6 +138,14 @@ export default Ember.Component.extend({
           }
           table += '</table>';
           layer.bindPopup(table);
+          console.log(feature, layer);
+          layer.on({ click: function(marker) {
+            // Action up.
+            console.log(this);
+            console.log(marker);
+            this.setIcon(selectedIcon);
+            clicked(marker);
+          }});
         }
       };
 
@@ -247,5 +264,4 @@ export default Ember.Component.extend({
       self.sendAction('mapMovedByUser', [[self.map.getCenter().lat, self.map.getCenter().lng], self.map.getZoom()]);
     }
   },
-
 });

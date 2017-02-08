@@ -1,0 +1,14 @@
+<table class="table">
+  <tbody>
+    <tr>
+        <td>Selected</td>
+        <td>{{nodeMeta.id}}</td>
+    </tr>
+    {{#each-in nodeMeta.metadata as |key val|}}
+      <tr>
+          <td>{{key}}</td>
+          <td>{{val}}</td>
+      </tr>
+    {{/each-in}}
+  </tbody>
+</table>

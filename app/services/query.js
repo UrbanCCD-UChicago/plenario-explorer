@@ -1,14 +1,21 @@
 import Ember from 'ember';
 import moment from 'moment';
+import Node from '../models/node';
+import ENV from 'plenario-explorer/config/environment';
+// import MockNetwork from '../mirage/mock-network'
+import {sensorData, mockNetwork} from '../mirage/sensor-data';
 /* global URI */
-
+// const network = new MockNetwork(sensorData.curation, sensorData.nodes.data);
 /**
  * Grabs and caches all dataset metadata.
  */
 export default Ember.Service.extend({
   ajax: Ember.inject.service(),
+  io: Ember.inject.service('socket-io'),
 
-  queryRoot: "http://plenar.io",
+  queryRoot: Ember.computed('ajax', function() {
+    return this.get('ajax').host;
+  }),
 
   /**
    * For when we want to redirect the user
@@ -17,8 +24,7 @@ export default Ember.Service.extend({
    */
   openInNewTab(endpoint, params) {
     const qString = URI('').addQuery(params).toString();
-    //window.open(`http://plenar.io/v1/api${endpoint}${qString}`);
-    window.open(`${this.queryRoot}/v1/api${endpoint}${qString}`);
+    window.open(`${this.get('queryRoot')}/v1/api${endpoint}${qString}`);
   },
 
   camelizeHash: function (hash) {
@@ -32,7 +38,7 @@ export default Ember.Service.extend({
     return normalized;
   },
 
-
+  // Kludge for enabling right-click
   injectExplorerData: function (route, params, obj) {
     Ember.assign(obj, {'explorerData': {'route': route, 'queryParams': params}});
     return obj;
@@ -42,6 +48,7 @@ export default Ember.Service.extend({
     this._super(...arguments);
     this.set('events', this.get('ajax').request('/datasets'));
     this.set('shapes', this.get('ajax').request('/shapes'));
+    //this.set('nodes', this.get('ajax').request('/sensor-networks/ArrayOfThings/nodes'));
   },
 
   _getMetadata(type) {
@@ -103,6 +110,78 @@ export default Ember.Service.extend({
   shapeMetadata(name) {
     const allEventDatasets = this._getMetadata('shapes');
     return this._findDataset(name, allEventDatasets);
+  },
+
+  allNodeMetadata() {
+    const qString = `/sensor-networks/${ENV.networkId}/nodes`;
+    return this.get('ajax').request(qString)
+    .then(nodeMeta =>
+      {
+        return nodeMeta.data.map(
+          nodeRecord => Node.create({nodeGeoJSON: nodeRecord})
+        );
+      }
+    );
+  },
+
+  getSocketForNode(networkId, nodeId, sensorList) {
+    if (ENV['ember-cli-mirage'].enabled) {
+      return mockNetwork.getMockSocket(nodeId);
+    }
+    const io = this.get('io');
+    const host = 'ws://streaming.plenar.io';
+    const connString = URI(host).addQuery({
+      network: networkId,
+      nodes: nodeId,
+      sensors: sensorList.join(',')
+    }).toString();
+    return io.socketFor(connString);
+  },
+
+  getHistoryFor(nodeId, sensorName, type) {
+    const ajax = this.get('ajax');
+    const aWeekAgo = moment().subtract(7, 'days').utc().format();
+    // Could already be a string.
+    // If it's not, we want it to be a comma delimited list
+    type = type.toString();
+
+    const params = {
+      data: {
+        sensors: sensorName,
+        node: nodeId,
+        feature: type,
+        function: 'avg',
+        start_datetime: aWeekAgo
+      }
+    };
+    const path = `/sensor-networks/${ENV.networkId}/aggregate`;
+    return ajax.request(path, params).then(response => Ember.RSVP.resolve(response.data));
+  },
+
+  getSensorObservations(nodeId, networkId, feature, sensor) {
+    const params = {
+      data: {
+        feature: feature,
+        nodes: nodeId,
+        start_datetime: moment().utc().subtract(1, 'hours').format(),
+        end_datetime: moment().utc().format()
+      }
+    };
+    if (sensor) {params.data.sensors = sensor;}
+    const path = `/sensor-networks/${networkId}/query`;
+    return this.get('ajax').request(path, params).then(response => {
+      return response.data;
+    });
+  },
+
+  getCurationFor(networkId) {
+    if (ENV['ember-cli-mirage'].enabled) {
+      return sensorData.curation;
+    }
+    else {
+      const url = `http://sensor-curation.s3-website-us-east-1.amazonaws.com/${networkId}.json`;
+      return this.get('ajax').request(url).then(response => response);
+    }
   },
 
   _findDataset(name, datasets) {
@@ -325,15 +404,34 @@ export default Ember.Service.extend({
   },
 
   /**
+   * Analogue of dataDump for sensor data.
+   *
+   */
+  sensorDownload(params) {
+    // networkId, nodeId, features, startDatetime, endDatetime
+    const endpoint = `${ENV.host}/v1/api/sensor-networks/${params.networkId}/download`;
+    const queryParams = {
+      nodes: params.nodeId,
+      features: params.features.join(','),
+      start_datetime: params.startDatetime,
+      end_datetime: params.endDatetime
+    };
+    // return this.get('ajax').request(endpoint, {data: queryParams});
+    var query = endpoint + '?' + URI('').addQuery(queryParams).toString();
+    console.log('[services.query] sensorDownload.query: ' + query);
+    return window.open(query);
+  },
+
+  /**
    * Fetch the large CSV or GeoJSON download of events
    *
    * @param name
    * @param params
    * @param newTab
    */
-  getDataDump(ticket, type) {
-    const endpoint = `/datadump/${ticket}`;
-    this.openInNewTab(endpoint, {data_type: type});
+  getDataDump(ticket) {
+    const endpoint = `http://plenar.io/v1/api/datadump/${ticket}`;
+    window.open(endpoint);
   },
 
   /**
@@ -342,7 +440,7 @@ export default Ember.Service.extend({
    * @param ticket
    */
   job(ticket) {
-    const endpoint = '/jobs/'+ticket;
+    const endpoint = 'http://plenar.io/v1/api/jobs/'+ticket;
     const job = this.get('ajax').request(endpoint);
     return job;
   },

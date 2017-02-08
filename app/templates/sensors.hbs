@@ -1,0 +1,71 @@
+<div class="row">
+    <div class='col-md-5'>
+
+        <div class="row">
+            <div class="col-xs-3">
+                </div>
+            <div class="col-xs-6">
+                <a href="http://arrayofthings.github.io/">
+                    <img src="https://s3.amazonaws.com/ember-dev/assets/images/ArrayofThingsLogo-small.png"
+                    class="img-responsive"/>
+                </a>
+            </div>
+            <div class="col-xs-3">
+            </div>
+        </div>
+      <br>
+      <p class="lead">
+        Select a node to view live readings or long-term trends.
+      </p>
+      <p>
+          <strong>{{model.nodes.length}}</strong> nodes available.
+      </p>
+      {{node-meta nodeMeta=selectedNodeMeta}}
+
+    </div>
+
+    <div class='col-md-7'>
+      {{
+        leaflet-nodes
+        geoJSON=model.nodes
+        selectionAction=(action "onSelect")
+        selectedNode=selectedNodeMeta.id
+      }}
+    </div>
+</div>
+<div class="row">
+  {{#bs-button-group value=viewType type="radio" class="btn-block"}}
+    {{#bs-button class="btn-info" value='live'}}Live View{{/bs-button}}
+    {{#bs-button class="btn-info" value='history'}}History View{{/bs-button}}
+    {{#bs-button class="btn-info" value='download'}}Download{{/bs-button}}
+  {{/bs-button-group}}
+<div class='col-md-12'>
+  <br>
+    {{#if (eq viewType 'live')}}
+        <p>Observations from the last hour. New observations will appear live.</p>
+    {{else if (eq viewType 'history')}}
+        <p>Hourly averages over the last week.</p>
+    {{else}}
+        <p>Download bulk data from node <strong>{{selectedNodeMeta.id}}</strong>.</p>
+    {{/if}}
+
+    {{#unless (eq viewType 'download')}}
+      {{#if refreshNodeChart}}
+        {{node-chart nodeMeta=selectedNodeMeta viewType=viewType curatedTypes=model.curation.curatedTypes}}
+      {{else}}
+        {{node-chart nodeMeta=selectedNodeMeta viewType=viewType curatedTypes=model.curation.curatedTypes}}
+      {{/if}}
+
+    {{else}}
+      {{node-download download=(action 'download') nodeMeta=selectedNodeMeta curation=model.curation}}
+    {{/unless}}
+      <br>
+      <p class="well">
+          Download data and create your own Array of Things applications with
+          <a href="http://canary-docs.s3-website-us-east-1.amazonaws.com/#sensor-network-data">
+              the Plenario API
+          </a>.
+      </p>
+  </div>
+</div>
+

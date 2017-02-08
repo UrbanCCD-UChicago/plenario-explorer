@@ -132,16 +132,12 @@ export default Ember.Controller.extend({
         case 'csvPointsDump':
           let queryCSV = Ember.copy(qParams);
           Ember.assign(queryCSV, {data_type: "csv"});
-          // Reload to force-drop ongoing aggregate queries, allowing dataDump to start.
-          this.get('datadumpIndexController').set('reload', true);
-          this.transitionToRoute('datadump', {queryParams: queryCSV});
+          qService.dataDump(queryCSV, true);
           break;
         case 'geoJSONPointsDump':
           let queryJSON = Ember.copy(qParams);
           Ember.assign(queryJSON, {data_type: "json"});
-          // Reload to force-drop ongoing aggregate queries, allowing dataDump to start.
-          this.get('datadumpIndexController').set('reload', true);
-          this.transitionToRoute('datadump', {queryParams: queryJSON});
+          qService.dataDump(queryJSON, true);
           break;
         case 'grid':
           qService.grid(qParams, true);

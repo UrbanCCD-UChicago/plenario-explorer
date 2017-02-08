@@ -7,8 +7,8 @@ moduleForAcceptance('Acceptance | user query');
 
 const geoJSON = encodeURIComponent(JSON.stringify(testData.params.location_geom__within));
 
-test('Front page loads properly with query parameters.', function (assert) {
-  visit('?obs_date__ge=2010-06-01&obs_date__le=2017-07-02&agg=day&center=seattle');
+test('Discover page loads properly with query parameters.', function (assert) {
+  visit('/discover?obs_date__ge=2010-06-01&obs_date__le=2017-07-02&agg=day&center=seattle');
 
   andThen(function () {
     assert.equal(currentRouteName(), 'discover.index', "The front page routes to discover.index.");
