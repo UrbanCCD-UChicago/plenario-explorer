@@ -28,6 +28,7 @@ module.exports = function(defaults) {
   app.import('vendor/leaflet-label/leaflet.label.css');
   app.import('bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js');
   app.import('bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css');
+  app.import('bower_components/pusher-js/dist/web/pusher.js');
 
   // Use `app.import` to add additional libraries to the generated
   // output files.

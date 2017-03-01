@@ -8,6 +8,7 @@ import SensorMap from '../utils/sensor-map';
 
 export default E.Service.extend({
   query: E.inject.service(),
+  pusher: E.inject.service(),
 
   // To prevent the charts from stretching into infinity,
   // only keep a set window of minutes on display
@@ -81,8 +82,9 @@ export default E.Service.extend({
   initSocket() {
     const id = this.get('nodeId');
     const sensorList = [...this.get('sensorMap').keys()];
-    const socket = this.get('query').getSocketForNode(NETWORK, id, sensorList);
-    socket.on('data', this.appendObservation, this);
+    this.get('pusher').subscribe('private-' + id, this.appendObservation);
+    // const socket = this.get('query').getSocketForNode(NETWORK, id, sensorList);
+    // socket.on('data', this.appendObservation, this);
   },
 
   /**
