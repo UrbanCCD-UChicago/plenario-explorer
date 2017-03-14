@@ -35,14 +35,16 @@ export default Ember.Component.extend({
       const endDate = to8601Date(this.get('endDate'));
       const featureHash = this.get('selectedFeatures');
       const features = Object.keys(featureHash).filter(f => featureHash[f]);
+      let node = this.get('nodeMeta').id;
 
-      const params = {
+      let params = {
         networkId: 'array_of_things_chicago',
         startDatetime: startDate,
         endDatetime: endDate,
-        nodes: this.get('nodeId'),
+        nodes: node,
         features: features
       };
+
       this.get('download')(params);
     }
   },

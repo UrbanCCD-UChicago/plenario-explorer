@@ -10,5 +10,9 @@ export default Ember.Service.extend({
     subscribe(channelName, callback) {
         const channel = this.get('pusher').subscribe(channelName);
         channel.bind('data', callback);
+    },
+
+    unsubscribe(channelName) {
+        this.get('pusher').unsubscribe(channelName);
     }
 });

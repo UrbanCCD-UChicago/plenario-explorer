@@ -14,6 +14,9 @@ export default E.Service.extend({
   // only keep a set window of minutes on display
   windowMinutes: 60,
 
+  // Holds the names of currently subscribed channels
+  channels: [],
+
   /**
    * Return a hash mapping types to a mutable array
    * of sensor values.
@@ -80,11 +83,20 @@ export default E.Service.extend({
    * Create a socket for this node's sensors
    */
   initSocket() {
-    const id = this.get('nodeId');
-    const sensorList = [...this.get('sensorMap').keys()];
-    this.get('pusher').subscribe('private-' + id, this.appendObservation);
-    // const socket = this.get('query').getSocketForNode(NETWORK, id, sensorList);
-    // socket.on('data', this.appendObservation, this);
+    let channels = this.get('channels');
+    let pusher = this.get('pusher');
+    let node = this.get('nodeId');
+    let sensors = this.get('sensorMap').keys()
+
+    for (let channel of channels) {
+      pusher.unsubscribe(channel);
+    }
+    
+    for (let sensor of sensors) {
+      let channel = `private-${NETWORK};${node};${sensor}`;
+      pusher.subscribe(channel, this.appendObservation.bind(this));
+      channels.push(channel);
+    }
   },
 
   /**
@@ -93,6 +105,7 @@ export default E.Service.extend({
    * @param obs
    */
   appendObservation(obs) {
+    obs = JSON.parse(obs.message);
     const vals = Value.adaptFromAPI(obs);
     const streams = this.get('streams');
     for (let val of vals) {
