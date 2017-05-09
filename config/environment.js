@@ -27,7 +27,7 @@ module.exports = function(environment) {
     ENV['ember-cli-mirage'] = {
       enabled: false
     };
-      ENV.host = 'http://plenar.io';
+    ENV.host = 'http://plenario-private.us-east-1.elasticbeanstalk.com'; // FIXME: dev server
 
     // ENV.APP.LOG_RESOLVER = true;
     // ENV.APP.LOG_ACTIVE_GENERATION = true;
@@ -51,7 +51,7 @@ module.exports = function(environment) {
     ENV.APP.LOG_VIEW_LOOKUPS = false;
 
     ENV.APP.rootElement = '#ember-testing';
-    
+
   }
 
   if (environment === 'production') {
@@ -60,7 +60,7 @@ module.exports = function(environment) {
 
   ENV.APP.PUSHER = {};
   ENV.APP.PUSHER.key = 'c6851f0950381b69a136';
-  ENV.APP.PUSHER.auth = 'https://8k1tgwbine.execute-api.us-east-1.amazonaws.com/test/pusher/auth';
+  ENV.APP.PUSHER.auth = 'https://gm76b1jzz1.execute-api.us-east-1.amazonaws.com/development'; // FIXME: dev server
 
   return ENV;
 };
