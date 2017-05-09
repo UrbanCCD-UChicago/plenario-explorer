@@ -51,11 +51,16 @@ module.exports = function(environment) {
     ENV.APP.LOG_VIEW_LOOKUPS = false;
 
     ENV.APP.rootElement = '#ember-testing';
+    
   }
 
   if (environment === 'production') {
     ENV.host = 'http://plenar.io';
   }
+
+  ENV.APP.PUSHER = {};
+  ENV.APP.PUSHER.key = 'c6851f0950381b69a136';
+  ENV.APP.PUSHER.auth = 'https://8k1tgwbine.execute-api.us-east-1.amazonaws.com/test/pusher/auth';
 
   return ENV;
 };
