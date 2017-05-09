@@ -1,5 +1,5 @@
 {
-  "predef": [
+  "globals": [
     "$",
     "server",
     "document",
@@ -24,7 +24,6 @@
   "nomen": false,
   "onevar": false,
   "plusplus": false,
-  "regexp": false,
   "undef": true,
   "sub": true,
   "strict": false,
