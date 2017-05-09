@@ -15,7 +15,7 @@ export default Ember.Controller.extend({
     const nodeMap = new Map(nodeTuples);
     this.set('nodeMap', nodeMap);
     if (!this.get('nodeId')) {
-      this.set('nodeId', nodeList[0].properties.id);
+      this.set('nodeId', nodeList[2].properties.id); // using node at index 2 because the node at 0 times out
     }
   }),
 
