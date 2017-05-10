@@ -1,9 +1,10 @@
-import Ember from 'ember';
+import Ember from "ember";
 
 export default Ember.Route.extend({
   query: Ember.inject.service('query'),
   model() {
     return Ember.RSVP.hash({
+      nodes: this.get('query').allNodeMetadata(),
       pointDatasets: this.get('query').allEventMetadata(),
       shapeDatasets: this.get('query').allShapeMetadata()
     });

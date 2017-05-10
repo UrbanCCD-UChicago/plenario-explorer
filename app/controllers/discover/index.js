@@ -1,5 +1,5 @@
-import Ember from 'ember';
-import moment from 'moment';
+import Ember from "ember";
+import moment from "moment";
 
 export default Ember.Controller.extend({
   query: Ember.inject.service(),
@@ -19,6 +19,9 @@ export default Ember.Controller.extend({
   }),
 
   actions: {
+    navigateToNode: function(name) {
+      this.transitionToRoute(`/node/${name}`);
+    },
     navigateToShape: function(name) {
       this.transitionToRoute(`/shape/${name}`);
     },
