@@ -21,6 +21,7 @@ module.exports = function(environment) {
 
   ENV.networkId = 'array_of_things_chicago';
   ENV.defaultNode = '0000001e0610ba72';
+  ENV.curationHost = 'http://sensor-curation.s3-website-us-east-1.amazonaws.com';
 
   if (environment === 'development') {
 

@@ -1,0 +1,53 @@
+<div class="row">
+  <div class='col-md-5'>
+
+    <div class="row">
+      <div class="col-xs-6">
+        <a href="http://arrayofthings.github.io/">
+          <img src="https://s3.amazonaws.com/ember-dev/assets/images/ArrayofThingsLogo-small.png"
+               class="img-responsive"/>
+        </a>
+        <h3 class='detail-header'>Node {{nodeMeta.id}}</h3>
+        <!-- TODO: componentize this info, like how shape metadata is displayed now -->
+        <strong>Location: </strong> {{display-latlong node.geometry.coordinates}}
+        <br>
+        {{#bs-button-group value=viewType type="radio" class="btn-block"}}
+          {{#bs-button class="btn-info" value='live'}}Live View{{/bs-button}}
+          {{#bs-button class="btn-info" value='history'}}History View{{/bs-button}}
+          {{#bs-button class="btn-info" value='download'}}Download{{/bs-button}}
+        {{/bs-button-group}}
+      </div>
+      <div class="col-xs-6">
+        {{leaflet-nodes geoJSON=model.nodes}}
+      </div>
+    </div>
+  </div>
+
+</div>
+<div class="row">
+
+  <div class='col-md-12'>
+    <br>
+    {{#if (eq viewType 'live')}}
+      <p>Observations from the last hour. New observations will appear live.</p>
+    {{else if (eq viewType 'history')}}
+      <p>Hourly averages over the last week.</p>
+    {{else}}
+      <p>Download bulk data from node <strong>{{nodeMeta.id}}</strong>.</p>
+    {{/if}}
+
+    {{#unless (eq viewType 'download')}}
+      {{node-chart nodeMeta=nodeMeta viewType=viewType curatedTypes=model.curation.curatedTypes}}
+    {{else}}
+      {{node-download download=(action 'download') nodeMeta=nodeMeta curation=model.curation}}
+    {{/unless}}
+    <br>
+    <p class="well">
+      Download data and create your own Array of Things applications with
+      <a href="http://canary-docs.s3-website-us-east-1.amazonaws.com/#sensor-network-data"> <!-- FIXME -->
+        the Plenario API
+      </a>.
+    </p>
+  </div>
+</div>
+

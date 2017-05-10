@@ -1,9 +1,9 @@
-import Ember from 'ember';
-import moment from 'moment';
-import Node from '../models/node';
-import ENV from 'plenario-explorer/config/environment';
+import Ember from "ember";
+import moment from "moment";
+import Node from "../models/node";
+import ENV from "plenario-explorer/config/environment";
 // import MockNetwork from '../mirage/mock-network'
-import {sensorData, mockNetwork} from '../mirage/sensor-data';
+import {mockNetwork, sensorData} from "../mirage/sensor-data";
 /* global URI */
 // const network = new MockNetwork(sensorData.curation, sensorData.nodes.data);
 /**
@@ -124,6 +124,18 @@ export default Ember.Service.extend({
     );
   },
 
+  nodeMetadata(nodeId) {
+    const qString = `/sensor-networks/${ENV.networkId}/nodes/${nodeId}`;
+    return this.get('ajax').request(qString)
+      .then(nodeMeta =>
+        {
+          return nodeMeta.data.map(
+            nodeRecord => Node.create({nodeGeoJSON: nodeRecord})
+          );
+        }
+      );
+  },
+
   getSocketForNode(networkId, nodeId, sensorList) {
     if (ENV['ember-cli-mirage'].enabled) {
       return mockNetwork.getMockSocket(nodeId);
@@ -179,7 +191,7 @@ export default Ember.Service.extend({
       return sensorData.curation;
     }
     else {
-      const url = `http://sensor-curation.s3-website-us-east-1.amazonaws.com/${networkId}.json`;
+      const url = `${ENV.curationHost}/${networkId}.json`;
       return this.get('ajax').request(url).then(response => response);
     }
   },
@@ -417,7 +429,7 @@ export default Ember.Service.extend({
       end_datetime: params.endDatetime
     };
 
-    // Remove empty keys to prevent the creation of malformed query strings    
+    // Remove empty keys to prevent the creation of malformed query strings
     for (let key of Object.keys(queryParams)) {
       if (!queryParams[key]) {
         delete queryParams[key];

@@ -1,11 +1,11 @@
-import Ember from 'ember';
+import Ember from "ember";
 
 export default Ember.Object.extend({
   init() {
     const nodeGeoJSON = this.get('nodeGeoJSON');
     Ember.merge(this, nodeGeoJSON);
-    const meta = nodeGeoJSON.properties.info;
-    this.properties.metadata = meta ? humanizeMetadata(meta) : {};
+    const meta = this.get('properties.info');
+    this.set('properties.metadata', meta ? humanizeMetadata(meta) : {});
   }
 });
 
