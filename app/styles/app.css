@@ -137,6 +137,8 @@ body {
 
 /* MAP styles */
 #map { min-height: 400px; }
+.large-map { min-height: 400px; }
+.thumb-map { width: 100px; height: 100px; }
 
 #list-view { min-height: 100px; }
 #detail-view { min-height: 100px; }
@@ -248,7 +250,7 @@ body {
 }
 
 .ui-datepicker tbody tr:last-child {
-  border-bottom: 0px
+  border-bottom: 0
 }
 
 .ui-tooltip {
