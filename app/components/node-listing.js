@@ -3,13 +3,20 @@ import Ember from "ember";
 export default Ember.Component.extend({
   columns: [
     {
+      'component': 'node-listing-minimap'
+    },
+    {
+      'title': 'Features',
+      'component': 'node-listing-features'
+    },
+    {
       'title': 'Node ID',
       'propertyName': 'properties.id',
       'template': 'node-link'
     },
     {
       'title': 'Location',
-      'propertyName': 'geometry.coordinates'
+      'propertyName': 'geometry.coordinates',
     }
   ],
   customMessages: {
@@ -19,4 +26,7 @@ export default Ember.Component.extend({
   },
   pageSizeValues: Ember.A([5, 10, 25, 50]),
   customClasses: {"globalFilterWrapper": "pull-left bottom-breathe"}
+
+
+
 });

@@ -1,0 +1,21 @@
+{{#leaflet-map
+  zoomControl=false
+  attributionControl=false
+  dragging=false
+  boxZoom=true
+  doubleClickZoom=true
+  scrollWheelZoom=true
+  touchZoom=false
+  center=center
+  zoom=6
+  maxBounds=maxBounds
+  class='thumb-map'}}
+  {{tile-layer url=mapTileUrl}}
+  {{circle-marker-layer
+    radius=3
+    color='red'
+    fillOpacity=1
+    stroke=false
+    fill=true
+    location=center}}
+{{/leaflet-map}}

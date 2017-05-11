@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import Ember from "ember";
 
 export default Ember.Controller.extend({
   queryParams: ['viewType', 'nodeId'],
@@ -15,7 +15,7 @@ export default Ember.Controller.extend({
     const nodeMap = new Map(nodeTuples);
     this.set('nodeMap', nodeMap);
     if (!this.get('nodeId')) {
-      this.set('nodeId', nodeList[2].properties.id); // using node at index 2 because the node at 0 times out
+      this.set('nodeId', nodeList[2].properties.id); // TODO: stop using node at index 2 once [0] stops timing out
     }
   }),
 
