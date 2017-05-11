@@ -1,8 +1,14 @@
-import Ember from 'ember';
+import Ember from "ember";
+import ENV from "plenario-explorer/config/environment";
 
 export default Ember.Controller.extend({
   query: Ember.inject.service(),
   notify: Ember.inject.service(),
+
+  lat: ENV.defaultMapLat,
+  lng: ENV.defaultMapLng,
+  zoom: ENV.defaultMapZoom,
+  mapTileUrl: ENV.baseMapTileUrl,
 
   modelArrived: Ember.observer('model', function() {
     this.fetchShapeJSON();
@@ -17,7 +23,7 @@ export default Ember.Controller.extend({
 
     // Until we work out a tiling scheme,
     // don't even try if we have lots of shapes.
-    if (meta.numShapes > 500) {
+    if (meta.numShapes > ENV.maxShapeThreshold) {
       this.set('loading', false);
       this.set('giveUp', true);
       return;

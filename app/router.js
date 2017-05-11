@@ -18,6 +18,7 @@ Router.map(function() {
   this.route('loading');
   this.route('err', {path: '/error/:error_message'});
   this.route('sensors');
+  this.route('breakout-test');
 });
 
 export default Router;
