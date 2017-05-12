@@ -1,1 +1,9 @@
-{{leaflet-map layer=gridLayer legendDiv=legendDiv}}
+<div style="position: relative;">
+  {{#leaflet-map bounds=bounds legendDiv=legendDiv class='large-map'}}
+    {{tile-layer url=mapTileUrl}}
+    {{geojson-layer geoJSON=grid style=gridStyle onEachFeature=gridOnEachFeature}}
+  {{/leaflet-map}}
+  <div class="large-map-legend">
+    {{{legend}}}
+  </div>
+</div>

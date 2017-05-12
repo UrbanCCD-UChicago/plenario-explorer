@@ -1,8 +1,7 @@
 import Ember from 'ember';
+import ENV from "plenario-explorer/config/environment";
 import jenks from '../utils/jenks';
-//import L from "npm:leaflet-label";
 
-/* global L */
 
 export default Ember.Component.extend({
   // Blues, light to dark
@@ -14,21 +13,39 @@ export default Ember.Component.extend({
     '#08519c'
   ],
 
+  mapTileUrl: ENV.baseMapTileUrl,
+
+  gridStyle: function(feature) {
+    return {
+      fillColor: feature.properties.color,
+      weight: 0.3,
+      opacity: 1,
+      color: 'white',
+      fillOpacity: 0.7
+    };
+  },
+  gridOnEachFeature: function(feature, layer) {
+    const content = `<h4>Count: ${feature.properties.count}</h4>`;
+    const options = {
+      'sticky': true,
+      'direction': 'left'
+    };
+    layer.bindTooltip(content, options);
+  },
+
   init() {
     this._super(...arguments);
-    //window.L = L;
     // Determine the count grouping.
     const squares = this.get('grid');
     const cutoffs = this.makeCutoffs(squares);
     this.set('cutoffs', cutoffs);
+    // Assign a color for each square based on our cutoffs.
+    // Later we might want to pass this logic directly in gridStyle
+    squares.features.forEach( this.setFeatureColor, this);
     // Make a legend for the heatmap.
     const datasetName = this.get('datasetName');
-    console.log(datasetName);
-    const legendDiv = this.makeLegendDiv(cutoffs, datasetName);
-    this.set('legendDiv', legendDiv);
-    // Convert the geoJSON to a styled Leaflet layer.
-    const gridLayer = this.makeLayer(squares, cutoffs);
-    this.set('gridLayer', gridLayer);
+    const legend = this.makeLegend(cutoffs, datasetName);
+    this.set('legend', legend);
   },
 
   /**
@@ -36,8 +53,6 @@ export default Ember.Component.extend({
    * @returns [number] array of five non-negative integers.
      */
   makeCutoffs(grid) {
-    //console.log(grid.get('features'));
-    //window.grid = grid;
     const counts = grid.features.map(f => {return f.properties.count;});
 
     if (Math.max(...counts) < 5) {
@@ -60,7 +75,7 @@ export default Ember.Component.extend({
     }
   },
 
-  makeLegendDiv(grades, datasetName) {
+  makeLegend(grades) {
     let labels = [];
     let from, to;
 
@@ -88,10 +103,7 @@ export default Ember.Component.extend({
       }
     }
 
-    let div = L.DomUtil.create('div', 'legend');
-    const labelText = labels.join('<br />');
-    div.innerHTML = `<div><strong>${datasetName}</strong><br />${labelText}</div>`;
-    return div;
+    return labels.join('<br>');
   },
 
   /**
@@ -120,24 +132,9 @@ export default Ember.Component.extend({
     };
   },
 
-  makeLayer(grid) {
+  setFeatureColor(feature) {
     const getColor = this.makeFixedGetColor();
-    const addCountLabel = function(feature, layer){
-      var content = '<h4>Count: ' + feature.properties.count + '</h4>';
-      layer.bindLabel(content);
-    };
-    return L.geoJson(grid, {
-      style: feature => {
-        return {
-          fillColor: getColor(feature.properties.count),
-          weight: 0.3,
-          opacity: 1,
-          color: 'white',
-          fillOpacity: 0.7
-        };
-      },
-      onEachFeature: addCountLabel
-    });
+    feature.properties.color = getColor(feature.properties.count);
   }
 
 });
