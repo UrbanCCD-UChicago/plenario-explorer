@@ -41,7 +41,7 @@
                 such as <a href = "http://www.qgis.org/en/site/">QGIS</a>.</p>
 
         {{else}}
-          {{#leaflet-map lat=lat lng=lng zoom=zoom class='large-map'}}
+          {{#leaflet-map bounds=bounds class='large-map'}}
             {{tile-layer url=mapTileUrl}}
             {{geojson-layer geoJSON=geoJSON}}
           {{/leaflet-map}}
