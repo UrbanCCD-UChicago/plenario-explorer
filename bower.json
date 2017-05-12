@@ -19,6 +19,7 @@
     "urijs": "1.18.2",
     "spin.js": "2.3.2",
     "font-awesome": "4.5.0",
-    "socket.io-client": "1.5.1"
+    "socket.io-client": "1.5.1",
+    "pusher-js": "pusher#^4.0.0"
   }
 }
