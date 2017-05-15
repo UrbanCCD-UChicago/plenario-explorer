@@ -7,10 +7,10 @@ export default Ember.Component.extend({
   baseMapTileUrl: ENV.baseMapTileUrl,
 
   drawOptions: {
-    'rectangle': true,
-    'polyline': false,
-    'polygon': false,
+    'polyline': true,
+    'polygon': true,
     'circle': false,
+    'rectangle': true,
     'marker': false
   },
 
