@@ -44,7 +44,10 @@
       </div>
     </div>
     <div class="col-md-7 half-height">
-      {{leaflet-map center=centerCoords mapMovedByUser=(action 'mapMovedByUser') geoJSON=geoJSON isDrawable=true zoom=zoom}}
+      {{#leaflet-map center=centerCoords zoom=centerZoom class='large-map'}}
+        {{tile-layer url=baseMapTileUrl}}
+        {{draw-control draw=drawOptions showDrawingLayer=true onDrawCreated=(action 'updateQueryGeoJSON')}}
+      {{/leaflet-map}}
     </div>
   </div>
 
