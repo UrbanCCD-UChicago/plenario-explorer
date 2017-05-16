@@ -30,6 +30,13 @@ module.exports = function(environment) {
   ENV.defaultMapZoom = 10;
   ENV.baseMapTileUrl = 'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png';
 
+  ENV.maxShapeThreshold = 500;
+
+  ENV.defaultMapLat = 41.8781;
+  ENV.defaultMapLng = -87.6298;
+  ENV.defaultMapZoom = 10;
+  ENV.baseMapTileUrl = 'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png';
+
   if (environment === 'development') {
 
     ENV['ember-cli-mirage'] = {

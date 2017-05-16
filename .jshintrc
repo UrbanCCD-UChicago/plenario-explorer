@@ -4,6 +4,7 @@
     "server",
     "document",
     "window",
+    "console",
     "-Promise",
     "L"
   ],

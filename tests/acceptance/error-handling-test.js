@@ -1,6 +1,6 @@
-import {test} from 'qunit';
-import moduleForAcceptance from 'plenario-explorer/tests/helpers/module-for-acceptance';
-import testData from 'plenario-explorer/mirage/test-data';
+import {test} from "qunit";
+import moduleForAcceptance from "plenario-explorer/tests/helpers/module-for-acceptance";
+import testData from "plenario-explorer/mirage/test-data";
 
 moduleForAcceptance('Acceptance | error handling');
 
@@ -17,7 +17,7 @@ test('Using a non-center will default the map to Chicago.', function (assert) {
   //Query with an invalid value for center
   visit('/discover?center=ksdgklasdgasdklghasklg');
   andThen(function () {
-    assert.notEqual($('#map').find('img[src$="/10/262/380.png"]').length, 0, "The map defaults to Chicago.");
+    assert.notEqual($('.large-map').find('img[src$="/10/262/380.png"]').length, 0, "The map defaults to Chicago.");
     assert.equal($('#map-center-select select').val(), 'chicago', "The map center selector defaults Chicago.");
     //TODO: Add an assertion here that checks that a warning was issued.
   });

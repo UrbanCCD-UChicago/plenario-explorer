@@ -96,6 +96,7 @@ export default Ember.Controller.extend({
       }
       this.set('timeseries', result.timeseries);
       this.set('grid', result.grid);
+      this.set('bounds', L.geoJson(result.grid).getBounds());
       this.set('loading', false);
     });
   },

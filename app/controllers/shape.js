@@ -5,9 +5,6 @@ export default Ember.Controller.extend({
   query: Ember.inject.service(),
   notify: Ember.inject.service(),
 
-  lat: ENV.defaultMapLat,
-  lng: ENV.defaultMapLng,
-  zoom: ENV.defaultMapZoom,
   mapTileUrl: ENV.baseMapTileUrl,
 
   modelArrived: Ember.observer('model', function() {
@@ -32,7 +29,13 @@ export default Ember.Controller.extend({
     // If not too many shapes,
     // attempt to download shape dataset as geoJSON.
     this.get('query').rawShape(meta.datasetName, {}).then(payload => {
+      if (payload.features.length <= 0) {
+        this.set('loading', false);
+        this.set('giveUp', true);
+        return;
+      }
       this.set('geoJSON', payload);
+      this.set('bounds', L.geoJson(payload).getBounds());
       this.set('loading', false);
     }, reason => {
       this.get('notify').error(`Could not fetch map data: ${reason}`);
