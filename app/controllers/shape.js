@@ -29,6 +29,11 @@ export default Ember.Controller.extend({
     // If not too many shapes,
     // attempt to download shape dataset as geoJSON.
     this.get('query').rawShape(meta.datasetName, {}).then(payload => {
+      if (payload.features.length <= 0) {
+        this.set('loading', false);
+        this.set('giveUp', true);
+        return;
+      }
       this.set('geoJSON', payload);
       this.set('bounds', L.geoJson(payload).getBounds());
       this.set('loading', false);
