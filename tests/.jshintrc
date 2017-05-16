@@ -1,5 +1,5 @@
 {
-  "predef": [
+  "globals": [
     "server",
     "document",
     "window",
@@ -22,7 +22,8 @@
     "andThen",
     "currentURL",
     "currentPath",
-    "currentRouteName"
+    "currentRouteName",
+    "L"
   ],
   "node": false,
   "browser": false,
@@ -42,7 +43,6 @@
   "nomen": false,
   "onevar": false,
   "plusplus": false,
-  "regexp": false,
   "undef": true,
   "sub": true,
   "strict": false,

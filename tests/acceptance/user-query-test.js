@@ -1,7 +1,7 @@
-import Ember from 'ember';
-import {test} from 'qunit';
-import moduleForAcceptance from 'plenario-explorer/tests/helpers/module-for-acceptance';
-import testData from 'plenario-explorer/mirage/test-data';
+import Ember from "ember";
+import {test} from "qunit";
+import moduleForAcceptance from "plenario-explorer/tests/helpers/module-for-acceptance";
+import testData from "plenario-explorer/mirage/test-data";
 
 moduleForAcceptance('Acceptance | user query');
 
@@ -81,16 +81,16 @@ test('Event links from queries go to real pages.', function (assert) {
 test('Changing the map center selection changes the actual map.', function (assert) {
   visit('/discover');
   andThen(function () {
-    assert.notEqual($('#map').find('img[src$="/10/262/380.png"]').length, 0, "Default map was centered on Chicago.");  //Chicago map tile
-    $("#map-center-select select").val("bristol").change();
+    assert.notEqual($('.large-map').find('img[src$="/10/262/380.png"]').length, 0, "Default map was centered on Chicago.");  //Chicago map tile
+    fillIn("#map-center-select select", "bristol");
     andThen(function () {
-      assert.notEqual($('#map').find('img[src$="/11/1009/681.png"]').length, 0, "Changing the center selection recenters the map onto Bristol, UK.");  //Bristol, UK map tile
-      $("#map-center-select select").val("seattle").change();
+      assert.notEqual($('.large-map').find('img[src$="/11/1009/681.png"]').length, 0, "Changing the center selection recenters the map onto Bristol, UK.");  //Bristol, UK map tile
+      fillIn("#map-center-select select", "seattle");
       andThen(function () {
-        assert.notEqual($('#map').find('img[src$="/11/328/715.png"]').length, 0, "Changing the center selection recenters the map onto Seattle.");  //Seattle map tile
-        $("#map-center-select select").val("newyork").change();
+        assert.notEqual($('.large-map').find('img[src$="/10/164/357.png"]').length, 0, "Changing the center selection recenters the map onto Seattle.");  //Seattle map tile
+        fillIn("#map-center-select select", "newyork");
         andThen(function () {
-          assert.notEqual($('#map').find('img[src$="/10/301/384.png"]').length, 0, "Changing the center selection recenters the map onto New York.");  //New York map tile
+          assert.notEqual($('.large-map').find('img[src$="/10/301/384.png"]').length, 0, "Changing the center selection recenters the map onto New York.");  //New York map tile
         });
       });
     });
@@ -101,7 +101,7 @@ test('Changing the map center selection changes the actual map.', function (asse
 test('User can directly specify a map center coordinates via the URL.', function (assert) {
   visit('/discover?center=51.89426503878691,1.4826178550720215,15');
   andThen(function () {
-    assert.notEqual($('#map').find('img[src$="/15/16518/10839.png"]').length, 0, "Map uses coordinates to center on Sealand.");  //Sealand map tile
+    assert.notEqual($('.large-map').find('img[src$="/15/16518/10839.png"]').length, 0, "Map uses coordinates to center on Sealand.");  //Sealand map tile
   });
 });
 

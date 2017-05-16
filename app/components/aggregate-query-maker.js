@@ -21,8 +21,8 @@ export default Ember.Component.extend({
       if(this.get('center') in this.get('cities'))
       {
         // Translate an initial location to coordinates
-        // 'centerCoords' is the raw-coordinates from of the human-readable 'center'
-        // 'centerZoom' is the raw zoom level from the human-readable 'center'
+        // 'centerCoords' is the raw-coordinates form of the human-readable 'center'
+        // 'centerZoom' is the raw zoom level form of the human-readable 'center'
         this.set('centerCoords', this.get(`cities.${this.get('center')}.location`));
         this.set('centerZoom',   this.get(`cities.${this.get('center')}.zoom`));
       } else if (this.get('center').split(',').length === 3) {
@@ -32,6 +32,8 @@ export default Ember.Component.extend({
       } else {
         this.get('notify').warning(`Unknown city "${this.get('center')}". Try selecting a city from the "Center map on" menu.`);
         this.set('center', 'chicago');
+        this.set('centerCoords', this.get(`cities.${this.get('center')}.location`));
+        this.set('centerZoom',   this.get(`cities.${this.get('center')}.zoom`));
       }
     }
     this.set('teleportState', {center: this.get('center')});
