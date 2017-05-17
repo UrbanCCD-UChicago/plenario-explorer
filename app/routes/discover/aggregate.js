@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import Ember from "ember";
 import GJV from "npm:geojson-validation";
 
 export default Ember.Route.extend({
@@ -7,6 +7,8 @@ export default Ember.Route.extend({
   model() {
     const params = this.paramsFor('discover');
     return {
+      sensorMetadata: this.get('query').allSensorMetadata(),
+      nodes: this.get('query').nodeSubset(params),
       pointDatasets: this.get('query').eventCandidates(params),
       shapeDatasets: this.get('query').shapeSubsets(params)
     };

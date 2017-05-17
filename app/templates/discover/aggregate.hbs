@@ -1,5 +1,20 @@
 <div class="row">
   <div class="col-md-12">
+    <h3><strong>{{nodes.length}}</strong>
+      Sensor Nodes Available to Query</h3>
+    {{#if sensorMetadata}}
+      {{node-listing
+        displayLink=(action "navigateToPoint")
+        nodes=nodes
+        sensorMetadata=sensorMetadata
+        id="node-listing"}}
+    {{else}}
+      {{widget-spin}}
+    {{/if}}
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
     <h3><strong>{{timeseriesList.length}}</strong> {{pluralize 'Event Dataset' timeseriesList.length}} Found {{#if searchingDatasets}}<i>and counting...</i>{{/if}}</h3>
     {{point-aggregate-listing
     displayLink=(action "navigateToPoint")
@@ -7,6 +22,7 @@
     pointDatasets=timeseriesList
     displayTrends=true
     id="point-aggregate-listing"}}
+    {{#if searchingDatasets}}{{widget-spin}}{{/if}}
   </div>
 </div>
 <div class="row">

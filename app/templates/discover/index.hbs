@@ -3,8 +3,9 @@
     <h3><strong>{{model.nodes.length}}</strong>
       Sensor Nodes Available to Query</h3>
     {{node-listing
-      displayLink=(action "navigateToPoint")
+      displayLink=(action "navigateToNode")
       nodes=model.nodes
+      sensorMetadata=model.sensorMetadata
       id="node-listing"}}
   </div>
 </div>

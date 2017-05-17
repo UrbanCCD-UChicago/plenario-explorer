@@ -1,10 +1,23 @@
 import Ember from "ember";
 
 export default Ember.Component.extend({
-  features: Ember.computed('record', 'curation', function() {
-    const sensors = this.get('record.properties.sensors');
+  features: Ember.computed('record', 'table.sensorMetadata', function() {
+    const sensorMeta = this.get('table.sensorMetadata');
+    const sensToFeat = {};
+    sensorMeta.forEach(sm => {
+      sensToFeat[sm.name] = [...new Set(sm.features)];
+    });
 
-    // TODO: we want to map the available sensors to the set of features they collectively measure
-    return sensors; // For now just returning the raw sensor identifiers for the node
+    const sensors = this.get('record.properties.sensors');
+    const features = new Set();
+
+    sensors.forEach(sensor => {
+      sensToFeat[sensor].forEach(feat => {
+        features.add(feat.capitalize().replace(/_/, ' '));
+      });
+    });
+
+    return [...features].sort();
   })
+
 });

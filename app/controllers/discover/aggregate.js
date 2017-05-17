@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import Ember from "ember";
 
 export default Ember.Controller.extend({
   query: Ember.inject.service(),
@@ -42,15 +42,25 @@ export default Ember.Controller.extend({
     loadShapeDatasets: function(result){
       this.set('shapeDatasets', result);
       this.set('searchingShapes', false);
+    },
+    loadNodeSubset: function(result) {
+      this.set('nodes', result);
+    },
+    loadSensorMetadata: function(result) {
+      this.set('sensorMetadata', result);
     }
   },
 
   modelArrived: Ember.observer('model', function(){
     this.get('timeseriesList').clear();
     this.set('shapeDatasets', []);
+    this.set('nodes', []);
+    this.set('sensorMetadata', []);
 
-    let pointDatasets = this.get('model').pointDatasets;
-    let shapeDatasets = this.get('model').shapeDatasets;
+    let pointDatasets = this.get('model.pointDatasets');
+    let shapeDatasets = this.get('model.shapeDatasets');
+    let nodeSubset = this.get('model.nodes');
+    let sensorMeta = this.get('model.sensorMetadata');
     this.set('searchingShapes', true);
 
     let self = this;
@@ -59,6 +69,12 @@ export default Ember.Controller.extend({
     });
     shapeDatasets.then(function(result){
       self.send('loadShapeDatasets', result);
+    });
+    nodeSubset.then(function(result){
+      self.send('loadNodeSubset', result);
+    });
+    sensorMeta.then(function(result){
+      self.send('loadSensorMetadata', result);
     });
   }),
 

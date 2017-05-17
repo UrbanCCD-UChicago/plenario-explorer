@@ -3,11 +3,14 @@ import Ember from "ember";
 export default Ember.Component.extend({
   columns: [
     {
-      'component': 'node-listing-minimap'
+      'title': 'Location',
+      'component': 'node-listing-minimap',
+      'className': 'node-listing-minimap-cell'
     },
     {
-      'title': 'Features',
-      'component': 'node-listing-features'
+      'title': 'Network',
+      'propertyName': 'properties.network',
+      'template': 'node-listing-network'
     },
     {
       'title': 'Node ID',
@@ -15,8 +18,8 @@ export default Ember.Component.extend({
       'template': 'node-link'
     },
     {
-      'title': 'Location',
-      'propertyName': 'geometry.coordinates',
+      'title': 'Supported Features',
+      'component': 'node-listing-features'
     }
   ],
   customMessages: {

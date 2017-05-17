@@ -136,6 +136,19 @@ export default Ember.Service.extend({
       );
   },
 
+  allSensorMetadata() {
+    const qString = `/sensor-networks/${ENV.networkId}/sensors`;
+    return this.get('ajax').request(qString).then(sensorMeta => {
+      return sensorMeta.data.map(sensorRecord => {
+        const props = sensorRecord.properties;
+        const feats = props.map(prop => {
+          return prop.split('.')[0];
+        });
+        return {'name': sensorRecord.name, 'features': feats};
+      });
+    });
+  },
+
   getSocketForNode(networkId, nodeId, sensorList) {
     if (ENV['ember-cli-mirage'].enabled) {
       return mockNetwork.getMockSocket(nodeId);
@@ -345,6 +358,21 @@ export default Ember.Service.extend({
     }, function (reason) {
       console.log(`Shape subset query failed: ${reason}`);
       return {error: reason};
+    });
+  },
+
+  /**
+   * Return list of sensor nodes that are
+   * within the given space bounding box.
+   * @param params
+   */
+  nodeSubset(params) {
+    params.geom = params.location_geom__within; // Because the nodes endpoint uses different parameters
+    const subset = this.get('ajax').request(`/sensor-networks/${ENV.networkId}/nodes`, {data: params});
+    return subset.then(nodeMeta => {
+      return nodeMeta.data.map(
+        nodeRecord => Node.create({nodeGeoJSON: nodeRecord})
+      );
     });
   },
 
