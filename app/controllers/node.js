@@ -1,4 +1,5 @@
 import Ember from "ember";
+import ENV from "plenario-explorer/config/environment";
 
 export default Ember.Controller.extend({
   query: Ember.inject.service(),
@@ -6,15 +7,19 @@ export default Ember.Controller.extend({
   notify: Ember.inject.service(),
   refreshNodeChart: false,
 
+  mapTileUrl: ENV.baseMapTileUrl,
+
   modelArrived: Ember.observer('model', function() {
     // When requesting a single node the API still returns a list (of length 1)
     const nodeList = this.get('model.nodes');
-    this.set('node', nodeList[0]);
-    this.set('nodeMeta', nodeList[0].properties);
+    const node = nodeList[0];
+    this.set('node', node);
+    this.set('nodeMeta', node.properties);
+    this.set('center', node.geometry.coordinates.slice().reverse());
   }),
 
   actions: {
-    download(params) {
+    download: function(params) {
       this.get('query').sensorDownload(params).then(resp => {
         this.transitionToRoute('datadump.download', resp.ticket, {queryParams: {data_type: 'json'}});
       }).catch((error) => {
@@ -23,6 +28,9 @@ export default Ember.Controller.extend({
             'Try double-checking your request, and email plenario@uchicago.edu if the problem persists.');
         }
       );
+    },
+    exit: function() {
+      this.transitionToRoute('index');
     }
   }
 });

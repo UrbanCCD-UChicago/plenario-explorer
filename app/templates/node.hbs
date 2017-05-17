@@ -1,33 +1,34 @@
 <div class="row">
-  <div class='col-md-5'>
-
-    <div class="row">
-      <div class="col-xs-6">
-        <a href="http://arrayofthings.github.io/">
-          <img src="https://s3.amazonaws.com/ember-dev/assets/images/ArrayofThingsLogo-small.png"
-               class="img-responsive"/>
-        </a>
-        <h3 class='detail-header'>Node {{nodeMeta.id}}</h3>
-        <!-- TODO: componentize this info, like how shape metadata is displayed now -->
-        <strong>Location: </strong> {{display-latlong node.geometry.coordinates}}
-        <br>
-        {{#bs-button-group value=viewType type="radio" class="btn-block"}}
-          {{#bs-button class="btn-info" value='live'}}Live View{{/bs-button}}
-          {{#bs-button class="btn-info" value='history'}}History View{{/bs-button}}
-          {{#bs-button class="btn-info" value='download'}}Download{{/bs-button}}
-        {{/bs-button-group}}
-      </div>
-      <div class="col-xs-6">
-        {{leaflet-nodes geoJSON=model.nodes}}
-      </div>
-    </div>
-  </div>
-
+  <button type="button" class="btn btn-primary" {{action "exit"}}>&larr; Back to Explorer</button>
 </div>
+<div class="row">
+  <div class='col-sm-5'>
+    <a href="http://arrayofthings.github.io/">
+      <img src="https://s3.amazonaws.com/ember-dev/assets/images/ArrayofThingsLogo-small.png"
+           class="img-responsive"/>
+    </a>
+    <h3 class='detail-header'>Node {{nodeMeta.id}}</h3>
+    <!-- TODO: componentize this info, like how shape metadata is displayed now -->
+    <strong>Location: </strong> {{display-latlong node.geometry.coordinates}}
+  </div>
+  <div class="col-sm-7">
+    {{#leaflet-map center=center zoom=10 class='large-map'}}
+      {{tile-layer url=mapTileUrl}}
+      {{marker-layer location=center}}
+    {{/leaflet-map}}
+  </div>
+</div>
+
 <div class="row">
 
   <div class='col-md-12'>
-    <br>
+    <hr>
+    {{#bs-button-group value=viewType type="radio" class="btn-block"}}
+      {{#bs-button class="btn-info" value='live'}}Live View{{/bs-button}}
+      {{#bs-button class="btn-info" value='history'}}History View{{/bs-button}}
+      {{#bs-button class="btn-info" value='download'}}Download{{/bs-button}}
+    {{/bs-button-group}}
+
     {{#if (eq viewType 'live')}}
       <p>Observations from the last hour. New observations will appear live.</p>
     {{else if (eq viewType 'history')}}
