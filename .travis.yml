@@ -28,7 +28,6 @@ install:
 - npm install
 - bower install
 script:
-- ember --version
 - ember test --filter="unit"
 after_success:
 - ember build -prod
