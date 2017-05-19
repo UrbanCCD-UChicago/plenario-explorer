@@ -86,12 +86,12 @@ export default E.Service.extend({
     let channels = this.get('channels');
     let pusher = this.get('pusher');
     let node = this.get('nodeId');
-    let sensors = this.get('sensorMap').keys()
+    let sensors = this.get('sensorMap').keys();
 
     for (let channel of channels) {
       pusher.unsubscribe(channel);
     }
-    
+
     for (let sensor of sensors) {
       let channel = `private-${NETWORK};${node};${sensor}`;
       pusher.subscribe(channel, this.appendObservation.bind(this));
