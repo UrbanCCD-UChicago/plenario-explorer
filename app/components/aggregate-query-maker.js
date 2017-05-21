@@ -7,7 +7,7 @@ export default Ember.Component.extend({
   baseMapTileUrl: ENV.baseMapTileUrl,
   defaultMapBounds: [[49.384472, -124.771694], [24.520833, -66.947028]], // contiguous 48 US states
   defaultMapCenter: [39.833333, -98.583333], // center of contiguous 48 US states
-  defaultMapZoom: 5,
+  defaultMapZoom: 3,
 
   drawOptions: {
     'polyline': true,
@@ -29,13 +29,16 @@ export default Ember.Component.extend({
         return center.split(",");
       }
     } else {
-      return this.get('defaultMapCenter');
+      return this.get("defaultMapCenter");
     }
   }),
 
   //IDs to populate the dropdown box. Computed from the cities dict above.
   citiesList: Ember.computed('cities', function(){
-    let list = Object.keys(this.get('cities')).map(key => {
+    const cities = this.get("cities");
+    let list = Object.keys(cities).filter(key => {
+      return key !== "default";
+    }).map(key => {
       return {id: key, label: this.get(`cities.${key}.label`)};
     });
     list.sort((first, second) => {
@@ -68,6 +71,8 @@ export default Ember.Component.extend({
     const cities = this.get("cities");
     if(center in cities) {
       this.set("mapZoom", cities[center].zoom);
+    } else if ("default" in cities) {
+      this.set("mapZoom", cities["default"].zoom);
     } else {
       this.set("mapZoom", this.get("defaultMapZoom"));
     }
@@ -88,7 +93,7 @@ export default Ember.Component.extend({
     // Returns true if we have a text value of center (i.e. a city name)
     // and the point is within the center's bounds; returns false otherwise.
     const center = this.get("center");
-    if(center.split(',').length !== 2) {
+    if(center && center.split(',').length !== 2) {
       const latLngBounds = L.latLngBounds(this.get(`cities.${center}.bounds`));
       return latLngBounds.contains(point);
     }
@@ -115,19 +120,19 @@ export default Ember.Component.extend({
     dismissIntro(){
       $("#collapse-intro").collapse("hide");
     },
-    teleportToCity(cityName) {
+    teleportToCity(event) {
+      const selectElement = event.target;
+      const cityName = selectElement.value;
+      selectElement.selectedIndex = 0;
       this.set("center", cityName);
       this.zoomToCenter();
     },
-    mapMoved(event) {
-      // Programmatic moves generate events with the "hard" property
+    mapMovedByUser(event) {
       // Only update center if the user leaves the bounds of the
       // selected city (or already had a numeric center)
-      if(!event.hard) {
-        const newCenter = event.target.getCenter();
-        if (!this.inTextCenter(newCenter)) {
-          this.set("center", `${newCenter.lat},${newCenter.lng}`);
-        }
+      const newCenter = event.target.getCenter();
+      if (!this.inTextCenter(newCenter)) {
+        this.set("center", `${newCenter.lat},${newCenter.lng}`);
       }
 
     },

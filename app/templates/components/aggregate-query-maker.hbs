@@ -28,7 +28,7 @@
       </div>
       {{submit-or-reset submit=(action "submitAndZoom") reset=reset}}
       <div class="rowbox">
-        <select onchange={{action "teleportToCity" value="target.value"}}>
+        <select onchange={{action "teleportToCity"}}>
           <option selected disabled>Choose a city to jump to it...</option>
           {{#each citiesList as |city|}}
             <option value="{{city.id}}">{{city.label}}</option>
@@ -41,7 +41,7 @@
         center=mapCenter
         zoom=mapZoom
         onLoad=(action "cacheMapRef")
-        onMoveend=(action "mapMoved")
+        onDragend=(action "mapMovedByUser")
         class='large-map'}}
         {{tile-layer url=baseMapTileUrl}}
         {{draw-control draw=drawOptions showDrawingLayer=true onDrawCreated=(action 'userDrewShape')}}

@@ -8,12 +8,12 @@ export default Ember.Controller.extend({
 
   aggController: Ember.inject.controller('discover.aggregate'),
 
-  queryParams: ['obs_date__le', 'obs_date__ge','agg', 'location_geom__within', 'center'],
+  queryParams: ['center', 'obs_date__le', 'obs_date__ge','agg', 'location_geom__within'],
 
   'obs_date__le': dateFormat(moment()),
   'obs_date__ge': dateFormat(moment().subtract(90, 'days')),
   'agg': 'week',
-  'center': 'chicago',
+  'center': 'default',
   'location_geom__within': null,
 
   _resetParams() {
@@ -37,6 +37,16 @@ export default Ember.Controller.extend({
   // IDs for cities, their display names, and bounds (usually city limits)
   // City bounding boxes determined via https://www.mapdevelopers.com/geocode_bounding_box.php
   cities: {
+    "default": {
+      // "Cities" named "default" are not shown to the user
+      // This is a copy of Chicago
+      bounds: [
+        [42.023131, -87.940267], // NW corner
+        [41.644335, -87.523661]  // SE corner
+      ],
+      location: [41.795509, -87.581916],
+      zoom: 10
+    },
     "chicago": {
       label: "Chicago, IL",
       bounds: [
@@ -121,13 +131,13 @@ export default Ember.Controller.extend({
 
   //------------- end of central aggregate-query-maker values ---------------//
 
-  _zoomIn() {
-    this.set('zoom', true);
-    const self = this;
-    Ember.run.next(() => {
-      self.set('zoom', false);
-    });
-  },
+  // _zoomIn() {
+  //   this.set('zoom', true);
+  //   const self = this;
+  //   Ember.run.next(() => {
+  //     self.set('zoom', false);
+  //   });
+  // },
 
   _resetDatePickers() {
     this.set('override', true);
@@ -165,9 +175,9 @@ export default Ember.Controller.extend({
         this.get('aggController').send('submit');
       }
       // Refocus map on user-drawn shape.
-      if (this.get('location_geom__within')) {
-        this._zoomIn();
-      }
+      // if (this.get('location_geom__within')) {
+      //   this._zoomIn();
+      // }
     },
     reset: function() {
       if (! this._inIndex()) {
