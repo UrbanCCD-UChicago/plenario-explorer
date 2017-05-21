@@ -26,27 +26,25 @@
        {{date-range startDate=startDate endDate=endDate override=override}}
        {{drop-downs agg=agg aggOptions=aggOptions}}
       </div>
-      {{submit-or-reset submit=submit reset=reset}}
+      {{submit-or-reset submit=(action "submitAndZoom") reset=reset}}
       <div class="rowbox">
-       {{#em-form
-       submitButton=false
-       model=teleportState
-       validationIcons=false}}
-
-         {{em-select
-         property="center"
-         content=citiesList
-         optionValuePath="id"
-         optionLabelPath="label"
-         label="Center map on"
-         id="map-center-select"}}
-        {{/em-form}}
+        <select onchange={{action "teleportToCity" value="target.value"}}>
+          <option selected disabled>Choose a city to jump to it...</option>
+          {{#each citiesList as |city|}}
+            <option value="{{city.id}}">{{city.label}}</option>
+          {{/each}}
+        </select>
       </div>
     </div>
     <div class="col-md-7 half-height">
-      {{#leaflet-map center=centerCoords zoom=centerZoom class='large-map'}}
+      {{#leaflet-map
+        center=mapCenter
+        zoom=mapZoom
+        onLoad=(action "cacheMapRef")
+        onMoveend=(action "mapMoved")
+        class='large-map'}}
         {{tile-layer url=baseMapTileUrl}}
-        {{draw-control draw=drawOptions showDrawingLayer=true onDrawCreated=(action 'updateQueryGeoJSON')}}
+        {{draw-control draw=drawOptions showDrawingLayer=true onDrawCreated=(action 'userDrewShape')}}
       {{/leaflet-map}}
     </div>
   </div>
