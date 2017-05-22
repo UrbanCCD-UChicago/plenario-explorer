@@ -7,14 +7,22 @@ module.exports = function(defaults) {
     baseURL: null,
     storeConfigInMeta: false,
     fingerprint: {
-      enabled: false
+      enabled: false,
+      exclude: [
+        // Images used by ember-leaflet
+        'images/layers-2x.png',
+        'images/layers.png',
+        'images/marker-icon-2x.png',
+        'images/marker-icon.png',
+        'images/marker-shadow.png',
+        // Additional images used by ember-leaflet-draw
+        'images/spritesheet-2x.png',
+        'images/spritesheet.png',
+        'images/spritesheet.svg'
+      ]
     }
   });
 
-  app.import('bower_components/leaflet/dist/leaflet-src.js');
-  app.import('bower_components/leaflet/dist/leaflet.css');
-  app.import('bower_components/leaflet-draw/dist/leaflet.draw.js');
-  app.import('bower_components/leaflet-draw/dist/leaflet.draw.css');
   app.import('bower_components/bootswatch/simplex/bootstrap.css');
   app.import('bower_components/bootstrap/dist/js/bootstrap.min.js');
   // app.import('bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.woff', {
@@ -24,10 +32,9 @@ module.exports = function(defaults) {
   //   destDir: 'fonts'
   // });
   app.import('bower_components/urijs/src/URI.js');
-  app.import('vendor/leaflet-label/leaflet.label-src.js');
-  app.import('vendor/leaflet-label/leaflet.label.css');
   app.import('bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js');
   app.import('bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css');
+  app.import('bower_components/pusher-js/dist/web/pusher.js');
 
   // Use `app.import` to add additional libraries to the generated
   // output files.

@@ -410,14 +410,21 @@ export default Ember.Service.extend({
   sensorDownload(params) {
     // networkId, nodeId, features, startDatetime, endDatetime
     const endpoint = `${ENV.host}/v1/api/sensor-networks/${params.networkId}/download`;
-    const queryParams = {
-      nodes: params.nodeId,
+    let queryParams = {
+      nodes: params.nodes,
       features: params.features.join(','),
       start_datetime: params.startDatetime,
       end_datetime: params.endDatetime
     };
-    // return this.get('ajax').request(endpoint, {data: queryParams});
-    var query = endpoint + '?' + URI('').addQuery(queryParams).toString();
+
+    // Remove empty keys to prevent the creation of malformed query strings    
+    for (let key of Object.keys(queryParams)) {
+      if (!queryParams[key]) {
+        delete queryParams[key];
+      }
+    }
+
+    var query = endpoint + URI('').addQuery(queryParams).toString();
     console.log('[services.query] sensorDownload.query: ' + query);
     return window.open(query);
   },

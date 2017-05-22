@@ -1,8 +1,11 @@
-import Ember from 'ember';
+import Ember from "ember";
+import ENV from "plenario-explorer/config/environment";
 
 export default Ember.Controller.extend({
   query: Ember.inject.service(),
   notify: Ember.inject.service(),
+
+  mapTileUrl: ENV.baseMapTileUrl,
 
   modelArrived: Ember.observer('model', function() {
     this.fetchShapeJSON();
@@ -17,7 +20,7 @@ export default Ember.Controller.extend({
 
     // Until we work out a tiling scheme,
     // don't even try if we have lots of shapes.
-    if (meta.numShapes > 500) {
+    if (meta.numShapes > ENV.maxShapeThreshold) {
       this.set('loading', false);
       this.set('giveUp', true);
       return;
@@ -26,7 +29,13 @@ export default Ember.Controller.extend({
     // If not too many shapes,
     // attempt to download shape dataset as geoJSON.
     this.get('query').rawShape(meta.datasetName, {}).then(payload => {
+      if (payload.features.length <= 0) {
+        this.set('loading', false);
+        this.set('giveUp', true);
+        return;
+      }
       this.set('geoJSON', payload);
+      this.set('bounds', L.geoJson(payload).getBounds());
       this.set('loading', false);
     }, reason => {
       this.get('notify').error(`Could not fetch map data: ${reason}`);

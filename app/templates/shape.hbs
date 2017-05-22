@@ -14,9 +14,9 @@
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu">
-                <li><a {{action "download" "json"}}><i class='fa fa-download'></i>GeoJSON</a></li>
-                <li><a {{action "download" "shapefile"}}><i class='fa fa-download'></i>ESRI Shapefile</a></li>
-                <li><a {{action "download" "kml"}}><i class='fa fa-download'></i>KML</a></li>
+                <li><a {{action "download" "json"}}><i class='fa fa-download'></i> GeoJSON</a></li>
+                <li><a {{action "download" "shapefile"}}><i class='fa fa-download'></i> ESRI Shapefile</a></li>
+                <li><a {{action "download" "kml"}}><i class='fa fa-download'></i> KML</a></li>
             </ul>
         </div>
 
@@ -30,19 +30,22 @@
       {{#if loading}}
           <h3 class='detail-header'>Loading...</h3>
         {{widget-spin}}
-        {{leaflet-map}}
       {{else}}
           <h3 class='detail-header' id="record-count">
             {{model.numShapes}} Records Found
           </h3>
         {{#if giveUp}}
-            <p>This shape dataset is too big to display in a web browser.
-                If you would like to view the shapes,
-                please download the file and open it in a GIS package
-                such as <a href = "http://www.qgis.org/en/site/">QGIS</a>.</p>
+            <p>This shape dataset cannot be displayed in a web browser. It may
+              be too large, or may not available in a compatible format. If
+              you would like to view the shapes, please download the file and
+              open it in a GIS package such as
+              <a href = "http://www.qgis.org/en/site/">QGIS</a>.</p>
 
         {{else}}
-          {{leaflet-map geoJSON=geoJSON}}
+          {{#leaflet-map bounds=bounds class='large-map'}}
+            {{tile-layer url=mapTileUrl}}
+            {{geojson-layer geoJSON=geoJSON}}
+          {{/leaflet-map}}
         {{/if}}
 
       {{/if}}

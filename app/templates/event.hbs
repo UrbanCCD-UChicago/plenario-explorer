@@ -52,13 +52,12 @@
       {{#if loading}}
           <h3 class='detail-header'>Loading...</h3>
         {{widget-spin}}
-        {{leaflet-map}}
       {{else}}
-          <h3 class='detail-header' id="record-count">
-            {{#if timeseries}} {{timeseries.count}} {{else}} 0 {{/if}}
-              Records Found
-          </h3>
-        {{heat-grid grid=grid datasetName=model.humanName}}
+        <h3 class='detail-header' id="record-count">
+          {{#if timeseries}} {{timeseries.count}} {{else}} 0 {{/if}}
+            Records Found
+        </h3>
+        {{heat-grid grid=grid bounds=bounds datasetName=model.humanName}}
         {{high-charts classNames=chartClasses content=timeseries.series}}
         <hr />
         <h4>Dataset details</h4>

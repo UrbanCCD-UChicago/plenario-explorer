@@ -22,6 +22,13 @@ module.exports = function(environment) {
   ENV.networkId = 'array_of_things_chicago';
   ENV.defaultNode = '0000001e0610ba72';
 
+  ENV.maxShapeThreshold = 500;
+
+  ENV.defaultMapLat = 41.8781;
+  ENV.defaultMapLng = -87.6298;
+  ENV.defaultMapZoom = 10;
+  ENV.baseMapTileUrl = 'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png';
+
   if (environment === 'development') {
 
     ENV['ember-cli-mirage'] = {
@@ -51,11 +58,16 @@ module.exports = function(environment) {
     ENV.APP.LOG_VIEW_LOOKUPS = false;
 
     ENV.APP.rootElement = '#ember-testing';
+    
   }
 
   if (environment === 'production') {
     ENV.host = 'http://plenar.io';
   }
+
+  ENV.APP.PUSHER = {};
+  ENV.APP.PUSHER.key = 'c6851f0950381b69a136';
+  ENV.APP.PUSHER.auth = 'https://8k1tgwbine.execute-api.us-east-1.amazonaws.com/test/pusher/auth';
 
   return ENV;
 };

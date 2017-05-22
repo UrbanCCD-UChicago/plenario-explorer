@@ -1,19 +1,20 @@
-import {moduleForComponent, test} from 'ember-qunit';
-import hbs from 'htmlbars-inline-precompile';
+import {moduleForComponent, test} from "ember-qunit";
+import hbs from "htmlbars-inline-precompile";
 
 moduleForComponent('aggregate-query-maker', 'Integration | Component | aggregate query maker', {
   integration: true,
 });
 
-test('It renders.', function (assert) {
-  // Set any properties with this.set('myProperty', 'value');
-  // Handle any actions with this.on('myAction', function(val) { ... });"
-
-  this.render(hbs`{{aggregate-query-maker}}`);
-
-  assert.notEqual(this.$().text(), '', 'The component rendered correctly.');
-
-});
+// This test is a non-functional subset of the following test.
+// test('It renders.', function (assert) {
+//   // Set any properties with this.set('myProperty', 'value');
+//   // Handle any actions with this.on('myAction', function(val) { ... });"
+//
+//   this.render(hbs`{{aggregate-query-maker}}`);
+//
+//   assert.notEqual(this.$().text(), '', 'The component rendered correctly.');
+//
+// });
 
 test('Parameters correctly control the component.', function (assert) {
   this.set('start', '2010-06-10');
@@ -34,5 +35,6 @@ test('Parameters correctly control the component.', function (assert) {
   assert.equal($("#start-date-filter .form-control").val(), "06/10/2010", "Correctly rendered component based on initial startDate parameter.");
   assert.equal($("#end-date-filter .form-control").val(), "07/20/2016", "Correctly rendered component based on initial endDate parameter.");
   assert.equal($("#agg-select option:selected").text().trim(), "day", "Correctly rendered component based on initial agg parameter.");
-  assert.equal($("#map-center-select option:selected").text().trim(), "Chicago", "Correctly rendered component based on initial center parameter.");
+  // assert.equal($("#map-center-select option:selected").text().trim(), "Chicago", "Correctly rendered component based on initial center parameter.");
+  assert.notEqual($('.large-map').find('img[src$="/10/262/380.png"]').length, 0, "Correctly rendered component based on initial center parameter.");
 });
