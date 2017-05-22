@@ -27,10 +27,13 @@ export default Ember.Component.extend({
         return cities[center].location;
       } else if(center.split(",").length === 2) {
         return center.split(",");
+      } else if ("default" in cities) {
+        this.get("notify").warning(`Unknown city "${center}". Try selecting a city from the "Center map on" menu.`);
+        this.set("center", "default");
+        return cities.default.location;
       }
-    } else {
-      return this.get("defaultMapCenter");
     }
+    return this.get("defaultMapCenter");
   }),
 
   //IDs to populate the dropdown box. Computed from the cities dict above.
@@ -79,8 +82,14 @@ export default Ember.Component.extend({
   },
 
   zoomToDrawnShape() {
-    const geoJSONLayer = L.geoJSON(JSON.parse(this.get("geoJSON")));
-    this.get("leafletMap").fitBounds(geoJSONLayer.getBounds());
+    try {
+      const geoJSONLayer = L.geoJSON(JSON.parse(this.get("geoJSON")));
+      this.get("leafletMap").fitBounds(geoJSONLayer.getBounds());
+    } catch (err) {
+      // We already display an error notification when the user tries to
+      // submit a query with invalid geoJSON.
+      console.log("Refusing to zoom to invalid \"location_geom__within\" shape.");
+    }
   },
 
   drawUserShape() {

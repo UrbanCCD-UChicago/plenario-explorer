@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import Ember from "ember";
 import GJV from "npm:geojson-validation";
 
 export default Ember.Route.extend({
@@ -41,8 +41,8 @@ export default Ember.Route.extend({
       geoJSON = JSON.parse(geoJSONStr);
     }
     catch (err) {
-      bailToIndex('Invalid JSON. ' + genericHelp);
-      self.get('notify').info("Maybe try resetting your query?");
+      bailToIndex('Invalid JSON.');
+      self.get('notify').info("Try drawing a shape on the map before submitting, or reset your query.");
       return;
     }
 

@@ -20,7 +20,7 @@ export default Ember.Controller.extend({
     this.set('obs_date__le', dateFormat(moment()));
     this.set('obs_date__ge', dateFormat(moment().subtract(90, 'days')));
     this.set('agg', 'week');
-    this.set('center', 'chicago');
+    this.set('center', 'default');
     this.set('location_geom__within', null);
   },
 
@@ -72,7 +72,7 @@ export default Ember.Controller.extend({
         [47.491912, -122.224433]
       ],
       location:[47.6076397,-122.3258644],
-      zoom: 11
+      zoom: 10
     },
     "sanfrancisco": {
       label: "San Francisco, CA",

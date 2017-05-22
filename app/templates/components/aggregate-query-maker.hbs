@@ -28,8 +28,9 @@
       </div>
       {{submit-or-reset submit=(action "submitAndZoom") reset=reset}}
       <div class="rowbox">
-        <select onchange={{action "teleportToCity"}}>
-          <option selected disabled>Choose a city to jump to it...</option>
+        <label for="map-center-select">Center map on:</label>
+        <select onchange={{action "teleportToCity"}} id="map-center-select">
+          <option selected disabled>Choose a city to jump to it</option>
           {{#each citiesList as |city|}}
             <option value="{{city.id}}">{{city.label}}</option>
           {{/each}}
