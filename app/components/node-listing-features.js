@@ -12,9 +12,12 @@ export default Ember.Component.extend({
     const features = new Set();
 
     sensors.forEach(sensor => {
-      sensToFeat[sensor].forEach(feat => {
-        features.add(feat.capitalize().replace(/_/, ' '));
-      });
+      const feats = sensToFeat[sensor];
+      if (feats) {
+        feats.forEach(feat => {
+          features.add(feat.capitalize().replace(/_/, ' '));
+        });
+      }
     });
 
     return [...features].sort();

@@ -4,7 +4,7 @@ const sensorData = {
   nodes: {
     "meta": {
       "query": {
-        "network_name": "plenario_development"
+        "network": "plenario_development"
       },
       "message": [
 
@@ -27,7 +27,7 @@ const sensorData = {
             "sensor_dev_1",
             "sensor_dev_4"
           ],
-          "network_name": "plenario_development",
+          "network": "plenario_development",
           "id": "node_dev_1"
         }
       },
@@ -46,11 +46,57 @@ const sensorData = {
             "sensor_dev_2",
             "sensor_dev_3"
           ],
-          "network_name": "plenario_development",
+          "network": "plenario_development",
           "id": "node_dev_2"
         }
       }
     ]
+  },
+  sensors: {
+    "data": [
+      {
+        "info": null,
+        "name": "sensor_dev_1",
+        "properties": [
+          "magnetic_field.y",
+          "magnetic_field.x"
+        ]
+      },
+      {
+        "info": null,
+        "name": "sensor_dev_4",
+        "properties": [
+          "gas_concentration.o2",
+          "magnetic_field.z",
+          "temperature.temperature"
+        ]
+      },
+      {
+        "info": null,
+        "name": "sensor_dev_3",
+        "properties": [
+          "gas_concentration.n2",
+          "gas_concentration.co2"
+        ]
+      },
+      {
+        "info": null,
+        "name": "sensor_dev_2 ",
+        "properties": [
+          "relative_humidity.humidity"
+        ]
+      }
+    ],
+    "meta": {
+      "message": null,
+      "query": {
+        "network": "plenario_development",
+        "sensors": [
+          null
+        ]
+      },
+      "total": 4
+    }
   },
   curation: {
     curatedTypes: [

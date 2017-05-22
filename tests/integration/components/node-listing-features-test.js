@@ -13,12 +13,13 @@ test('it renders', function(assert) {
 
   assert.equal(this.$().text().trim(), '');
 
-  // Template block usage:
-  this.render(hbs`
-    {{#node-listing-features}}
-      template block text
-    {{/node-listing-features}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
+  // This component does not support block usage
+  // // Template block usage:
+  // this.render(hbs`
+  //   {{#node-listing-features}}
+  //     template block text
+  //   {{/node-listing-features}}
+  // `);
+  //
+  // assert.equal(this.$().text().trim(), 'template block text');
 });

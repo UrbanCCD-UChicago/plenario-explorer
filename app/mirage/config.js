@@ -41,6 +41,10 @@ export default function () {
     return sensorData.nodes;
   });
 
+  this.get(ENV.host + '/v1/api/sensor-networks/plenario_development/sensors', function() {
+    return sensorData.sensors;
+  });
+
   this.get('http://sensor-curation.s3-website-us-east-1.amazonaws.com/plenario_development.json', function() {
     return sensorData.curation;
   });

@@ -465,7 +465,6 @@ export default Ember.Service.extend({
     }
 
     var query = endpoint + URI('').addQuery(queryParams).toString();
-    console.log('[services.query] sensorDownload.query: ' + query);
     return window.open(query);
   },
 
@@ -477,7 +476,7 @@ export default Ember.Service.extend({
    * @param newTab
    */
   getDataDump(ticket) {
-    const endpoint = `http://plenar.io/v1/api/datadump/${ticket}`;
+    const endpoint = `${ENV.host}/v1/api/datadump/${ticket}`;
     window.open(endpoint);
   },
 
@@ -487,7 +486,7 @@ export default Ember.Service.extend({
    * @param ticket
    */
   job(ticket) {
-    const endpoint = 'http://plenar.io/v1/api/jobs/'+ticket;
+    const endpoint = `${ENV.host}/v1/api/jobs/${ticket}`;
     const job = this.get('ajax').request(endpoint);
     return job;
   },
