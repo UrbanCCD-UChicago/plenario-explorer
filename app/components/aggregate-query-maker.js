@@ -5,6 +5,9 @@ export default Ember.Component.extend({
   notify: Ember.inject.service('notify'),
 
   baseMapTileUrl: ENV.baseMapTileUrl,
+  defaultMapBounds: [[49.384472, -124.771694], [24.520833, -66.947028]], // contiguous 48 US states
+  defaultMapCenter: [39.833333, -98.583333], // center of contiguous 48 US states
+  defaultMapZoom: 3,
 
   drawOptions: {
     'polyline': true,
@@ -14,36 +17,31 @@ export default Ember.Component.extend({
     'marker': false
   },
 
-  init() {
-    this._super(...arguments);
-    if(this.get('center'))
-    {
-      if(this.get('center') in this.get('cities'))
-      {
-        // Translate an initial location to coordinates
-        // 'centerCoords' is the raw-coordinates form of the human-readable 'center'
-        // 'centerZoom' is the raw zoom level form of the human-readable 'center'
-        this.set('centerCoords', this.get(`cities.${this.get('center')}.location`));
-        this.set('centerZoom',   this.get(`cities.${this.get('center')}.zoom`));
-      } else if (this.get('center').split(',').length === 3) {
-        let splits = this.get('center').split(',');
-        this.set('centerCoords', [parseFloat(splits[0]), parseFloat(splits[1])]);
-        this.set('centerZoom',   parseFloat(splits[2]));
-      } else {
-        this.get('notify').warning(`Unknown city "${this.get('center')}". Try selecting a city from the "Center map on" menu.`);
-        this.set('center', 'chicago');
-        this.set('centerCoords', this.get(`cities.${this.get('center')}.location`));
-        this.set('centerZoom',   this.get(`cities.${this.get('center')}.zoom`));
+  mapZoom: 4,
+
+  mapCenter: Ember.computed("center", function() {
+    const center = this.get("center");
+    const cities = this.get("cities");
+    if(center) {
+      if(center in cities) {
+        return cities[center].location;
+      } else if(center.split(",").length === 2) {
+        return center.split(",");
+      } else if ("default" in cities) {
+        this.get("notify").warning(`Unknown city "${center}". Try selecting a city from the "Center map on" menu.`);
+        this.set("center", "default");
+        return cities.default.location;
       }
     }
-    this.set('teleportState', {center: this.get('center')});
-  },
-
-  cities: {},
+    return this.get("defaultMapCenter");
+  }),
 
   //IDs to populate the dropdown box. Computed from the cities dict above.
   citiesList: Ember.computed('cities', function(){
-    let list = Object.keys(this.get('cities')).map(key => {
+    const cities = this.get("cities");
+    let list = Object.keys(cities).filter(key => {
+      return key !== "default";
+    }).map(key => {
       return {id: key, label: this.get(`cities.${key}.label`)};
     });
     list.sort((first, second) => {
@@ -57,8 +55,58 @@ export default Ember.Component.extend({
     return list;
   }),
 
-  didUpdateAttrs() {
-    this.set('teleportState.center', this.get('center'));
+  init() {
+    this._super(...arguments);
+    this.zoomToCenter();
+  },
+
+  didInsertElement() {
+    this._super(...arguments);
+    if(this.get("geoJSON")) {
+      this.zoomToDrawnShape();
+      // Draw the user's shape back (so if they load from the URL it's still rendered)
+      this.drawUserShape();
+    }
+  },
+
+  zoomToCenter() {
+    const center = this.get("center");
+    const cities = this.get("cities");
+    if(center in cities) {
+      this.set("mapZoom", cities[center].zoom);
+    } else if ("default" in cities) {
+      this.set("mapZoom", cities["default"].zoom);
+    } else {
+      this.set("mapZoom", this.get("defaultMapZoom"));
+    }
+  },
+
+  zoomToDrawnShape() {
+    try {
+      const geoJSONLayer = L.geoJSON(JSON.parse(this.get("geoJSON")));
+      this.get("leafletMap").fitBounds(geoJSONLayer.getBounds());
+    } catch (err) {
+      // We already display an error notification when the user tries to
+      // submit a query with invalid geoJSON.
+      console.log("Refusing to zoom to invalid \"location_geom__within\" shape.");
+    }
+  },
+
+  drawUserShape() {
+    const geoJSON = JSON.parse(this.get("geoJSON"));
+    const layer = L.geoJSON(geoJSON);
+    layer.addTo(this.get("leafletMap"));
+  },
+
+  inTextCenter(point) {
+    // Returns true if we have a text value of center (i.e. a city name)
+    // and the point is within the center's bounds; returns false otherwise.
+    const center = this.get("center");
+    if(center && center.split(',').length !== 2) {
+      const latLngBounds = L.latLngBounds(this.get(`cities.${center}.bounds`));
+      return latLngBounds.contains(point);
+    }
+    return false;
   },
 
   ensureSingleDrawnFeature(event) {
@@ -76,32 +124,41 @@ export default Ember.Component.extend({
     map.addLayer(newLayer); // Put the new layer back
   },
 
-  //If the 'center' query parameter changes, then recenter the map
-  changedCenter: Ember.observer('teleportState.center', function() {
-    const city = this.get('teleportState.center');
-    this.set('center', this.get('teleportState.center'));
-    if(city in this.get('cities')) {
-      this.set('centerCoords', this.get(`cities.${city}.location`));
-      this.set('centerZoom',   this.get(`cities.${city}.zoom`));
-    }
-  }),
-
   actions: {
     //Collapse the opened introduction without refreshing the page.
     dismissIntro(){
       $("#collapse-intro").collapse("hide");
     },
-    mapMovedByUser(newcenter){
-      let self = this;
-      Ember.run.next(function () {
-        if (self.isDestroyed) { return; } //Workaround to fix testing
-        self.set('center', newcenter);
-      });
+    teleportToCity(event) {
+      const selectElement = event.target;
+      const cityName = selectElement.value;
+      selectElement.selectedIndex = 0;
+      this.set("center", cityName);
+      this.zoomToCenter();
     },
-    updateQueryGeoJSON(event) {
+    mapMovedByUser(event) {
+      // Only update center if the user leaves the bounds of the
+      // selected city (or already had a numeric center)
+      const newCenter = event.target.getCenter();
+      if (!this.inTextCenter(newCenter)) {
+        this.set("center", `${newCenter.lat},${newCenter.lng}`);
+      }
+
+    },
+    userDrewShape(event) {
       this.ensureSingleDrawnFeature(event);
       this.set('geoJSON', JSON.stringify(event.layer.toGeoJSON()));
+    },
+    cacheMapRef(event) {
+      this.set("leafletMap", event.target);
+    },
+    submitAndZoom() {
+      if(this.get("geoJSON")) {
+        this.zoomToDrawnShape();
+      }
+      this.sendAction("submit");
     }
+
   }
 
 });

@@ -18,7 +18,6 @@ test('Using a non-center will default the map to Chicago.', function (assert) {
   visit('/discover?center=ksdgklasdgasdklghasklg');
   andThen(function () {
     assert.notEqual($('.large-map').find('img[src$="/10/262/380.png"]').length, 0, "The map defaults to Chicago.");
-    assert.equal($('#map-center-select select').val(), 'chicago', "The map center selector defaults Chicago.");
     //TODO: Add an assertion here that checks that a warning was issued.
   });
 });

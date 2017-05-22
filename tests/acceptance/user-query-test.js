@@ -16,7 +16,7 @@ test('Discover page loads properly with query parameters.', function (assert) {
     assert.equal($('#start-date-filter input').val(), '06/01/2010', "Query parameter was able to set the start date.");
     assert.equal($('#end-date-filter input').val(), '07/02/2017', "Query parameter was able to set the end date.");
     assert.equal($('#agg-select option:selected').text().trim(), 'day', "Query parameter was able to set the aggregation mode.");
-    assert.equal($('#map-center-select option:selected').text().trim(), 'Seattle', "Query parameter was able to set the map center.");
+    assert.notEqual($('.large-map').find('img[src$="/10/164/357.png"]').length, 0, "Query parameter was able to set the map center.");
   });
 });
 
@@ -48,7 +48,7 @@ test('User can directly visit a query page with query parameters.', function (as
     assert.equal($('#start-date-filter input').val(), '06/01/2010', "Query parameter was able to set the start date.");
     assert.equal($('#end-date-filter input').val(), '07/02/2017', "Query parameter was able to set the end date.");
     assert.equal($('#agg-select option:selected').text().trim(), 'day', "Query parameter was able to set the aggregation mode.");
-    assert.equal($('#map-center-select option:selected').text().trim(), 'Seattle', "Query parameter was able to set the map center.");
+    assert.notEqual($('.large-map').find('img[src$="15/8408/12177.png"]').length, 0, "Query parameter was able to zoom the map to the geoJSON bounds.");
   });
 });
 
@@ -82,13 +82,13 @@ test('Changing the map center selection changes the actual map.', function (asse
   visit('/discover');
   andThen(function () {
     assert.notEqual($('.large-map').find('img[src$="/10/262/380.png"]').length, 0, "Default map was centered on Chicago.");  //Chicago map tile
-    fillIn("#map-center-select select", "bristol");
+    fillIn("#map-center-select", "bristol");
     andThen(function () {
       assert.notEqual($('.large-map').find('img[src$="/11/1009/681.png"]').length, 0, "Changing the center selection recenters the map onto Bristol, UK.");  //Bristol, UK map tile
-      fillIn("#map-center-select select", "seattle");
+      fillIn("#map-center-select", "seattle");
       andThen(function () {
         assert.notEqual($('.large-map').find('img[src$="/10/164/357.png"]').length, 0, "Changing the center selection recenters the map onto Seattle.");  //Seattle map tile
-        fillIn("#map-center-select select", "newyork");
+        fillIn("#map-center-select", "newyork");
         andThen(function () {
           assert.notEqual($('.large-map').find('img[src$="/10/301/384.png"]').length, 0, "Changing the center selection recenters the map onto New York.");  //New York map tile
         });
@@ -98,26 +98,26 @@ test('Changing the map center selection changes the actual map.', function (asse
 });
 
 
-test('User can directly specify a map center coordinates via the URL.', function (assert) {
-  visit('/discover?center=51.89426503878691,1.4826178550720215,15');
+test('User can directly specify map center coordinates via the URL.', function (assert) {
+  visit('/discover?center=51.89426503878691,1.4826178550720215');
   andThen(function () {
-    assert.notEqual($('.large-map').find('img[src$="/15/16518/10839.png"]').length, 0, "Map uses coordinates to center on Sealand.");  //Sealand map tile
+    assert.notEqual($('.large-map').find('img[src$="10/516/338.png"]').length, 0, "Map uses coordinates to center on Sealand.");  //Sealand map tile
   });
 });
 
 test('Changing selection on the front page changes query parameters.', function (assert) {
   visit('/discover');
   andThen(function () {
-    $("#agg-select select").val('day').change();
+    fillIn("#agg-select select", "day");
     andThen(function () {
       assert.equal(currentURL().indexOf('agg=day') > -1, true, "Changing agg updated query parameters.");
-      $("#agg-select select").val('year').change();
+      fillIn("#agg-select select", "year");
       andThen(function () {
         assert.equal(currentURL().indexOf('agg=year') > -1, true, "Changing agg updated query parameters.");
-        $("#map-center-select select").val('seattle').change();
+        fillIn("#map-center-select", "seattle");
         andThen(function () {
           assert.equal(currentURL().indexOf('center=seattle') > -1, true, "Changing center updated query parameters.");
-          $("#map-center-select select").val('newyork').change();
+          fillIn("#map-center-select", "newyork");
           andThen(function () {
             assert.equal(currentURL().indexOf('center=newyork') > -1, true, "Changing center updated query parameters.");
           });
