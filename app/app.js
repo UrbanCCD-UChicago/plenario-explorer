@@ -1,6 +1,6 @@
 import Ember from "ember";
 import Resolver from "./resolver";
-import "npm:babel-polyfill";
+// import "npm:babel-polyfill";
 import loadInitializers from "ember-load-initializers";
 import config from "./config/environment";
 Ember.assign = Object.assign;

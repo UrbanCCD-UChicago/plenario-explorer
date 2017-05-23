@@ -23,19 +23,6 @@ module.exports = function(defaults) {
     }
   });
 
-  app.import('bower_components/bootswatch/simplex/bootstrap.css');
-  app.import('bower_components/bootstrap/dist/js/bootstrap.min.js');
-  // app.import('bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.woff', {
-  //   destDir: 'fonts'
-  // });
-  // app.import('bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.woff2', {
-  //   destDir: 'fonts'
-  // });
-  app.import('bower_components/urijs/src/URI.js');
-  app.import('bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js');
-  app.import('bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css');
-  app.import('bower_components/pusher-js/dist/web/pusher.js');
-
   // Use `app.import` to add additional libraries to the generated
   // output files.
   //
@@ -48,6 +35,26 @@ module.exports = function(defaults) {
   // modules that you would like to import into your application
   // please specify an object with the list of modules as keys
   // along with the exports of each module as its value.
+
+  // Using vendor-shims
+  app.import('vendor/shims/pusher-js.js');
+
+  // Bower packages (TODO: move away from Bower)
+  app.import('bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js');
+  app.import('bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css');
+
+  // app.import('bower_components/bootswatch/simplex/bootstrap.css');
+  // app.import('bower_components/bootstrap/dist/js/bootstrap.min.js');
+  // app.import('bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.woff', {
+  //   destDir: 'fonts'
+  // });
+  // app.import('bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.woff2', {
+  //   destDir: 'fonts'
+  // });
+  // app.import('bower_components/urijs/src/URI.js');
+  // app.import('bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js');
+  // app.import('bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css');
+  // app.import('bower_components/pusher-js/dist/web/pusher.js');
 
   return app.toTree();
 };
