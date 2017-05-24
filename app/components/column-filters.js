@@ -70,7 +70,7 @@ export default Ember.Component.extend({
                               'activeFilter.val',
     function() {
       const filter = this.get('activeFilter');
-      return !Boolean(filter.field && filter.op && filter.val);
+      return !(filter.field && filter.op && filter.val);
     }),
 
   makeNewFilter() {

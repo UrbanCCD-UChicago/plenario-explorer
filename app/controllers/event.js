@@ -122,30 +122,36 @@ export default Ember.Controller.extend({
       const qService = this.get('query');
 
       switch (type) {
-        case 'csvPoints':
+        case 'csvPoints': {
           qParams['data_type'] = 'csv';
           qService.rawEvents(qParams, true);
           break;
-        case 'geoJSONPoints':
+        }
+        case 'geoJSONPoints': {
           qParams['data_type'] = 'geojson';
           qService.rawEvents(qParams, true);
           break;
-        case 'csvPointsDump':
+        }
+        case 'csvPointsDump': {
           let queryCSV = Ember.copy(qParams);
           Ember.assign(queryCSV, {data_type: "csv"});
           qService.dataDump(queryCSV, true);
           break;
-        case 'geoJSONPointsDump':
+        }
+        case 'geoJSONPointsDump': {
           let queryJSON = Ember.copy(qParams);
           Ember.assign(queryJSON, {data_type: "json"});
           qService.dataDump(queryJSON, true);
           break;
-        case 'grid':
+        }
+        case 'grid': {
           qService.grid(qParams, true);
           break;
-        case 'timeseries':
+        }
+        case 'timeseries': {
           qService.timeseries(qParams, true);
           break;
+        }
       }
     },
 
