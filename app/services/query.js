@@ -12,6 +12,7 @@ import {sensorData, mockNetwork} from '../mirage/sensor-data';
 export default Ember.Service.extend({
   ajax: Ember.inject.service(),
   io: Ember.inject.service('socket-io'),
+  notify: Ember.inject.service(),
 
   queryRoot: Ember.computed('ajax', function() {
     return this.get('ajax').host;
@@ -64,7 +65,7 @@ export default Ember.Service.extend({
     return this.get(type).then(function (doc) {
       return doc.objects.map(v => injectExplorerData(route, undefined, camelizeHash(v)));
     }, function (reason) {
-      console.log(`Failed to load ${type}. Reason: ${reason}.`);
+      this.get("notify").error(`Failed to load ${type}. Reason: ${reason}.`);
     });
   },
 
@@ -220,7 +221,7 @@ export default Ember.Service.extend({
           count: payload.count
         };
       }, function (reason) {
-        console.log(reason);
+        this.get("notify").error(reason);
         return {error: reason};
       });
     }
@@ -264,7 +265,7 @@ export default Ember.Service.extend({
       return grid.then(function (payload) {
         return payload;
       }, function (reason) {
-        console.log(reason);
+        this.get("notify").error(reason);
       });
     }
   },
@@ -314,7 +315,7 @@ export default Ember.Service.extend({
         return this.injectExplorerData("event", params, this.camelizeHash(v));
       });
     }, function (reason) {
-      console.log(`Event candidate query failed: ${reason}`);
+      this.get("notify").error(`Event candidate query failed: ${reason}`);
       return {error: reason};
     });
   },
@@ -331,7 +332,7 @@ export default Ember.Service.extend({
         return this.injectExplorerData("shape", params, this.camelizeHash(v));
       });
     }, function (reason) {
-      console.log(`Shape subset query failed: ${reason}`);
+      this.get("notify").error(`Shape subset query failed: ${reason}`);
       return {error: reason};
     });
   },
@@ -352,7 +353,7 @@ export default Ember.Service.extend({
       return shape.then(payload => {
         return payload;
       }, reason => {
-        console.log(reason);
+        this.get("notify").error(reason);
       });
     }
   },
@@ -378,7 +379,7 @@ export default Ember.Service.extend({
         // Would be useful for putting markers on a map.
         return payload;
       }, function (reason) {
-        console.log(reason);
+        this.get("notify").error(reason);
       });
     }
   },
@@ -417,7 +418,7 @@ export default Ember.Service.extend({
       end_datetime: params.endDatetime
     };
 
-    // Remove empty keys to prevent the creation of malformed query strings    
+    // Remove empty keys to prevent the creation of malformed query strings
     for (let key of Object.keys(queryParams)) {
       if (!queryParams[key]) {
         delete queryParams[key];
@@ -425,7 +426,7 @@ export default Ember.Service.extend({
     }
 
     var query = endpoint + URI('').addQuery(queryParams).toString();
-    console.log('[services.query] sensorDownload.query: ' + query);
+    this.get("notify").info('[services.query] sensorDownload.query: ' + query);
     return window.open(query);
   },
 

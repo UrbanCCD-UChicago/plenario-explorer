@@ -16,19 +16,19 @@ export default Ember.Component.extend({
 
   resoptions: [],
 
-  didUpdateAttrs() {
-    this.set('optionState.agg', this.get('agg'));
-    this.set('optionState.res', this.get('res'));
-  },
-
-  changedAgg: Ember.observer('optionState.agg', function() {
-    const newAgg = this.get('optionState.agg');
-    this.set('agg', newAgg);
-  }),
-
-  changedRes: Ember.observer('optionState.res', function() {
-    const newRes = this.get('optionState.res');
-    this.set('res', newRes);
-  })
+  // didUpdateAttrs() {
+  //   this.set('optionState.agg', this.get('agg'));
+  //   this.set('optionState.res', this.get('res'));
+  // },
+  //
+  // changedAgg: Ember.observer('optionState.agg', function() {
+  //   const newAgg = this.get('optionState.agg');
+  //   this.set('agg', newAgg);
+  // }),
+  //
+  // changedRes: Ember.observer('optionState.res', function() {
+  //   const newRes = this.get('optionState.res');
+  //   this.set('res', newRes);
+  // })
 
 });

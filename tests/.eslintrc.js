@@ -20,5 +20,6 @@ module.exports = {
     L: true
   },
   rules: {
+    'no-console': 'warn' // We want to avoid printing to console, but they shouldn't make tests fail
   }
 };
