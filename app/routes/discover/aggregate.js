@@ -1,5 +1,5 @@
 import Ember from "ember";
-import GJV from "geojson-validation";
+import GJV from "npm:geojson-validation";
 
 export default Ember.Route.extend({
   notify: Ember.inject.service('notify'),

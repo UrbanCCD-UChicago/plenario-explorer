@@ -17,7 +17,7 @@ export default Ember.Component.extend({
     },
     {
       "title": "Trend",
-      "template": "chart-wrapper",
+      "component": "point-aggregate-listing-chart",
       "className": "embedded-chart"
     },
     {

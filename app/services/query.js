@@ -223,7 +223,7 @@ export default Ember.Service.extend({
       }, function (reason) {
         this.get("notify").error(reason);
         return {error: reason};
-      });
+      }.bind(this));
     }
   },
 
@@ -233,10 +233,7 @@ export default Ember.Service.extend({
    */
   prepTimeseries(ts) {
     const formattedSeries = ts.map(function (timeSlice) {
-      // Why exactly does `moment(timeSlice.datetime + "+0000").valueOf()` work
-      // to let Highcharts accept datetimes on the x axis?
-      // I don't know. Don't question it.
-      return [moment(timeSlice.datetime + "+0000").valueOf(), timeSlice.count];
+      return [moment(timeSlice.datetime).toDate(), timeSlice.count];
     });
     // The chart expects a list of series objects,
     // each with a data attribute that actually holds the timeseries.
@@ -266,7 +263,7 @@ export default Ember.Service.extend({
         return payload;
       }, function (reason) {
         this.get("notify").error(reason);
-      });
+      }.bind(this));
     }
   },
 
@@ -317,7 +314,7 @@ export default Ember.Service.extend({
     }, function (reason) {
       this.get("notify").error(`Event candidate query failed: ${reason}`);
       return {error: reason};
-    });
+    }.bind(this));
   },
 
   /**
@@ -334,7 +331,7 @@ export default Ember.Service.extend({
     }, function (reason) {
       this.get("notify").error(`Shape subset query failed: ${reason}`);
       return {error: reason};
-    });
+    }.bind(this));
   },
 
   /**
@@ -352,9 +349,9 @@ export default Ember.Service.extend({
       const shape = this.get('ajax').request(endpoint, {data: params});
       return shape.then(payload => {
         return payload;
-      }, reason => {
+      }, function(reason) {
         this.get("notify").error(reason);
-      });
+      }.bind(this));
     }
   },
 
@@ -380,7 +377,7 @@ export default Ember.Service.extend({
         return payload;
       }, function (reason) {
         this.get("notify").error(reason);
-      });
+      }.bind(this));
     }
   },
 
