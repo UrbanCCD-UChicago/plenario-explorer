@@ -7,7 +7,7 @@ export default Ember.Component.extend({
     },
     chart: {
       type: 'area',
-      height: 80,
+      spacing: [10, 0, 0, 0],
       backgroundColor: 'transparent'
     },
     legend: {
