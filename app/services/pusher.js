@@ -1,7 +1,6 @@
 import Ember from 'ember';
 import ENV from 'plenario-explorer/config/environment';
-
-/*global Pusher*/
+import Pusher from 'npm:pusher-js';
 
 export default Ember.Service.extend({
     init() {

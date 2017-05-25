@@ -1,5 +1,6 @@
 import Ember from 'ember';
 
+
 export default Ember.Controller.extend({
   queryParams: ['viewType', 'nodeId'],
   query: Ember.inject.service(),
@@ -28,6 +29,9 @@ export default Ember.Controller.extend({
     onSelect(nodeId) {
       this.set('nodeId', nodeId);
       this.toggleProperty('refreshNodeChart');
+    },
+    changeView(viewType) {
+      this.set('viewType', viewType);
     },
     download(params) {
       this.get('query').sensorDownload(params).then(resp => {

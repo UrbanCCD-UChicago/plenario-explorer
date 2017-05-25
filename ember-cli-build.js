@@ -37,7 +37,7 @@ module.exports = function(defaults) {
   // along with the exports of each module as its value.
 
   // Using vendor-shims
-  app.import('vendor/shims/pusher-js.js');
+  // shims go here
 
   // Bower packages (TODO: once Ember drops Bower support, these can be brought in through NPM natively)
 

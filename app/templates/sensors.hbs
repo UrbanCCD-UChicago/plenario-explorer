@@ -34,13 +34,14 @@
     </div>
 </div>
 <div class="row">
-  {{#bs-button-group value=viewType type="radio" class="btn-block"}}
-    {{#bs-button class="btn-info" value='live'}}Live View{{/bs-button}}
-    {{#bs-button class="btn-info" value='history'}}History View{{/bs-button}}
-    {{#bs-button class="btn-info" value='download'}}Download{{/bs-button}}
-  {{/bs-button-group}}
-<div class='col-md-12'>
-  <br>
+  <div class="btn-group">
+    <button type="button" class="btn btn-info" value='live' {{action "changeView" "live"}}>Live View</button>
+    <button type="button" class="btn btn-info" value='history' {{action "changeView" "history"}}>History View</button>
+    <button type="button" class="btn btn-info" value='download' {{action "changeView" "download"}}>Download</button>
+  </div>
+
+  <div class='col-md-12'>
+    <br>
     {{#if (eq viewType 'live')}}
         <p>Observations from the last hour. New observations will appear live.</p>
     {{else if (eq viewType 'history')}}
