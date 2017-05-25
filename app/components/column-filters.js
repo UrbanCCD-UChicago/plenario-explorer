@@ -52,6 +52,9 @@ export default Ember.Component.extend({
   },
 
   actions: {
+    madeSelection: function (fieldName, value) {
+      this.set(fieldName, value);
+    },
     submit: function() {
       this.get('filterHashes').pushObject(this.get('activeFilter'));
       this.mutateFilterJSON();
