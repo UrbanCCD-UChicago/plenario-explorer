@@ -1,7 +1,9 @@
 {
   "name": "plenario-explorer",
   "dependencies": {
+    "bootstrap": "^3.3.7",
     "bootstrap-datepicker": "^1.6.4",
+    "bootswatch": "^3.3.7",
     "leaflet-draw": "~0.4.9",
     "spin.js": "^2.3.2"
   }

@@ -125,10 +125,6 @@ export default Ember.Component.extend({
   },
 
   actions: {
-    //Collapse the opened introduction without refreshing the page.
-    dismissIntro(){
-      $("#collapse-intro").collapse("hide");
-    },
     teleportToCity(event) {
       const selectElement = event.target;
       const cityName = selectElement.value;

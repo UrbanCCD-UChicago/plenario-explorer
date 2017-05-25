@@ -39,22 +39,18 @@ module.exports = function(defaults) {
   // Using vendor-shims
   app.import('vendor/shims/pusher-js.js');
 
-  // Bower packages (TODO: move away from Bower)
+  // Bower packages (TODO: once Ember drops Bower support, these can be brought in through NPM natively)
+
+  // Bootstrap Core
+  app.import('bower_components/bootstrap/dist/js/bootstrap.min.js');
+  // app.import('bower_components/bootstrap/dist/css/bootstrap.min.css'); // Disable to use Bootswatch theme
+  app.import('bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.woff', { destDir: 'fonts' });
+  app.import('bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.woff2', { destDir: 'fonts' });
+
+  // Bootstrap addons
+  app.import('bower_components/bootswatch/simplex/bootstrap.css');
   app.import('bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js');
   app.import('bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css');
-
-  // app.import('bower_components/bootswatch/simplex/bootstrap.css');
-  // app.import('bower_components/bootstrap/dist/js/bootstrap.min.js');
-  // app.import('bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.woff', {
-  //   destDir: 'fonts'
-  // });
-  // app.import('bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.woff2', {
-  //   destDir: 'fonts'
-  // });
-  // app.import('bower_components/urijs/src/URI.js');
-  // app.import('bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js');
-  // app.import('bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css');
-  // app.import('bower_components/pusher-js/dist/web/pusher.js');
 
   return app.toTree();
 };
