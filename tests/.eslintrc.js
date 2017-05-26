@@ -4,7 +4,10 @@ module.exports = {
     ecmaVersion: 6,
     sourceType: 'module'
   },
-  extends: 'eslint:recommended',
+  extends: [
+    'eslint:recommended',
+    'airbnb-base'
+  ],
   env: {
     browser: true,
     es6: true,
@@ -12,9 +15,11 @@ module.exports = {
     qunit: true,
     embertest: true
   },
+  settings: {
+    'import/core-modules': ['ember']
+  },
   globals: {
-    // Browser-default, JQuery, QUnit, and Ember test helper globals are set
-    // by the "env" field above
+    // Browser-default, JQuery and QUnit globals are set by the "env" field above
 
     // Mirage
     server: true,
@@ -23,6 +28,5 @@ module.exports = {
     L: true
   },
   rules: {
-    'no-console': 'warn' // We want to avoid printing to console, but they shouldn't make tests fail
   }
 };

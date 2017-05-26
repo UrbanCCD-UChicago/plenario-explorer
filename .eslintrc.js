@@ -4,12 +4,18 @@ module.exports = {
     ecmaVersion: 6,
     sourceType: 'module'
   },
-  extends: 'eslint:recommended',
+  extends: [
+    'eslint:recommended',
+    'airbnb-base'
+  ],
   env: {
     browser: true,
     es6: true,
     jquery: true,
     qunit: true
+  },
+  settings: {
+    'import/core-modules': ['ember']
   },
   globals: {
     // Browser-default, JQuery and QUnit globals are set by the "env" field above
