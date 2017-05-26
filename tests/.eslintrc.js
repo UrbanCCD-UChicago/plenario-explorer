@@ -16,6 +16,9 @@ module.exports = {
     // Browser-default, JQuery, QUnit, and Ember test helper globals are set
     // by the "env" field above
 
+    // Mirage
+    server: true,
+
     // Leaflet:
     L: true
   },

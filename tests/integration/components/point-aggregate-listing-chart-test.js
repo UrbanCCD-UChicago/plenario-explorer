@@ -11,8 +11,8 @@ test('it renders', function(assert) {
   // Handle any actions with this.on('myAction', function(val) { ... });
 
   this.render(hbs`{{point-aggregate-listing-chart}}`);
-
-  assert.equal(this.$().text().trim(), '');
+  let resultText = this.$().text().replace(/Created with Highcharts \d+\.\d+\.\d+/, '').trim();
+  assert.equal(resultText, '');
 
   // Template block usage:
   this.render(hbs`
@@ -20,6 +20,6 @@ test('it renders', function(assert) {
       template block text
     {{/point-aggregate-listing-chart}}
   `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
+  resultText = this.$().text().replace(/Created with Highcharts \d+\.\d+\.\d+/, '').trim();
+  assert.equal(resultText, 'template block text');
 });

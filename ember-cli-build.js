@@ -1,10 +1,9 @@
-/*jshint node:true*/
-/* global require, module */
+/*eslint-env node*/
 var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 
 module.exports = function(defaults) {
   var app = new EmberApp(defaults, {
-    baseURL: null,
+    rootURL: null,
     storeConfigInMeta: false,
     fingerprint: {
       enabled: false,

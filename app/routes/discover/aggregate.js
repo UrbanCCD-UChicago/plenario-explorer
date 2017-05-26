@@ -2,7 +2,7 @@ import Ember from "ember";
 import GJV from "npm:geojson-validation";
 
 export default Ember.Route.extend({
-  notify: Ember.inject.service('notify'),
+  notify: Ember.inject.service(),
   query: Ember.inject.service(),
   model() {
     const params = this.paramsFor('discover');

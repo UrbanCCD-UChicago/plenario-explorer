@@ -11,8 +11,9 @@ test('it renders', function (assert) {
 
   this.get('model', {'humanName': '2013: ECAD Commercial Portfolio Manager Reported Data'});
   this.set('grid', JSON.parse('{"type":"FeatureCollection","features":[{"geometry":{"type":"Polygon","coordinates":[[[-97.89631561826631,30.36412677006069],[-97.89631561826631,30.36862216228366],[-97.90152356164275,30.36862216228366],[-97.90152356164275,30.36412677006069],[-97.89631561826631,30.36412677006069]]]},"type":"Feature","properties":{"count":1}}]}'));
+  this.set('bounds', L.geoJSON(this.get('grid')).getBounds());
 
-  this.render(hbs`{{heat-grid grid=grid datasetName=model.humanName}}`);
+  this.render(hbs`{{heat-grid grid=grid bounds=bounds datasetName=model.humanName}}`);
 
   assert.notEqual(this.$().text().trim(), '');
 });

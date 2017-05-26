@@ -46,7 +46,7 @@ module.exports = function(environment) {
   if (environment === 'test') {
     ENV.host = 'http://plenar.io';
     // Testem prefers this...
-    ENV.baseURL = '/';
+    ENV.rootURL = '/';
     ENV.locationType = 'none';
     ENV['ember-cli-mirage'] = {
       enabled: true,

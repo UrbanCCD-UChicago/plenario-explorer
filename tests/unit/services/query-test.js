@@ -13,7 +13,11 @@ import moment from 'moment';
 moduleFor('service:query', 'Unit | Service | query', {
   // Specify the other units that are required for this test.
   // needs: ['service:foo']
-  needs: ['service:ajax'],
+  needs: [
+    'service:ajax',
+    'service:socket-io',
+    'service:notify'
+  ],
   setup: function () {
     startMirage(this.container);
   }
@@ -94,9 +98,9 @@ test('Successfully queries timeseries.', function (assert) {
   //Test that moment converts a date into epoch time.
   //Moment parses into local time by default though (which is what Plenar.io uses--local time)
   //But for testing purposes, we need to standardize that to UTC time.
-  assert.equal(moment.utc("2000-01-01+0000").valueOf(), "946684800000", "Moment constructor and valueOf() works as expected.");
+  assert.equal(moment.utc("2000-01-01T00:00:00.00").valueOf(), "946684800000", "Moment constructor and valueOf() works as expected.");
 
-  let expectedSeries = testData.detailAggregateRodents.objects.map(v => [moment(v.datetime + "0000").valueOf(), v.count]);
+  let expectedSeries = testData.detailAggregateRodents.objects.map(v => [moment(v.datetime).valueOf(), v.count]);
 
   let params2 = {};
   Ember.assign(params2, params, {dataset_name: "311_service_requests_rodent_baiting"});

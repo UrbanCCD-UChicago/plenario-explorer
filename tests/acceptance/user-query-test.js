@@ -108,10 +108,10 @@ test('User can directly specify map center coordinates via the URL.', function (
 test('Changing selection on the front page changes query parameters.', function (assert) {
   visit('/discover');
   andThen(function () {
-    fillIn("#agg-select select", "day");
+    fillIn("#agg-select", "day");
     andThen(function () {
       assert.equal(currentURL().indexOf('agg=day') > -1, true, "Changing agg updated query parameters.");
-      fillIn("#agg-select select", "year");
+      fillIn("#agg-select", "year");
       andThen(function () {
         assert.equal(currentURL().indexOf('agg=year') > -1, true, "Changing agg updated query parameters.");
         fillIn("#map-center-select", "seattle");

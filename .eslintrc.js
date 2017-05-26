@@ -14,6 +14,9 @@ module.exports = {
   globals: {
     // Browser-default, JQuery and QUnit globals are set by the "env" field above
 
+    // Mirage
+    server: true,
+
     // Leaflet:
     L: true
   },

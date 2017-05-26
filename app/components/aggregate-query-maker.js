@@ -29,7 +29,6 @@ export default Ember.Component.extend({
         return center.split(",");
       } else if ("default" in cities) {
         this.get("notify").warning(`Unknown city "${center}". Try selecting a city from the "Center map on" menu.`);
-        this.set("center", "default");
         return cities.default.location;
       }
     }
@@ -63,9 +62,9 @@ export default Ember.Component.extend({
   didInsertElement() {
     this._super(...arguments);
     if(this.get("geoJSON")) {
-      this.zoomToDrawnShape();
       // Draw the user's shape back (so if they load from the URL it's still rendered)
       this.drawUserShape();
+      this.zoomToDrawnShape();
     }
   },
 
@@ -87,15 +86,21 @@ export default Ember.Component.extend({
       this.get("leafletMap").fitBounds(geoJSONLayer.getBounds());
     } catch (err) {
       // We already display an error notification when the user tries to
-      // submit a query with invalid geoJSON.
-      console.log("Refusing to zoom to invalid \"location_geom__within\" shape.");
+      // submit a query with invalid geoJSON. We just don't want to try
+      // to zoom to it if it's invalid.
     }
   },
 
   drawUserShape() {
-    const geoJSON = JSON.parse(this.get("geoJSON"));
-    const layer = L.geoJSON(geoJSON);
-    layer.addTo(this.get("leafletMap"));
+    try {
+      const geoJSON = JSON.parse(this.get("geoJSON"));
+      const layer = L.geoJSON(geoJSON);
+      layer.addTo(this.get("leafletMap"));
+    } catch (err) {
+      // We already display an error notification when the user tries to
+      // submit a query with invalid geoJSON. We just don't want to try
+      // to draw it on the map if it's invalid.
+    }
   },
 
   inTextCenter(point) {
@@ -139,7 +144,6 @@ export default Ember.Component.extend({
       if (!this.inTextCenter(newCenter)) {
         this.set("center", `${newCenter.lat},${newCenter.lng}`);
       }
-
     },
     userDrewShape(event) {
       this.ensureSingleDrawnFeature(event);

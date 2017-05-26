@@ -233,7 +233,7 @@ export default Ember.Service.extend({
    */
   prepTimeseries(ts) {
     const formattedSeries = ts.map(function (timeSlice) {
-      return [moment(timeSlice.datetime).toDate(), timeSlice.count];
+      return [moment(timeSlice.datetime).valueOf(), timeSlice.count];
     });
     // The chart expects a list of series objects,
     // each with a data attribute that actually holds the timeseries.
