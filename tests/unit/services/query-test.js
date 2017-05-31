@@ -13,7 +13,11 @@ import moment from 'moment';
 moduleFor('service:query', 'Unit | Service | query', {
   // Specify the other units that are required for this test.
   // needs: ['service:foo']
-  needs: ['service:ajax'],
+  needs: [
+    'service:ajax',
+    'service:socket-io',
+    'service:notify',
+  ],
   setup() {
     startMirage(this.container);
   },
@@ -52,15 +56,16 @@ test('Successfully returns queries.', function (assert) {
   const events = service.allEventMetadata();
   const shapes = service.allShapeMetadata();
 
-  return events.then((result) => {
-    assert.equal(result.length, 2, 'Query returns the expected number of datasets.');
-    // Datasets should be returned in the order defined in test-data.js, since they are given as arrays.
-    assert.equal(result[0].datasetName, '311_service_requests_sanitation_code_complaints', 'Query returns the correct dataset name.');
-    assert.equal(result[1].datasetName, '311_service_requests_rodent_baiting', 'Query returns the correct dataset name.');
-    return shapes.then((result) => {
-      assert.equal(result.length, 2, 'Query returns the expected number of shapes.');
-      assert.equal(result[0].datasetName, 'major_streets', 'Query returns the correct dataset name.');
-      assert.equal(result[1].datasetName, 'boundaries_neighborhoods', 'Query returns the correct dataset name.');
+  return events.then((eventsResult) => {
+    assert.equal(eventsResult.length, 2, 'Query returns the expected number of datasets.');
+    // Datasets should be returned in the order defined in test-data.js,
+    // since they are given as arrays.
+    assert.equal(eventsResult[0].datasetName, '311_service_requests_sanitation_code_complaints', 'Query returns the correct dataset name.');
+    assert.equal(eventsResult[1].datasetName, '311_service_requests_rodent_baiting', 'Query returns the correct dataset name.');
+    return shapes.then((shapesResult) => {
+      assert.equal(shapesResult.length, 2, 'Query returns the expected number of shapes.');
+      assert.equal(shapesResult[0].datasetName, 'major_streets', 'Query returns the correct dataset name.');
+      assert.equal(shapesResult[1].datasetName, 'boundaries_neighborhoods', 'Query returns the correct dataset name.');
     });
   });
 });
@@ -71,18 +76,18 @@ test('Successfully returns queries with query parameters.', function (assert) {
   const events = service.eventCandidates(params);
   const shapes = service.shapeSubsets(params);
 
-  return events.then((result) => {
-    assert.equal(result.length, 2, 'Query returns the expected number of datasets.');
-    assert.equal(result[0].datasetName, '311_service_requests_sanitation_code_complaints', 'Query returns the correct dataset name.');
-    assert.equal(result[1].datasetName, '311_service_requests_rodent_baiting', 'Query returns the correct dataset name.');
-    assert.equal(result[0].explorerData.queryParams.obs_date__ge, params.obs_date__ge, 'injectExplorerData correctly injects query parameters.');
-    assert.equal(result[0].explorerData.queryParams.location_geom__within, params.location_geom__within, 'injectExplorerData correctly injects query parameters.');
-    return shapes.then((result) => {
-      assert.equal(result.length, 2, 'Query returns some values.');
-      assert.equal(result[0].datasetName, 'major_streets', 'Query returns the correct dataset name.');
-      assert.equal(result[1].datasetName, 'boundaries_neighborhoods', 'Query returns the correct dataset name.');
-      assert.equal(result[0].explorerData.queryParams.obs_date__ge, params.obs_date__ge, 'injectExplorerData correctly injects query parameters');
-      assert.equal(result[0].explorerData.queryParams.location_geom__within, params.location_geom__within, 'injectExplorerData correctly injects query parameters.');
+  return events.then((eventsResult) => {
+    assert.equal(eventsResult.length, 2, 'Query returns the expected number of datasets.');
+    assert.equal(eventsResult[0].datasetName, '311_service_requests_sanitation_code_complaints', 'Query returns the correct dataset name.');
+    assert.equal(eventsResult[1].datasetName, '311_service_requests_rodent_baiting', 'Query returns the correct dataset name.');
+    assert.equal(eventsResult[0].explorerData.queryParams.obs_date__ge, params.obs_date__ge, 'injectExplorerData correctly injects query parameters.');
+    assert.equal(eventsResult[0].explorerData.queryParams.location_geom__within, params.location_geom__within, 'injectExplorerData correctly injects query parameters.');
+    return shapes.then((shapesResult) => {
+      assert.equal(shapesResult.length, 2, 'Query returns some values.');
+      assert.equal(shapesResult[0].datasetName, 'major_streets', 'Query returns the correct dataset name.');
+      assert.equal(shapesResult[1].datasetName, 'boundaries_neighborhoods', 'Query returns the correct dataset name.');
+      assert.equal(shapesResult[0].explorerData.queryParams.obs_date__ge, params.obs_date__ge, 'injectExplorerData correctly injects query parameters');
+      assert.equal(shapesResult[0].explorerData.queryParams.location_geom__within, params.location_geom__within, 'injectExplorerData correctly injects query parameters.');
     });
   });
 });
@@ -93,9 +98,11 @@ test('Successfully queries timeseries.', function (assert) {
   // Test that moment converts a date into epoch time.
   // Moment parses into local time by default though (which is what Plenar.io uses--local time)
   // But for testing purposes, we need to standardize that to UTC time.
-  assert.equal(moment.utc('2000-01-01+0000').valueOf(), '946684800000', 'Moment constructor and valueOf() works as expected.');
+  assert.equal(moment.utc('2000-01-01T00:00:00.00').valueOf(), '946684800000', 'Moment constructor and valueOf() works as expected.');
 
-  const expectedSeries = testData.detailAggregateRodents.objects.map(v => [moment(`${v.datetime}0000`).valueOf(), v.count]);
+  const expectedSeries = testData.detailAggregateRodents.objects.map(
+    v => [moment(v.datetime).valueOf(), v.count]
+  );
 
   const params2 = {};
   Ember.assign(params2, params, { dataset_name: '311_service_requests_rodent_baiting' });

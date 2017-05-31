@@ -15,6 +15,7 @@ export default function () {
     } else if (request.queryParams.dataset_name === '311_service_requests_rodent_baiting') {
       return testData.detailAggregateRodents;
     }
+    return undefined;
   });
 
   this.get(`${ENV.host}/v1/api/grid`, (_, request) => {
@@ -23,6 +24,7 @@ export default function () {
     } else if (request.queryParams.dataset_name === '311_service_requests_rodent_baiting') {
       return testData.gridRodents;
     }
+    return undefined;
   });
 
   this.get(`${ENV.host}/v1/api/detail`, (_, request) => {
@@ -31,6 +33,7 @@ export default function () {
     } else if (request.queryParams.dataset_name === '311_service_requests_rodent_baiting') {
       return testData.detailRodents;
     }
+    return undefined;
   });
 
   this.get(`${ENV.host}/v1/api/sensor-networks/plenario_development/nodes`, () => sensorData.nodes);

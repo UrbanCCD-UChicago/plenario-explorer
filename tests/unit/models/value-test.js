@@ -1,4 +1,4 @@
-import { Value } from '../../../models/value';
+import Value from '../../../models/value';
 import { module, test } from 'qunit';
 
 module('Unit | Model | Value');
@@ -18,7 +18,6 @@ const mockObservationAPIRecord =
     datetime: '2016-08-31T17:37:54+00:00',
   };
 
-
 test('extracts observations from API record', (assert) => {
   const observations = Value.adaptFromAPI(mockObservationAPIRecord);
   assert.equal(observations.length, 2);
@@ -29,4 +28,3 @@ test('extracts observations from API record', (assert) => {
   assert.equal(idToValue['gas_concentration.so2'], 21);
   assert.equal(idToValue['gas_concentration.h2s'], 42);
 });
-

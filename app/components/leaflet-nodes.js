@@ -38,7 +38,7 @@ export default LeafletBase.extend({
 
   updateHighlight() {
     const selected = this.get('selectedNode');
-    console.log(selected);
+
     if (!selected) { return; }
 
     // Clear highlight from previously selected node
@@ -72,9 +72,7 @@ export default LeafletBase.extend({
     };
 
     this.set('nodeIdToMarker', nodeIdToMarker);
-    const layer = L.geoJson(
-      this.get('geoJSON'), { onEachFeature: addSelectionListeners }
-    );
+    const layer = L.geoJson(this.get('geoJSON'), { onEachFeature: addSelectionListeners });
     this.set('layer', layer);
   },
 

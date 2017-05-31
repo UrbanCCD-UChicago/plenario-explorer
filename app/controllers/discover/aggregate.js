@@ -90,12 +90,24 @@ export default Ember.Controller.extend({
     const timeseriesList = this.get('timeseriesList');
     let arrivalOrder = 1;
 
-    const pointDatasets = this.get('model').pointDatasets._result;
+    const pointDatasets = this.get('model').pointDatasets._result; // eslint-disable-line no-underscore-dangle
     let eligible = pointDatasets.length;
     let processed = 0;
     const discoverAggregateController = this;
 
     const queryError = function (error, goback = true) {
+      const tipsMachine = function (tipError) {
+        if (tipError.message.toLowerCase().indexOf('format') > -1) {
+          discoverAggregateController.get('notify').info('This means that the Plenar.io API could not understand your request. Please check your query parameters, or reset your query and start over.');
+        } else if (tipError.errors && tipError.errors.length > 0 && (tipError.errors[0].status === '504' || tipError.errors[0].status === '0')) {
+          discoverAggregateController.get('notify').info('Some items in your request are taking too long to process. Try narrowing your search scope.');
+        } else if (tipError.message.toLowerCase().indexOf('server error') > -1) {
+          // Do nothing?
+        } else {
+          discoverAggregateController.get('notify').info('Try resetting your query and starting over.');
+        }
+      };
+
       if (!goback) {
         discoverAggregateController.get('notify').warning(`Not all datasets were queried successfully: ${error.message}`);
       } else {
@@ -105,18 +117,6 @@ export default Ember.Controller.extend({
       if (goback) {
         discoverAggregateController.set('searchingDatasets', false);
         discoverAggregateController.transitionToRoute('discover');
-      }
-    };
-
-    let tipsMachine = function (error) {
-      if (error.message.toLowerCase().indexOf('format') > -1) {
-        discoverAggregateController.get('notify').info('This means that the Plenar.io API could not understand your request. Please check your query parameters, or reset your query and start over.');
-      } else if (error.errors && error.errors.length > 0 && (error.errors[0].status === '504' || error.errors[0].status === '0')) {
-        discoverAggregateController.get('notify').info('Some items in your request are taking too long to process. Try narrowing your search scope.');
-      } else if (error.message.toLowerCase().indexOf('server error') > -1) {
-
-      } else {
-        discoverAggregateController.get('notify').info('Try resetting your query and starting over.');
       }
     };
 
@@ -132,27 +132,29 @@ export default Ember.Controller.extend({
 
       tsPromise.then((value) => {
         if (value.error) {
-          eligible--;
+          eligible += -1;
           queryError(value.error, false);
           return;
         }
 
         if (value.count === 0) {
-          eligible--;
+          eligible += -1;
           return;  // Empty timeseries. Don't display it.
         }
+        /* eslint-disable no-param-reassign */
         d.count = value.count;
         d.series = value.series;
         d.arrivalOrder = arrivalOrder;
-        arrivalOrder++;
+        /* eslint-enable no-param-reassign */
+        arrivalOrder += 1;
         timeseriesList.pushObject(d);
-        processed++;
+        processed += 1;
         if (processed === eligible) {
           discoverAggregateController.set('searchingDatasets', false);
         }
-        // console.log(`Processed ${processed} of ${eligible} candidates.`);
+        // Ember.Logger.log(`Processed ${processed} of ${eligible} candidates.`);
       }, (reason) => {
-        console.log(reason);
+        Ember.Logger.error(reason);
       });
     });
   },

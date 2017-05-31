@@ -6,4 +6,4 @@ function promisify(data) {
   });
 }
 
-export { promisify };
+export { promisify as default };

@@ -10,8 +10,10 @@ export default Ember.Controller.extend({
       const inFuture = moment(d.obsTo).isAfter(moment());
       const inOldenTimes = moment(d.obsTo).isBefore('1899-12-31');
       if (inFuture || inOldenTimes) {
+        /* eslint-disable no-param-reassign */
         d.obsFrom = null;
         d.obsTo = null;
+        /* eslint-enable no-param-reassign */
       }
       return d;
     });

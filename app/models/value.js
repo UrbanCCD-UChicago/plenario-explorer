@@ -37,9 +37,7 @@ class Value {
 
     // Construct one value for each non-null observed property
     const values = [];
-    // console.log(results);
     for (const obsProp of Object.keys(results)) {
-      // console.log(obsProp);
       const initHash = Ember.copy(initHashProto);
       // Properties will frequently be null.
       // Best to just not pass those along.
@@ -54,4 +52,4 @@ class Value {
 
 }
 
-export { Value };
+export { Value as default };

@@ -2,7 +2,7 @@ import Ember from 'ember';
 import GJV from 'npm:geojson-validation';
 
 export default Ember.Route.extend({
-  notify: Ember.inject.service('notify'),
+  notify: Ember.inject.service(),
   query: Ember.inject.service(),
   model() {
     const params = this.paramsFor('discover');
@@ -31,7 +31,7 @@ export default Ember.Route.extend({
       self.get('notify').error(message);
     };
 
-    //* ** VALIDATION STEPS: Logic here validates the query parameters before submitting the query. ***//
+    /* ** VALIDATION STEPS: Logic here validates the query parameters before submitting ** */
 
     // Check that location_geom__within is a valid polygon or line segment
     const genericHelp = 'Please draw a shape on the map before submitting.';

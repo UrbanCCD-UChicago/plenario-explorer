@@ -6,6 +6,7 @@ export default Ember.Controller.extend({
 
   loadingMeta: false,
 
+  notify: Ember.inject.service(),
   aggController: Ember.inject.controller('discover.aggregate'),
 
   queryParams: ['center', 'obs_date__le', 'obs_date__ge', 'agg', 'location_geom__within'],
@@ -42,7 +43,7 @@ export default Ember.Controller.extend({
       // This is a copy of Chicago
       bounds: [
         [42.023131, -87.940267], // NW corner
-        [41.644335, -87.523661],  // SE corner
+        [41.644335, -87.523661], // SE corner
       ],
       location: [41.795509, -87.581916],
       zoom: 10,
@@ -51,7 +52,7 @@ export default Ember.Controller.extend({
       label: 'Chicago, IL',
       bounds: [
         [42.023131, -87.940267], // NW corner
-        [41.644335, -87.523661],  // SE corner
+        [41.644335, -87.523661], // SE corner
       ],
       location: [41.795509, -87.581916],
       zoom: 10,
@@ -60,7 +61,7 @@ export default Ember.Controller.extend({
       label: 'New York, NY',
       bounds: [
         [40.917577, -74.259090], // NW corner
-        [40.477399, -73.700272],  // SE corner
+        [40.477399, -73.700272], // SE corner
       ],
       location: [40.7268362, -74.0017699],
       zoom: 10,
@@ -77,8 +78,8 @@ export default Ember.Controller.extend({
     sanfrancisco: {
       label: 'San Francisco, CA',
       bounds: [
-        [37.929820, -123.173825], // NW corner (yes, the city limits DO include those tiny western islands)
-        [37.639830, -122.281780],  // SE corner
+        [37.929820, -123.173825], // NW corner (yes, the city limits DO include those tiny islands)
+        [37.639830, -122.281780], // SE corner
       ],
       location: [37.7618864, -122.4406926],
       zoom: 12,
@@ -87,7 +88,7 @@ export default Ember.Controller.extend({
       label: 'Austin, TX',
       bounds: [
         [30.516863, -97.938383], // NW corner
-        [30.098659, -97.568420],  // SE corner
+        [30.098659, -97.568420], // SE corner
       ],
       location: [30.3075693, -97.7399898],
       zoom: 10,
@@ -96,7 +97,7 @@ export default Ember.Controller.extend({
       label: 'Denver, CO',
       bounds: [
         [39.914247, -105.109927], // NW corner
-        [39.614430, -104.600296],  // SE corner
+        [39.614430, -104.600296], // SE corner
       ],
       location: [39.7534338, -104.890141],
       zoom: 11,
@@ -105,7 +106,7 @@ export default Ember.Controller.extend({
       label: 'Bristol, England, UK',
       bounds: [
         [51.544433, -2.730516], // NW corner
-        [51.392545, -2.450902],  // SE corner
+        [51.392545, -2.450902], // SE corner
       ],
       location: [51.4590572, -2.5909956],
       zoom: 11,
@@ -154,7 +155,7 @@ export default Ember.Controller.extend({
   actions: {
     submit() {
       if (this.get('submitCooldown')) {
-        console.log('Cooldown active.');
+        this.get('notify').info('Cooldown active. Please wait a few seconds between query submissions.');
         return;
       }
 
@@ -167,11 +168,10 @@ export default Ember.Controller.extend({
       }, 500);
 
       // Reflect to find if we need to transition,
+      // or just reload current model.
       if (this._inIndex()) {
         this.transitionToRoute('discover.aggregate');
-      }
-      // or just reload current model.
-      else {
+      } else {
         this.get('aggController').send('submit');
       }
       // Refocus map on user-drawn shape.

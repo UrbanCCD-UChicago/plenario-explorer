@@ -24,7 +24,8 @@ test('Using a non-center will default the map to Chicago.', (assert) => {
 
 test('Using an invalid agg option will return to index and issue an error.', (assert) => {
   // Submit a query with an invalid value for agg
-  // location_geom__within is just an arbitrary shape so that /discover/aggregate will accept the query in the first place
+  // location_geom__within is just an arbitrary shape so that /discover/aggregate
+  // will accept the query in the first place
   visit(`/discover/aggregate?agg=ksdfasdkh&location_geom__within=${geoJSON}`);
   andThen(() => {
     assert.equal(currentRouteName(), 'discover.index', 'The page returns to index.');

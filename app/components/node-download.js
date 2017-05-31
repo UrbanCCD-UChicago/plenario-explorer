@@ -1,6 +1,6 @@
 import Ember from 'ember';
-import utc from '../utils/utc-8601';
 import moment from 'moment';
+import utc from '../utils/utc-8601';
 import SensorMap from '../utils/sensor-map';
 // import dateFormat from '../utils/date-format';
 
@@ -8,8 +8,9 @@ export default Ember.Component.extend({
   query: Ember.inject.service(),
   availableFeatures: Ember.computed('curation', 'nodeMeta', function () {
     // Clone curatedFeatures. We'll be mutating it.
-    let { curatedTypes, curatedFeatures } = this.get('curation');
-    curatedFeatures = curatedFeatures.map(obj => Ember.copy(obj));
+    const curation = this.get('curation');
+    const curatedTypes = curation.curatedTypes;
+    const curatedFeatures = curation.curatedFeatures.map(obj => Ember.copy(obj));
     const { sensors } = this.get('nodeMeta');
     // Which features are represented in this node's sensors?
     const availableFeatureNames = new SensorMap(curatedTypes, sensors).features;

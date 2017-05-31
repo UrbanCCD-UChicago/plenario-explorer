@@ -19,7 +19,7 @@ export default Ember.Component.extend({
       if (typeof value === 'number') {
         // Round to 3 decimal places.
         // And pray to the IEEE gods for no weird floating point shit.
-        value = Math.round(value * 1000) / 1000;
+        value = Math.round(value * 1000) / 1000; // eslint-disable-line no-param-reassign
       }
 
       return [moment(datetime).valueOf() - tzOffsetInMs, value];

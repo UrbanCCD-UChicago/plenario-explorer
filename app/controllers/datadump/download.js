@@ -65,12 +65,15 @@ export default Ember.Controller.extend({
         if (job.status.progress) {
           this.set('parts', job.status.progress.done);
           this.set('total', job.status.progress.total);
-          this.set('progress', parseInt(this.parts / this.total * 100));
+          this.set('progress', parseInt((this.parts / this.total) * 100, 10));
           if (this.parts > 0) {
             this.set('started', true);
-            const starttime = moment.utc(job.status.meta.lastStartTime ? job.status.meta.lastStartTime : job.status.meta.startTime);
-            const remaining = moment.duration((this.total - this.parts) / (this.parts / moment().diff(starttime)));
-            this.set('remaining', `${(remaining.hours() > 0 ? `${remaining.hours()}h ` : '') + (remaining.minutes() > 0 || remaining.hours() > 0 ? `${remaining.minutes()}m ` : '') + remaining.seconds()}s`);
+            const meta = job.status.meta;
+            const startTime = moment.utc(meta.lastStartTime ? meta.lastStartTime : meta.startTime);
+            const elapsedTime = moment().diff(startTime);
+            const progressRemaining = this.total - this.parts;
+            const timeRemaining = moment.duration(progressRemaining / (this.parts / elapsedTime));
+            this.set('remaining', `${(timeRemaining.hours() > 0 ? `${timeRemaining.hours()}h ` : '') + (timeRemaining.minutes() > 0 || timeRemaining.hours() > 0 ? `${timeRemaining.minutes()}m ` : '') + timeRemaining.seconds()}s`);
           }
           if (job.status.status === 'success') {
             elapsed = moment.duration(moment.utc(job.status.meta.endTime).diff(this.queueTime));
@@ -84,7 +87,7 @@ export default Ember.Controller.extend({
           this.updateProgress();
         }
       }).catch((reason) => {
-        console.log(reason);
+        Ember.Logger.error(reason);
         if (reason.errors) {
           if (reason.errors[0].status === '404') {
             this.transitionToRoute('not-found', '404');

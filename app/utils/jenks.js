@@ -7,6 +7,8 @@
 // [2](https://github.com/vvoovv/djeo-jenks/blob/master/main.js) (buggy),
 // [3](https://github.com/simogeo/geostats/blob/master/lib/geostats.js#L407) (works)
 
+/* eslint-disable */
+
 /**
  * From Wikipedia: "The Jenks optimization method,
  * also called the Jenks natural breaks classification method,

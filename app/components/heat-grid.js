@@ -76,8 +76,8 @@ export default Ember.Component.extend({
 
   makeLegend(grades) {
     const labels = [];
-    let from,
-      to;
+    let from;
+    let to;
 
     labels.push(`<i style="background-color:${this.getColor(0)}"></i> 0`);
     if (grades[2] === 1) {
@@ -111,28 +111,39 @@ export default Ember.Component.extend({
   getColor(cnt) {
     const colors = this.get('colors');
     const cutoffs = this.get('cutoffs');
-    return cnt > cutoffs[4] ? colors[4] :
-            cnt > cutoffs[3] ? colors[3] :
-            cnt > cutoffs[2] ? colors[2] :
-            cnt >= cutoffs[1] ? colors[1] :
-                                colors[0];
+    if (cnt > cutoffs[4]) return colors[4];
+    if (cnt > cutoffs[3]) return colors[3];
+    if (cnt > cutoffs[2]) return colors[2];
+    if (cnt >= cutoffs[1]) return colors[1];
+    return colors[0];
+    // return cnt > cutoffs[4] ? colors[4] :
+    //         cnt > cutoffs[3] ? colors[3] :
+    //         cnt > cutoffs[2] ? colors[2] :
+    //         cnt >= cutoffs[1] ? colors[1] :
+    //                             colors[0];
   },
 
   makeFixedGetColor() {
     const colors = this.get('colors');
     const cutoffs = this.get('cutoffs');
     return function (cnt) {
-      return cnt > cutoffs[4] ? colors[4] :
-              cnt > cutoffs[3] ? colors[3] :
-              cnt > cutoffs[2] ? colors[2] :
-              cnt >= cutoffs[1] ? colors[1] :
-              colors[0];
+      if (cnt > cutoffs[4]) return colors[4];
+      if (cnt > cutoffs[3]) return colors[3];
+      if (cnt > cutoffs[2]) return colors[2];
+      if (cnt >= cutoffs[1]) return colors[1];
+      return colors[0];
+      // return cnt > cutoffs[4] ? colors[4] :
+      //         cnt > cutoffs[3] ? colors[3] :
+      //         cnt > cutoffs[2] ? colors[2] :
+      //         cnt >= cutoffs[1] ? colors[1] :
+      //                             colors[0];
     };
   },
 
   setFeatureColor(feature) {
+    const feat = feature;
     const getColor = this.makeFixedGetColor();
-    feature.properties.color = getColor(feature.properties.count);
+    feat.properties.color = getColor(feat.properties.count);
   },
 
 });

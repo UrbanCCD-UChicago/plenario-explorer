@@ -1,10 +1,11 @@
 import E from 'ember';
-import { Value } from '../models/value';
-import ENV from '../config/environment';
-const NETWORK = ENV.networkId;
 import moment from 'moment';
+import ENV from '../config/environment';
+import Value from '../models/value';
 import Type from '../models/type';
 import SensorMap from '../utils/sensor-map';
+
+const NETWORK = ENV.networkId;
 
 export default E.Service.extend({
   query: E.inject.service(),
@@ -31,8 +32,8 @@ export default E.Service.extend({
     this.set('sensorMap', toTypes);
     // Names of types reported by sensors on this node
     const validTypes = [].concat.apply([], [...toTypes.values()]);
-    curatedTypes = curatedTypes.filter(({ id }) => validTypes.includes(id));
-    this.set('streams', createStreams(curatedTypes));
+    const filteredCuratedTypes = curatedTypes.filter(({ id }) => validTypes.includes(id));
+    this.set('streams', createStreams(filteredCuratedTypes));
 
     this.seedStreams();
     this.initSocket();
@@ -105,8 +106,8 @@ export default E.Service.extend({
    * @param obs
    */
   appendObservation(obs) {
-    obs = JSON.parse(obs.message);
-    const vals = Value.adaptFromAPI(obs);
+    const observation = JSON.parse(obs.message);
+    const vals = Value.adaptFromAPI(observation);
     const streams = this.get('streams');
     for (const val of vals) {
       if (streams[val.id]) {

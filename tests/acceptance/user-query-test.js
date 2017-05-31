@@ -21,7 +21,8 @@ test('Discover page loads properly with query parameters.', (assert) => {
 });
 
 test('User can make a query.', (assert) => {
-  // location_geom__within is just an arbitrary shape so that /discover/aggregate will accept the query in the first place.
+  // location_geom__within is just an arbitrary shape so that /discover/aggregate
+  // will accept the query in the first place.
   visit(`discover?location_geom__within=${geoJSON}`);
   andThen(() => {
     fillIn('#start-date-filter input', '06/01/2010');
@@ -105,10 +106,10 @@ test('User can directly specify map center coordinates via the URL.', (assert) =
 test('Changing selection on the front page changes query parameters.', (assert) => {
   visit('/discover');
   andThen(() => {
-    fillIn('#agg-select select', 'day');
+    fillIn('#agg-select', 'day');
     andThen(() => {
       assert.equal(currentURL().indexOf('agg=day') > -1, true, 'Changing agg updated query parameters.');
-      fillIn('#agg-select select', 'year');
+      fillIn('#agg-select', 'year');
       andThen(() => {
         assert.equal(currentURL().indexOf('agg=year') > -1, true, 'Changing agg updated query parameters.');
         fillIn('#map-center-select', 'seattle');
@@ -124,41 +125,4 @@ test('Changing selection on the front page changes query parameters.', (assert) 
   });
 });
 
-// test('User can make a datadump.', function (assert) {
-//   visit("/datadump?dataset_name=flu_shot_clinics&obs_date__ge=01-01-2000&obs_date__le=01-01-2016");
-//   andThen(function () {
-//     let counter = 0;
-//
-//     function checkProcessing() {
-//       Ember.run.later(this, function () {
-//         if (currentURL().indexOf("/datadump/") < 0 || currentURL().indexOf("dataset_name") > -1) {
-//           if (counter < 30) {
-//             counter++;
-//             checkProcessing();
-//             return;
-//           }
-//         }
-//         assert.equal(currentURL().indexOf("/datadump/") > -1, true, "Datadump transitions to ticketed endpoint (work has started); URL path evidence.");
-//         assert.equal(currentURL().indexOf("dataset_name") < 0, true, "Datadump transitions to ticketed endpoint (work has started); Query parameter evidence.");
-//
-//         counter = 0;
-//         function checkComplete() {
-//           Ember.run.later(this, function () {
-//             if ($("#download-button").prop('disabled')) {
-//               if (counter < 180) {
-//                 counter++;
-//                 checkProcessing();
-//                 return;
-//               }
-//             }
-//             assert.equal($("#download-button").prop("disabled"), false, "Download button is enabled; datadump is complete.");
-//           }, 1000);
-//         }
-//
-//         return checkComplete();
-//       }, 1000);
-//     }
-//
-//     return checkProcessing();
-//   });
-// });
+// TODO: test that user can do a datadump

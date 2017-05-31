@@ -6,32 +6,18 @@
   </p>
 {{/each}}
 <div class="rowbox">
-{{#em-form formLayout="horizontal"
-submitButton=false
-model=activeFilter
-validationIcons=false}}
-
-  {{em-select
-  property="field"
-  content=fieldOptions
-  optionValuePath="computerName"
-  optionLabelPath="humanName"
-  prompt="..."
-  label="Field"}}
-
-  {{em-select
-  property="op"
-  content=operatorOptions
-  optionValuePath="operator"
-  optionLabelPath="operator"
-  prompt="..."
-  label="Operator"}}
-
-  {{em-input label="Value"
-  property="val"}}
-
-  <input type="submit" disabled={{notComplete}} class="btn btn-info pull-right" value="Add Filter" />
-
-{{/em-form}}
+  {{#x-select value=activeFilter.field id="field-select" action=(action "madeSelection" "activeFilter.field") as |xs|}}
+    {{#xs.option disabled=true}}Select field...{{/xs.option}}
+    {{#each fieldOptions as |fopt|}}
+      {{#xs.option value=fopt.computerName}}{{fopt.humanName}}{{/xs.option}}
+    {{/each}}
+  {{/x-select}}
+  {{#x-select value=activeFilter.op id="op-select" action=(action "madeSelection" "activeFilter.op") as |xs|}}
+    {{#each operatorOptions as |oopt|}}
+      {{#xs.option value=oopt.operator}}{{oopt.operator}}{{/xs.option}}
+    {{/each}}
+  {{/x-select}}
+  {{input value=activeFilter.val}}
+  <button type="button" class="btn btn-info btn-sm" disabled={{notComplete}} {{action "submit"}} >Add Filter</button>
 </div>
 <div style="height:0; width:100%; clear:both"></div>

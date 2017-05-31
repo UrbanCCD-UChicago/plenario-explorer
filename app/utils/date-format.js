@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import moment from 'moment';
 
 export default function dateFormat(dt, type) {
@@ -16,8 +17,8 @@ export default function dateFormat(dt, type) {
   } else if (moment(dt, formats, true).isValid()) {
     date = moment(dt, formats, true);
   } else {
-    console.warn(`FIXME: Using an unsupported format in dateFormat: ${String(dt)}. Falling back to moment(<<anything>>), which is going to be deprecated.`);
-    date = moment(dt);
+    Ember.Logger.warn(`FIXME: Using an unsupported format in dateFormat: "${dt}". Falling back to Date(<<anything>>), which is unpredictable at best.`);
+    date = moment(new Date(dt));
   }
 
   if (type === 'display') {

@@ -40,7 +40,6 @@ export default Ember.Component.extend({
 
   renderFilters() {
     const filterJSON = this.get('filters');
-    // console.log(filterJSON);
     this.set('filterHashes', JSON.parse(filterJSON));
   },
 
@@ -50,6 +49,9 @@ export default Ember.Component.extend({
   },
 
   actions: {
+    madeSelection(fieldName, value) {
+      this.set(fieldName, value);
+    },
     submit() {
       this.get('filterHashes').pushObject(this.get('activeFilter'));
       this.mutateFilterJSON();

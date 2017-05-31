@@ -4,7 +4,7 @@ const sensorData = {
   nodes: {
     meta: {
       query: {
-        network: 'plenario_development',
+        network_name: 'plenario_development',
       },
       message: [
 
@@ -27,7 +27,7 @@ const sensorData = {
             'sensor_dev_1',
             'sensor_dev_4',
           ],
-          network: 'plenario_development',
+          network_name: 'plenario_development',
           id: 'node_dev_1',
         },
       },
@@ -46,7 +46,7 @@ const sensorData = {
             'sensor_dev_2',
             'sensor_dev_3',
           ],
-          network: 'plenario_development',
+          network_name: 'plenario_development',
           id: 'node_dev_2',
         },
       },

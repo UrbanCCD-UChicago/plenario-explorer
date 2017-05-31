@@ -1,17 +1,17 @@
 import Ember from 'ember';
 import moment from 'moment';
-import Node from '../models/node';
+import URI from 'npm:urijs';
 import ENV from 'plenario-explorer/config/environment';
-// import MockNetwork from '../mirage/mock-network'
-import { mockNetwork, sensorData } from '../mirage/sensor-data';
-/* global URI */
-// const network = new MockNetwork(sensorData.curation, sensorData.nodes.data);
+import Node from '../models/node';
+import { sensorData, mockNetwork } from '../mirage/sensor-data';
+
 /**
  * Grabs and caches all dataset metadata.
  */
 export default Ember.Service.extend({
   ajax: Ember.inject.service(),
   io: Ember.inject.service('socket-io'),
+  notify: Ember.inject.service(),
 
   queryRoot: Ember.computed('ajax', function () {
     return this.get('ajax').host;
@@ -29,11 +29,9 @@ export default Ember.Service.extend({
 
   camelizeHash(hash) {
     const normalized = {};
-    for (const key in hash) {
-      if (hash.hasOwnProperty(key)) {
-        const normalizedKey = Ember.String.underscore(key).camelize();
-        normalized[normalizedKey] = hash[key];
-      }
+    for (const key of Object.keys(hash)) {
+      const normalizedKey = Ember.String.underscore(key).camelize();
+      normalized[normalizedKey] = hash[key];
     }
     return normalized;
   },
@@ -60,9 +58,16 @@ export default Ember.Service.extend({
     } else if (type === 'shapes') {
       route = 'shape';
     }
-    return this.get(type).then(doc => doc.objects.map(v => injectExplorerData(route, undefined, camelizeHash(v))), (reason) => {
-      console.log(`Failed to load ${type}. Reason: ${reason}.`);
-    });
+    return this.get(type).then(doc =>
+      doc.objects.map(v =>
+        injectExplorerData(
+          route,
+          undefined,
+          camelizeHash(v))),
+          function (reason) {
+            this.get('notify').error(`Failed to load ${type}. Reason: ${reason}.`);
+          }
+    );
   },
 
   /**
@@ -111,11 +116,11 @@ export default Ember.Service.extend({
 
   allNodeMetadata() {
     const qString = `/sensor-networks/${ENV.networkId}/nodes`;
-    return this.get('ajax').request(qString)
-    .then(nodeMeta => nodeMeta.data.map(
-          nodeRecord => Node.create({ nodeGeoJSON: nodeRecord })
-        )
-    );
+    return this.get('ajax').request(qString).then((nodeMeta) => {
+      nodeMeta.data.map(
+        nodeRecord => Node.create({ nodeGeoJSON: nodeRecord })
+      );
+    });
   },
 
   nodeMetadata(nodeId) {
@@ -155,13 +160,13 @@ export default Ember.Service.extend({
     const aWeekAgo = moment().subtract(7, 'days').utc().format();
     // Could already be a string.
     // If it's not, we want it to be a comma delimited list
-    type = type.toString();
+    const typeString = type.toString();
 
     const params = {
       data: {
         sensors: sensorName,
         node: nodeId,
-        feature: type,
+        feature: typeString,
         function: 'avg',
         start_datetime: aWeekAgo,
       },
@@ -195,14 +200,13 @@ export default Ember.Service.extend({
 
   _findDataset(name, datasets) {
     return datasets.then((dsets) => {
-      for (const key in dsets) {
-        if (dsets.hasOwnProperty(key)) {
-          const dset = dsets[key];
-          if (dset.datasetName === name) {
-            return dset;
-          }
+      for (const key of Object.keys(dsets)) {
+        const dset = dsets[key];
+        if (dset.datasetName === name) {
+          return dset;
         }
       }
+      return null;
     });
   },
 
@@ -210,39 +214,34 @@ export default Ember.Service.extend({
    * Return timeseries array
    * embedded within event metadata object.
    *
-   * @param name
    * @param params
    * @param newTab
    */
   timeseries(params, newTab = false) {
-    params = Ember.copy(params);
-    params = this._translateFilters(params);
+    let paramsCopy = Ember.copy(params);
+    paramsCopy = this._translateFilters(paramsCopy);
     const endpoint = '/detail-aggregate';
 
     if (newTab) {
-      this.openInNewTab(endpoint, params);
-    } else {
-      const ts = this.get('ajax').request(endpoint, { data: params });
-      return ts.then(payload => ({
-        series: this.prepTimeseries(payload.objects),
-        count: payload.count,
-      }), (reason) => {
-        console.log(reason);
-        return { error: reason };
-      });
+      this.openInNewTab(endpoint, paramsCopy);
+      return undefined;
     }
+    const ts = this.get('ajax').request(endpoint, { data: paramsCopy });
+    return ts.then(payload => ({
+      series: this.prepTimeseries(payload.objects),
+      count: payload.count,
+    }), (reason) => {
+      this.get('notify').error(reason);
+      return { error: reason };
+    });
   },
 
   /**
    Takes array of objects of the form [{count: 3, datetime: '2016-12-06'}...]
    Returns array of arrays of the form [[momentJSObject, integer]]
    */
-  prepTimeseries(ts) {
-    const formattedSeries = ts.map(timeSlice =>
-      // Why exactly does `moment(timeSlice.datetime + "+0000").valueOf()` work
-      // to let Highcharts accept datetimes on the x axis?
-      // I don't know. Don't question it.
-       [moment(`${timeSlice.datetime}+0000`).valueOf(), timeSlice.count]);
+  prepTimeseries(timeseries) {
+    const formattedSeries = timeseries.map(ts => [moment(ts.datetime).valueOf(), ts.count]);
     // The chart expects a list of series objects,
     // each with a data attribute that actually holds the timeseries.
     // So construct a list of one such object.
@@ -254,32 +253,31 @@ export default Ember.Service.extend({
   /**
    * Return grid response geoJSON.
    *
-   * @param name
    * @param params
    * @param newTab
    */
   grid(params, newTab = false) {
-    params = Ember.copy(params);
-    params = this._translateFilters(params);
+    let paramsCopy = Ember.copy(params);
+    paramsCopy = this._translateFilters(paramsCopy);
     const endpoint = '/grid';
     if (newTab) {
-      this.openInNewTab(endpoint, params);
-    } else {
-      const grid = this.get('ajax').request(endpoint, { data: params });
-      return grid.then(payload => payload, (reason) => {
-        console.log(reason);
-      });
+      this.openInNewTab(endpoint, paramsCopy);
+      return undefined;
     }
+    const grid = this.get('ajax').request(endpoint, { data: paramsCopy });
+    return grid.then(payload => payload, (reason) => {
+      this.get('notify').error(reason);
+    });
   },
 
   _translateFilters(params) {
-    params = Ember.copy(params);
-    if (!params.filters) {
+    const paramsCopy = Ember.copy(params);
+    if (!paramsCopy.filters) {
       // No filters to transform.
-      return params;
+      return paramsCopy;
     }
     const filterAPIFormatted = {};
-    const filterHashes = JSON.parse(params.filters);
+    const filterHashes = JSON.parse(paramsCopy.filters);
     for (const filter of filterHashes) {
       if (filter.op === '=') {
         filterAPIFormatted[filter.field] = filter.val;
@@ -288,9 +286,9 @@ export default Ember.Service.extend({
         filterAPIFormatted[`${filter.field}__${APIOperator}`] = filter.val;
       }
     }
-    delete params.filters;
-    Ember.assign(params, filterAPIFormatted);
-    return params;
+    delete paramsCopy.filters;
+    Ember.assign(paramsCopy, filterAPIFormatted);
+    return paramsCopy;
   },
 
   operatorMap: {
@@ -312,7 +310,7 @@ export default Ember.Service.extend({
   eventCandidates(params) {
     const candidates = this.get('ajax').request('/datasets', { data: params });
     return candidates.then(doc => doc.objects.map(v => this.injectExplorerData('event', params, this.camelizeHash(v))), (reason) => {
-      console.log(`Event candidate query failed: ${reason}`);
+      Ember.Logger.error(`Event candidate query failed: ${reason}`);
       return { error: reason };
     });
   },
@@ -325,7 +323,7 @@ export default Ember.Service.extend({
   shapeSubsets(params) {
     const subsets = this.get('ajax').request('/shapes', { data: params });
     return subsets.then(doc => doc.objects.map(v => this.injectExplorerData('shape', params, this.camelizeHash(v))), (reason) => {
-      console.log(`Shape subset query failed: ${reason}`);
+      Ember.Logger.error(`Shape subset query failed: ${reason}`);
       return { error: reason };
     });
   },
@@ -353,57 +351,54 @@ export default Ember.Service.extend({
     const endpoint = `/shapes/${name}`;
     if (newTab) {
       this.openInNewTab(endpoint, params);
-    } else {
-      const shape = this.get('ajax').request(endpoint, { data: params });
-      return shape.then(payload => payload, (reason) => {
-        console.log(reason);
-      });
+      return undefined;
     }
+    const shape = this.get('ajax').request(endpoint, { data: params });
+    return shape.then(payload => payload, (reason) => {
+      Ember.Logger.error(reason);
+    });
   },
 
   /**
    * Return CSV or GeoJSON of events
    *
-   * @param name
    * @param params
    * @param newTab
    */
   rawEvents(params, newTab = false) {
-    params = Ember.copy(params);
-    params = this._translateFilters(params);
+    let paramsCopy = Ember.copy(params);
+    paramsCopy = this._translateFilters(paramsCopy);
     const endpoint = '/detail';
 
     if (newTab) {
-      this.openInNewTab(endpoint, params);
-    } else {
-      const events = this.get('ajax').request(endpoint, { data: params });
-      return events.then(payload =>
-        // Don't currently call this from any route.
-        // Would be useful for putting markers on a map.
-         payload, (reason) => {
-        console.log(reason);
-      });
+      this.openInNewTab(endpoint, paramsCopy);
+      return undefined;
     }
+    const events = this.get('ajax').request(endpoint, { data: paramsCopy });
+    return events.then(payload =>
+      // Don't currently call this from any route.
+      // Would be useful for putting markers on a map.
+       payload, (reason) => {
+      Ember.Logger.error(reason);
+    });
   },
 
   /**
    * Create a job for a large CSV or GeoJSON download of events
    *
-   * @param name
    * @param params
    * @param newTab
    */
   dataDump(params, newTab = false) {
-    params = Ember.copy(params);
-    params = this._translateFilters(params);
+    let paramsCopy = Ember.copy(params);
+    paramsCopy = this._translateFilters(paramsCopy);
     const endpoint = '/datadump';
 
     if (newTab) {
-      this.openInNewTab(endpoint, params);
-    } else {
-      const events = this.get('ajax').request(endpoint, { data: params });
-      return events;
+      this.openInNewTab(endpoint, paramsCopy);
+      return undefined;
     }
+    return this.get('ajax').request(endpoint, { data: paramsCopy });
   },
 
   /**
@@ -428,15 +423,14 @@ export default Ember.Service.extend({
     }
 
     const query = endpoint + URI('').addQuery(queryParams).toString();
+    this.get('notify').info(`[services.query] sensorDownload.query: ${query}`);
     return window.open(query);
   },
 
   /**
    * Fetch the large CSV or GeoJSON download of events
    *
-   * @param name
-   * @param params
-   * @param newTab
+   * @param ticket
    */
   getDataDump(ticket) {
     const endpoint = `${ENV.host}/v1/api/datadump/${ticket}`;
@@ -449,9 +443,8 @@ export default Ember.Service.extend({
    * @param ticket
    */
   job(ticket) {
-    const endpoint = `${ENV.host}/v1/api/jobs/${ticket}`;
-    const job = this.get('ajax').request(endpoint);
-    return job;
+    const endpoint = `http://plenar.io/v1/api/jobs/${ticket}`;
+    return this.get('ajax').request(endpoint);
   },
 
 });

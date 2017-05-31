@@ -9,7 +9,7 @@ export default function prepTimeseries(ts) {
     // Why exactly does `moment(timeSlice.datetime + "+0000").valueOf()` work
     // to let Highcharts accept datetimes on the x axis?
     // I don't know. Don't question it.
-     [moment(`${timeSlice.datetime}+0000`).valueOf(), timeSlice.count]);
+     [moment(`${timeSlice.datetime}`).valueOf(), timeSlice.count]);
   // The chart expects a list of series objects,
   // each with a data attribute that actually holds the timeseries.
   // So construct a list of one such object.

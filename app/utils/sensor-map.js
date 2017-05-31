@@ -1,3 +1,5 @@
+/* eslint-disable no-underscore-dangle */
+// TODO: refactor so we can remove the ESLint exception
 import Type from '../models/type';
 
 /**
@@ -94,9 +96,8 @@ function _groupTypesByFeature(types) {
     if (featToType.has(foi)) {
       // Yes. Append.
       featToType.get(foi).push(type);
-    }
-    // No, first time. Create.
-    else {
+    } else {
+      // No, first time. Create.
       featToType.set(foi, [type]);
     }
   }

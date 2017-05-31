@@ -1,6 +1,6 @@
 import Ember from 'ember';
-import dateFormat from '../utils/date-format';
 import moment from 'moment';
+import dateFormat from '../utils/date-format';
 
 export default Ember.Controller.extend({
   query: Ember.inject.service(),
@@ -17,19 +17,16 @@ export default Ember.Controller.extend({
   obs_date__ge: null,
   location_geom__within: null,
 
-  queryParamsHash: Ember.computed('filters', 'agg', 'resolution',
-    'obs_date__le', 'obs_date__ge', 'location_geom__within',
-    function () {
-      const params = this.getProperties(this.get('queryParams'));
-      params.dataset_name = this.get('model').datasetName;
-      for (const key of Object.keys(params)) {
-        if (!params[key]) {
-          delete params[key];
-        }
+  queryParamsHash: Ember.computed('queryParams', function () {
+    const params = this.getProperties(this.get('queryParams'));
+    params.dataset_name = this.get('model').datasetName;
+    for (const key of Object.keys(params)) {
+      if (!params[key]) {
+        delete params[key];
       }
-      return params;
     }
-  ),
+    return params;
+  }),
 
   queryParamsClone() {
     return Ember.copy(this.get('queryParamsHash'));
@@ -63,9 +60,7 @@ export default Ember.Controller.extend({
   adjustDateRange() {
     // If the user did not explicitly specify start and end dates,
     // use the model's available range to pick a good default.
-    const obs_date__le = this.get('obs_date__le');
-    const obs_date__ge = this.get('obs_date__ge');
-    const isSpecified = Boolean(obs_date__ge) && Boolean(obs_date__le);
+    const isSpecified = Boolean(this.get('obs_date__le')) && Boolean(this.get('obs_date__ge'));
     if (!isSpecified) {
       const model = this.get('model');
       this.set('obs_date__le', dateFormat(model.obsTo));
@@ -120,30 +115,39 @@ export default Ember.Controller.extend({
       const qService = this.get('query');
 
       switch (type) {
-        case 'csvPoints':
+        case 'csvPoints': {
           qParams.data_type = 'csv';
           qService.rawEvents(qParams, true);
           break;
-        case 'geoJSONPoints':
+        }
+        case 'geoJSONPoints': {
           qParams.data_type = 'geojson';
           qService.rawEvents(qParams, true);
           break;
-        case 'csvPointsDump':
+        }
+        case 'csvPointsDump': {
           const queryCSV = Ember.copy(qParams);
           Ember.assign(queryCSV, { data_type: 'csv' });
           qService.dataDump(queryCSV, true);
           break;
-        case 'geoJSONPointsDump':
+        }
+        case 'geoJSONPointsDump': {
           const queryJSON = Ember.copy(qParams);
           Ember.assign(queryJSON, { data_type: 'json' });
           qService.dataDump(queryJSON, true);
           break;
-        case 'grid':
+        }
+        case 'grid': {
           qService.grid(qParams, true);
           break;
-        case 'timeseries':
+        }
+        case 'timeseries': {
           qService.timeseries(qParams, true);
           break;
+        }
+        default: {
+          Ember.Logger.error(`Invalid download type: "${type}"`);
+        }
       }
     },
 
