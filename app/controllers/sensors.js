@@ -1,4 +1,4 @@
-import Ember from "ember";
+import Ember from 'ember';
 
 export default Ember.Controller.extend({
   queryParams: ['viewType', 'nodeId'],
@@ -7,11 +7,9 @@ export default Ember.Controller.extend({
   notify: Ember.inject.service(),
   refreshNodeChart: false,
 
-  modelArrived: Ember.observer('model', function() {
+  modelArrived: Ember.observer('model', function () {
     const nodeList = this.get('model.nodes');
-    const nodeTuples = nodeList.map(node => {
-      return [node.properties.id, node.properties];
-    });
+    const nodeTuples = nodeList.map(node => [node.properties.id, node.properties]);
     const nodeMap = new Map(nodeTuples);
     this.set('nodeMap', nodeMap);
     if (!this.get('nodeId')) {
@@ -19,7 +17,7 @@ export default Ember.Controller.extend({
     }
   }),
 
-  selectedNodeMeta: Ember.computed('nodeId', function() {
+  selectedNodeMeta: Ember.computed('nodeId', function () {
     const nodeMap = this.get('nodeMap');
     return nodeMap.get(this.get('nodeId'));
   }),
@@ -30,14 +28,14 @@ export default Ember.Controller.extend({
       this.toggleProperty('refreshNodeChart');
     },
     download(params) {
-      this.get('query').sensorDownload(params).then(resp => {
-        this.transitionToRoute('datadump.download', resp.ticket, {queryParams: {data_type: 'json'}});
+      this.get('query').sensorDownload(params).then((resp) => {
+        this.transitionToRoute('datadump.download', resp.ticket, { queryParams: { data_type: 'json' } });
       }).catch((error) => {
         console.log(error);
-          this.get('notify').error('Could not process request. ' +
+        this.get('notify').error('Could not process request. ' +
             'Try double-checking your request, and email plenario@uchicago.edu if the problem persists.');
-        }
+      }
       );
-    }
-  }
+    },
+  },
 });

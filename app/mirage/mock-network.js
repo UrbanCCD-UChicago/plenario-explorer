@@ -21,9 +21,9 @@ export default class MockNetwork {
     // For each sensor, create an array of factories
     const sensorToFactories = new Map();
     // const featureToFactory = new Map();
-    for (let [sensor, featureToTypes] of toFeaturesToTypes.entries()){
+    for (const [sensor, featureToTypes] of toFeaturesToTypes.entries()) {
       const factories = [];
-      for (let [feature, types] of featureToTypes) {
+      for (const [feature, types] of featureToTypes) {
         const factory = this._makeFactory(sensor, feature, types);
         factories.push(factory);
         // featureToFactory.set(feature, factory);
@@ -35,7 +35,7 @@ export default class MockNetwork {
 
   _featureToFactory(featureToTypes) {
     const featureToFactory = new Map();
-    for (let [feat, types] of featureToTypes.entries()) {
+    for (const [feat, types] of featureToTypes.entries()) {
       const factory = this._makeFactory('unknown', feat, types);
       featureToFactory.set(feat, factory);
     }
@@ -53,21 +53,19 @@ export default class MockNetwork {
    * @returns Array<Function(nodeID, timestamp) -> Observation >
    */
   _makeFactory(sensor, feature, types) {
-    return (nodeId, timestamp) => {
-      return {
-        "feature": feature,
-        "node_id": nodeId,
-        "sensor": sensor,
-        "results": this._generateResults(types),
-        "datetime": timestamp
-      };
-    };
+    return (nodeId, timestamp) => ({
+      feature,
+      node_id: nodeId,
+      sensor,
+      results: this._generateResults(types),
+      datetime: timestamp,
+    });
   }
 
   _generateResults(types) {
     const properties = types.map(type => new Type(type).property);
     const results = {};
-    for (let prop of properties) {
+    for (const prop of properties) {
       results[prop] = Math.random();
     }
     return results;
@@ -90,12 +88,12 @@ export default class MockNetwork {
     // Assume we only have one FOI - as the endpoint requires
     // const properties = typeIds.map(t => new Type(t).property);
     const timestamps = generateTimestamps(startMoment, endMoment, 1, 'hours');
-    const {property} = new Type(type);
-    return timestamps.map(t => {
-      const bucket = {time_bucket: t};
+    const { property } = new Type(type);
+    return timestamps.map((t) => {
+      const bucket = { time_bucket: t };
       bucket[property] = {
         count: Math.round(Math.random() * 100),
-        avg: Math.random()
+        avg: Math.random(),
       };
       return bucket;
     });
@@ -134,7 +132,7 @@ export default class MockNetwork {
   observationFactories(sensors) {
     const sToF = this.sensorToFactories;
     let factories = [];
-    for (let s of sensors) {
+    for (const s of sensors) {
       if (sToF.has(s)) {
         factories = factories.concat(sToF.get(s));
       }
@@ -155,19 +153,19 @@ export default class MockNetwork {
       on(_, callback, context) {
         function emit() {
           const now = utc8601(moment());
-          for (let f of factories) {
+          for (const f of factories) {
             const obs = f(nodeId, now);
             callback.call(context, obs);
           }
         }
         const seconds = 3;
-        const ms = seconds*1000;
+        const ms = seconds * 1000;
         function emitOnDelay() {
           emit();
           Ember.run.later(emitOnDelay, ms);
         }
         emitOnDelay();
-      }
+      },
     };
     return mockSocket;
   }

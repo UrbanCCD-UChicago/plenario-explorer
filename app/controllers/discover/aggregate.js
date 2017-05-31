@@ -1,4 +1,4 @@
-import Ember from "ember";
+import Ember from 'ember';
 
 export default Ember.Controller.extend({
   query: Ember.inject.service(),
@@ -15,65 +15,65 @@ export default Ember.Controller.extend({
   timeseriesList: [],
 
   actions: {
-    submit: function() {
-      this.send("reload");
+    submit() {
+      this.send('reload');
     },
-    navigateToShape: function(name) {
+    navigateToShape(name) {
       this.transitionToRoute('shape', name);
     },
-    navigateToPoint: function(name) {
+    navigateToPoint(name) {
       const params = this.queryParamsClone();
-      this.transitionToRoute('event', name, {queryParams: params});
+      this.transitionToRoute('event', name, { queryParams: params });
     },
-    downloadShape: function(name, fileType) {
-      let params = this.queryParamsClone();
-      params['data_type'] = fileType;
+    downloadShape(name, fileType) {
+      const params = this.queryParamsClone();
+      params.data_type = fileType;
       this.get('query').rawShape(name, params, true);
     },
-    downloadPoint: function(name, fileType) {
-      let params = this.queryParamsClone();
-      params['dataset_name'] = name;
-      params['data_type'] = fileType;
+    downloadPoint(name, fileType) {
+      const params = this.queryParamsClone();
+      params.dataset_name = name;
+      params.data_type = fileType;
       this.get('query').rawEvents(params, true);
     },
-    loadPointDatasets: function(){
+    loadPointDatasets() {
       this.launchTimeseriesQueries();
     },
-    loadShapeDatasets: function(result){
+    loadShapeDatasets(result) {
       this.set('shapeDatasets', result);
       this.set('searchingShapes', false);
     },
-    loadNodeSubset: function(result) {
+    loadNodeSubset(result) {
       this.set('nodes', result);
     },
-    loadSensorMetadata: function(result) {
+    loadSensorMetadata(result) {
       this.set('sensorMetadata', result);
-    }
+    },
   },
 
-  modelArrived: Ember.observer('model', function(){
+  modelArrived: Ember.observer('model', function () {
     this.get('timeseriesList').clear();
     this.set('shapeDatasets', []);
     this.set('nodes', []);
     this.set('sensorMetadata', []);
 
-    let pointDatasets = this.get('model.pointDatasets');
-    let shapeDatasets = this.get('model.shapeDatasets');
-    let nodeSubset = this.get('model.nodes');
-    let sensorMeta = this.get('model.sensorMetadata');
+    const pointDatasets = this.get('model.pointDatasets');
+    const shapeDatasets = this.get('model.shapeDatasets');
+    const nodeSubset = this.get('model.nodes');
+    const sensorMeta = this.get('model.sensorMetadata');
     this.set('searchingShapes', true);
 
-    let self = this;
-    pointDatasets.then(function(){
+    const self = this;
+    pointDatasets.then(() => {
       self.send('loadPointDatasets');
     });
-    shapeDatasets.then(function(result){
+    shapeDatasets.then((result) => {
       self.send('loadShapeDatasets', result);
     });
-    nodeSubset.then(function(result){
+    nodeSubset.then((result) => {
       self.send('loadNodeSubset', result);
     });
-    sensorMeta.then(function(result){
+    sensorMeta.then((result) => {
       self.send('loadSensorMetadata', result);
     });
   }),
@@ -87,52 +87,50 @@ export default Ember.Controller.extend({
   launchTimeseriesQueries() {
     this.set('searchingDatasets', true);
 
-    let timeseriesList = this.get('timeseriesList');
+    const timeseriesList = this.get('timeseriesList');
     let arrivalOrder = 1;
 
-    let pointDatasets = this.get('model').pointDatasets._result;
+    const pointDatasets = this.get('model').pointDatasets._result;
     let eligible = pointDatasets.length;
     let processed = 0;
-    let discoverAggregateController = this;
+    const discoverAggregateController = this;
 
-    let queryError = function(error, goback=true){
-      if(!goback) {
+    const queryError = function (error, goback = true) {
+      if (!goback) {
         discoverAggregateController.get('notify').warning(`Not all datasets were queried successfully: ${error.message}`);
       } else {
         discoverAggregateController.get('notify').error(`Error while processing request: ${error.message}`);
       }
       tipsMachine(error);
-      if(goback){
+      if (goback) {
         discoverAggregateController.set('searchingDatasets', false);
         discoverAggregateController.transitionToRoute('discover');
       }
     };
 
-    let tipsMachine = function(error){
-      if(error.message.toLowerCase().indexOf("format")>-1) {
+    let tipsMachine = function (error) {
+      if (error.message.toLowerCase().indexOf('format') > -1) {
         discoverAggregateController.get('notify').info('This means that the Plenar.io API could not understand your request. Please check your query parameters, or reset your query and start over.');
-      } else if(error.errors && error.errors.length > 0 && (error.errors[0].status === "504" || error.errors[0].status === "0")){
+      } else if (error.errors && error.errors.length > 0 && (error.errors[0].status === '504' || error.errors[0].status === '0')) {
         discoverAggregateController.get('notify').info('Some items in your request are taking too long to process. Try narrowing your search scope.');
-      } else if(error.message.toLowerCase().indexOf("server error")>-1) {
-        return;
+      } else if (error.message.toLowerCase().indexOf('server error') > -1) {
+
       } else {
         discoverAggregateController.get('notify').info('Try resetting your query and starting over.');
       }
     };
 
-    if(this.get('model').pointDatasets.error) {
+    if (this.get('model').pointDatasets.error) {
       queryError(this.get('model').pointDatasets.error);
       return;
     }
 
-    pointDatasets.forEach((d)=> {
-
-      let params = this.queryParamsClone();
-      Ember.assign(params, {dataset_name: d.datasetName});
+    pointDatasets.forEach((d) => {
+      const params = this.queryParamsClone();
+      Ember.assign(params, { dataset_name: d.datasetName });
       const tsPromise = this.get('query').timeseries(params);
 
-      tsPromise.then(function (value) {
-
+      tsPromise.then((value) => {
         if (value.error) {
           eligible--;
           queryError(value.error, false);
@@ -143,19 +141,19 @@ export default Ember.Controller.extend({
           eligible--;
           return;  // Empty timeseries. Don't display it.
         }
-        d['count'] = value.count;
-        d['series'] = value.series;
-        d['arrivalOrder'] = arrivalOrder;
+        d.count = value.count;
+        d.series = value.series;
+        d.arrivalOrder = arrivalOrder;
         arrivalOrder++;
         timeseriesList.pushObject(d);
         processed++;
-        if(processed === eligible) {
+        if (processed === eligible) {
           discoverAggregateController.set('searchingDatasets', false);
         }
-        //console.log(`Processed ${processed} of ${eligible} candidates.`);
-      }, function(reason) {
+        // console.log(`Processed ${processed} of ${eligible} candidates.`);
+      }, (reason) => {
         console.log(reason);
       });
     });
-  }
+  },
 });

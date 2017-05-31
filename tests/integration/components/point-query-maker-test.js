@@ -1,8 +1,8 @@
-import {moduleForComponent, test} from 'ember-qunit';
+import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
 moduleForComponent('point-query-maker', 'Integration | Component | point query maker', {
-  integration: true
+  integration: true,
 });
 
 test('it renders', function (assert) {

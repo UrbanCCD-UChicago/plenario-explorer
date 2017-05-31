@@ -1,9 +1,9 @@
-/*jshint node:true*/
+/* jshint node:true*/
 /* global require, module */
-var EmberApp = require('ember-cli/lib/broccoli/ember-app');
+const EmberApp = require('ember-cli/lib/broccoli/ember-app');
 
-module.exports = function(defaults) {
-  var app = new EmberApp(defaults, {
+module.exports = function (defaults) {
+  const app = new EmberApp(defaults, {
     baseURL: null,
     storeConfigInMeta: false,
     fingerprint: {
@@ -18,9 +18,9 @@ module.exports = function(defaults) {
         // Additional images used by ember-leaflet-draw
         'images/spritesheet-2x.png',
         'images/spritesheet.png',
-        'images/spritesheet.svg'
-      ]
-    }
+        'images/spritesheet.svg',
+      ],
+    },
   });
 
   app.import('bower_components/bootswatch/simplex/bootstrap.css');

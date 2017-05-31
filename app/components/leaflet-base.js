@@ -36,13 +36,13 @@ export default Ember.Component.extend({
     const map_options = {
       scrollWheelZoom: false,
       tapTolerance: 30,
-      minZoom: 1
+      minZoom: 1,
     };
     this.set('map', L.map('map', map_options).setView(...this.get('center')));
   },
 
   addTiles() {
-    let tiles = L.tileLayer(this.get('tileURL'));
+    const tiles = L.tileLayer(this.get('tileURL'));
     tiles.addTo(this.get('map'));
   },
 
@@ -65,9 +65,8 @@ export default Ember.Component.extend({
     // Ember.run.scheduleOnce('afterRender', this, function () {
     //   this.setUpMap();
     // });
-  }
+  },
 });
-
 
 
   // drawElements: function() {

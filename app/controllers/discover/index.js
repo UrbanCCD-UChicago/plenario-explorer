@@ -1,12 +1,12 @@
-import Ember from "ember";
-import moment from "moment";
+import Ember from 'ember';
+import moment from 'moment';
 
 export default Ember.Controller.extend({
   query: Ember.inject.service(),
 
-  modelArrived: Ember.observer('model', function() {
+  modelArrived: Ember.observer('model', function () {
     const pointDatasets = this.get('model.pointDatasets');
-    const withoutSillyTimes = pointDatasets.map(d => {
+    const withoutSillyTimes = pointDatasets.map((d) => {
       const inFuture = moment(d.obsTo).isAfter(moment());
       const inOldenTimes = moment(d.obsTo).isBefore('1899-12-31');
       if (inFuture || inOldenTimes) {
@@ -19,18 +19,18 @@ export default Ember.Controller.extend({
   }),
 
   actions: {
-    navigateToNode: function(name) {
+    navigateToNode(name) {
       this.transitionToRoute(`/node/${name}`);
     },
-    navigateToShape: function(name) {
+    navigateToShape(name) {
       this.transitionToRoute(`/shape/${name}`);
     },
-    navigateToPoint: function(name) {
+    navigateToPoint(name) {
       this.transitionToRoute(`/event/${name}`);
     },
-    downloadShape: function(name, fileType) {
-      this.get('query').rawShape(name, {data_type: fileType}, true);
-    }
-  }
+    downloadShape(name, fileType) {
+      this.get('query').rawShape(name, { data_type: fileType }, true);
+    },
+  },
 });
 

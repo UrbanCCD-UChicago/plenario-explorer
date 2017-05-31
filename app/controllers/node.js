@@ -1,5 +1,5 @@
-import Ember from "ember";
-import ENV from "plenario-explorer/config/environment";
+import Ember from 'ember';
+import ENV from 'plenario-explorer/config/environment';
 
 export default Ember.Controller.extend({
   query: Ember.inject.service(),
@@ -9,7 +9,7 @@ export default Ember.Controller.extend({
 
   mapTileUrl: ENV.baseMapTileUrl,
 
-  modelArrived: Ember.observer('model', function() {
+  modelArrived: Ember.observer('model', function () {
     // When requesting a single node the API still returns a list (of length 1)
     const nodeList = this.get('model.nodes');
     const node = nodeList[0];
@@ -19,18 +19,18 @@ export default Ember.Controller.extend({
   }),
 
   actions: {
-    download: function(params) {
-      this.get('query').sensorDownload(params).then(resp => {
-        this.transitionToRoute('datadump.download', resp.ticket, {queryParams: {data_type: 'json'}});
+    download(params) {
+      this.get('query').sensorDownload(params).then((resp) => {
+        this.transitionToRoute('datadump.download', resp.ticket, { queryParams: { data_type: 'json' } });
       }).catch((error) => {
-          console.log(error);
-          this.get('notify').error('Could not process request. ' +
+        console.log(error);
+        this.get('notify').error('Could not process request. ' +
             'Try double-checking your request, and email plenario@uchicago.edu if the problem persists.');
-        }
+      }
       );
     },
-    exit: function() {
+    exit() {
       this.transitionToRoute('index');
-    }
-  }
+    },
+  },
 });

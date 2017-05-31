@@ -1,22 +1,22 @@
 /* jshint node: true */
 
-module.exports = function(environment) {
-  var ENV = {
+module.exports = function (environment) {
+  const ENV = {
     modulePrefix: 'plenario-explorer',
-    environment: environment,
+    environment,
     baseURL: '/',
     locationType: 'auto',
     EmberENV: {
       FEATURES: {
         // Here you can enable experimental features on an ember canary build
         // e.g. 'with-controller': true
-      }
+      },
     },
 
     APP: {
       // Here you can pass flags/options to your application instance
       // when it is created
-    }
+    },
   };
 
   ENV.networkId = 'array_of_things_chicago';
@@ -38,9 +38,8 @@ module.exports = function(environment) {
   ENV.baseMapTileUrl = 'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png';
 
   if (environment === 'development') {
-
     ENV['ember-cli-mirage'] = {
-      enabled: false
+      enabled: false,
     };
     ENV.host = 'http://plenario-private.us-east-1.elasticbeanstalk.com'; // FIXME: dev server
 
@@ -58,7 +57,7 @@ module.exports = function(environment) {
     ENV.locationType = 'none';
     ENV['ember-cli-mirage'] = {
       enabled: true,
-      directory: 'app/mirage'
+      directory: 'app/mirage',
     };
 
     ENV.networkId = 'plenario_development';
@@ -68,7 +67,6 @@ module.exports = function(environment) {
     ENV.APP.LOG_VIEW_LOOKUPS = false;
 
     ENV.APP.rootElement = '#ember-testing';
-
   }
 
   if (environment === 'production') {
@@ -81,5 +79,4 @@ module.exports = function(environment) {
 
   return ENV;
 };
-
 

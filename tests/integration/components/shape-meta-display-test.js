@@ -1,8 +1,8 @@
-import {moduleForComponent, test} from 'ember-qunit';
+import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
 moduleForComponent('shape-meta-display', 'Integration | Component | shape meta display', {
-  integration: true
+  integration: true,
 });
 
 test('it renders', function (assert) {

@@ -3,5 +3,5 @@ import ENV from 'plenario-explorer/config/environment';
 
 export default AjaxService.extend({
   host: ENV.host,
-  namespace: '/v1/api'
+  namespace: '/v1/api',
 });

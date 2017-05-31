@@ -19,10 +19,10 @@ class Value {
 
   static adaptFromAPI(record) {
     const initHashProto = {
-      'featureOfInterest': record.feature.toLowerCase(),
-      'nodeId': record.node.toLowerCase(),
-      'sensor': record.sensor.toLowerCase(),
-      'datetime': record.datetime
+      featureOfInterest: record.feature.toLowerCase(),
+      nodeId: record.node.toLowerCase(),
+      sensor: record.sensor.toLowerCase(),
+      datetime: record.datetime,
     };
 
     // Potentially a sparse mapping of properties like
@@ -38,7 +38,7 @@ class Value {
     // Construct one value for each non-null observed property
     const values = [];
     // console.log(results);
-    for (let obsProp of Object.keys(results)) {
+    for (const obsProp of Object.keys(results)) {
       // console.log(obsProp);
       const initHash = Ember.copy(initHashProto);
       // Properties will frequently be null.
@@ -54,4 +54,4 @@ class Value {
 
 }
 
-export {Value};
+export { Value };

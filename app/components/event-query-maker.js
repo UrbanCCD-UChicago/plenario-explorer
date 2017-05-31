@@ -8,6 +8,6 @@ export default Ember.Component.extend({
   _endDate: null,
   _agg: null,
   _resolution: null,
-  _filters: null
+  _filters: null,
 
 });

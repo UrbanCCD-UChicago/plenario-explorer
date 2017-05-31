@@ -1,8 +1,8 @@
-import {moduleForComponent, test} from 'ember-qunit';
+import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
 moduleForComponent('drop-downs', 'Integration | Component | drop downs', {
-  integration: true
+  integration: true,
 });
 
 test('it renders', function (assert) {

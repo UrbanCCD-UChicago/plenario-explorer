@@ -1,14 +1,14 @@
-import Ember from "ember";
+import Ember from 'ember';
 
 export function displayLatlong(params, hash) {
   const coords = {
-    'lat': params[0][1],
-    'lng': params[0][0]
+    lat: params[0][1],
+    lng: params[0][0],
   };
 
   const result = {
-    'lat_suffix': 'N/S', // Use the Chicago L style for 0 lat/lng
-    'lng_suffix': 'E/W'
+    lat_suffix: 'N/S', // Use the Chicago L style for 0 lat/lng
+    lng_suffix: 'E/W',
   };
 
   if (coords.lat !== 0) {
@@ -39,7 +39,7 @@ function _decToDms(coord) {
   const d = Math.floor(coord);
   const m = Math.floor((coord - d) * 60);
   const s = Math.round((coord - d - (m / 60)) * 3600 * 100) / 100;
-  return {'d': d, 'm': m, 's': s};
+  return { d, m, s };
 }
 
 export default Ember.Helper.helper(displayLatlong);

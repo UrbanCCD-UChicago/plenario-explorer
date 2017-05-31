@@ -10,18 +10,18 @@ export default LeafletBase.extend({
   SelectedIcon: L.Icon.extend({
     options: {
       iconUrl: 'https://s3.amazonaws.com/ember-dev/assets/images/marker-red.png',
-      iconRetinaUrl: 'https://s3.amazonaws.com/ember-dev/assets/images/marker-red-2x.png'
-    }
+      iconRetinaUrl: 'https://s3.amazonaws.com/ember-dev/assets/images/marker-red-2x.png',
+    },
   }),
 
   DefaultIcon: L.Icon.extend({
     options: {
       iconUrl: 'https://s3.amazonaws.com/ember-dev/assets/images/marker-icon.png',
-      iconRetinaUrl: 'https://s3.amazonaws.com/ember-dev/assets/images/marker-icon-2x.png'
-    }
+      iconRetinaUrl: 'https://s3.amazonaws.com/ember-dev/assets/images/marker-icon-2x.png',
+    },
   }),
 
-  selectionChanged: Ember.observer('selectedNode', function() {
+  selectionChanged: Ember.observer('selectedNode', function () {
     this.updateHighlight();
   }),
 
@@ -39,7 +39,7 @@ export default LeafletBase.extend({
   updateHighlight() {
     const selected = this.get('selectedNode');
     console.log(selected);
-    if (!selected) {return;}
+    if (!selected) { return; }
 
     // Clear highlight from previously selected node
     const lastSelected = this.get('lastSelected');
@@ -62,20 +62,20 @@ export default LeafletBase.extend({
   addLayer() {
     const selectionAction = this.get('selectionAction');
     const nodeIdToMarker = new Map();
-    const addSelectionListeners = function(feature, marker) {
+    const addSelectionListeners = function (feature, marker) {
       const nodeId = feature.properties.id;
       nodeIdToMarker.set(nodeId, marker);
       marker.on(
         {
-          click: () => {selectionAction(nodeId);}
+          click: () => { selectionAction(nodeId); },
         });
     };
 
     this.set('nodeIdToMarker', nodeIdToMarker);
     const layer = L.geoJson(
-      this.get('geoJSON'), {onEachFeature: addSelectionListeners}
+      this.get('geoJSON'), { onEachFeature: addSelectionListeners }
     );
     this.set('layer', layer);
-  }
+  },
 
 });

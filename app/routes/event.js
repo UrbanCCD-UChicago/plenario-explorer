@@ -5,14 +5,12 @@ export default Ember.Route.extend({
   query: Ember.inject.service(),
 
   actions: {
-    reload: function() {
+    reload() {
       this.refresh();
-    }
+    },
   },
 
   model(params) {
-    return this.get('query').eventMetadata(params.dataset_name).then(meta => {
-      return meta;
-    });
-  }
+    return this.get('query').eventMetadata(params.dataset_name).then(meta => meta);
+  },
 });

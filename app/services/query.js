@@ -1,9 +1,9 @@
-import Ember from "ember";
-import moment from "moment";
-import Node from "../models/node";
-import ENV from "plenario-explorer/config/environment";
+import Ember from 'ember';
+import moment from 'moment';
+import Node from '../models/node';
+import ENV from 'plenario-explorer/config/environment';
 // import MockNetwork from '../mirage/mock-network'
-import {mockNetwork, sensorData} from "../mirage/sensor-data";
+import { mockNetwork, sensorData } from '../mirage/sensor-data';
 /* global URI */
 // const network = new MockNetwork(sensorData.curation, sensorData.nodes.data);
 /**
@@ -13,7 +13,7 @@ export default Ember.Service.extend({
   ajax: Ember.inject.service(),
   io: Ember.inject.service('socket-io'),
 
-  queryRoot: Ember.computed('ajax', function() {
+  queryRoot: Ember.computed('ajax', function () {
     return this.get('ajax').host;
   }),
 
@@ -27,9 +27,9 @@ export default Ember.Service.extend({
     window.open(`${this.get('queryRoot')}/v1/api${endpoint}${qString}`);
   },
 
-  camelizeHash: function (hash) {
-    let normalized = {};
-    for (let key in hash) {
+  camelizeHash(hash) {
+    const normalized = {};
+    for (const key in hash) {
       if (hash.hasOwnProperty(key)) {
         const normalizedKey = Ember.String.underscore(key).camelize();
         normalized[normalizedKey] = hash[key];
@@ -39,8 +39,8 @@ export default Ember.Service.extend({
   },
 
   // Kludge for enabling right-click
-  injectExplorerData: function (route, params, obj) {
-    Ember.assign(obj, {'explorerData': {'route': route, 'queryParams': params}});
+  injectExplorerData(route, params, obj) {
+    Ember.assign(obj, { explorerData: { route, queryParams: params } });
     return obj;
   },
 
@@ -48,22 +48,19 @@ export default Ember.Service.extend({
     this._super(...arguments);
     this.set('events', this.get('ajax').request('/datasets'));
     this.set('shapes', this.get('ajax').request('/shapes'));
-    //this.set('nodes', this.get('ajax').request('/sensor-networks/ArrayOfThings/nodes'));
+    // this.set('nodes', this.get('ajax').request('/sensor-networks/ArrayOfThings/nodes'));
   },
 
   _getMetadata(type) {
     const camelizeHash = this.camelizeHash;
     const injectExplorerData = this.injectExplorerData;
-    let route = "event";
-    if (type === "events") {
-      route = "event";
+    let route = 'event';
+    if (type === 'events') {
+      route = 'event';
+    } else if (type === 'shapes') {
+      route = 'shape';
     }
-    else if (type === "shapes") {
-      route = "shape";
-    }
-    return this.get(type).then(function (doc) {
-      return doc.objects.map(v => injectExplorerData(route, undefined, camelizeHash(v)));
-    }, function (reason) {
+    return this.get(type).then(doc => doc.objects.map(v => injectExplorerData(route, undefined, camelizeHash(v))), (reason) => {
       console.log(`Failed to load ${type}. Reason: ${reason}.`);
     });
   },
@@ -115,38 +112,28 @@ export default Ember.Service.extend({
   allNodeMetadata() {
     const qString = `/sensor-networks/${ENV.networkId}/nodes`;
     return this.get('ajax').request(qString)
-    .then(nodeMeta =>
-      {
-        return nodeMeta.data.map(
-          nodeRecord => Node.create({nodeGeoJSON: nodeRecord})
-        );
-      }
+    .then(nodeMeta => nodeMeta.data.map(
+          nodeRecord => Node.create({ nodeGeoJSON: nodeRecord })
+        )
     );
   },
 
   nodeMetadata(nodeId) {
     const qString = `/sensor-networks/${ENV.networkId}/nodes/${nodeId}`;
     return this.get('ajax').request(qString)
-      .then(nodeMeta =>
-        {
-          return nodeMeta.data.map(
-            nodeRecord => Node.create({nodeGeoJSON: nodeRecord})
-          );
-        }
+      .then(nodeMeta => nodeMeta.data.map(
+            nodeRecord => Node.create({ nodeGeoJSON: nodeRecord })
+          )
       );
   },
 
   allSensorMetadata() {
     const qString = `/sensor-networks/${ENV.networkId}/sensors`;
-    return this.get('ajax').request(qString).then(sensorMeta => {
-      return sensorMeta.data.map(sensorRecord => {
-        const props = sensorRecord.properties;
-        const feats = props.map(prop => {
-          return prop.split('.')[0];
-        });
-        return {'name': sensorRecord.name, 'features': feats};
-      });
-    });
+    return this.get('ajax').request(qString).then(sensorMeta => sensorMeta.data.map((sensorRecord) => {
+      const props = sensorRecord.properties;
+      const feats = props.map(prop => prop.split('.')[0]);
+      return { name: sensorRecord.name, features: feats };
+    }));
   },
 
   getSocketForNode(networkId, nodeId, sensorList) {
@@ -158,7 +145,7 @@ export default Ember.Service.extend({
     const connString = URI(host).addQuery({
       network: networkId,
       nodes: nodeId,
-      sensors: sensorList.join(',')
+      sensors: sensorList.join(','),
     }).toString();
     return io.socketFor(connString);
   },
@@ -176,8 +163,8 @@ export default Ember.Service.extend({
         node: nodeId,
         feature: type,
         function: 'avg',
-        start_datetime: aWeekAgo
-      }
+        start_datetime: aWeekAgo,
+      },
     };
     const path = `/sensor-networks/${ENV.networkId}/aggregate`;
     return ajax.request(path, params).then(response => Ember.RSVP.resolve(response.data));
@@ -186,31 +173,28 @@ export default Ember.Service.extend({
   getSensorObservations(nodeId, networkId, feature, sensor) {
     const params = {
       data: {
-        feature: feature,
+        feature,
         nodes: nodeId,
         start_datetime: moment().utc().subtract(1, 'hours').format(),
-        end_datetime: moment().utc().format()
-      }
+        end_datetime: moment().utc().format(),
+      },
     };
-    if (sensor) {params.data.sensors = sensor;}
+    if (sensor) { params.data.sensors = sensor; }
     const path = `/sensor-networks/${networkId}/query`;
-    return this.get('ajax').request(path, params).then(response => {
-      return response.data;
-    });
+    return this.get('ajax').request(path, params).then(response => response.data);
   },
 
   getCurationFor(networkId) {
     if (ENV['ember-cli-mirage'].enabled) {
       return sensorData.curation;
     }
-    else {
-      const url = `${ENV.curationHost}/${networkId}.json`;
-      return this.get('ajax').request(url).then(response => response);
-    }
+
+    const url = `${ENV.curationHost}/${networkId}.json`;
+    return this.get('ajax').request(url).then(response => response);
   },
 
   _findDataset(name, datasets) {
-    return datasets.then(function (dsets) {
+    return datasets.then((dsets) => {
       for (const key in dsets) {
         if (dsets.hasOwnProperty(key)) {
           const dset = dsets[key];
@@ -238,15 +222,13 @@ export default Ember.Service.extend({
     if (newTab) {
       this.openInNewTab(endpoint, params);
     } else {
-      const ts = this.get('ajax').request(endpoint, {data: params});
-      return ts.then(payload => {
-        return {
-          series: this.prepTimeseries(payload.objects),
-          count: payload.count
-        };
-      }, function (reason) {
+      const ts = this.get('ajax').request(endpoint, { data: params });
+      return ts.then(payload => ({
+        series: this.prepTimeseries(payload.objects),
+        count: payload.count,
+      }), (reason) => {
         console.log(reason);
-        return {error: reason};
+        return { error: reason };
       });
     }
   },
@@ -256,18 +238,17 @@ export default Ember.Service.extend({
    Returns array of arrays of the form [[momentJSObject, integer]]
    */
   prepTimeseries(ts) {
-    const formattedSeries = ts.map(function (timeSlice) {
+    const formattedSeries = ts.map(timeSlice =>
       // Why exactly does `moment(timeSlice.datetime + "+0000").valueOf()` work
       // to let Highcharts accept datetimes on the x axis?
       // I don't know. Don't question it.
-      return [moment(timeSlice.datetime + "+0000").valueOf(), timeSlice.count];
-    });
+       [moment(`${timeSlice.datetime}+0000`).valueOf(), timeSlice.count]);
     // The chart expects a list of series objects,
     // each with a data attribute that actually holds the timeseries.
     // So construct a list of one such object.
     // NB: name: 'Count' determines chart tooltip.
     // Easy to override if desired.
-    return [{data: formattedSeries, name: 'Count'}];
+    return [{ data: formattedSeries, name: 'Count' }];
   },
 
   /**
@@ -283,12 +264,9 @@ export default Ember.Service.extend({
     const endpoint = '/grid';
     if (newTab) {
       this.openInNewTab(endpoint, params);
-    }
-    else {
-      const grid = this.get('ajax').request(endpoint, {data: params});
-      return grid.then(function (payload) {
-        return payload;
-      }, function (reason) {
+    } else {
+      const grid = this.get('ajax').request(endpoint, { data: params });
+      return grid.then(payload => payload, (reason) => {
         console.log(reason);
       });
     }
@@ -300,18 +278,17 @@ export default Ember.Service.extend({
       // No filters to transform.
       return params;
     }
-    let filterAPIFormatted = {};
+    const filterAPIFormatted = {};
     const filterHashes = JSON.parse(params.filters);
     for (const filter of filterHashes) {
       if (filter.op === '=') {
         filterAPIFormatted[filter.field] = filter.val;
-      }
-      else {
+      } else {
         const APIOperator = this.get('operatorMap')[filter.op];
         filterAPIFormatted[`${filter.field}__${APIOperator}`] = filter.val;
       }
     }
-    delete params['filters'];
+    delete params.filters;
     Ember.assign(params, filterAPIFormatted);
     return params;
   },
@@ -323,8 +300,8 @@ export default Ember.Service.extend({
     '<': 'lt',
     '<=': 'le',
     '!=': 'ne',
-    'LIKE': 'ilike',
-    'IN': 'in'
+    LIKE: 'ilike',
+    IN: 'in',
   },
 
   /**
@@ -333,14 +310,10 @@ export default Ember.Service.extend({
    * @param params
    */
   eventCandidates(params) {
-    const candidates = this.get('ajax').request('/datasets', {data: params});
-    return candidates.then(doc => {
-      return doc.objects.map(v => {
-        return this.injectExplorerData("event", params, this.camelizeHash(v));
-      });
-    }, function (reason) {
+    const candidates = this.get('ajax').request('/datasets', { data: params });
+    return candidates.then(doc => doc.objects.map(v => this.injectExplorerData('event', params, this.camelizeHash(v))), (reason) => {
       console.log(`Event candidate query failed: ${reason}`);
-      return {error: reason};
+      return { error: reason };
     });
   },
 
@@ -350,14 +323,10 @@ export default Ember.Service.extend({
    * @param params
    */
   shapeSubsets(params) {
-    const subsets = this.get('ajax').request('/shapes', {data: params});
-    return subsets.then(doc => {
-      return doc.objects.map(v => {
-        return this.injectExplorerData("shape", params, this.camelizeHash(v));
-      });
-    }, function (reason) {
+    const subsets = this.get('ajax').request('/shapes', { data: params });
+    return subsets.then(doc => doc.objects.map(v => this.injectExplorerData('shape', params, this.camelizeHash(v))), (reason) => {
       console.log(`Shape subset query failed: ${reason}`);
-      return {error: reason};
+      return { error: reason };
     });
   },
 
@@ -368,12 +337,10 @@ export default Ember.Service.extend({
    */
   nodeSubset(params) {
     params.geom = params.location_geom__within; // Because the nodes endpoint uses different parameters
-    const subset = this.get('ajax').request(`/sensor-networks/${ENV.networkId}/nodes`, {data: params});
-    return subset.then(nodeMeta => {
-      return nodeMeta.data.map(
-        nodeRecord => Node.create({nodeGeoJSON: nodeRecord})
-      );
-    });
+    const subset = this.get('ajax').request(`/sensor-networks/${ENV.networkId}/nodes`, { data: params });
+    return subset.then(nodeMeta => nodeMeta.data.map(
+        nodeRecord => Node.create({ nodeGeoJSON: nodeRecord })
+      ));
   },
 
   /**
@@ -386,12 +353,9 @@ export default Ember.Service.extend({
     const endpoint = `/shapes/${name}`;
     if (newTab) {
       this.openInNewTab(endpoint, params);
-    }
-    else {
-      const shape = this.get('ajax').request(endpoint, {data: params});
-      return shape.then(payload => {
-        return payload;
-      }, reason => {
+    } else {
+      const shape = this.get('ajax').request(endpoint, { data: params });
+      return shape.then(payload => payload, (reason) => {
         console.log(reason);
       });
     }
@@ -412,12 +376,11 @@ export default Ember.Service.extend({
     if (newTab) {
       this.openInNewTab(endpoint, params);
     } else {
-      const events = this.get('ajax').request(endpoint, {data: params});
-      return events.then(payload => {
+      const events = this.get('ajax').request(endpoint, { data: params });
+      return events.then(payload =>
         // Don't currently call this from any route.
         // Would be useful for putting markers on a map.
-        return payload;
-      }, function (reason) {
+         payload, (reason) => {
         console.log(reason);
       });
     }
@@ -438,7 +401,7 @@ export default Ember.Service.extend({
     if (newTab) {
       this.openInNewTab(endpoint, params);
     } else {
-      const events = this.get('ajax').request(endpoint, {data: params});
+      const events = this.get('ajax').request(endpoint, { data: params });
       return events;
     }
   },
@@ -450,21 +413,21 @@ export default Ember.Service.extend({
   sensorDownload(params) {
     // networkId, nodeId, features, startDatetime, endDatetime
     const endpoint = `${ENV.host}/v1/api/sensor-networks/${params.networkId}/download`;
-    let queryParams = {
+    const queryParams = {
       nodes: params.nodes,
       features: params.features.join(','),
       start_datetime: params.startDatetime,
-      end_datetime: params.endDatetime
+      end_datetime: params.endDatetime,
     };
 
     // Remove empty keys to prevent the creation of malformed query strings
-    for (let key of Object.keys(queryParams)) {
+    for (const key of Object.keys(queryParams)) {
       if (!queryParams[key]) {
         delete queryParams[key];
       }
     }
 
-    var query = endpoint + URI('').addQuery(queryParams).toString();
+    const query = endpoint + URI('').addQuery(queryParams).toString();
     return window.open(query);
   },
 

@@ -1,4 +1,4 @@
-import {moduleFor, test} from 'ember-qunit';
+import { moduleFor, test } from 'ember-qunit';
 
 moduleFor('route:not-found', 'Unit | Route | not found', {
   // Specify the other units that are required for this test.
@@ -6,6 +6,6 @@ moduleFor('route:not-found', 'Unit | Route | not found', {
 });
 
 test('it exists', function (assert) {
-  let route = this.subject();
+  const route = this.subject();
   assert.ok(route);
 });
