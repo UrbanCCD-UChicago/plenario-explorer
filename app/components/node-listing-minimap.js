@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import ENV from 'plenario-explorer/config/environment';
+
 export default Ember.Component.extend({
   mapTileUrl: ENV.baseMapTileUrl,
 

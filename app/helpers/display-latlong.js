@@ -25,8 +25,8 @@ export function displayLatlong(params, hash) {
   // Only use this for vanity printouts; in general you're better off
   // sticking to decimal degrees
   if (hash && hash.arcUnits) {
-    result.dmslat = _decToDms(result.declat);
-    result.dmslng = _decToDms(result.declng);
+    result.dmslat = decToDms(result.declat);
+    result.dmslng = decToDms(result.declng);
     const r = result;
     return `${r.dmslat.d}°${r.dmslat.m}'${r.dmslat.s}" ${result.lat_suffix}, ` +
       `${r.dmslng.d}°${r.dmslng.m}'${r.dmslng.s}" ${result.lng_suffix}`;
@@ -35,7 +35,7 @@ export function displayLatlong(params, hash) {
   return `${result.declat}° ${result.lat_suffix}, ${result.declng}° ${result.lng_suffix}`;
 }
 
-function _decToDms(coord) {
+function decToDms(coord) {
   const d = Math.floor(coord);
   const m = Math.floor((coord - d) * 60);
   const s = Math.round((coord - d - (m / 60)) * 3600 * 100) / 100;

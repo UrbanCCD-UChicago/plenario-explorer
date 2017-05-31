@@ -334,8 +334,10 @@ export default Ember.Service.extend({
    * @param params
    */
   nodeSubset(params) {
-    params.geom = params.location_geom__within; // Because the nodes endpoint uses different parameters
-    const subset = this.get('ajax').request(`/sensor-networks/${ENV.networkId}/nodes`, { data: params });
+    const paramsCopy = Ember.copy(params);
+    // Because the nodes endpoint uses different parameters
+    paramsCopy.geom = paramsCopy.location_geom__within;
+    const subset = this.get('ajax').request(`/sensor-networks/${ENV.networkId}/nodes`, { data: paramsCopy });
     return subset.then(nodeMeta => nodeMeta.data.map(
         nodeRecord => Node.create({ nodeGeoJSON: nodeRecord })
       ));

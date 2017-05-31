@@ -41,14 +41,14 @@ test('User can make a query.', (assert) => {
 });
 
 test('User can directly visit a query page with query parameters.', (assert) => {
-  visit(`/discover/aggregate?location_geom__within=${geoJSON}&obs_date__ge=2010-06-01&obs_date__le=2017-07-02&center=seattle&agg=day`);
+  visit(`/discover/aggregate?location_geom__within=${geoJSON}&obs_date__ge=2010-06-01&obs_date__le=2017-07-02&center=chicago&agg=day`);
   andThen(() => {
     assert.equal(currentRouteName(), 'discover.aggregate', 'Query routes to discover.aggregate');
     assert.equal($('#point-aggregate-listing').is('div'), true, 'Query completes properly; point aggregate listing is present.');
     assert.equal($('#start-date-filter input').val(), '06/01/2010', 'Query parameter was able to set the start date.');
     assert.equal($('#end-date-filter input').val(), '07/02/2017', 'Query parameter was able to set the end date.');
     assert.equal($('#agg-select option:selected').text().trim(), 'day', 'Query parameter was able to set the aggregation mode.');
-    assert.notEqual($('.large-map').find('img[src$="10/262/380.png"]').length, 0, 'Query parameter was able to zoom the map to the geoJSON bounds.');
+    assert.notEqual($('.large-map').find('img[src$="15/8408/12177.png"]').length, 0, 'Query parameter was able to zoom the map to the geoJSON bounds.');
   });
 });
 
