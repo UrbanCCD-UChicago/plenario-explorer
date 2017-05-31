@@ -2,8 +2,8 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   actions: {
-    madeSelection: function (fieldName, value) {
+    madeSelection(fieldName, value) {
       this.set(fieldName, value);
-    }
-  }
+    },
+  },
 });

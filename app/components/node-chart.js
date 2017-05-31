@@ -9,19 +9,18 @@ export default Ember.Component.extend({
    * Creates map from type ids to objects containing all curated type information
    * plus a "stream" property containing an array of values of that type.
    */
-  streams: Ember.computed('nodeMeta', 'viewType', function() {
+  streams: Ember.computed('nodeMeta', 'viewType', function () {
     const nodeMeta = this.get('nodeMeta');
     // Clone observed properties
     // because we are going to mutate this array.
     const curatedTypes = cloneArray(this.get('curatedTypes'));
-    const {toFeaturesToTypes, types} = new SensorMap(curatedTypes, nodeMeta.sensors);
+    const { toFeaturesToTypes, types } = new SensorMap(curatedTypes, nodeMeta.sensors);
 
     let typeHash;
     if (this.get('viewType') === 'live') {
       const coll = this.get('streamCollection');
       typeHash = coll.createFor(nodeMeta, curatedTypes);
-    }
-    else {
+    } else {
       typeHash = createTimelines(
         toFeaturesToTypes,
         nodeMeta.id,
@@ -32,12 +31,12 @@ export default Ember.Component.extend({
 
     // Insert all streams into the right observed property object.
     const propMap = {};
-    for (let prop of curatedTypes) {
+    for (const prop of curatedTypes) {
       prop.stream = typeHash[prop.id];
       propMap[prop.id] = prop;
     }
     return propMap;
-  })
+  }),
 });
 
 /**
@@ -55,10 +54,9 @@ export default Ember.Component.extend({
  *  to a growable Ember Array of Values
  */
 function createTimelines(toFeatureToTypes, nodeId, qService, allTypes) {
-
   const q = qService;
   const timelineHash = {};
-  for (let type of allTypes) {
+  for (const type of allTypes) {
     timelineHash[type] = [];
   }
   // For each sensor,
@@ -66,7 +64,7 @@ function createTimelines(toFeatureToTypes, nodeId, qService, allTypes) {
     // For each foi,
     foiToTypes.forEach((types) => {
       // Grab timeseries for foi
-      q.getHistoryFor(nodeId, sensor, types).then(timeseries => {
+      q.getHistoryFor(nodeId, sensor, types).then((timeseries) => {
         // Add individual timeseries
         addToHash(timeseries, timelineHash, types);
       });
@@ -98,24 +96,25 @@ function addToHash(timeseries, timelineHash, types) {
    }
    */
   // Split bucket into one timeseries per type
-  for (let bucket of timeseries) {
-    if ('count' in bucket) {continue;}
-    const datetime = bucket.time_bucket;
-    delete bucket.time_bucket;
-    for (let prop of Object.keys(bucket)) {
-      const val = bucket[prop].avg;
-      if (!val) {continue;}
-
-      const value = {
-        datetime: datetime,
-        value: val
-      };
-      propsToTimeseries.get(prop).push(value);
+  for (const bucket of timeseries) {
+    if (!('count' in bucket)) {
+      const datetime = bucket.time_bucket;
+      delete bucket.time_bucket;
+      for (const prop of Object.keys(bucket)) {
+        const val = bucket[prop].avg;
+        if (val) {
+          const value = {
+            datetime,
+            value: val,
+          };
+          propsToTimeseries.get(prop).push(value);
+        }
+      }
     }
   }
   // Push timeseries to provided hash
-  const [foi,] = types[0].split('.');
-  for (let [prop, ts] of propsToTimeseries) {
+  const [foi] = types[0].split('.');
+  for (const [prop, ts] of propsToTimeseries) {
     const type = `${foi}.${prop}`;
     timelineHash[type].pushObjects(ts);
   }

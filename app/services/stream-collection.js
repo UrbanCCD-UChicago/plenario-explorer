@@ -1,10 +1,11 @@
 import E from 'ember';
-import {Value} from '../models/value';
-import ENV from '../config/environment';
-const NETWORK = ENV.networkId;
 import moment from 'moment';
+import ENV from '../config/environment';
+import Value from '../models/value';
 import Type from '../models/type';
 import SensorMap from '../utils/sensor-map';
+
+const NETWORK = ENV.networkId;
 
 export default E.Service.extend({
   query: E.inject.service(),
@@ -27,12 +28,12 @@ export default E.Service.extend({
    */
   createFor(nodeMeta, curatedTypes) {
     this.set('nodeId', nodeMeta.id);
-    const {toTypes} = new SensorMap(curatedTypes, nodeMeta.sensors);
+    const { toTypes } = new SensorMap(curatedTypes, nodeMeta.sensors);
     this.set('sensorMap', toTypes);
     // Names of types reported by sensors on this node
     const validTypes = [].concat.apply([], [...toTypes.values()]);
-    curatedTypes = curatedTypes.filter(({id}) => validTypes.includes(id));
-    this.set('streams', createStreams(curatedTypes));
+    const filteredCuratedTypes = curatedTypes.filter(({ id }) => validTypes.includes(id));
+    this.set('streams', createStreams(filteredCuratedTypes));
 
     this.seedStreams();
     this.initSocket();
@@ -51,12 +52,12 @@ export default E.Service.extend({
       const features = types.map(type => new Type(type).feature);
       const uniqFeatures = [...new Set(features)];
       // Need to make one call per feature
-      const addToStream = observations => {
-        if (observations.length === 0) {return;}
+      const addToStream = (observations) => {
+        if (observations.length === 0) { return; }
         const valCollections = splitObservationstoValues(observations);
         this.prependValues(valCollections);
       };
-      for (let f of uniqFeatures) {
+      for (const f of uniqFeatures) {
         q.getSensorObservations(nodeId, NETWORK, f, sensor).then(addToStream);
       }
     });
@@ -83,17 +84,17 @@ export default E.Service.extend({
    * Create a socket for this node's sensors
    */
   initSocket() {
-    let channels = this.get('channels');
-    let pusher = this.get('pusher');
-    let node = this.get('nodeId');
-    let sensors = this.get('sensorMap').keys();
+    const channels = this.get('channels');
+    const pusher = this.get('pusher');
+    const node = this.get('nodeId');
+    const sensors = this.get('sensorMap').keys();
 
-    for (let channel of channels) {
+    for (const channel of channels) {
       pusher.unsubscribe(channel);
     }
 
-    for (let sensor of sensors) {
-      let channel = `private-${NETWORK};${node};${sensor}`;
+    for (const sensor of sensors) {
+      const channel = `private-${NETWORK};${node};${sensor}`;
       pusher.subscribe(channel, this.appendObservation.bind(this));
       channels.push(channel);
     }
@@ -105,10 +106,10 @@ export default E.Service.extend({
    * @param obs
    */
   appendObservation(obs) {
-    obs = JSON.parse(obs.message);
-    const vals = Value.adaptFromAPI(obs);
+    const observation = JSON.parse(obs.message);
+    const vals = Value.adaptFromAPI(observation);
     const streams = this.get('streams');
-    for (let val of vals) {
+    for (const val of vals) {
       if (streams[val.id]) {
         const stream = streams[val.id];
         // Remove observations that have fallen out of the time window
@@ -129,7 +130,7 @@ export default E.Service.extend({
    * @param windowBorder moment object
    */
   truncateHead(stream, windowBorder) {
-    if (stream.length === 0) {return;}
+    if (stream.length === 0) { return; }
     // Find where times start to come after the border
     let idx = stream.findIndex(val => val.datetime > windowBorder);
     // If all the times are stale
@@ -138,7 +139,7 @@ export default E.Service.extend({
     }
     // Trim them
     stream.removeAt(0, idx);
-  }
+  },
 });
 
 /**
@@ -155,8 +156,8 @@ function splitObservationstoValues(observations) {
   const valLists = observations.map(obs => Value.adaptFromAPI(obs));
   // Map from property id to list of values
   const propMap = new Map();
-  for (let list of valLists) {
-    for (let val of list) {
+  for (const list of valLists) {
+    for (const val of list) {
       if (!propMap.has(val.id)) {
         propMap.set(val.id, []);
       }
@@ -173,7 +174,7 @@ function splitObservationstoValues(observations) {
  */
 function createStreams(curatedTypes) {
   const streamsObj = {};
-  for (let cType of curatedTypes) {
+  for (const cType of curatedTypes) {
     streamsObj[cType.id] = E.A([]);
   }
   return streamsObj;

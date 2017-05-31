@@ -1,8 +1,20 @@
+/* eslint-disable no-underscore-dangle */
+// TODO: refactor so we can remove the ESLint exception
+import Ember from 'ember';
+import moment from 'moment';
 import SensorMap from '../utils/sensor-map';
 import Type from '../models/type';
 import utc8601 from '../utils/utc-8601';
-import moment from 'moment';
-import Ember from 'ember';
+
+function generateTimestamps(startMoment, endMoment, interval, unit) {
+  // Generate timestamps at 30 second sampling rate.
+  const timestamps = [];
+  while (startMoment < endMoment) {
+    timestamps.push(utc8601(startMoment));
+    startMoment.add(interval, unit);
+  }
+  return timestamps;
+}
 
 export default class MockNetwork {
   /**
@@ -12,18 +24,18 @@ export default class MockNetwork {
    */
   constructor(curatedTypes, nodeMetadata) {
     const sensorMap = new SensorMap(curatedTypes);
-    this.sensorToFactories = this._sensorToFactories(sensorMap.toFeaturesToTypes);
-    this.featureToFactory = this._featureToFactory(sensorMap.featuresToTypes);
-    this.nodeToSensors = this._nodeToSensorsMap(nodeMetadata);
+    this.sensorToFactories = MockNetwork._sensorToFactories(sensorMap.toFeaturesToTypes);
+    this.featureToFactory = MockNetwork._featureToFactory(sensorMap.featuresToTypes);
+    this.nodeToSensors = MockNetwork._nodeToSensorsMap(nodeMetadata);
   }
 
-  _sensorToFactories(toFeaturesToTypes) {
+  static _sensorToFactories(toFeaturesToTypes) {
     // For each sensor, create an array of factories
     const sensorToFactories = new Map();
     // const featureToFactory = new Map();
-    for (let [sensor, featureToTypes] of toFeaturesToTypes.entries()){
+    for (const [sensor, featureToTypes] of toFeaturesToTypes.entries()) {
       const factories = [];
-      for (let [feature, types] of featureToTypes) {
+      for (const [feature, types] of featureToTypes) {
         const factory = this._makeFactory(sensor, feature, types);
         factories.push(factory);
         // featureToFactory.set(feature, factory);
@@ -33,16 +45,16 @@ export default class MockNetwork {
     return sensorToFactories;
   }
 
-  _featureToFactory(featureToTypes) {
+  static _featureToFactory(featureToTypes) {
     const featureToFactory = new Map();
-    for (let [feat, types] of featureToTypes.entries()) {
+    for (const [feat, types] of featureToTypes.entries()) {
       const factory = this._makeFactory('unknown', feat, types);
       featureToFactory.set(feat, factory);
     }
     return featureToFactory;
   }
 
-  _nodeToSensorsMap(nodeMetadata) {
+  static _nodeToSensorsMap(nodeMetadata) {
     const tuples = nodeMetadata.map(n => [n.properties.id, n.properties.sensors]);
     return new Map(tuples);
   }
@@ -52,22 +64,20 @@ export default class MockNetwork {
    * @private
    * @returns Array<Function(nodeID, timestamp) -> Observation >
    */
-  _makeFactory(sensor, feature, types) {
-    return (nodeId, timestamp) => {
-      return {
-        "feature": feature,
-        "node_id": nodeId,
-        "sensor": sensor,
-        "results": this._generateResults(types),
-        "datetime": timestamp
-      };
-    };
+  static _makeFactory(sensor, feature, types) {
+    return (nodeId, timestamp) => ({
+      feature,
+      node_id: nodeId,
+      sensor,
+      results: this._generateResults(types),
+      datetime: timestamp,
+    });
   }
 
-  _generateResults(types) {
+  static _generateResults(types) {
     const properties = types.map(type => new Type(type).property);
     const results = {};
-    for (let prop of properties) {
+    for (const prop of properties) {
       results[prop] = Math.random();
     }
     return results;
@@ -86,16 +96,16 @@ export default class MockNetwork {
    *
    * @returns Array as returned from /aggregate endpoint's data property
    */
-  aggregate(type, startMoment, endMoment) {
+  static aggregate(type, startMoment, endMoment) {
     // Assume we only have one FOI - as the endpoint requires
     // const properties = typeIds.map(t => new Type(t).property);
     const timestamps = generateTimestamps(startMoment, endMoment, 1, 'hours');
-    const {property} = new Type(type);
-    return timestamps.map(t => {
-      const bucket = {time_bucket: t};
+    const { property } = new Type(type);
+    return timestamps.map((t) => {
+      const bucket = { time_bucket: t };
       bucket[property] = {
         count: Math.round(Math.random() * 100),
-        avg: Math.random()
+        avg: Math.random(),
       };
       return bucket;
     });
@@ -110,7 +120,7 @@ export default class MockNetwork {
    * @returns Object as returned from /query endpoint
    *          with observations within the specified range
    */
-  observations(nodeId, feature, startMoment, endMoment) {
+  static observations(nodeId, feature, startMoment, endMoment) {
     const timestamps = generateTimestamps(startMoment, endMoment, 30, 'seconds');
     const factory = this.featureToFactory.get(feature);
     return timestamps.map(ts => factory(nodeId, ts));
@@ -134,7 +144,7 @@ export default class MockNetwork {
   observationFactories(sensors) {
     const sToF = this.sensorToFactories;
     let factories = [];
-    for (let s of sensors) {
+    for (const s of sensors) {
       if (sToF.has(s)) {
         factories = factories.concat(sToF.get(s));
       }
@@ -155,31 +165,20 @@ export default class MockNetwork {
       on(_, callback, context) {
         function emit() {
           const now = utc8601(moment());
-          for (let f of factories) {
+          for (const f of factories) {
             const obs = f(nodeId, now);
             callback.call(context, obs);
           }
         }
         const seconds = 3;
-        const ms = seconds*1000;
+        const ms = seconds * 1000;
         function emitOnDelay() {
           emit();
           Ember.run.later(emitOnDelay, ms);
         }
         emitOnDelay();
-      }
+      },
     };
     return mockSocket;
   }
 }
-
-function generateTimestamps(startMoment, endMoment, interval, unit) {
-  // Generate timestamps at 30 second sampling rate.
-  const timestamps = [];
-  while (startMoment < endMoment) {
-    timestamps.push(utc8601(startMoment));
-    startMoment.add(interval, unit);
-  }
-  return timestamps;
-}
-

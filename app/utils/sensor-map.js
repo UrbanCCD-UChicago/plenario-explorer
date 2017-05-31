@@ -1,3 +1,5 @@
+/* eslint-disable no-underscore-dangle */
+// TODO: refactor so we can remove the ESLint exception
 import Type from '../models/type';
 
 /**
@@ -31,12 +33,11 @@ export default class SensorMap {
       this.toTypes = _subsetMap(sensors, this.toTypes);
       this.toFeaturesToTypes = _subsetMap(sensors, this.toFeaturesToTypes);
       let allTypes = [];
-      for (let types of this.toTypes.values()) {
+      for (const types of this.toTypes.values()) {
         allTypes = allTypes.concat(types);
       }
       this.types = allTypes;
-    }
-    else {
+    } else {
       this.types = curatedTypes.mapBy('id');
     }
     const repeatedFeatures = this.types.map(t => new Type(t).feature);
@@ -59,8 +60,8 @@ function _toTypes(curatedTypes) {
   // Map ensures no duplicates
   const sensorMap = new Map(sensorListPairs);
   // Add all property ids to the sensor reporting them
-  for (let type of curatedTypes) {
-    const {sensor, id} = type;
+  for (const type of curatedTypes) {
+    const { sensor, id } = type;
     sensorMap.get(sensor).push(id);
   }
   return sensorMap;
@@ -89,15 +90,14 @@ function _toFeaturesToTypes(curatedTypes) {
 function _groupTypesByFeature(types) {
   const featToType = new Map();
   // Emulate a Python defaultdict
-  for (let type of types) {
-    const [foi,] = type.split('.');
+  for (const type of types) {
+    const [foi] = type.split('.');
     // Have we seen this FOI before?
     if (featToType.has(foi)) {
       // Yes. Append.
       featToType.get(foi).push(type);
-    }
-    // No, first time. Create.
-    else {
+    } else {
+      // No, first time. Create.
       featToType.set(foi, [type]);
     }
   }

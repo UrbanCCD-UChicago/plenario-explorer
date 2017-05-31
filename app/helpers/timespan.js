@@ -1,10 +1,10 @@
 import Ember from 'ember';
 import moment from 'moment';
 
-export function timespan(params/*, hash*/) {
-  let start = params[0], end = params[1];
-  // true parameter is saying,
-  // don't say "5 days ago". Just say "5 days"
+export function timespan(params) {
+  const { start, end } = params;
+  // true parameter sets return format to
+  // "5 days" instead of "5 days ago"
   return moment(start).from(moment(end), true);
 }
 

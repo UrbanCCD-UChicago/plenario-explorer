@@ -1,9 +1,9 @@
 import Ember from 'ember';
 
 function promisify(data) {
-  return new Ember.RSVP.Promise(function(resolve){
+  return new Ember.RSVP.Promise((resolve) => {
     resolve(data);
   });
 }
 
-export {promisify};
+export { promisify as default };

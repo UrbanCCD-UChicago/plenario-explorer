@@ -5,12 +5,12 @@ export default Ember.Route.extend({
   model() {
     return Ember.RSVP.hash({
       pointDatasets: this.get('query').allEventMetadata(),
-      shapeDatasets: this.get('query').allShapeMetadata()
+      shapeDatasets: this.get('query').allShapeMetadata(),
     });
   },
 
-  afterModel(){
-    //Stop the spinner once loaded.
+  afterModel() {
+    // Stop the spinner once loaded.
     this.controllerFor('discover').set('loadingMeta', false);
-  }
+  },
 });

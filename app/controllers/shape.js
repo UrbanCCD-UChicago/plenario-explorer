@@ -1,5 +1,5 @@
-import Ember from "ember";
-import ENV from "plenario-explorer/config/environment";
+import Ember from 'ember';
+import ENV from 'plenario-explorer/config/environment';
 
 export default Ember.Controller.extend({
   query: Ember.inject.service(),
@@ -7,7 +7,7 @@ export default Ember.Controller.extend({
 
   mapTileUrl: ENV.baseMapTileUrl,
 
-  modelArrived: Ember.observer('model', function() {
+  modelArrived: Ember.observer('model', function () {
     this.fetchShapeJSON();
   }),
 
@@ -28,7 +28,7 @@ export default Ember.Controller.extend({
 
     // If not too many shapes,
     // attempt to download shape dataset as geoJSON.
-    this.get('query').rawShape(meta.datasetName, {}).then(payload => {
+    this.get('query').rawShape(meta.datasetName, {}).then((payload) => {
       if (payload.features.length <= 0) {
         this.set('loading', false);
         this.set('giveUp', true);
@@ -37,21 +37,20 @@ export default Ember.Controller.extend({
       this.set('geoJSON', payload);
       this.set('bounds', L.geoJson(payload).getBounds());
       this.set('loading', false);
-    }, reason => {
+    }, (reason) => {
       this.get('notify').error(`Could not fetch map data: ${reason}`);
       this.set('loading', false);
     });
-
   },
 
   actions: {
-    download: function(type) {
+    download(type) {
       const name = this.get('model').datasetName;
-      this.get('query').rawShape(name, {data_type: type}, true);
+      this.get('query').rawShape(name, { data_type: type }, true);
     },
-    exit: function() {
+    exit() {
       this.transitionToRoute('index');
-    }
-  }
+    },
+  },
 
 });

@@ -1,32 +1,32 @@
 import Ember from 'ember';
 
-export default function(defaultOptions) {
-  let options = {
+export default function (defaultOptions) {
+  const options = {
     title: {
-      text: ''
+      text: '',
     },
     chart: {
-      type: 'area'
+      type: 'area',
     },
     legend: {
-      enabled: false
+      enabled: false,
     },
     credits: {
-      enabled: false
+      enabled: false,
     },
     xAxis: {
       title: {
-        text: ''
+        text: '',
       },
       type: 'datetime',
       labels: {
-        enabled: false
-      }
+        enabled: false,
+      },
     },
     yAxis: {
       title: {
-        text: ''
-      }
+        text: '',
+      },
     },
     tooltip: {
       // Mostly the dates are formatted as hours,
@@ -38,29 +38,29 @@ export default function(defaultOptions) {
         day: '%b %e, %Y',
         week: '%b %e, %Y',
         month: '%b %e, %Y',
-        year: '%b %e, %Y'
-      }
+        year: '%b %e, %Y',
+      },
     },
     plotOptions: {
       series: {
         marker: {
-          fillColor: "#518fc9",
-            radius: 0,
-            states: {
+          fillColor: '#518fc9',
+          radius: 0,
+          states: {
             hover: {
               enabled: true,
-                radius: 5
-            }
-          }
+              radius: 5,
+            },
+          },
         },
         shadow: false,
-          states: {
+        states: {
           hover: {
-            lineWidth: 3
-          }
-        }
-      }
-    }
+            lineWidth: 3,
+          },
+        },
+      },
+    },
   };
   Ember.assign(defaultOptions, options);
   return defaultOptions;

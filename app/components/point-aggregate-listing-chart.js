@@ -3,32 +3,32 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   chartOptions: {
     title: {
-      text: ''
+      text: '',
     },
     chart: {
       type: 'area',
       spacing: [10, 0, 0, 0],
-      backgroundColor: 'transparent'
+      backgroundColor: 'transparent',
     },
     legend: {
-      enabled: false
+      enabled: false,
     },
     credits: {
-      enabled: false
+      enabled: false,
     },
     xAxis: {
       title: {
-        text: ''
+        text: '',
       },
       type: 'datetime',
       labels: {
-        enabled: false
-      }
+        enabled: false,
+      },
     },
     yAxis: {
       title: {
-        text: ''
-      }
+        text: '',
+      },
     },
     tooltip: {
       // Mostly the dates are formatted as hours,
@@ -40,28 +40,28 @@ export default Ember.Component.extend({
         day: '%b %e, %Y',
         week: '%b %e, %Y',
         month: '%b %e, %Y',
-        year: '%b %e, %Y'
-      }
+        year: '%b %e, %Y',
+      },
     },
     plotOptions: {
       series: {
         marker: {
-          fillColor: "#518fc9",
+          fillColor: '#518fc9',
           radius: 0,
           states: {
             hover: {
               enabled: true,
-              radius: 5
-            }
-          }
+              radius: 5,
+            },
+          },
         },
         shadow: false,
         states: {
           hover: {
-            lineWidth: 3
-          }
-        }
-      }
-    }
-  }
+            lineWidth: 3,
+          },
+        },
+      },
+    },
+  },
 });

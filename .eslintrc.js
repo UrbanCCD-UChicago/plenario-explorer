@@ -12,7 +12,7 @@ module.exports = {
     browser: true,
     es6: true,
     jquery: true,
-    qunit: true
+    qunit: true,
   },
   globals: {
     // Browser, JQuery and QUnit globals are set by the "env" field above
@@ -58,6 +58,6 @@ module.exports = {
 
     // Functions are hoisted anyway, and it looks nicer to have utility
     // functions at the bottom instead of clutting the top of the file
-    'no-use-before-define': ['error', { 'functions': false }]
+    'no-use-before-define': ['error', { 'functions': false }],
   }
 };

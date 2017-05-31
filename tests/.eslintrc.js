@@ -13,10 +13,10 @@ module.exports = {
     es6: true,
     jquery: true,
     qunit: true,
-    embertest: true
+    embertest: true,
   },
   globals: {
-    // Browser-default, JQuery and QUnit globals are set by the "env" field above
+    // Browser, JQuery and QUnit globals are set by the "env" field above
 
     // Mirage
     server: true,
@@ -59,6 +59,10 @@ module.exports = {
 
     // Functions are hoisted anyway, and it looks nicer to have utility
     // functions at the bottom instead of clutting the top of the file
-    'no-use-before-define': ['error', { 'functions': false }]
+    'no-use-before-define': ['error', { 'functions': false }],
+
+    // The Ember test boilerplate violates this, so it's not worth manually
+    // changing every file
+    'import/first': 'off',
   }
 };
