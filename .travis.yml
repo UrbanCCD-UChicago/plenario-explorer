@@ -45,4 +45,4 @@ install:
     - npm install
     - bower install
 script:
-    - ember test --server
+    - ember test --silent #--server
