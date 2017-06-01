@@ -9,9 +9,37 @@ test('it renders', function (assert) {
   // Set any properties with this.set('myProperty', 'value');
   // Handle any actions with this.on('myAction', function(val) { ... });
 
-  this.render(hbs`{{node-listing-features}}`);
+  this.set('table', {
+    sensorMetadata: [
+      {
+        name: 'sensor_dev_1',
+        features: [
+          'magnetic_field',
+        ],
+      },
+      {
+        name: 'sensor_dev_4',
+        features: [
+          'gas_concentration',
+          'magnetic_field',
+          'temperature',
+        ],
+      },
+    ],
+  });
+  this.set('record', {
+    properties: {
+      sensors: [
+        'sensor_dev_1',
+        'sensor_dev_4',
+      ],
+    },
+  });
+  this.render(hbs`{{node-listing-features record=record table=table}}`);
 
-  assert.equal(this.$().text().trim(), '');
+  assert.equal(this.$().text().trim().split('\n')
+    .map(s => s.trim())
+    .join(', '), 'Gas concentration, Magnetic field, Temperature');
 
   // This component does not support block usage
   // // Template block usage:
