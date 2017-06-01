@@ -1,4 +1,4 @@
-/* global Ember */
+import Ember from 'ember';
 import { moduleFor, test } from 'ember-qunit';
 import startMirage from '../../helpers/setup-mirage-for-integration';
 import testData from 'plenario-explorer/mirage/test-data';

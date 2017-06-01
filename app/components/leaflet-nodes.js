@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import LeafletBase from './leaflet-base';
-/* global L */
 
 export default LeafletBase.extend({
 
