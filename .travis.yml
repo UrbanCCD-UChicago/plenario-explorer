@@ -8,19 +8,18 @@ addons:
       - google-chrome-stable
 language: node_js
 node_js:
-  - "6.10"
+  - "6.10"  # our specically targeted Node version
+  - "lts/*" # the latest LTS release of Node
+  - "node"  # the latest standard release of Node
 env:
     - EMBER_VERSION=default
     - EMBER_VERSION=release
     - EMBER_VERSION=beta
-    - EMBER_VERSION=canary
 matrix:
   fast_finish: true
   allow_failures:
     - env: EMBER_VERSION=release
     - env: EMBER_VERSION=beta
-    - env: EMBER_VERSION=canary
-
 before_install:
     # setting the path for phantom.js 2.0.0
     - export PATH=/usr/local/phantomjs-2.0.0/bin:$PATH
@@ -32,11 +31,11 @@ before_install:
     # the version of Node we're testing against
 #    - "npm install -g npm@^2"
 install:
-#    - mkdir travis-phantomjs
-#    - wget https://s3.amazonaws.com/travis-phantomjs/phantomjs-2.0.0-ubuntu-12.04.tar.bz2 -O $PWD/travis-phantomjs/phantomjs-2.0.0-ubuntu-12.04.tar.bz2
-#    - tar -xvf $PWD/travis-phantomjs/phantomjs-2.0.0-ubuntu-12.04.tar.bz2 -C $PWD/travis-phantomjs
-#    - export PATH=$PWD/travis-phantomjs:$PATH
     # Use the official PhantomJS Linux binary instead of Travis CI's version
+    #- mkdir travis-phantomjs
+    #- wget https://s3.amazonaws.com/travis-phantomjs/phantomjs-2.0.0-ubuntu-12.04.tar.bz2 -O $PWD/travis-phantomjs/phantomjs-2.0.0-ubuntu-12.04.tar.bz2
+    #- tar -xvf $PWD/travis-phantomjs/phantomjs-2.0.0-ubuntu-12.04.tar.bz2 -C $PWD/travis-phantomjs
+    #- export PATH=$PWD/travis-phantomjs:$PATH
     - mkdir phantomjs
     - wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2 -O $PWD/phantomjs/phantomjs-2.1.1-linux-x86_64.tar.bz2
     - tar -xvf $PWD/phantomjs/phantomjs-2.1.1-linux-x86_64.tar.bz2 -C $PWD/phantomjs
@@ -45,4 +44,5 @@ install:
     - npm install
     - bower install
 script:
-    - ember test --silent #--server
+    # --silent flag only outputs test results
+    - ember try:one ${EMBER_VERSION} test --silent
