@@ -116,11 +116,11 @@ export default Ember.Service.extend({
 
   allNodeMetadata() {
     const qString = `/sensor-networks/${ENV.networkId}/nodes`;
-    return this.get('ajax').request(qString).then((nodeMeta) => {
+    return this.get('ajax').request(qString).then(nodeMeta =>
       nodeMeta.data.map(
         nodeRecord => Node.create({ nodeGeoJSON: nodeRecord })
-      );
-    });
+      )
+    );
   },
 
   nodeMetadata(nodeId) {
