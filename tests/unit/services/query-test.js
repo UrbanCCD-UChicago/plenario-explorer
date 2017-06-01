@@ -18,8 +18,11 @@ moduleFor('service:query', 'Unit | Service | query', {
     'service:socket-io',
     'service:notify',
   ],
-  setup() {
+  beforeEach() {
     startMirage(this.container);
+  },
+  afterEach() {
+    window.server.shutdown();
   },
 });
 

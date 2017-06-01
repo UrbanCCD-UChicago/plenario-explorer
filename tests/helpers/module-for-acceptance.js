@@ -13,11 +13,8 @@ export default function (name, options = {}) {
     },
 
     afterEach() {
-      destroyApp(this.application);
-
-      if (options.afterEach) {
-        options.afterEach.apply(this, arguments);
-      }
+      const afterEach = options.afterEach && options.afterEach.apply(this, arguments);
+      return Promise.resolve(afterEach).then(() => destroyApp(this.application));
     },
   });
 }
