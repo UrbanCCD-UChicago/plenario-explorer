@@ -21,7 +21,10 @@ env:
     - EMBER_VERSION=release # the latest release version of Ember
     - EMBER_VERSION=beta    # the current Ember beta
 matrix:
-  fast_finish: true
+  # Currently (since 2013!) bugged. Will send a notification email/Slack for
+  # *every* job on a build. Remove if Travis ever fixes it, but they don't seem
+  # to care (again, known issue for 3.5+ years with no progress)
+  #fast_finish: true
   allow_failures:
     - node_js: "node"
     - env: EMBER_VERSION=release
