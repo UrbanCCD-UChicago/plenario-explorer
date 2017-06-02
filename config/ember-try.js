@@ -8,14 +8,16 @@ module.exports = {
       name: 'release',
       npm: {
         devDependencies: {
-          ember: 'latest',
+          'ember-source': 'latest',
         },
       },
     },
     {
       name: 'beta',
-      dependencies: {
-        ember: 'beta',
+      npm: {
+        devDependencies: {
+          'ember-source': 'beta',
+        },
       },
     },
   ],
