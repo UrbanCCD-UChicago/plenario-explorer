@@ -22,7 +22,10 @@ module.exports = {
     server: true,
 
     // Leaflet:
-    L: true
+    L: true,
+
+    // Custom test helpers
+    waitFor: true,
   },
   rules: {
     // These eslint-plugin-import rules don't play well with Ember

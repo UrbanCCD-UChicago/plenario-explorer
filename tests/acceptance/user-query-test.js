@@ -81,12 +81,15 @@ test('Changing the map center selection changes the actual map.', (assert) => {
   andThen(() => {
     assert.notEqual($('.large-map').find('img[src$="/10/262/380.png"]').length, 0, 'Default map was centered on Chicago.');  // Chicago map tile
     fillIn('#map-center-select', 'bristol');
+    waitFor(1000);
     andThen(() => {
       assert.notEqual($('.large-map').find('img[src$="/11/1009/681.png"]').length, 0, 'Changing the center selection recenters the map onto Bristol, UK.');  // Bristol, UK map tile
       fillIn('#map-center-select', 'seattle');
+      waitFor(1000);
       andThen(() => {
         assert.notEqual($('.large-map').find('img[src$="/10/164/357.png"]').length, 0, 'Changing the center selection recenters the map onto Seattle.');  // Seattle map tile
         fillIn('#map-center-select', 'newyork');
+        waitFor(1000);
         andThen(() => {
           assert.notEqual($('.large-map').find('img[src$="/10/301/384.png"]').length, 0, 'Changing the center selection recenters the map onto New York.');  // New York map tile
         });
