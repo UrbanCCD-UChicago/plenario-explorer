@@ -47,9 +47,8 @@ install:
   - npm install
   - bower install
 script:
-  - echo "Testing Ember version ${EMBER_VERSION}..."
   - ember try:one ${EMBER_VERSION} test --silent --config-file testem.travis.json
-after_success:
+before_deploy:
   - ember build -prod
 deploy:
   provider: s3
