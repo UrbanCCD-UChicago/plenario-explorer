@@ -28,11 +28,11 @@ export function displayLatlong(params, hash) {
     result.dmslat = decToDms(result.declat);
     result.dmslng = decToDms(result.declng);
     const r = result;
-    return `${r.dmslat.d}°${r.dmslat.m}'${r.dmslat.s}" ${result.lat_suffix}, ` +
-      `${r.dmslng.d}°${r.dmslng.m}'${r.dmslng.s}" ${result.lng_suffix}`;
+    return Ember.String.htmlSafe(`${r.dmslat.d}°${r.dmslat.m}'${r.dmslat.s}" ${result.lat_suffix}, ` +
+      `${r.dmslng.d}°${r.dmslng.m}'${r.dmslng.s}" ${result.lng_suffix}`);
   }
 
-  return `${result.declat}° ${result.lat_suffix}, ${result.declng}° ${result.lng_suffix}`;
+  return Ember.String.htmlSafe(`${result.declat}°&nbsp;${result.lat_suffix}, ${result.declng}°&nbsp;${result.lng_suffix}`);
 }
 
 function decToDms(coord) {

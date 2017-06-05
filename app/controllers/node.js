@@ -29,6 +29,9 @@ export default Ember.Controller.extend({
       }
       );
     },
+    changeView(newViewType) {
+      this.set('viewType', newViewType);
+    },
     exit() {
       this.transitionToRoute('index');
     },

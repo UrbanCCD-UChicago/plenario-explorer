@@ -9,7 +9,17 @@
     </a>
     <h3 class='detail-header'>Node {{nodeMeta.id}}</h3>
     <!-- TODO: componentize this info, like how shape metadata is displayed now -->
-    <strong>Location: </strong> {{display-latlong node.geometry.coordinates}}
+    <p>
+      <strong>Location: </strong> {{display-latlong node.geometry.coordinates}}
+    </p>
+    <div class="panel panel-info">
+      <div class="panel-body">
+        <p>
+          Download data and create your own Array of Things applications with the
+          <a href="http://canary-docs.s3-website-us-east-1.amazonaws.com/#sensor-network-data">Plenario API</a>.
+        </p>
+      </div>
+    </div>
   </div>
   <div class="col-sm-7">
     {{#leaflet-map center=center zoom=10 class='large-map'}}
@@ -18,17 +28,26 @@
     {{/leaflet-map}}
   </div>
 </div>
-
+<hr>
 <div class="row">
-
-  <div class='col-md-12'>
-    <hr>
-    {{#bs-button-group value=viewType type="radio" class="btn-block"}}
-      {{#bs-button class="btn-info" value='live'}}Live View{{/bs-button}}
-      {{#bs-button class="btn-info" value='history'}}History View{{/bs-button}}
-      {{#bs-button class="btn-info" value='download'}}Download{{/bs-button}}
-    {{/bs-button-group}}
-
+  <div class="col-xs-12">
+    <div class="col-md-4 col-md-offset-4">
+      <div class="btn-group btn-group-justified" role="group" aria-label="view type">
+        <div class="btn-group">
+          <button type="button" class="btn btn-info" value="live" onclick={{action "changeView" value="target.value"}}>Live</button>
+        </div>
+        <div class="btn-group">
+          <button type="button" class="btn btn-info" value="history" onclick={{action "changeView" value="target.value"}}>History</button>
+        </div>
+        <div class="btn-group">
+          <button type="button" class="btn btn-info" value="download" onclick={{action "changeView" value="target.value"}}>Download</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
     {{#if (eq viewType 'live')}}
       <p>Observations from the last hour. New observations will appear live.</p>
     {{else if (eq viewType 'history')}}
@@ -36,19 +55,29 @@
     {{else}}
       <p>Download bulk data from node <strong>{{nodeMeta.id}}</strong>.</p>
     {{/if}}
-
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
     {{#unless (eq viewType 'download')}}
       {{node-chart nodeMeta=nodeMeta viewType=viewType curatedTypes=model.curation.curatedTypes}}
     {{else}}
       {{node-download download=(action 'download') nodeMeta=nodeMeta curation=model.curation}}
     {{/unless}}
-    <br>
-    <p class="well">
-      Download data and create your own Array of Things applications with
-      <a href="http://canary-docs.s3-website-us-east-1.amazonaws.com/#sensor-network-data"> <!-- FIXME -->
-        the Plenario API
-      </a>.
-    </p>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">Disclaimer</div>
+      <div class="panel-body">
+        <p>
+          <small>
+            Permission is granted, free of charge, to any persons obtaining a copy of this data to download, analyze and redistribute the data without restriction, including without limitation the rights to use, copy, modify, merge, publish, and/or distribute copies of the data. Neither the University of Chicago nor Argonne National Laboratory nor any of its employees, makes any warranty, express or implied, including the warranties of merchantability and fitness for a particular purpose; nor assumes any legal liability or responsibility for the accuracy, completeness, or usefulness of any information, apparatus, product, or process disclosed; nor represents that its use would not infringe privately owned rights. Data provided by this server is subject to a validation process that aims to ensure that the data is scientifically valid, however some data comes from experimental sensors and this data is validated with the best information available with respect to calibration and transformation. The specific sensor data streams are expected to evolve over time, with some sensors being changed or discontinued and others added. Users of this data should consult the meta-data associated with each sensor feed in order to validate its utility for the intended purpose. Neither the name of the University of Chicago, Argonne National Laboratories, nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. This material is based upon work supported by the National Science Foundation under Grant No. ACI-1532133. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation, The University of Chicago, or Argonne National Laboratory.
+          </small>
+        </p>
+      </div>
+    </div>
   </div>
 </div>
 

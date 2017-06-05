@@ -39,7 +39,8 @@ module.exports = function (environment) {
     ENV['ember-cli-mirage'] = {
       enabled: false,
     };
-    ENV.host = 'http://plenario-private.us-east-1.elasticbeanstalk.com'; // FIXME: dev server
+    ENV.host = 'http://plenar.io';
+    // ENV.host = 'http://plenario-private.us-east-1.elasticbeanstalk.com'; // FIXME: dev server
 
     // ENV.APP.LOG_RESOLVER = true;
     // ENV.APP.LOG_ACTIVE_GENERATION = true;
