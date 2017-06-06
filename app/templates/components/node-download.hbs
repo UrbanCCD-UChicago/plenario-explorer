@@ -3,7 +3,7 @@
 Select the types of sensor data you would like to download:
 <br>
 {{#each availableFeatures as |f|}}
-  {{input type="checkbox" name=f.id checked=f.id}}
+  {{input type="checkbox" name=f.id checked=f.selected}}
   <label for="{{f.id}}">{{f.label}}</label>
   <br>
 {{/each}}

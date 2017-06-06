@@ -18,23 +18,26 @@ export default Ember.Component.extend({
     const availableFeatures = curatedFeatures.filter(({ id }) => availableSet.has(id));
     for (const feat of availableFeatures) {
       feat.label = `${feat.name} - ${feat.description}.`;
+      feat.selected = false;
     }
     return availableFeatures;
   }),
-  selectedFeatures: Ember.computed('availableFeatures', function () {
+
+  // TODO: make this back into computed property?
+  getSelectedFeatures() {
     const selected = {};
-    for (const { id } of this.get('availableFeatures')) {
-      selected[id] = false;
+    for (const feature of this.get('availableFeatures')) {
+      selected[feature.id] = feature.selected;
     }
     return selected;
-  }),
+  },
 
   actions: {
     download() {
       const to8601Date = dateStr => moment(dateStr).utc().format('YYYY-MM-DD');
       const startDate = to8601Date(this.get('startDate'));
       const endDate = to8601Date(this.get('endDate'));
-      const featureHash = this.get('selectedFeatures');
+      const featureHash = this.getSelectedFeatures();
       const features = Object.keys(featureHash).filter(f => featureHash[f]);
       const node = this.get('nodeMeta').id;
 
@@ -48,6 +51,7 @@ export default Ember.Component.extend({
 
       this.get('download')(params);
     },
+
   },
   // Seed date selectors
   startDate: utc(moment().subtract(7, 'days')),
