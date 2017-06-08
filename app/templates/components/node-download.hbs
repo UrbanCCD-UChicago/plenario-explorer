@@ -1,16 +1,13 @@
 {{date-range startDate=startDate endDate=endDate}}
 
 Select the types of sensor data you would like to download:
-
-{{#em-form model=selectedFeatures submitButton=false}}
-  {{#each availableFeatures as |f|}}
-    {{em-checkbox label=f.label property=f.id}}
-  {{/each}}
-{{/em-form}}
+<br>
+{{#each availableFeatures as |f|}}
+  {{input type="checkbox" name=f.id checked=f.id}}
+  <label for="{{f.id}}">{{f.label}}</label>
+  <br>
+{{/each}}
 
 {{features}}
 
-{{#bs-button class="btn-info" action='download'}}
-    Download
-{{/bs-button}}
-
+<button class="btn btn-info" {{action "download"}}>Download</button>

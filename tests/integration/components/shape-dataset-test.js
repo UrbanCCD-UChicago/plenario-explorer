@@ -1,8 +1,8 @@
-import {moduleForComponent, test} from 'ember-qunit';
+import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
 moduleForComponent('shape-dataset', 'Integration | Component | shape dataset', {
-  integration: true
+  integration: true,
 });
 
 test('it renders', function (assert) {

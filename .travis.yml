@@ -1,36 +1,55 @@
-language: node_js
-node_js:
-- "6.10"
 sudo: required
-cache:
-  directories:
-  - node_modules
-env:
-  global:
-  - CXX=g++-4.8
-  - secure: BVA75qpzxi3U3KlHGOPBX2PH241pYhB58w0ubhJ6CEyAu7zcJSn/usURaXx92ayfoFO8S7PGFi48Y/3Tw1DKi1eTimRnT9Y5neGlsaSKpnBw8LJHhv/YHHOOyYbkJM/42AO0WB1Ihe0h0AT9vDn89zlMbWSqbH3/Jl0t1X8WDyBbewqVAf8RhFKsMNlwMeXSy109hUTMTkhYVh/kHU4LxwCLg4rbJA/MX9GQfUv4enlcrAvN+Z1UhgCt0rugua1Rgbe3j30MARmDdw4qZ0+vlB2HgPGITnmihe5H5JlHmM5t775bQHKWum4QuWmjfexf0hJ151y4ZfK3Da1fpXAB26orMdT6XtN0Z44Do/3aY6eQE+aF92IZ1DHCzRx4bnz1DoWtMS9FaVtDfq3OBfrXm0ijmzBJgj2VuoPNaB58uHuolXBtH878Q2OQyE9zUeLmRjgrAqmh2UY44pJeFkWuymPkUycdHuJQtng1sVYxwhOtfINK9ZgDYfqVXLLIajhm1if2M8sjTZ53/MkRlisb45klYQS0wf39YRxeqO0q6SwDSaK2XTfEY1u4TTnd72ssX6LK9rwWCVObiIQhl378OFT/1lVCEbf6HdH1vt4Q3lh/12b6IDk1qtLiyqmGgxgKKQKzTguurC9j7I36nFp2qQ2aB62yTi+kfl9KaQ8F4JA=
-  - secure: 2RL++U9sBmQdhOTQyLLqs08kknJjSEjNv3I+3ZzYkYoDXMlDErDsITcih7XCgMw62n9Cq1L445xnSfIIkLA/VFR0F0QdaRus8mDFHy5kvYaU4iNBRtkRG/vkvJqmCfucDSu3xUQhsg99+hQXaC4O60idoHVjpKKTqkRZJFo+u1ZU4oUQjuWJe4tPKScZfNJquCiE5o8fxvRR6Pssf6P2LhcApBhHix9HSfoeiPdGeTVNvC7MPIL3dJJHaUXK0lfGlp2cQM1O3eBEGkaKjwqC5uat4KR/0UyVNGU8ISbSIq15q62xBOF8UBEEb5ezHvj0FaKO6W5yFCX7xsGQtdVCC/FmMqEGENbbbjmQEl7UUj9aiPc+DvVHexBgTiPjW1j7U4IRLlD92QDyik9LG/icWmqeBCYKLLanHDHYZU1+tudxr2sylYFPvqZwt+E3x2/M8RQ/kwHVw3YHlKNsdpnuO6qpTyAIH3fjTFSC3qfZ9ie7he2XLPRJYUqy5ThhBXt29sS7kqfCkxVXUn7Edr/LVnBzfwzRLCxL1/J+QWP463AhLQh40HtLZaDfKOqQNHu/JoU4Ib5uC3+Z2am9uJi0N81l9UR8JF7DlnbuTHkJWmoiCUFY9O1pGbW7hJ/aaH/8nAk1UwwpZgj8CY1e5YzLHLdTnPBxQem25t/rHG2AF9A=
-  - secure: 0NHYGXploOTo4/VYF33jcRSNFD9H/OLcuusw2JZAgbgbVfog89W8ENpc9q2YtctVf+ie3RpZsXjEJVsQR5jXchmfVI19iND/JLk+vrK+7lR719hseur4wVIzVWzj2goU8Fy34OBN3NQq+0/Vi9rcSnsRbMgUl5nBrM3ISdPD/Ly4TQOmAOXTg3wc2lsmk/CNasGs5LzbganS1HcvKcQpSgOuK8Lzj12nzCGsJUau307gmeJryFp4quW+moB3AJ4HoYKWzWDL61aA4QjVRpzRciNcSEjcrFuBB9J+Q6ag+O+hQZUHU/M0L4CSZJ7mEUylCobqGzEKNS60CHJsalDdOGWQST+2qEfLxi+8nCgj5Bjql9fPOhiTm5XNfaAW/Wy5zn4PfehQa7snthc7ErCtpUZMqbwsyZTfU4LXW30gVy8lpzAB1UsNkDde0MiFJtCwaOHB5K1T6wGV3b8uGXXNgjguwtUg+4ZhnL/KRZUoJFU8f0eE1bqjFRXOueMiE7RL/rFukH4Pq2VsYyaQXTuURAWGWBaEVFiqJJWRdGtzZXtdaI02KVN4oAVoyHOwZTjySJ+/1/gT7A8OQ7SQHPRVTMWqP/oT1mdqFas2up1x6np6MRNWI39GTTVy2yAeEznGRxirFFMcex9IGe5D9dwFY+ZZxzMYnkkqfD82rMFB7Yw=
+dist: trusty
+language: node_js
 addons:
   apt:
     sources:
-      - ubuntu-toolchain-r-test
+      - google-chrome
     packages:
-      - g++-4.8
+      - google-chrome-stable
+node_js:
+  - "6.10"  # our specifically targeted Node version
+  - "lts/*" # the latest LTS release of Node
+  - "node"  # the latest standard release of Node
+env:
+  global:
+    - secure: BVA75qpzxi3U3KlHGOPBX2PH241pYhB58w0ubhJ6CEyAu7zcJSn/usURaXx92ayfoFO8S7PGFi48Y/3Tw1DKi1eTimRnT9Y5neGlsaSKpnBw8LJHhv/YHHOOyYbkJM/42AO0WB1Ihe0h0AT9vDn89zlMbWSqbH3/Jl0t1X8WDyBbewqVAf8RhFKsMNlwMeXSy109hUTMTkhYVh/kHU4LxwCLg4rbJA/MX9GQfUv4enlcrAvN+Z1UhgCt0rugua1Rgbe3j30MARmDdw4qZ0+vlB2HgPGITnmihe5H5JlHmM5t775bQHKWum4QuWmjfexf0hJ151y4ZfK3Da1fpXAB26orMdT6XtN0Z44Do/3aY6eQE+aF92IZ1DHCzRx4bnz1DoWtMS9FaVtDfq3OBfrXm0ijmzBJgj2VuoPNaB58uHuolXBtH878Q2OQyE9zUeLmRjgrAqmh2UY44pJeFkWuymPkUycdHuJQtng1sVYxwhOtfINK9ZgDYfqVXLLIajhm1if2M8sjTZ53/MkRlisb45klYQS0wf39YRxeqO0q6SwDSaK2XTfEY1u4TTnd72ssX6LK9rwWCVObiIQhl378OFT/1lVCEbf6HdH1vt4Q3lh/12b6IDk1qtLiyqmGgxgKKQKzTguurC9j7I36nFp2qQ2aB62yTi+kfl9KaQ8F4JA=
+    - secure: 2RL++U9sBmQdhOTQyLLqs08kknJjSEjNv3I+3ZzYkYoDXMlDErDsITcih7XCgMw62n9Cq1L445xnSfIIkLA/VFR0F0QdaRus8mDFHy5kvYaU4iNBRtkRG/vkvJqmCfucDSu3xUQhsg99+hQXaC4O60idoHVjpKKTqkRZJFo+u1ZU4oUQjuWJe4tPKScZfNJquCiE5o8fxvRR6Pssf6P2LhcApBhHix9HSfoeiPdGeTVNvC7MPIL3dJJHaUXK0lfGlp2cQM1O3eBEGkaKjwqC5uat4KR/0UyVNGU8ISbSIq15q62xBOF8UBEEb5ezHvj0FaKO6W5yFCX7xsGQtdVCC/FmMqEGENbbbjmQEl7UUj9aiPc+DvVHexBgTiPjW1j7U4IRLlD92QDyik9LG/icWmqeBCYKLLanHDHYZU1+tudxr2sylYFPvqZwt+E3x2/M8RQ/kwHVw3YHlKNsdpnuO6qpTyAIH3fjTFSC3qfZ9ie7he2XLPRJYUqy5ThhBXt29sS7kqfCkxVXUn7Edr/LVnBzfwzRLCxL1/J+QWP463AhLQh40HtLZaDfKOqQNHu/JoU4Ib5uC3+Z2am9uJi0N81l9UR8JF7DlnbuTHkJWmoiCUFY9O1pGbW7hJ/aaH/8nAk1UwwpZgj8CY1e5YzLHLdTnPBxQem25t/rHG2AF9A=
+    - secure: 0NHYGXploOTo4/VYF33jcRSNFD9H/OLcuusw2JZAgbgbVfog89W8ENpc9q2YtctVf+ie3RpZsXjEJVsQR5jXchmfVI19iND/JLk+vrK+7lR719hseur4wVIzVWzj2goU8Fy34OBN3NQq+0/Vi9rcSnsRbMgUl5nBrM3ISdPD/Ly4TQOmAOXTg3wc2lsmk/CNasGs5LzbganS1HcvKcQpSgOuK8Lzj12nzCGsJUau307gmeJryFp4quW+moB3AJ4HoYKWzWDL61aA4QjVRpzRciNcSEjcrFuBB9J+Q6ag+O+hQZUHU/M0L4CSZJ7mEUylCobqGzEKNS60CHJsalDdOGWQST+2qEfLxi+8nCgj5Bjql9fPOhiTm5XNfaAW/Wy5zn4PfehQa7snthc7ErCtpUZMqbwsyZTfU4LXW30gVy8lpzAB1UsNkDde0MiFJtCwaOHB5K1T6wGV3b8uGXXNgjguwtUg+4ZhnL/KRZUoJFU8f0eE1bqjFRXOueMiE7RL/rFukH4Pq2VsYyaQXTuURAWGWBaEVFiqJJWRdGtzZXtdaI02KVN4oAVoyHOwZTjySJ+/1/gT7A8OQ7SQHPRVTMWqP/oT1mdqFas2up1x6np6MRNWI39GTTVy2yAeEznGRxirFFMcex9IGe5D9dwFY+ZZxzMYnkkqfD82rMFB7Yw=
+  matrix:
+    - EMBER_VERSION=default # the Ember version specified in package.json
+    - EMBER_VERSION=release # the latest release version of Ember
+    - EMBER_VERSION=beta    # the current Ember beta
+matrix:
+  # Currently (since 2013!) bugged. Will send a notification email/Slack for
+  # *every* job on a build. Remove if Travis ever fixes it, but they don't seem
+  # to care (again, known issue for 3.5+ years with no progress)
+  #fast_finish: true
+  allow_failures:
+    - node_js: "node"
+    - env: EMBER_VERSION=release
+    - env: EMBER_VERSION=beta
 before_install:
-- npm config set spin false
-- npm install -g npm@^2
-- export DISPLAY=:99.0
-- sh -e /etc/init.d/xvfb start
+  # starting a GUI to run tests, per https://docs.travis-ci.com/user/gui-and-headless-browsers/#Using-xvfb-to-Run-Tests-That-Require-a-GUI
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
+  - "npm config set spin false"
+  # This breaks 'npm install'. We'll just let it use whichever NPM came with
+  # the version of Node we're testing against
+  #- "npm install -g npm@^2"
 install:
-- npm install -g bower
-- npm install -g ember-cli
-- npm install
-- bower install
+  # Use the official PhantomJS Linux binary
+  - mkdir phantomjs
+  - wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2 -O $PWD/phantomjs/phantomjs-2.1.1-linux-x86_64.tar.bz2
+  - tar -xvf $PWD/phantomjs/phantomjs-2.1.1-linux-x86_64.tar.bz2 -C $PWD/phantomjs
+  - export PATH=$PWD/phantomjs:$PATH
+  - npm install -g bower
+  - npm install
+  - bower install
 script:
-- ember test --filter="unit"
-after_success:
-- ember build -prod
+  - ember try:one ${EMBER_VERSION} test --silent --config-file testem.travis.json
+before_deploy:
+  - ember build -prod
 deploy:
   provider: s3
   access_key_id:
@@ -41,6 +60,9 @@ deploy:
   skip_cleanup: true
   local-dir: dist
   acl: public_read
+  on:
+    node: "6.10"
+    condition: "$EMBER_VERSION = default"
 notifications:
   slack:
     secure: oQhtIhJcatBQN06CxB2JKRLXkSx1v+mH+2u9WexUQYlofetTJ3OJ6GmXOvRNEhnTtMdPeTrEnlyS5qKC9esb+osLZVpU143txWW7KKVKP6zd+WCD+oNOC8+KMv00xUOk/jl69i43clqjNxPfxwXGWFb2I7k2pKTLZXN/fBVeW2ig8ulbgDQpwrB8jY2OGWpw3uW/6J5P65l5LuIVDDpbJUYUv/UqrpYNHwUSs8aQjcbNGbSitH/i9mgnlEr1IxsoK7y/UDZQJnIUev+F+HXMCZidA+Y/NIqNXjYsFhEDE0byA+0KQT//qhrVt2skVspsg7QRhwTanf4GzMW5zem60aVDLMYKXmftcEZeGgw8laTmN7orchEMNIT/MztQ1iLvw1dPb9D37aCNsDo3GctMy0ZA8xvslcAgXe2kEtCvHbIJRXaEXd1KC5XZZeX5KZGHC+JC8VOgpjJUEuk8mPdTGyoEiQyimKGrZooHm6NzPTvViG3ifcJeeXmHtxGtHDfQyMFHi0sD69JVgoALdCDdIDqKH+h2QVdvh5naWWfVCsqgccUDSkgmcj5HcNCA6qxVBEnTDhCvNPlChKYQl+eUXwHZTn/QzwznUy8P7fvkQpG2+TGRb7/a1YfzpySlf9u1U1tJAQfi8h8ZiUAGZPQlDnPXpN4bmOm4375zHCi+n7M=

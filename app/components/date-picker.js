@@ -11,9 +11,8 @@ export default Ember.Component.extend({
   didInsertElement() {
     const self = this;
     this.$('input').datepicker({
-      keyboardNavigation: true
-    }).on('changeDate', function(e) {
-      //console.log('changedate fired');
+      keyboardNavigation: true,
+    }).on('changeDate', (e) => {
       self.set('date', dateFormat(e.date));
     });
   },
@@ -26,5 +25,5 @@ export default Ember.Component.extend({
   setText() {
     const date = this.get('date');
     this.set('_placeholder', dateFormat(date, 'display'));
-  }
+  },
 });

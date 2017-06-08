@@ -1,8 +1,8 @@
-import {moduleForComponent, test} from 'ember-qunit';
+import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
 moduleForComponent('column-filters', 'Integration | Component | column filters', {
-  integration: true
+  integration: true,
 });
 
 test('it renders', function (assert) {
@@ -16,5 +16,4 @@ test('it renders', function (assert) {
   this.render(hbs`{{column-filters filters=filters metadata=model}}`);
 
   assert.notEqual(this.$().text().trim(), '');
-
 });

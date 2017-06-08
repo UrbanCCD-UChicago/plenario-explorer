@@ -9,6 +9,6 @@ export default Ember.Component.extend({
     resetQuery() {
       this.get('reset')();
       return true;
-    }
-  }
+    },
+  },
 });

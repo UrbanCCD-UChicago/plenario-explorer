@@ -1,37 +1,21 @@
 <div class='row'>
   <div class="col-md-6">
-    {{#em-form
-    submitButton=false
-    model=optionState
-    validationIcons=false}}
-
-      {{em-select
-      property="agg"
-      content=aggOptions
-      optionValuePath="id"
-      optionLabelPath="label"
-      label="Aggregate by"
-      id="agg-select"}}
-
-    {{/em-form}}
+    <label for="agg-select">Aggregate by:</label>
+    {{#x-select value=agg id="agg-select" action=(action "madeSelection" "agg") as |xs|}}
+      {{#each aggOptions as |aopt|}}
+        {{#xs.option value=aopt.id}}{{aopt.label}}{{/xs.option}}
+      {{/each}}
+    {{/x-select}}
   </div>
 
   {{#if res}}
     <div class="col-md-6">
-    {{#em-form
-    submitButton=false
-    model=optionState
-    validationIcons=false}}
-
-      {{em-select
-      property="res"
-      content=resOptions
-      optionValuePath="id"
-      optionLabelPath="label"
-      label="Resolution"
-      id="resolution-select"}}
-
-    {{/em-form}}
+      <label for="res-select">Resolution:</label>
+      {{#x-select value=res id="res-select" action=(action "madeSelection" "res") as |xs|}}
+        {{#each resOptions as |ropt|}}
+          {{#xs.option value=ropt.id}}{{ropt.label}}{{/xs.option}}
+        {{/each}}
+      {{/x-select}}
     </div>
   {{/if}}
 

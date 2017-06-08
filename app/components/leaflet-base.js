@@ -1,5 +1,4 @@
 import Ember from 'ember';
-/* global L */
 
 // Possible parameters:
 // geoJSON: JSON.parsed geoJSON for a layer to be displayed.
@@ -33,16 +32,16 @@ export default Ember.Component.extend({
   },
 
   addMap() {
-    const map_options = {
+    const mapOptions = {
       scrollWheelZoom: false,
       tapTolerance: 30,
-      minZoom: 1
+      minZoom: 1,
     };
-    this.set('map', L.map('map', map_options).setView(...this.get('center')));
+    this.set('map', L.map('map', mapOptions).setView(...this.get('center')));
   },
 
   addTiles() {
-    let tiles = L.tileLayer(this.get('tileURL'));
+    const tiles = L.tileLayer(this.get('tileURL'));
     tiles.addTo(this.get('map'));
   },
 
@@ -65,9 +64,8 @@ export default Ember.Component.extend({
     // Ember.run.scheduleOnce('afterRender', this, function () {
     //   this.setUpMap();
     // });
-  }
+  },
 });
-
 
 
   // drawElements: function() {
@@ -266,7 +264,11 @@ export default Ember.Component.extend({
 //   //It's because it's bound to a map event ('moveend') way up in didInsertElement
 //   updateCenter(self) {
 //     if(!this.get('autopilot')) {
-//       self.sendAction('mapMovedByUser', [[self.map.getCenter().lat, self.map.getCenter().lng], self.map.getZoom()]);
+//       self.sendAction(
+//         'mapMovedByUser',
+//         [[self.map.getCenter().lat, self.map.getCenter().lng],
+//           self.map.getZoom()],
+//       );
 //     }
 //   },
 // });

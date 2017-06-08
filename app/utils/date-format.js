@@ -1,9 +1,10 @@
+import Ember from 'ember';
 import moment from 'moment';
 
 export default function dateFormat(dt, type) {
   let date = moment();
 
-  let formats = [
+  const formats = [
     moment.ISO_8601,
     'YYYY-MM-DD',
     'MM/DD/YYYY',
@@ -11,20 +12,18 @@ export default function dateFormat(dt, type) {
     'DD/MM/YYYY',
   ];
 
-  if(dt instanceof Date){
+  if (dt instanceof Date) {
     date = moment(dt);
-  } else if(moment(dt, formats, true).isValid()){
+  } else if (moment(dt, formats, true).isValid()) {
     date = moment(dt, formats, true);
   } else {
-    console.warn("FIXME: Using an unsupported format in dateFormat: "+String(dt)+". Falling back to moment(<<anything>>), which is going to be deprecated.");
-    date = moment(dt);
+    Ember.Logger.warn(`FIXME: Using an unsupported format in dateFormat: "${dt}". Falling back to Date(<<anything>>), which is unpredictable at best.`);
+    date = moment(new Date(dt));
   }
 
   if (type === 'display') {
     return date.format('MM/DD/YYYY');
   }
-  else {
-    return date.format('YYYY-MM-DD');
-  }
 
+  return date.format('YYYY-MM-DD');
 }

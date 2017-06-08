@@ -57,8 +57,14 @@
           {{#if timeseries}} {{timeseries.count}} {{else}} 0 {{/if}}
             Records Found
         </h3>
-        {{heat-grid grid=grid bounds=bounds datasetName=model.humanName}}
-        {{high-charts classNames=chartClasses content=timeseries.series}}
+        {{#if (gt grid.features.length 0)}} {{!-- Only show the map/chart if there are any matching records --}}
+          {{heat-grid grid=grid bounds=bounds datasetName=model.humanName}}
+          {{high-charts classNames=chartClasses content=timeseries.series}}
+        {{else}}
+          <div class="well well-lg text-center">
+            No matching records found. Please adjust your filters and try again.
+          </div>
+        {{/if}}
         <hr />
         <h4>Dataset details</h4>
         {{metadata-display m=model}}

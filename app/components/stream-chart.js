@@ -5,7 +5,7 @@ export default Ember.Component.extend({
 
   // Whenever our stream is mutated
   // (that is, when a new value arrives)
-  formattedSeries: Ember.observer('property.stream.@each', function() {
+  formattedSeries: Ember.observer('property.stream.@each', function () {
     // Go fetch the whole observation stream
     const observations = this.get('property.stream');
     if (observations.length === 0) {
@@ -13,13 +13,13 @@ export default Ember.Component.extend({
       return;
     }
 
-    const tzOffsetInMs = 60*1000*(new Date().getTimezoneOffset());
+    const tzOffsetInMs = 60 * 1000 * (new Date().getTimezoneOffset());
     // Translate to Highcharts format
-    const series = observations.map( ({datetime, value}) => {
+    const series = observations.map(({ datetime, value }) => {
       if (typeof value === 'number') {
         // Round to 3 decimal places.
         // And pray to the IEEE gods for no weird floating point shit.
-        value = Math.round(value*1000)/1000;
+        value = Math.round(value * 1000) / 1000; // eslint-disable-line no-param-reassign
       }
 
       return [moment(datetime).valueOf() - tzOffsetInMs, value];
@@ -34,11 +34,11 @@ export default Ember.Component.extend({
     this.set('series', [{
       showInLegend: false,
       data: series.sort(),
-      name: tooltipName
+      name: tooltipName,
     }]);
   }),
 
-  chartOptions: Ember.computed('property', function() {
+  chartOptions: Ember.computed('property', function () {
     const viewType = this.get('viewType');
     const prop = this.get('property');
     const liveConfig = {
@@ -46,29 +46,29 @@ export default Ember.Component.extend({
         type: 'line',
       },
       title: {
-        text: prop.name
+        text: prop.name,
       },
       xAxis: {
         type: 'datetime',
         dateTimeLabelFormats: setAllTimeLabels('%l:%M %p'),
         labels: {
           enabled: true,
-        }
+        },
       },
       tooltip: {
-        valueSuffix: ' ' + prop.unit,
-        dateTimeLabelFormats: setAllTimeLabels('%l:%M:%S %p - %b %e, %Y')
+        valueSuffix: ` ${prop.unit}`,
+        dateTimeLabelFormats: setAllTimeLabels('%l:%M:%S %p - %b %e, %Y'),
       },
       yAxis: {
         title: {
-          text: prop.unit
-        }
+          text: prop.unit,
+        },
       },
       legend: {
-        enabled: false
+        enabled: false,
       },
       plotOptions: {
-      }
+      },
     };
     if (viewType === 'history') {
       // Day-long intervals
@@ -80,11 +80,10 @@ export default Ember.Component.extend({
       liveConfig.xAxis.dateTimeLabelFormats = setAllTimeLabels('%B %e');
     }
     return liveConfig;
-
-  })
+  }),
 });
 
-function setAllTimeLabels(label){
+function setAllTimeLabels(label) {
   const timeTypes = [
     'millisecond',
     'second',
@@ -93,10 +92,10 @@ function setAllTimeLabels(label){
     'day',
     'week',
     'month',
-    'year'
+    'year',
   ];
   const labels = {};
-  for (let t of timeTypes) {
+  for (const t of timeTypes) {
     labels[t] = label;
   }
   return labels;

@@ -2,12 +2,26 @@
   "framework": "qunit",
   "test_page": "tests/index.html?hidepassed",
   "disable_watching": true,
+  "parallel": 5,
+  "tap_quiet_logs": true,
+  "ignore_missing_launchers": true,
   "launch_in_ci": [
-    "Firefox"
+    "PhantomJS",
+    "IE9",
+    "IE10",
+    "Edge",
+    "Chrome",
+    "Opera",
+    "Firefox",
+    "Safari"
   ],
   "launch_in_dev": [
-    "PhantomJS",
+    "IE9",
+    "IE10",
+    "Edge",
     "Chrome",
-    "Firefox"
+    "Opera",
+    "Firefox",
+    "Safari"
   ]
 }
