@@ -1,0 +1,6 @@
+{
+  "name": "plenario-explorer",
+  "dependencies": {
+    "leaflet-draw": "~0.4.9"
+  }
+}
