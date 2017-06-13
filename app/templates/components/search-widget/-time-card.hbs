@@ -1,38 +1,41 @@
 <div class="col-lg-4 float-lg-left pr-lg-1">
   <div class="card">
     <div class="card-header">Time</div>
-    <div class="row">
-      <div class="col-md-4 col-lg-12">
-        <div class="card-block">
+    <div class="card-block">
+      <div class="row">
+        <div class="col-md-4 col-lg-12">
           <p class="card-text">
-            Use the draw controls on the map to draw a shape.
+            Select a date range, then choose how to group event data.
           </p>
-          <p class="card-text text-muted small">
-            If you draw a line, Plenar.io will search near it. If you draw a closed shape, Plenar.io will search
-            within that shape.
+          <p class="text-muted small">
+            "Aggregate by" tells Plenar.io whether you care about the number of datapoints per <em>day</em>, per
+            <em>week</em>, or aggregated over another unit of time.
           </p>
         </div>
-      </div>
-      <div class="col-md-8 col-lg-12">
-        <div class="card-block">
-          {{!-- TODO: tweak the formatting in this form. The columns are all over the place --}}
+        <div class="col-md-8 col-lg-12">
           <form class="row" action="">
-            <div class="form-group col-sm-6 col-lg-12 row">
-              <label class="col-4 col-form-label" for="">Start</label>
-              <div class="col-8">
-                <input class="form-control form-control-sm" type="date">
+            <div class="form-group col-sm-6 col-lg-12">
+              <div class="row">
+                <label class="col-12 col-sm-6 col-md-12 col-lg-4 col-form-label-sm" for="">Start Date</label>
+                <div class="col">
+                  <input class="form-control form-control-sm" type="date">
+                </div>
               </div>
             </div>
-            <div class="form-group col-sm-6 col-lg-12 row">
-              <label class="col-5 col-form-label" for="">End</label>
-              <div class="col-7">
-                <input class="form-control form-control-sm" type="date">
+            <div class="form-group col-sm-6 col-lg-12">
+              <div class="row">
+                <label class="col-12 col-sm-6 col-md-12 col-lg-4 col-form-label-sm" for="">End Date</label>
+                <div class="col">
+                  <input class="form-control form-control-sm" type="date">
+                </div>
               </div>
             </div>
-            <div class="form-group col-12 row">
-              <label class="col-4 col-form-label" for="">Aggregate by: </label>
-              <div class="col-8">
-                <select name="" id="" class="form-control form-control-sm"></select>
+            <div class="form-group col mb-0">
+              <div class="row">
+                <label class="col-12 col-sm-auto col-lg-4 col-form-label-sm" for="">Aggregate&nbsp;by:</label>
+                <div class="col">
+                  <select name="" id="" class="form-control form-control-sm"></select>
+                </div>
               </div>
             </div>
           </form>
@@ -40,34 +43,4 @@
       </div>
     </div>
   </div>
-  {{!--<div class="card container-fluid">--}}
-    {{!--<div class="row">--}}
-      {{!--<div class="col p-0">--}}
-        {{!--<div class="card-header">Time</div>--}}
-      {{!--</div>--}}
-    {{!--</div>--}}
-    {{!--<div class="row card-block">--}}
-      {{!--<div class="col-md-4 col-lg-12 p-0">--}}
-        {{!--<p class="card-text">--}}
-          {{!--Select a date range, then choose how to group event data.--}}
-        {{!--</p>--}}
-      {{!--</div>--}}
-      {{!--<div class="col-md-8 col-lg-12 p-0">--}}
-        {{!--<form class="row" action="">--}}
-          {{!--<div class="form-group col-sm-6 col-lg-12">--}}
-            {{!--<label for="">Start</label>--}}
-            {{!--<input class="form-control form-control-sm" type="date">--}}
-          {{!--</div>--}}
-          {{!--<div class="form-group col-sm-6 col-lg-12">--}}
-            {{!--<label for="">End</label>--}}
-            {{!--<input class="form-control form-control-sm" type="date">--}}
-          {{!--</div>--}}
-          {{!--<div class="form-group col-12">--}}
-            {{!--<label for="">Aggregate by: </label>--}}
-            {{!--<select name="" id="" class="form-control form-control-sm"></select>--}}
-          {{!--</div>--}}
-        {{!--</form>--}}
-      {{!--</div>--}}
-    {{!--</div>--}}
-  {{!--</div>--}}
 </div>

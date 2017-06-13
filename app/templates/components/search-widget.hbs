@@ -1,11 +1,12 @@
 <div class="search-widget">
-  <div class="col">
-    <h2>Search</h2>
-    <p>Plenar.io helps you find data in space and time.</p>
-  </div>
-  <div class="container-fluid px-0">
+  {{#bs-alert type="warning" dismissible=false class="hidden-sm-up"}}
+    <strong>Warning!</strong> Map drawing may not work on some mobile devices.
+  {{/bs-alert}}
+  <div class="no-gutters" {{!-- suppress the usual column spacing since cards have their own padding --}}>
     {{partial "components/search-widget/space-cards"}}
     {{partial "components/search-widget/time-card"}}
+    <div class="clearfix hidden-xl-up"></div> {{!-- ensures submit bar goes full-width when it's supposed to --}}
+    {{partial "components/search-widget/action-card"}}
   </div>
 </div>
 {{yield}}
