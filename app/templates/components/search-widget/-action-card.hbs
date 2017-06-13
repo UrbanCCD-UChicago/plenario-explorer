@@ -8,7 +8,7 @@
           </div>
         </div>
         <div class="col pr-1">
-          {{#bs-button type="danger" block=true}}{{fa-icon "undo"}}&emsp;Reset{{/bs-button}}
+          {{#bs-button type="danger" block=true onClick=(action "resetForm")}}{{fa-icon "undo"}}&emsp;Reset{{/bs-button}}
         </div>
         <div class="col pl-1">
           {{#bs-button type="primary" block=true}}{{fa-icon "search"}}&emsp;Search{{/bs-button}}

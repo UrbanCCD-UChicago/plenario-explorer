@@ -13,12 +13,12 @@
           </p>
         </div>
         <div class="col-md-8 col-lg-12">
-          <form class="row" action="">
+          <form class="row">
             <div class="form-group col-sm-6 col-lg-12">
               <div class="row">
                 <label class="col-12 col-sm-6 col-md-12 col-lg-4 col-form-label-sm" for="">Start Date</label>
                 <div class="col">
-                  <input class="form-control form-control-sm" type="date">
+                  {{one-way-input startDateAsString class="form-control form-control-sm" type="date" update=(action (mut startDateAsString))}}
                 </div>
               </div>
             </div>
@@ -26,7 +26,7 @@
               <div class="row">
                 <label class="col-12 col-sm-6 col-md-12 col-lg-4 col-form-label-sm" for="">End Date</label>
                 <div class="col">
-                  <input class="form-control form-control-sm" type="date">
+                  {{one-way-input endDateAsString class="form-control form-control-sm" type="date" update=(action (mut endDateAsString))}}
                 </div>
               </div>
             </div>
@@ -34,7 +34,7 @@
               <div class="row">
                 <label class="col-12 col-sm-auto col-lg-4 col-form-label-sm" for="">Aggregate&nbsp;by:</label>
                 <div class="col">
-                  <select name="" id="" class="form-control form-control-sm"></select>
+                  {{one-way-select aggregateBy class="form-control form-control-sm" options=aggregationOptions update=(action (mut aggregateBy))}}
                 </div>
               </div>
             </div>
