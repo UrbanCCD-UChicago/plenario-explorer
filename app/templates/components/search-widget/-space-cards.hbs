@@ -31,8 +31,17 @@
         </div>
       </div>
       <div class="col-md-8 col-lg-12">
-        <img src="https://cartodb-basemaps-a.global.ssl.fastly.net/light_all/9/131/190@2x.png" width="800px" alt=""
-             class="img-fluid">
+        <div class="embed-responsive embed-responsive-1by1">
+          {{#leaflet-map class="embed-responsive-item" lat=41.889839 lng=-87.623143 zoom=10
+                         onMoveend=(action "mapDidMove") as |layers|}}
+            {{layers.tile url="https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}{r}.png"}}
+            {{!-- FIXME: blocked by ember-leaflet issue: https://github.com/miguelcobain/ember-leaflet/issues/147 --}}
+            {{#if userShapeGeoJson}}
+              {{layers.geojson geoJSON=userShapeGeoJson}}
+            {{/if}}
+            {{draw-control draw=(hash circle=false marker=false) onDrawCreated=(action "userDidDrawShape")}}
+          {{/leaflet-map}}
+        </div>
       </div>
     </div>
   </div>
