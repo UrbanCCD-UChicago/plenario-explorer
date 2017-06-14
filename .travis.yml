@@ -39,6 +39,7 @@ matrix:
     - env: EMBER_VERSION=beta     # it's nice to know how we fare on beta, but it's not something we support at all
 
 before_install:
+  - yarn global bin
   - yarn config set spin false
   - yarn global add bower # TODO: when ember-leaflet-draw switches to NPM, we no longer need Bower (SO KILL IT!)
   - yarn global add phantomjs-prebuilt
