@@ -5,6 +5,7 @@ node_js:
   - "lts/*" # the latest LTS release of Node
   - "node"  # the latest standard release of Node
 
+dist: trusty # Chrome doesn't work on Precise anymore
 sudo: false
 
 cache:
