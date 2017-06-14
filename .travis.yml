@@ -1,7 +1,9 @@
 ---
 language: node_js
 node_js:
-  - "6"
+  - "6.10"  # our specifically targeted Node version
+  - "lts/*" # the latest LTS release of Node
+  - "node"  # the latest standard release of Node
 
 sudo: false
 
@@ -9,13 +11,20 @@ cache:
   directories:
     - $HOME/.npm
 
+addons:
+  apt:
+    sources:
+      - google-chrome
+    packages:
+      - google-chrome-stable
+
 before_install:
-  - npm config set spin false
-  - npm install -g phantomjs-prebuilt
+  - yarn config set spin false
+  - yarn global add phantomjs-prebuilt
   - phantomjs --version
 
 install:
-  - npm install
+  - yarn
 
 script:
-  - npm test
+  - yarn run test
