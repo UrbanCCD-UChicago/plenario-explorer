@@ -11,6 +11,7 @@ sudo: false   # We're not using any sudo features, and the Docker containers are
 cache:
   directories:
     - $HOME/.npm
+    - $HOME/.nvm
 
 addons:
   apt:
@@ -27,7 +28,6 @@ env:
   matrix:
     - EMBER_VERSION=default # the Ember version specified in package.json
     - EMBER_VERSION=release # the latest release version of Ember
-    - EMBER_VERSION=beta    # the current Ember beta
 
 matrix:
   # Currently (since 2013!) bugged. Will send a notification email/Slack for *every* job on a build.
@@ -36,7 +36,6 @@ matrix:
   allow_failures:
     - node_js: "node"             # this may be a new semver major version, so it's okay short-term if we break on it
     - env: EMBER_VERSION=release  # we don't target the release channel of Ember.js, but future LTS releases start there
-    - env: EMBER_VERSION=beta     # it's nice to know how we fare on beta, but it's not something we support at all
 
 before_install:
   - yarn global bin
