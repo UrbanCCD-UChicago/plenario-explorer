@@ -12,7 +12,8 @@
   "scripts": {
     "build": "ember build",
     "start": "ember server",
-    "test": "ember test"
+    "test": "ember test -s",
+    "test-ci": "ember try:one ${EMBER_VERSION} test --silent"
   },
   "devDependencies": {
     "@turf/bbox-polygon": "^4.4.0",
