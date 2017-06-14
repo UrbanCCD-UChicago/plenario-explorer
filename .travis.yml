@@ -9,9 +9,10 @@ dist: trusty  # Chrome doesn't work on Precise anymore
 sudo: false   # We're not using any sudo features, and the Docker containers are much faster
 
 cache:
-  directories:
-    - $HOME/.npm
-    - $HOME/.nvm
+  yarn: true
+#  directories:
+#    - $HOME/.npm
+#    - $HOME/.nvm
 
 addons:
   apt:
