@@ -26,6 +26,7 @@ env:
   matrix:
     - EMBER_VERSION=default # the Ember version specified in package.json
     - EMBER_VERSION=release # the latest release version of Ember
+    - EMBER_VERSION=beta    # the pre-release of the upcoming version of Ember
 
 matrix:
   # Currently bugged. Setting `fast_finish` will cause Travis to send a notification email/Slack msg for EACH individual
@@ -34,6 +35,7 @@ matrix:
   allow_failures:
     - node_js: "node"             # this may be a new semver major version, so it's okay short-term if we break on it
     - env: EMBER_VERSION=release  # we don't target the release channel of Ember.js, but future LTS releases start there
+    - env: EMBER_VERSION=beta     # it would be silly to fail against a pre-release build of Ember
 
 before_install:
   - yarn config set spin false
