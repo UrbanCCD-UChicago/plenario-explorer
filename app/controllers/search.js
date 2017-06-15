@@ -6,6 +6,6 @@ export default Ember.Controller.extend({
     doSearch(searchParams) {
       console.log(searchParams);
     },
-  }
+  },
 
 });

@@ -52,7 +52,7 @@ script:
   # The `--skip-cleanup` ensures Travis doesn't waste time cleaning up after a failed build when the instance is just
   # going to be destroyed immediately afterwards.
   # IMPORTANT: this means we have to run `ember try:reset` before building for deployment!
-  - ember try:one ${EMBER_VERSION} --skip-cleanup=true --- ember test --silent
+  - ember try:one ${EMBER_VERSION} --skip-cleanup=true --- ember test --silent --config-file testem-ci.json
 
 before_deploy:
   - ember try:reset   # Necessary because we're skipping cleanup in the testing phase

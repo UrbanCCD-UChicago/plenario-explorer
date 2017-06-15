@@ -8,7 +8,7 @@ export default Ember.Component.extend({
   aggregationOptions: ['hour', 'day', 'week'],
 
   startDateAsString: Ember.computed('startDate', {
-    get(key) {
+    get(/* key */) {
       return this.get('startDate').format('YYYY-MM-DD');
     },
     set(key, value) {
@@ -18,11 +18,11 @@ export default Ember.Component.extend({
         return momentDate.format();
       }
       return false;
-    }
+    },
   }),
 
   endDateAsString: Ember.computed('endDate', {
-    get(key) {
+    get(/* key */) {
       return this.get('endDate').format('YYYY-MM-DD');
     },
     set(key, value) {
@@ -32,7 +32,7 @@ export default Ember.Component.extend({
         return momentDate.format();
       }
       return false;
-    }
+    },
   }),
 
   queryAreaAsGeoJson: Ember.computed('currentMapBounds', 'userShapeGeoJson', function () {
@@ -44,9 +44,8 @@ export default Ember.Component.extend({
           .split(',')
           .map(coord => Number(coord))
       );
-    } else {
-      return null;
     }
+    return null;
   }),
 
   formValues: Ember.computed('startDate', 'endDate', 'aggregateBy', 'queryAreaAsGeoJson', function () {
@@ -69,7 +68,7 @@ export default Ember.Component.extend({
     },
     userDidDrawShape(event) {
       this.set('userShapeGeoJson', event.layer.toGeoJSON());
-    }
+    },
   },
 
   init() {
