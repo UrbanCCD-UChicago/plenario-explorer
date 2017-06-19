@@ -1,6 +1,6 @@
 <div class="search-widget">
   {{#bs-alert type="warning" dismissible=false class="hidden-sm-up"}}
-    <strong>Warning!</strong> Map drawing may not work on some mobile devices.
+    {{fa-icon "exclamation-triangle"}}&ensp;<strong class="sr-only">Warning!</strong> Map drawing may not work on some mobile devices.
   {{/bs-alert}}
   <div class="no-gutters" {{!-- suppress the usual column spacing since cards have their own padding --}}>
     {{partial "components/search-widget/space-cards"}}

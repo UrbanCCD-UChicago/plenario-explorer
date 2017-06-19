@@ -1,4 +1,10 @@
-@import "ember-bootstrap/bootstrap";
+@import 'ember-bootstrap/bootstrap';
+
+// General style overrides
+// @import 'forms';
 
 // Components
 @import 'components/search-widget';
+
+// Browser-specific hotfixes
+@import 'hotfixes/safari';
