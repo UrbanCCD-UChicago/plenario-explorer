@@ -1,4 +1,5 @@
 <h2>Search</h2>
-<p>Plenar.io helps you find data in space and time.</p>
-{{search-widget onSubmit=(action "doSearch")}}
+<p class="lead">Plenar.io helps you find data in space and time.</p>
+{{search-widget onSubmit=(action "doSearch") onReset=(action "resetSearch")}}
+<div class="clearfix mb-5"></div>
 {{outlet}}

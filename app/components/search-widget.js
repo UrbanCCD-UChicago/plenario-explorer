@@ -6,7 +6,7 @@ export default Ember.Component.extend({
 
 
   aggregationOptions: ['hour', 'day', 'week'],
-  defaultStartDate: moment().subtract(7, 'days').startOf('day'),
+  defaultStartDate: moment().subtract(90, 'days').startOf('day'),
   defaultEndDate: moment().endOf('day'),
 
   startDateAsString: Ember.computed('startDate', {
@@ -70,11 +70,11 @@ export default Ember.Component.extend({
   ),
 
   formValues: Ember.computed('startDate', 'endDate', 'aggregateBy', 'queryAreaAsGeoJson', function () {
-    const startDateString = this.get('startDate').format();
-    const endDateString = this.get('endDate').format();
+    const startDate = this.get('startDate').format('YYYY-MM-DD');
+    const endDate = this.get('endDate').format('YYYY-MM-DD');
     const aggregateBy = this.get('aggregateBy');
-    const queryAreaAsGeoJsonString = JSON.stringify(this.get('queryAreaAsGeoJson'));
-    return { startDateString, endDateString, aggregateBy, queryAreaAsGeoJsonString };
+    const withinArea = JSON.stringify(this.get('queryAreaAsGeoJson'));
+    return { startDate, endDate, aggregateBy, withinArea };
   }),
 
   actions: {
@@ -83,6 +83,7 @@ export default Ember.Component.extend({
     },
     resetForm() {
       this.setupInitialValues();
+      this.get('onReset')();
     },
     mapDidMove(event) {
       this.set('currentMapBounds', event.target.getBounds());
