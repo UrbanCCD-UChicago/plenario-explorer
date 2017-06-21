@@ -3,16 +3,22 @@
   <h2>View & Compare</h2>
   <p class="lead">Now that you've chosen an area and a timeframe, check out your data below!</p>
   <div class="row">
-    <div class="col-12">
-      {{#light-table openDataTable height="45vh" as |t|}}
-        {{t.head class="table results-table table-sm mb-0" iconAscending="fa fa-sort-asc" iconDescending="fa fa-sort-desc" fixed=true}}
-        {{t.body class="table results-table table-sm" canSelect=true multiSelect=true multiSelectRequiresKeyboard=false}}
-      {{/light-table}}
-    </div>
-    <div class="col-12">
-      {{#each openDataTable.selectedRows as |row|}}
-        {{row.content.attribution}} — {{row.content.human_name}}<br>
-      {{/each}}
-    </div>
+    {{#unless (eq nodeFeaturePseudoDatasets.length 0)}}
+      <div class="col-12">
+        {{#light-table sensorDataTable class="table table-sm results-table" height="20vh" as |t|}}
+          {{t.head class="mb-0" iconAscending="fa fa-lg fa-sort-asc" iconDescending="fa fa-lg fa-sort-desc" fixed=true}}
+          {{t.body autoHideScrollbar=false canSelect=true multiSelect=true multiSelectRequiresKeyboard=false}}
+        {{/light-table}}
+      </div>
+    {{/unless}}
+    {{#unless (eq openDataProviderDatasets.length 0)}}
+      <div class="col-12">
+        {{#light-table openDataTable class="table table-sm results-table" height="40vh" as |t|}}
+          {{t.head class="mb-0" iconAscending="fa fa-lg fa-sort-asc" iconDescending="fa fa-lg fa-sort-desc" fixed=true}}
+          {{t.body autoHideScrollbar=false canSelect=true multiSelect=true multiSelectRequiresKeyboard=false}}
+        {{/light-table}}
+      </div>
+    {{/unless}}
   </div>
 </section>
+{{log model}}

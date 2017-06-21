@@ -19,7 +19,7 @@ export default Ember.Route.extend({
   },
 
   beforeModel(transition) {
-    // If there are no query parameters, redirect to the results route
+    // If there are no query parameters, redirect to the search route
     const { queryParams } = transition;
     if (Object.keys(queryParams).length === 0) {
       this.transitionTo('search');
@@ -35,9 +35,20 @@ export default Ember.Route.extend({
         apiParams[queryParamsToApiParamsMap[qp]] = routeQueryParams[qp];
       }
     });
-    return Ember.RSVP.hash({
+    const apiParamsForFeatureQueries = { geom: routeQueryParams.withinArea };
+    return Ember.RSVP.hashSettled({
       events: this.request('datasets', apiParams).then(response => response.objects),
       shapes: this.request('shapes', apiParams).then(response => response.objects),
+      features: this.request('sensor-networks/array_of_things_chicago/features', apiParamsForFeatureQueries).then(response => response.data),
+    }).then((hash) => {
+      Object.keys(hash).forEach((key) => {
+        if (hash[key].state === 'fulfilled') {
+          hash[key] = hash[key].value;
+        } else {
+          hash[key] = [];
+        }
+      });
+      return hash;
     });
   },
 
