@@ -1,10 +1,37 @@
 @import 'ember-bootstrap/bootstrap';
 
-// General style overrides
+
+/* ===== General style overrides ===== */
 // @import 'forms';
 
-// Components
+
+/* ===== Component-specific styles ===== */
 @import 'components/search-widget';
 
-// Browser-specific hotfixes
-@import 'hotfixes/safari';
+
+/* ===== Browser-specific hotfixes ===== */
+/*  For flexbugs, rendering quirks, etc. */
+// @import 'hotfixes/safari';
+
+
+
+/* ======================================== Global Styles ======================================== */
+/* These should move to their own partials once they're big enough / are finalized in a feature. */
+
+section.container {
+  position: relative; // Contains spinners to parent sections instead of the full body height
+}
+
+section.full-page {
+  min-height: 100vh;
+}
+
+.results-table {
+  tr.is-selected {
+    color: $component-active-color;
+    background-color: $component-active-bg;
+  }
+  th, td {
+    vertical-align: middle;
+  }
+}

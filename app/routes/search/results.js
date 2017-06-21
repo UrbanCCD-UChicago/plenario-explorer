@@ -43,6 +43,6 @@ export default Ember.Route.extend({
 
   request(endpoint, queryParams) {
     return this.get('ajax').request(endpoint, { data: queryParams });
-  }
+  },
 
 });

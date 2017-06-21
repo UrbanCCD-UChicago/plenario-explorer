@@ -1,8 +1,18 @@
-{{scroll-magnet animationLength=750}}
-<h2>View & Compare</h2>
-<p class="lead">Now that you've chosen an area and a timeframe, check out your data below!</p>
-<div class="row" style="min-height: 95vh;">
-  <div class="col">
-    RESULTS GO HERE
+<section class="container full-page">
+  {{scroll-magnet animationLength=750}}
+  <h2>View & Compare</h2>
+  <p class="lead">Now that you've chosen an area and a timeframe, check out your data below!</p>
+  <div class="row">
+    <div class="col-12">
+      {{#light-table openDataTable height="45vh" as |t|}}
+        {{t.head class="table results-table table-sm mb-0" iconAscending="fa fa-sort-asc" iconDescending="fa fa-sort-desc" fixed=true}}
+        {{t.body class="table results-table table-sm" canSelect=true multiSelect=true multiSelectRequiresKeyboard=false}}
+      {{/light-table}}
+    </div>
+    <div class="col-12">
+      {{#each openDataTable.selectedRows as |row|}}
+        {{row.content.attribution}} — {{row.content.human_name}}<br>
+      {{/each}}
+    </div>
   </div>
-</div>
+</section>
