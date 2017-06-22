@@ -39,7 +39,6 @@ matrix:
 
 before_install:
   - yarn config set spin false
-  - yarn global add bower # TODO: when ember-leaflet-draw switches to NPM, we no longer need Bower (KILL IT WITH FIRE)
   - yarn global add phantomjs-prebuilt
   - phantomjs --version
   # starting a GUI to run tests, per https://docs.travis-ci.com/user/gui-and-headless-browsers/#Using-xvfb-to-Run-Tests-That-Require-a-GUI
@@ -48,7 +47,6 @@ before_install:
 
 install:
   - yarn
-  - bower install
 
 script:
   # The `--skip-cleanup` ensures Travis doesn't waste time cleaning up after a failed build when the instance is just
