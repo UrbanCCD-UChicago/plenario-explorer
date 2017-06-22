@@ -46,6 +46,7 @@
     "ember-light-table": "^1.8.6",
     "ember-load-initializers": "^1.0.0",
     "ember-one-way-controls": "^2.0.0",
+    "ember-query-params-reset": "^2.0.0",
     "ember-resolver": "^4.0.0",
     "ember-responsive": "^2.0.4",
     "ember-source": "~2.12.2",
