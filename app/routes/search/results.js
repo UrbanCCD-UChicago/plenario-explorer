@@ -43,9 +43,9 @@ export default Ember.Route.extend({
     }).then((hash) => {
       Object.keys(hash).forEach((key) => {
         if (hash[key].state === 'fulfilled') {
-          hash[key] = hash[key].value;
+          hash[key] = hash[key].value; // eslint-disable-line no-param-reassign
         } else {
-          hash[key] = [];
+          hash[key] = []; // eslint-disable-line no-param-reassign
         }
       });
       return hash;

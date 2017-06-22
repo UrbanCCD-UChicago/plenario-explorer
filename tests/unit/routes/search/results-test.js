@@ -5,7 +5,7 @@ moduleFor('route:search/results', 'Unit | Route | search/results', {
   // needs: ['controller:foo']
 });
 
-test('it exists', function(assert) {
-  let route = this.subject();
+test('it exists', function (assert) {
+  const route = this.subject();
   assert.ok(route);
 });
