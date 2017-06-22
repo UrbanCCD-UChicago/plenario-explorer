@@ -1,24 +1,73 @@
 <section class="container full-page">
   {{scroll-magnet animationLength=750}}
   <h2>View & Compare</h2>
-  <p class="lead">Now that you've chosen an area and a timeframe, check out your data below!</p>
-  <div class="row">
-    {{#unless (eq nodeFeaturePseudoDatasets.length 0)}}
+  <p class="lead">Now that you've chosen an area and a timeframe, select the datasets you'd like to compare below.</p>
+  <p>
+    Click on datasets to select them or deselect them, then click <kbd class="bg-faded text-gray-dark">Compare</kbd> to see what they
+    look like together.
+  </p>
+  <p class="small text-muted">
+    If you decide you want to modify your search, scroll back up and tweak things (don't forget to click
+    <kbd class="bg-faded text-muted">Search</kbd> again!) or click <kbd class="bg-faded text-muted">Reset</kbd> to
+    start over.
+  </p>
+  {{#unless (eq nodeFeaturePseudoDatasets.length 0)}}
+    <div class="row align-items-center">
       <div class="col-12">
-        {{#light-table sensorDataTable class="table table-sm results-table" height="20vh" as |t|}}
+        <h3>Data From Sensor Nodes</h3>
+      </div>
+      <div class="col-12">
+        {{!-- Height value below is (5 * (row height)), where (row height) = ((1.5 * 1rem) + (2 * 0.3rem)) --}}
+        {{#light-table nodeFeatureDataTable class="table table-sm results-table mb-1" height="10.5rem" as |t|}}
           {{t.head class="mb-0" iconAscending="fa fa-lg fa-sort-asc" iconDescending="fa fa-lg fa-sort-desc" fixed=true}}
           {{t.body autoHideScrollbar=false canSelect=true multiSelect=true multiSelectRequiresKeyboard=false}}
         {{/light-table}}
       </div>
-    {{/unless}}
-    {{#unless (eq openDataProviderDatasets.length 0)}}
+      <form class="col-8 mb-3 form-inline" action="" onsubmit="return false;" autocomplete="off">
+        <label for="node-feature-data-search-term" class="sr-only">Filter</label>
+        <div class="input-group input-group-sm w-100">
+          <div class="input-group-addon">{{fa-icon "filter"}}</div>
+          {{one-way-input filterNodeFeaturePseudoDatasetsBy
+                          class="form-control"
+                          type="search"
+                          placeholder="Filter..."
+                          update=(action (mut filterNodeFeaturePseudoDatasetsBy))}}
+        </div>
+      </form>
+      <div class="col-4 mb-3 small text-muted text-right">
+        {{nodeFeatureDataTable.selectedRows.length}} / {{nodeFeatureDataTable.rows.length}} selected
+      </div>
+    </div>
+  {{/unless}}
+  {{#unless (eq openDataProviderDatasets.length 0)}}
+    <div class="row">
       <div class="col-12">
-        {{#light-table openDataTable class="table table-sm results-table" height="40vh" as |t|}}
+        <h3>Data From Open Data Projects</h3>
+        {{!-- Height value below is (7 * (row height)), where (row height) = ((1.5 * 1rem) + (2 * 0.3rem)) --}}
+        {{#light-table openDataTable class="table table-sm results-table mb-1" height="14.7rem" as |t|}}
           {{t.head class="mb-0" iconAscending="fa fa-lg fa-sort-asc" iconDescending="fa fa-lg fa-sort-desc" fixed=true}}
           {{t.body autoHideScrollbar=false canSelect=true multiSelect=true multiSelectRequiresKeyboard=false}}
         {{/light-table}}
       </div>
-    {{/unless}}
+      <form class="col-8 mb-3 form-inline" action="" onsubmit="return false;" autocomplete="off">
+        <label for="open-data-provider-search-term" class="sr-only">Filter</label>
+        <div class="input-group input-group-sm w-100">
+          <div class="input-group-addon">{{fa-icon "filter"}}</div>
+          {{one-way-input filterOpenDataProviderDatasetsBy
+                          class="form-control"
+                          type="search"
+                          placeholder="Filter..."
+                          update=(action (mut filterOpenDataProviderDatasetsBy))}}
+        </div>
+      </form>
+      <div class="col-4 mb-3 small text-muted text-right">
+        {{openDataTable.selectedRows.length}} / {{openDataTable.rows.length}} selected
+      </div>
+    </div>
+  {{/unless}}
+  <div class="col-12">
+    <button class="btn btn-primary btn-lrg btn-block" disabled={{not userHasMadeASelection}}>
+      Compare&ensp;{{fa-icon "arrow-right"}}
+    </button>
   </div>
 </section>
-{{log model}}
