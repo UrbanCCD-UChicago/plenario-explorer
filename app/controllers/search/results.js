@@ -8,8 +8,10 @@ export default Ember.Controller.extend({
 
   filterNodeFeaturePseudoDatasetsBy: '',
   sortNodeFeaturePseudoDatasetsBy: ['name'],
+  sortNodeFeaturePseudoDatasetsDir: 'asc',
   filterOpenDataProviderDatasetsBy: '',
   sortOpenDataProviderDatasetsBy: ['attribution', 'human_name'],
+  sortOpenDataProviderDatasetsDir: 'asc',
 
   nodeFeaturePseudoDatasets: Ember.computed.alias('model.features'),
   openDataProviderDatasets: Ember.computed.uniq('model.events', 'model.shapes'),
@@ -24,6 +26,22 @@ export default Ember.Controller.extend({
     'filterOpenDataProviderDatasetsBy',
     function () {
       Ember.run.once(this, 'filterOpenDataProviderTableRows');
+    }
+  ),
+
+  nodeFeaturePseudoDatasetSortChanged: Ember.observer(
+    'sortNodeFeaturePseudoDatasetsBy',
+    'sortNodeFeaturePseudoDatasetsDir',
+    function () {
+      Ember.run.once(this, 'sortNodeFeatureTableRows');
+    }
+  ),
+
+  openDataProviderDatasetSortChanged: Ember.observer(
+    'sortOpenDataProviderDatasetsBy',
+    'sortOpenDataProviderDatasetsDir',
+    function () {
+      Ember.run.once(this, 'sortOpenDataProviderTableRows');
     }
   ),
 
@@ -45,6 +63,7 @@ export default Ember.Controller.extend({
           label: 'Available Subtypes',
           valuePath: 'properties',
           format: this.formatFeatureProperties,
+          sortable: false,
         },
       ],
       this.get('nodeFeaturePseudoDatasets')
@@ -79,7 +98,22 @@ export default Ember.Controller.extend({
   ),
 
   actions: {
-
+    userClickOnNodeFeatureTableColumn(column) {
+      if (column.sortable) {
+        this.setProperties({
+          sortNodeFeaturePseudoDatasetsBy: column.valuePath,
+          sortNodeFeaturePseudoDatasetsDir: column.ascending ? 'asc' : 'desc',
+        });
+      }
+    },
+    userClickOnOpenDataProviderTableColumn(column) {
+      if (column.sortable) {
+        this.setProperties({
+          sortOpenDataProviderDatasetsBy: column.valuePath,
+          sortOpenDataProviderDatasetsDir: column.ascending ? 'asc' : 'desc',
+        });
+      }
+    },
   },
 
   humanize(string) {
@@ -124,6 +158,26 @@ export default Ember.Controller.extend({
       }
     });
   },
+
+  sortNodeFeatureTableRows() {
+    const sortBy = this.get('sortNodeFeaturePseudoDatasetsBy');
+    const descending = this.get('sortNodeFeaturePseudoDatasetsDir') === 'desc';
+    const sorted = this.get('nodeFeatureDataTable.rows').sortBy(sortBy);
+    if (descending) {
+      sorted.reverse();
+    }
+    this.set('nodeFeatureDataTable.rows', sorted);
+  },
+
+  sortOpenDataProviderTableRows() {
+    const sortBy = this.get('sortOpenDataProviderDatasetsBy');
+    const descending = this.get('sortOpenDataProviderDatasetsDir') === 'desc';
+    const sorted = this.get('openDataTable.rows').sortBy(sortBy);
+    if (descending) {
+      sorted.reverse();
+    }
+    this.set('openDataTable.rows', sorted);
+  }
 
 
 });

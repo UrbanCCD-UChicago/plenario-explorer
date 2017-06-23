@@ -19,7 +19,7 @@
       <div class="col-12">
         {{!-- Height value below is (5 * (row height)), where (row height) = ((1.5 * 1rem) + (2 * 0.3rem)) --}}
         {{#light-table nodeFeatureDataTable class="table table-sm results-table mb-1" height="10.5rem" as |t|}}
-          {{t.head class="mb-0" iconAscending="fa fa-lg fa-sort-asc" iconDescending="fa fa-lg fa-sort-desc" fixed=true}}
+          {{t.head class="mb-0" iconAscending="fa fa-lg fa-sort-asc" iconDescending="fa fa-lg fa-sort-desc" fixed=true onColumnClick=(action "userClickOnNodeFeatureTableColumn")}}
           {{t.body autoHideScrollbar=false canSelect=true multiSelect=true multiSelectRequiresKeyboard=false}}
         {{/light-table}}
       </div>
@@ -45,7 +45,7 @@
         <h3>Data From Open Data Projects</h3>
         {{!-- Height value below is (7 * (row height)), where (row height) = ((1.5 * 1rem) + (2 * 0.3rem)) --}}
         {{#light-table openDataTable class="table table-sm results-table mb-1" height="14.7rem" as |t|}}
-          {{t.head class="mb-0" iconAscending="fa fa-lg fa-sort-asc" iconDescending="fa fa-lg fa-sort-desc" fixed=true}}
+          {{t.head class="mb-0" iconAscending="fa fa-lg fa-sort-asc" iconDescending="fa fa-lg fa-sort-desc" fixed=true onColumnClick=(action "userClickOnOpenDataProviderTableColumn")}}
           {{t.body autoHideScrollbar=false canSelect=true multiSelect=true multiSelectRequiresKeyboard=false}}
         {{/light-table}}
       </div>
