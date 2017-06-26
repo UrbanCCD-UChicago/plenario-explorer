@@ -30,7 +30,7 @@ export default Ember.Route.extend(QueryParamsResetRouteMixin, {
   model(params, transition) {
     const queryParamsToApiParamsMap = this.get('queryParamsToApiParamsMap');
     const routeQueryParams = transition.queryParams;
-    const apiParams = {};
+    const apiParams = { simple_bbox: true };
     Object.keys(routeQueryParams).forEach((qp) => {
       if (queryParamsToApiParamsMap[qp]) {
         apiParams[queryParamsToApiParamsMap[qp]] = routeQueryParams[qp];
