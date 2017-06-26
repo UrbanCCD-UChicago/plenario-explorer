@@ -35,3 +35,8 @@ section.full-page {
     vertical-align: middle;
   }
 }
+
+.results-table-footer {
+  border: $table-border-width solid $table-border-color;
+  border-top: none;
+}

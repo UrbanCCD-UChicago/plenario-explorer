@@ -9,6 +9,8 @@ export default Ember.Controller.extend({
   nodeFeaturePseudoDatasets: Ember.computed.alias('model.features'),
   openDataProviderDatasets: Ember.computed.uniq('model.events', 'model.shapes'),
 
+  isNotCollapsed: {},
+
   nodeFeatureDataTable: Ember.computed('nodeFeaturePseudoDatasets', function () {
     return new Table(
       [
@@ -68,5 +70,11 @@ export default Ember.Controller.extend({
     'nodeFeatureDataTable.selectedRows.length',
     'openDataTable.selectedRows.length'
   ),
+
+  actions: {
+    toggleCollapse(targetId) {
+      this.toggleProperty(`isNotCollapsed.${_.camelCase(targetId)}`);
+    },
+  },
 
 });
