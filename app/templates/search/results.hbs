@@ -18,12 +18,9 @@
       </div>
       <div class="col-12">
         {{!-- Height value below is (5 * (row height)), where (row height) = ((1.5 * 1rem) + (2 * 0.3rem)) --}}
-        {{#light-table nodeFeatureDataTable class="table table-sm results-table mb-1" height="10.5rem" as |t|}}
-          {{t.head class="mb-0" iconAscending="fa fa-lg fa-sort-asc" iconDescending="fa fa-lg fa-sort-desc" fixed=true onColumnClick=(action "userClickOnNodeFeatureTableColumn")}}
-          {{t.body autoHideScrollbar=false canSelect=true multiSelect=true multiSelectRequiresKeyboard=false}}
-        {{/light-table}}
+        {{lt-search-results nodeFeatureDataTable height="10.5rem" filterBy=filterNodeFeaturePseudoDatasetsBy}}
       </div>
-      <form class="col-8 mb-3 form-inline" action="" onsubmit="return false;" autocomplete="off">
+      <form class="col-8 mb-3 form-inline" onsubmit="return false;" autocomplete="off">
         <label for="node-feature-data-search-term" class="sr-only">Filter</label>
         <div class="input-group input-group-sm w-100">
           <div class="input-group-addon">{{fa-icon "filter"}}</div>
@@ -44,12 +41,9 @@
       <div class="col-12">
         <h3>Data From Open Data Projects</h3>
         {{!-- Height value below is (7 * (row height)), where (row height) = ((1.5 * 1rem) + (2 * 0.3rem)) --}}
-        {{#light-table openDataTable class="table table-sm results-table mb-1" height="14.7rem" as |t|}}
-          {{t.head class="mb-0" iconAscending="fa fa-lg fa-sort-asc" iconDescending="fa fa-lg fa-sort-desc" fixed=true onColumnClick=(action "userClickOnOpenDataProviderTableColumn")}}
-          {{t.body autoHideScrollbar=false canSelect=true multiSelect=true multiSelectRequiresKeyboard=false}}
-        {{/light-table}}
+        {{lt-search-results openDataTable height="14.7rem" filterBy=filterOpenDataProviderDatasetsBy}}
       </div>
-      <form class="col-8 mb-3 form-inline" action="" onsubmit="return false;" autocomplete="off">
+      <form class="col-8 mb-3 form-inline" onsubmit="return false;" autocomplete="off">
         <label for="open-data-provider-search-term" class="sr-only">Filter</label>
         <div class="input-group input-group-sm w-100">
           <div class="input-group-addon">{{fa-icon "filter"}}</div>

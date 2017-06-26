@@ -1,0 +1,11 @@
+{{#light-table table tableClassNames="table table-sm results-table mb-1" height=height as |t|}}
+  {{t.head class="mb-0"
+           iconAscending="fa fa-chevron-up"
+           iconDescending="fa fa-chevron-down"
+           fixed=true
+           onColumnClick=(action "onColumnClick")}}
+  {{t.body autoHideScrollbar=false
+           canSelect=true
+           multiSelect=true
+           multiSelectRequiresKeyboard=false}}
+{{/light-table}}
