@@ -42,7 +42,7 @@
     "ember-data": "^2.13.0",
     "ember-export-application-global": "^2.0.0",
     "ember-font-awesome": "^3.0.5",
-    "ember-leaflet": "^3.0.11",
+    "ember-leaflet": "^3.0.12",
     "ember-leaflet-draw": "^0.5.6",
     "ember-light-table": "^1.8.6",
     "ember-load-initializers": "^1.0.0",

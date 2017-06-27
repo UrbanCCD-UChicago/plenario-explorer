@@ -35,7 +35,6 @@
           {{#leaflet-map class="embed-responsive-item" lat=41.889839 lng=-87.623143 zoom=10
                          onMoveend=(action "mapDidMove") as |layers|}}
             {{layers.tile url="https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}{r}.png"}}
-            {{!-- FIXME: blocked by ember-leaflet issue: https://github.com/miguelcobain/ember-leaflet/issues/147 --}}
             {{#if userShapeGeoJson}}
               {{layers.geojson geoJSON=userShapeGeoJson}}
             {{/if}}

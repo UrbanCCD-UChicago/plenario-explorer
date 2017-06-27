@@ -89,13 +89,7 @@ export default Ember.Component.extend({
       this.set('currentMapBounds', event.target.getBounds());
     },
     userDidDrawShape(event) {
-      // FIXME: Workaround for ember-leaflet issue: https://github.com/miguelcobain/ember-leaflet/issues/147
-      // Only the following line is necessary once that's fixed
-      // this.set('userShapeGeoJson', event.layer.toGeoJSON());
-      this.set('userShapeGeoJson', false);
-      Ember.run.next(this, function () {
-        this.set('userShapeGeoJson', event.layer.toGeoJSON());
-      });
+      this.set('userShapeGeoJson', event.layer.toGeoJSON());
     },
   },
 
