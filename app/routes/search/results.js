@@ -25,9 +25,21 @@ export default Ember.Route.extend(QueryParamsResetRouteMixin, {
     if (Object.keys(queryParams).length === 0) {
       this.transitionTo('search');
     }
+    this.set('transition', transition); // Cache the transition object for later
+    this.controllerFor('search.results-loading').set(
+      'shouldSmoothScroll',
+      this.get('transition.isCausedByInitialTransition') !== undefined
+    );
   },
 
   model(params, transition) {
+    // // Ensure this takes at least 750ms, to allow our fancy-pants scroll animation to finish
+    // const pauser = new Ember.RSVP.Promise((resolve) => {
+    //   Ember.run.later(() => {
+    //     resolve({ msg: 'Hold Your Horses' });
+    //   }, 750);
+    // });
+
     const queryParamsToApiParamsMap = this.get('queryParamsToApiParamsMap');
     const routeQueryParams = transition.queryParams;
     const apiParams = { simple_bbox: true };
@@ -51,6 +63,14 @@ export default Ember.Route.extend(QueryParamsResetRouteMixin, {
       });
       return hash;
     });
+  },
+
+  setupController(controller, model) {
+    this._super(controller, model);
+    controller.set(
+      'shouldSmoothScroll',
+      this.get('transition.isCausedByInitialTransition') !== undefined
+    );
   },
 
   request(endpoint, queryParams) {

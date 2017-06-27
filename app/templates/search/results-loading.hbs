@@ -1,6 +1,6 @@
-<section class="container full-page">
-  {{scroll-magnet animationLength=750}}
+<section class="container full-page mt-5">
+  {{scroll-magnet animationLength=(if shouldSmoothScroll scrollAnimationBaseTime 0)}}
   <h2>View & Compare</h2>
-  <p class="lead">Now that you've chosen an area and a timeframe, Plenar.io will crunch some data for a bit...</p>
-  {{ember-spinner}}
+  <p class="lead">Give Plenar.io a few seconds to crunch some data...</p>
+  {{loading-spinner}}
 </section>

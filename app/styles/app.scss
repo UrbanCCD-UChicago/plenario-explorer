@@ -2,16 +2,18 @@
 
 
 /* ===== General style overrides ===== */
-// @import 'forms';
+// e.g. @import 'forms';
 
 
 /* ===== Component-specific styles ===== */
 @import 'components/search-widget';
+@import 'components/_loading-spinner.scss';
+@import 'components/_lt-search-results.scss';
 
 
 /* ===== Browser-specific hotfixes ===== */
 /*  For flexbugs, rendering quirks, etc. */
-// @import 'hotfixes/safari';
+// e.g. @import 'hotfixes/safari';
 
 
 
@@ -24,19 +26,4 @@ section.container {
 
 section.full-page {
   min-height: 100vh;
-}
-
-.results-table {
-  tr.is-selected {
-    color: $component-active-color;
-    background-color: $component-active-bg;
-  }
-  th, td {
-    vertical-align: middle;
-  }
-}
-
-.results-table-footer {
-  border: $table-border-width solid $table-border-color;
-  border-top: none;
 }

@@ -1,0 +1,14 @@
+.results-table {
+  tr.is-selected {
+    color: $component-active-color;
+    background-color: $component-active-bg;
+  }
+  th, td {
+    vertical-align: middle;
+  }
+}
+
+.results-table-footer {
+  border: $table-border-width solid $table-border-color;
+  border-top: none;
+}

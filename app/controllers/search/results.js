@@ -1,15 +1,18 @@
 import Ember from 'ember';
 import Table from 'ember-light-table';
 import _ from 'npm:lodash/fp';
+import ENV from 'plenario-explorer/config/environment';
 
 export default Ember.Controller.extend({
 
   queryParameters: ['startDate', 'endDate', 'withinArea'],
 
+  ENV,
+
   nodeFeaturePseudoDatasets: Ember.computed.alias('model.features'),
   openDataProviderDatasets: Ember.computed.uniq('model.events', 'model.shapes'),
 
-  isNotCollapsed: {},
+  isExpanded: {},
 
   nodeFeatureDataTable: Ember.computed('nodeFeaturePseudoDatasets', function () {
     return new Table(
@@ -73,7 +76,7 @@ export default Ember.Controller.extend({
 
   actions: {
     toggleCollapse(targetId) {
-      this.toggleProperty(`isNotCollapsed.${_.camelCase(targetId)}`);
+      this.toggleProperty(`isExpanded.${_.camelCase(targetId)}`);
     },
   },
 

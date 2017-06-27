@@ -6,9 +6,13 @@ export default Ember.Component.extend({
   animationLength: 1000,
 
   didRender() {
+    const offset = this.$().offset().top;
     $('html, body').animate({
-      scrollTop: this.$().offset().top,
+      scrollTop: offset,
     }, this.get('animationLength'));
+    $(window).on('unload', () => {
+      $(window).scrollTop(offset);
+    });
   },
 
 });

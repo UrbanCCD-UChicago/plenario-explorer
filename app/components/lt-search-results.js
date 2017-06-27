@@ -15,6 +15,7 @@ const LightTableSearchResults = Ember.Component.extend({
   }),
 
   applyFilter() {
+    // TODO: index properties so searching is faster
     const filterBy = this.get('filterBy').toLowerCase();
     const rows = this.get('table.rows');
     const cols = this.get('table.columns').filter(col => col.valuePath !== null);

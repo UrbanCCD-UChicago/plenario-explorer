@@ -21,6 +21,11 @@ module.exports = function (environment) {
       // Here you can pass flags/options to your application instance
       // when it is created
     },
+
+    animation: {
+      scrollingBaseDuration: 750, // ms
+      stateChangeBaseDuration: 100, // ms
+    },
   };
 
   if (environment === 'development') {

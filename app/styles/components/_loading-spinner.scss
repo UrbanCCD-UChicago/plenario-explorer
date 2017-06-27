@@ -1,0 +1,33 @@
+$size: 1.5em;
+$color1: $brand-primary;
+$color2: change_color($brand-primary, $alpha: 0.25);
+$color3: $brand-primary;
+$color4: change_color($brand-primary, $alpha: 0.25);
+
+.loading-spinner {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: $size;
+  height: $size;
+  border-radius: 100%;
+  transform: translate(-50%, -50%);
+  box-shadow: $size $size $color1, (-$size) $size $color2, (-$size) (-$size) $color3, $size (-$size) $color4;
+  animation: loading-spin ease infinite 5s;
+}
+
+@keyframes loading-spin {
+  0%,
+  100% {
+    box-shadow: $size $size $color1, (-$size) $size $color2, (-$size) (-$size) $color3, $size (-$size) $color4;
+  }
+  25% {
+    box-shadow: (-$size) $size $color4, (-$size) (-$size) $color1, $size (-$size) $color2, $size $size $color3;
+  }
+  50% {
+    box-shadow: (-$size) (-$size) $color3, $size (-$size) $color4, $size $size $color1, (-$size) $size $color2;
+  }
+  75% {
+    box-shadow: $size (-$size) $color2, $size $size $color3, (-$size) $size $color4, (-$size) (-$size) $color1;
+  }
+}
