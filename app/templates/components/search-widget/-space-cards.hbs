@@ -32,8 +32,8 @@
       </div>
       <div class="col-md-8 col-lg-12">
         <div class="embed-responsive embed-responsive-1by1">
-          {{#leaflet-map class="embed-responsive-item" lat=41.889839 lng=-87.623143 zoom=10
-                         onMoveend=(action "mapDidMove") as |layers|}}
+          {{#leaflet-map class="embed-responsive-item" center=mapCenter zoom=mapZoom
+                         onLoad=(action "mapDidLoad") onMoveend=(action "mapDidMove") as |layers|}}
             {{layers.tile url="https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}{r}.png"}}
             {{#if userShapeGeoJson}}
               {{layers.geojson geoJSON=userShapeGeoJson}}

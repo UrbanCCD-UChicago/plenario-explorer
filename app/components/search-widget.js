@@ -4,10 +4,22 @@ import bboxPolygon from 'npm:@turf/bbox-polygon';
 
 export default Ember.Component.extend({
 
-
   aggregationOptions: ['day', 'week', 'month', 'quarter', 'year'],
   defaultStartDate: moment().subtract(90, 'days').startOf('day'),
   defaultEndDate: moment().endOf('day'),
+
+  mapCenter: [41.889839, -87.623143],
+  mapZoom: 10,
+
+  userPassedShapeInUrl: Ember.observer('predrawnShapeGeoJson', function () {
+    // If we get passed an existing shape, pretend it was drawn by the user
+    const predrawnShape = this.get('predrawnShapeGeoJson');
+    if (predrawnShape) {
+      this.set('predrawnShapeGeoJson', null);
+      this.set('userShapeGeoJson', predrawnShape);
+      this.zoomToUserShape();
+    }
+  }),
 
   startDateAsString: Ember.computed('startDate', {
     get(/* key */) {
@@ -85,6 +97,9 @@ export default Ember.Component.extend({
       this.setupInitialValues();
       this.get('onReset')();
     },
+    mapDidLoad(event) {
+      this.set('leafletMap', event.target);
+    },
     mapDidMove(event) {
       this.set('currentMapBounds', event.target.getBounds());
     },
@@ -99,12 +114,28 @@ export default Ember.Component.extend({
   },
 
   setupInitialValues() {
-    this.set('startDate', this.get('defaultStartDate'));
-    this.set('endDate', this.get('defaultEndDate'));
-    this.set('isValidStartDate', this.get('startDate').isValid());
-    this.set('isValidEndDate', this.get('endDate').isValid());
-    this.set('aggregateBy', 'day');
-    this.set('userShapeGeoJson', null);
+    this.setProperties({
+      startDate: this.get('defaultStartDate'),
+      endDate: this.get('defaultEndDate'),
+      isValidStartDate: this.get('defaultStartDate').isValid(),
+      isValidEndDate: this.get('defaultEndDate').isValid(),
+      aggregateBy: 'day',
+      userShapeGeoJson: null,
+    });
+  },
+
+  zoomToUserShape() {
+    const userShapeGeoJson = this.get('userShapeGeoJson');
+    if (!userShapeGeoJson) {
+      return;
+    }
+    const userShapeBounds = L.geoJSON(userShapeGeoJson).getBounds();
+    const targetZoom = this.get('leafletMap').getBoundsZoom(userShapeBounds);
+    const targetCenter = userShapeBounds.getCenter();
+    this.setProperties({
+      mapCenter: targetCenter,
+      mapZoom: targetZoom,
+    });
   },
 
 });

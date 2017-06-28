@@ -25,30 +25,20 @@ export default Ember.Route.extend(QueryParamsResetRouteMixin, {
     if (Object.keys(queryParams).length === 0) {
       this.transitionTo('search');
     }
-    this.set('transition', transition); // Cache the transition object for later
-    this.controllerFor('search.results-loading').set(
-      'shouldSmoothScroll',
-      this.get('transition.isCausedByInitialTransition') !== undefined
-    );
+
+    this.set('isUrlNav', transition.isCausedByInitialTransition === undefined);
+    this.controllerFor('search.results-loading').set('shouldSmoothScroll', !this.get('isUrlNav'));
   },
 
-  model(params, transition) {
-    // // Ensure this takes at least 750ms, to allow our fancy-pants scroll animation to finish
-    // const pauser = new Ember.RSVP.Promise((resolve) => {
-    //   Ember.run.later(() => {
-    //     resolve({ msg: 'Hold Your Horses' });
-    //   }, 750);
-    // });
-
+  model(params) {
     const queryParamsToApiParamsMap = this.get('queryParamsToApiParamsMap');
-    const routeQueryParams = transition.queryParams;
     const apiParams = { simple_bbox: true };
-    Object.keys(routeQueryParams).forEach((qp) => {
+    Object.keys(params).forEach((qp) => {
       if (queryParamsToApiParamsMap[qp]) {
-        apiParams[queryParamsToApiParamsMap[qp]] = routeQueryParams[qp];
+        apiParams[queryParamsToApiParamsMap[qp]] = params[qp];
       }
     });
-    const apiParamsForFeatureQueries = { geom: routeQueryParams.withinArea };
+    const apiParamsForFeatureQueries = { geom: params.withinArea };
     return Ember.RSVP.hashSettled({
       events: this.request('datasets', apiParams).then(response => response.objects),
       shapes: this.request('shapes', apiParams).then(response => response.objects),
@@ -65,12 +55,20 @@ export default Ember.Route.extend(QueryParamsResetRouteMixin, {
     });
   },
 
+  afterModel(resolvedModel, transition) {
+    if (this.get('isUrlNav') && transition.queryParams.withinArea) {
+      // This JSON.parse should be safe, since a malformed shape query would have already triggered
+      // the model hook's error handling and shipped the user to a relevant error route
+      this.controllerFor('search').set(
+        'urlQueryShape',
+        JSON.parse(transition.queryParams.withinArea)
+      );
+    }
+  },
+
   setupController(controller, model) {
     this._super(controller, model);
-    controller.set(
-      'shouldSmoothScroll',
-      this.get('transition.isCausedByInitialTransition') !== undefined
-    );
+    controller.set('shouldSmoothScroll', !this.get('isUrlNav'));
   },
 
   request(endpoint, queryParams) {
