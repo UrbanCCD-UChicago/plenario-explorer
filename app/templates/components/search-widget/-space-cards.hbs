@@ -39,6 +39,20 @@
               {{layers.geojson geoJSON=userShapeGeoJson}}
             {{/if}}
             {{draw-control draw=(hash circle=false marker=false) onDrawCreated=(action "userDidDrawShape")}}
+            <div class="leaflet-control-container">
+              <div class="leaflet-bottom leaflet-left">
+                <div class="leaflet-control leaflet-bar">
+                  {{one-way-select jumpToBounds
+                                   class="form-control-sm small border-0 rounded-0"
+                                   id="teleport-control"
+                                   options=teleportCities
+                                   optionLabelPath="label"
+                                   optionTargetPath="bounds"
+                                   prompt="Select a city to jump to it..."
+                                   update=(action (mut jumpToBounds))}}
+                </div>
+              </div>
+            </div>
           {{/leaflet-map}}
         </div>
       </div>

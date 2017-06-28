@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import moment from 'npm:moment';
 import bboxPolygon from 'npm:@turf/bbox-polygon';
+import ENV from 'plenario-explorer/config/environment';
 
 export default Ember.Component.extend({
 
@@ -10,6 +11,7 @@ export default Ember.Component.extend({
 
   mapCenter: [41.889839, -87.623143],
   mapZoom: 10,
+  teleportCities: ENV.geography.featuredCities.sortBy('label'),
 
   userPassedShapeInUrl: Ember.observer('predrawnShapeGeoJson', function () {
     // If we get passed an existing shape, pretend it was drawn by the user
@@ -17,8 +19,24 @@ export default Ember.Component.extend({
     if (predrawnShape) {
       this.set('predrawnShapeGeoJson', null);
       this.set('userShapeGeoJson', predrawnShape);
-      this.zoomToUserShape();
+      this.zoomToBounds(L.geoJSON(predrawnShape).getBounds());
     }
+  }),
+
+  userChoseJumpTarget: Ember.observer('jumpToBounds', function () {
+    let targetBounds = this.get('jumpToBounds');
+    if (!targetBounds) {
+      return;
+    }
+
+    if (Array.isArray(targetBounds)) {
+      targetBounds = L.latLngBounds(targetBounds);
+    }
+    Ember.run.once(this, 'zoomToBounds', targetBounds);
+    Ember.run.once(() => {
+      $('#teleport-control option:selected').prop('selected', false);
+      $('#teleport-control option:first').prop('selected', 'selected');
+    });
   }),
 
   startDateAsString: Ember.computed('startDate', {
@@ -124,18 +142,14 @@ export default Ember.Component.extend({
     });
   },
 
-  zoomToUserShape() {
-    const userShapeGeoJson = this.get('userShapeGeoJson');
-    if (!userShapeGeoJson) {
-      return;
-    }
-    const userShapeBounds = L.geoJSON(userShapeGeoJson).getBounds();
-    const targetZoom = this.get('leafletMap').getBoundsZoom(userShapeBounds);
-    const targetCenter = userShapeBounds.getCenter();
-    this.setProperties({
-      mapCenter: targetCenter,
-      mapZoom: targetZoom,
-    });
+  zoomToBounds(bounds) {
+    const targetZoom = this.get('leafletMap').getBoundsZoom(bounds);
+    const targetCenter = bounds.getCenter();
+    this.set('mapCenter', targetCenter);
+    this.set('mapZoom', targetZoom);
+    // This extra, very un-Ember-like step works around an issue where changing both the map center
+    // and zoom simultaneously behaves erratically
+    this.get('leafletMap').fitBounds(bounds);
   },
 
 });
