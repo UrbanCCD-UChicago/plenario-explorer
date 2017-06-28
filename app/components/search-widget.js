@@ -5,7 +5,7 @@ import bboxPolygon from 'npm:@turf/bbox-polygon';
 export default Ember.Component.extend({
 
 
-  aggregationOptions: ['hour', 'day', 'week'],
+  aggregationOptions: ['day', 'week', 'month', 'quarter', 'year'],
   defaultStartDate: moment().subtract(90, 'days').startOf('day'),
   defaultEndDate: moment().endOf('day'),
 
