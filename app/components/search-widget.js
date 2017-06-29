@@ -9,9 +9,9 @@ export default Ember.Component.extend({
 
   defaultStartDate: moment().subtract(90, 'days').startOf('day'),
   defaultEndDate: moment().endOf('day'),
-  defaultMapBounds: ENV.geography.featuredCities.findBy('isDefault').bounds,
+  defaultMapBounds: ENV.geography.featuredPlaces.findBy('isDefault').bounds,
 
-  teleportCities: ENV.geography.featuredCities.sortBy('label'),
+  teleportCities: ENV.geography.featuredPlaces.sortBy('label'),
 
   userPassedShapeInUrl: Ember.observer('predrawnShapeGeoJson', function () {
     // If we get passed an existing shape, pretend it was drawn by the user
