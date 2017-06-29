@@ -30,11 +30,12 @@ module.exports = function (environment) {
     geography: {
       featuredCities: [
         {
-          label: 'Bristol, United Kingdom',
+          label: 'Bristol, England, GBR',
           bounds: [[51.5444317, -2.7183704], [51.3972838, -2.5104192]],
         },
         {
           label: 'Chicago, IL, USA',
+          isDefault: true,
           bounds: [[42.0230219, -87.940101], [41.643919, -87.5239841]],
         },
         {

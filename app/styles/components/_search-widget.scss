@@ -3,3 +3,8 @@
     @extend .mb-2;
   }
 }
+
+// This should be kept in sync with any Leaflet CSS changes
+.leaflet-bar select {
+  background-color: white;
+}

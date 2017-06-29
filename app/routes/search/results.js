@@ -46,11 +46,14 @@ export default Ember.Route.extend(QueryParamsResetRouteMixin, {
     }).then((hash) => {
       Object.keys(hash).forEach((key) => {
         if (hash[key].state === 'fulfilled') {
+          console.log('fulfilled: ', hash[key]);
           hash[key] = hash[key].value; // eslint-disable-line no-param-reassign
         } else {
+          console.log('rejected: ', hash[key]);
           hash[key] = []; // eslint-disable-line no-param-reassign
         }
       });
+      console.log(hash);
       return hash;
     });
   },

@@ -32,7 +32,7 @@
       </div>
       <div class="col-md-8 col-lg-12">
         <div class="embed-responsive embed-responsive-1by1">
-          {{#leaflet-map class="embed-responsive-item" center=mapCenter zoom=mapZoom
+          {{#leaflet-map class="embed-responsive-item" bounds=mapBounds
                          onLoad=(action "mapDidLoad") onMoveend=(action "mapDidMove") as |layers|}}
             {{layers.tile url="https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}{r}.png"}}
             {{#if userShapeGeoJson}}
@@ -48,7 +48,7 @@
                                    options=teleportCities
                                    optionLabelPath="label"
                                    optionTargetPath="bounds"
-                                   prompt="Select a city to jump to it..."
+                                   prompt="⚑  Jump to a place..."
                                    update=(action (mut jumpToBounds))}}
                 </div>
               </div>
