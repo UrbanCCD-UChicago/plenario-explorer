@@ -6,6 +6,7 @@ describe('Unit | Route | search/results', () => {
   setupTest('route:search/results', {
     // Specify the other units that are required for this test.
     // needs: ['controller:foo']
+    needs: ['service:ajax'],
   });
 
   it('exists', function () {

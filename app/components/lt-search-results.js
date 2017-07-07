@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import Table from 'ember-light-table';
 
 const LightTableSearchResults = Ember.Component.extend({
 
@@ -6,7 +7,21 @@ const LightTableSearchResults = Ember.Component.extend({
   sortDir: 'asc',
   filterBy: '',
 
-  sortRows: Ember.observer('sortBy', 'sortDir', function () {
+  table: Ember.computed('rows', 'columns', function () {
+    return new Table(
+      this.get('columns'),
+      this.get('rows')
+    );
+  }),
+
+  selectionChanged: Ember.observer('table.selectedRows.[]', function () {
+    this.sendAction('onSelectionChanged',
+      this.get('elementId'),
+      this.get('table.selectedRows.length')
+    );
+  }),
+
+  sortChanged: Ember.observer('sortBy', 'sortDir', function () {
     Ember.run.once(this, 'applySort');
   }),
 
@@ -56,7 +71,7 @@ const LightTableSearchResults = Ember.Component.extend({
 });
 
 LightTableSearchResults.reopenClass({
-  positionalParams: ['table'],
+  positionalParams: ['rows'],
 });
 
 export default LightTableSearchResults;

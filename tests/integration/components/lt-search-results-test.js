@@ -18,7 +18,19 @@ describe('Integration | Component | lt search results', () => {
     //   {{/lt-search-results}}
     // `);
 
-    this.render(hbs`{{lt-search-results}}`);
+    this.set('people', [
+      { fName: 'John', lName: 'Glenn' },
+      { fName: 'Neil', lName: 'Armstrong' },
+    ]);
+
+    this.set('columns', [
+      { label: 'First Name', valuePath: 'fName' },
+      { label: 'Last Name', valuePath: 'lName' },
+    ]);
+
+    this.set('height', '100px');
+
+    this.render(hbs`{{lt-search-results people columns=cols height=height}}`);
     expect(this.$()).to.have.length(1);
   });
 });

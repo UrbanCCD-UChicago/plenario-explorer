@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import Table from 'ember-light-table';
 import _ from 'npm:lodash/fp';
 import ENV from 'plenario-explorer/config/environment';
 
@@ -12,6 +11,7 @@ export default Ember.Controller.extend({
   nodeFeaturePseudoDatasets: Ember.computed.alias('model.features'),
   openDataProviderDatasets: Ember.computed.uniq('model.events', 'model.shapes'),
 
+  tableSelectionCounts: {},
   isExpanded: {},
 
   nodeFeatureTableColumns: [
@@ -57,28 +57,19 @@ export default Ember.Controller.extend({
     },
   ],
 
-  nodeFeatureDataTable: Ember.computed('nodeFeaturePseudoDatasets', function () {
-    return new Table(
-      this.get('nodeFeatureTableColumns'),
-      this.get('nodeFeaturePseudoDatasets')
-    );
+  userHasMadeASelection: Ember.computed('tableSelectionCounts', function () {
+    return _.values(this.get('tableSelectionCounts')).some(x => x > 0);
   }),
-
-  openDataTable: Ember.computed('openDataProviderDatasets', function () {
-    return new Table(
-      this.get('openDataTableColumns'),
-      this.get('openDataProviderDatasets')
-    );
-  }),
-
-  userHasMadeASelection: Ember.computed.or(
-    'nodeFeatureDataTable.selectedRows.length',
-    'openDataTable.selectedRows.length'
-  ),
 
   actions: {
     toggleCollapse(targetId) {
       this.toggleProperty(`isExpanded.${_.camelCase(targetId)}`);
+    },
+    userDidChangeSelection(tableId, numRowsSelected) {
+      Ember.set(this.get('tableSelectionCounts'), tableId, numRowsSelected);
+      // Because Ember observers don't directly observe all property changes on a dependent object,
+      // we have to notify observers manually
+      this.notifyPropertyChange('tableSelectionCounts');
     },
   },
 
