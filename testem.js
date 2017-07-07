@@ -16,14 +16,6 @@ module.exports = {
   ignore_missing_launchers: true,
   launch_in_ci: [
     'PhantomJS',
-    'IE9',
-    'IE10',
-    'IE11',
-    'Edge',
-    'Chrome',
-    'Opera',
-    'Firefox',
-    'Safari',
   ],
   launch_in_dev: [
     'PhantomJS',
