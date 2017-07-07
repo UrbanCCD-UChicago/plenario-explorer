@@ -1,24 +1,24 @@
-import { moduleForComponent, test } from 'ember-qunit';
+import { expect } from 'chai';
+import { describe, it } from 'mocha';
+import { setupComponentTest } from 'ember-mocha';
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('search-widget', 'Integration | Component | search widget', {
-  integration: true,
-});
+describe('Integration | Component | search widget', () => {
+  setupComponentTest('search-widget', {
+    integration: true,
+  });
 
-test('it renders', function (assert) {
-  // Set any properties with this.set('myProperty', 'value');
-  // Handle any actions with this.on('myAction', function(val) { ... });
+  it('renders', function () {
+    // Set any properties with this.set('myProperty', 'value');
+    // Handle any actions with this.on('myAction', function(val) { ... });
+    // Template block usage:
+    // this.render(hbs`
+    //   {{#search-widget}}
+    //     template content
+    //   {{/search-widget}}
+    // `);
 
-  this.render(hbs`{{search-widget}}`);
-
-  assert.equal(this.$().text().trim(), '');
-
-  // Template block usage:
-  this.render(hbs`
-    {{#search-widget}}
-      template block text
-    {{/search-widget}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
+    this.render(hbs`{{search-widget}}`);
+    expect(this.$()).to.have.length(1);
+  });
 });

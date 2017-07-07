@@ -1,8 +1,4 @@
-import {
-  setResolver,
-} from 'ember-qunit';
-import { start } from 'ember-cli-qunit';
+import { setResolver } from 'ember-mocha';
 import resolver from './helpers/resolver';
 
 setResolver(resolver);
-start();

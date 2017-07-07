@@ -14,57 +14,59 @@ export default Ember.Controller.extend({
 
   isExpanded: {},
 
+  nodeFeatureTableColumns: [
+    {
+      cellComponent: 'lt-cell-checkbox',
+      sortable: false,
+      width: '2em',
+      align: 'center',
+    },
+    {
+      label: 'Data Type',
+      valuePath: 'name',
+      format: string => _.chain(string).replace(/[_-]/, ' ')
+        .startCase()
+        .value(),
+    },
+    {
+      label: 'Available Subtypes',
+      valuePath: 'properties',
+      format: props => props.map(p =>
+        (p.common_name ? p.common_name.split(':').slice(-1) :
+          _.chain(p.name).replace(/[_-]/, ' ')
+            .startCase()
+            .value()
+        )).join(', '),
+      sortable: false,
+    },
+  ],
+  openDataTableColumns: [
+    {
+      cellComponent: 'lt-cell-checkbox',
+      sortable: false,
+      width: '2em',
+      align: 'center',
+    },
+    {
+      label: 'Dataset Name',
+      valuePath: 'human_name',
+    },
+    {
+      label: 'Source',
+      valuePath: 'attribution',
+    },
+  ],
+
   nodeFeatureDataTable: Ember.computed('nodeFeaturePseudoDatasets', function () {
     return new Table(
-      [
-        {
-          cellComponent: 'lt-cell-checkbox',
-          sortable: false,
-          width: '2em',
-          align: 'center',
-        },
-        {
-          label: 'Data Type',
-          valuePath: 'name',
-          format: string => _.chain(string).replace(/[_-]/, ' ')
-            .startCase()
-            .value(),
-        },
-        {
-          label: 'Available Subtypes',
-          valuePath: 'properties',
-          format: props => props.map(p =>
-            (p.common_name ?
-              p.common_name.split(':').slice(-1) :
-              _.chain(p.name).replace(/[_-]/, ' ')
-                .startCase()
-                .value()
-            )).join(', '),
-          sortable: false,
-        },
-      ],
+      this.get('nodeFeatureTableColumns'),
       this.get('nodeFeaturePseudoDatasets')
     );
   }),
 
   openDataTable: Ember.computed('openDataProviderDatasets', function () {
     return new Table(
-      [
-        {
-          cellComponent: 'lt-cell-checkbox',
-          sortable: false,
-          width: '2em',
-          align: 'center',
-        },
-        {
-          label: 'Dataset Name',
-          valuePath: 'human_name',
-        },
-        {
-          label: 'Source',
-          valuePath: 'attribution',
-        },
-      ],
+      this.get('openDataTableColumns'),
       this.get('openDataProviderDatasets')
     );
   }),

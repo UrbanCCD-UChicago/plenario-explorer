@@ -1,24 +1,24 @@
-import { moduleForComponent, test } from 'ember-qunit';
+import { expect } from 'chai';
+import { describe, it } from 'mocha';
+import { setupComponentTest } from 'ember-mocha';
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('scroll-magnet', 'Integration | Component | scroll magnet', {
-  integration: true,
-});
+describe('Integration | Component | scroll magnet', () => {
+  setupComponentTest('scroll-magnet', {
+    integration: true,
+  });
 
-test('it renders', function (assert) {
-  // Set any properties with this.set('myProperty', 'value');
-  // Handle any actions with this.on('myAction', function(val) { ... });
+  it('renders', function () {
+    // Set any properties with this.set('myProperty', 'value');
+    // Handle any actions with this.on('myAction', function(val) { ... });
+    // Template block usage:
+    // this.render(hbs`
+    //   {{#scroll-magnet}}
+    //     template content
+    //   {{/scroll-magnet}}
+    // `);
 
-  this.render(hbs`{{scroll-magnet}}`);
-
-  assert.equal(this.$().text().trim(), '');
-
-  // Template block usage:
-  this.render(hbs`
-    {{#scroll-magnet}}
-      template block text
-    {{/scroll-magnet}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
+    this.render(hbs`{{scroll-magnet}}`);
+    expect(this.$()).to.have.length(1);
+  });
 });

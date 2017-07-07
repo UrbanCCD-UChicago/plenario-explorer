@@ -1,11 +1,15 @@
-import { moduleFor, test } from 'ember-qunit';
+import { expect } from 'chai';
+import { describe, it } from 'mocha';
+import { setupTest } from 'ember-mocha';
 
-moduleFor('route:search/results', 'Unit | Route | search/results', {
-  // Specify the other units that are required for this test.
-  // needs: ['controller:foo']
-});
+describe('Unit | Route | search/results', () => {
+  setupTest('route:search/results', {
+    // Specify the other units that are required for this test.
+    // needs: ['controller:foo']
+  });
 
-test('it exists', function (assert) {
-  const route = this.subject();
-  assert.ok(route);
+  it('exists', function () {
+    const route = this.subject();
+    expect(route).to.be.ok;
+  });
 });

@@ -12,10 +12,10 @@ module.exports = {
     browser: true,
     es6: true,
     jquery: true,
-    qunit: true,
+    mocha: true,
   },
   globals: {
-    // Browser, JQuery and QUnit globals are set by the "env" field above
+    // Browser, JQuery and Mocha globals are set by the "env" field above
 
     // Mirage
     server: true,
