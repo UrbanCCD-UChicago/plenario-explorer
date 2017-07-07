@@ -32,5 +32,6 @@ describe('Integration | Component | lt search results', () => {
 
     this.render(hbs`{{lt-search-results people columns=cols height=height}}`);
     expect(this.$()).to.have.length(1);
+    expect(this.$()[0]).to.be.an('HTMLDivElement');
   });
 });

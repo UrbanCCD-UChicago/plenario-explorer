@@ -21,4 +21,14 @@ describe('Integration | Component | lt cell checkbox', () => {
     this.render(hbs`{{lt-cell-checkbox}}`);
     expect(this.$()).to.have.length(1);
   });
+
+  it('matches row selection status', function () {
+    this.set('row', { selected: false });
+    this.render(hbs`{{lt-cell-checkbox row=row}}`);
+    expect(this.$().find('.fa-square-o')).to.have.length(1);
+
+    this.set('row', { selected: true });
+    this.render(hbs`{{lt-cell-checkbox row=row}}`);
+    expect(this.$().find('.fa-check-square')).to.have.length(1);
+  });
 });
