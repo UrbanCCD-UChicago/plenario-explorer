@@ -1,5 +1,5 @@
 <div class="col-lg-4 float-lg-left pr-lg-1">
-  <div class="card">
+  <div class="card time-card">
     <div class="card-header">{{fa-icon "clock-o"}}&ensp;Time</div>
     <div class="card-block">
       <div class="row">
@@ -15,9 +15,10 @@
         <div class="col-12 col-md-8 col-lg-12">
           <form class="">
             <div class="form-group row {{unless (and isValidStartDate isNonFutureDateRange isForwardDateRange) "has-warning"}}">
-              <label class="col-5 col-form-label col-form-label-sm" for="">Start Date</label>
+              <label class="col-5 col-form-label col-form-label-sm" for="search-start-date">Start Date</label>
               <div class="col-7">
                 {{one-way-input startDateAsString
+                                id="search-start-date"
                                 class="form-control form-control-sm form-control-warning form-control-danger"
                                 type="date"
                                 update=(action (mut startDateAsString))}}
@@ -29,9 +30,10 @@
               {{/if}}
             </div>
             <div class="form-group row {{unless (and isValidEndDate isForwardDateRange) "has-warning"}}">
-              <label class="col-5 col-form-label col-form-label-sm" for="">End Date</label>
+              <label class="col-5 col-form-label col-form-label-sm" for="search-end-date">End Date</label>
               <div class="col-7">
                 {{one-way-input endDateAsString
+                                id="search-end-date"
                                 class="form-control form-control-sm form-control-warning form-control-danger"
                                 type="date"
                                 update=(action (mut endDateAsString))}}

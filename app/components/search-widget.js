@@ -15,7 +15,7 @@ export default Ember.Component.extend({
 
   userPassedShapeInUrl: Ember.observer('predrawnShapeGeoJson', function () {
     // If we get passed an existing shape, pretend it was drawn by the user
-    // and forget it was special
+    // and then forget it was ever special
     const predrawnShape = this.get('predrawnShapeGeoJson');
     if (predrawnShape) {
       this.set('predrawnShapeGeoJson', null);
