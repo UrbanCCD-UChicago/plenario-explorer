@@ -8,30 +8,32 @@ describe('Integration | Component | lt search results', () => {
     integration: true,
   });
 
-  it('renders', function () {
-    // Set any properties with this.set('myProperty', 'value');
-    // Handle any actions with this.on('myAction', function(val) { ... });
-    // Template block usage:
-    // this.render(hbs`
-    //   {{#lt-search-results}}
-    //     template content
-    //   {{/lt-search-results}}
-    // `);
+  const people = [
+    { fName: 'John', lName: 'Glenn' },
+    { fName: 'Neil', lName: 'Armstrong' },
+  ];
+  const columns = [
+    { label: 'First Name', valuePath: 'fName' },
+    { label: 'Last Name', valuePath: 'lName' },
+  ];
+  const defaultHeight = '100px';
 
-    this.set('people', [
-      { fName: 'John', lName: 'Glenn' },
-      { fName: 'Neil', lName: 'Armstrong' },
-    ]);
+  it('displays results', function () {
+    this.set('people', people);
+    this.set('columns', columns);
+    this.set('height', defaultHeight);
 
-    this.set('columns', [
-      { label: 'First Name', valuePath: 'fName' },
-      { label: 'Last Name', valuePath: 'lName' },
-    ]);
+    this.render(hbs`{{lt-search-results people columns=columns height=height}}`);
 
-    this.set('height', '100px');
-
-    this.render(hbs`{{lt-search-results people columns=cols height=height}}`);
-    expect(this.$()).to.have.length(1);
-    expect(this.$()[0]).to.be.an('HTMLDivElement');
+    expect(this.$('tbody.lt-body tr')).to.have.lengthOf(people.length);
+    console.log(this.$('tbody.lt-body tr'));
+    this.$('tbody.lt-body tr').toArray().forEach((tr) => {
+      expect($(tr).children('td')).to.have.lengthOf(columns.length);
+    });
   });
+
+  it.skip('tracks row selection');
+  it.skip('filters displayed results based on text input');
+  it.skip('preserved selected rows across filter updates');
+  it.skip('sorts displayed rows by the selected column');
 });

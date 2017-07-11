@@ -14,12 +14,12 @@ describe('Integration | Component | search widget', () => {
     integration: true,
   });
 
+  // TODO: decouple this from `plenario-explorer/config/environment`
   const defaultPlace = geography.featuredPlaces.findBy('isDefault');
   const otherPlaces = geography.featuredPlaces.rejectBy('isDefault');
 
-
   describe('map', function () {
-    it(`starts with map centered on default place (${defaultPlace.label})`, function () {
+    it('starts with map centered on default place', function () {
       // Calculate what the URL for the center tile should be at each zoom level
       // This mitigates inconsistencies in the test container size which cause the Leaflet
       // map to use an unpredictable zoom level. Order of zoom levels is by likelihood, so we can
@@ -89,7 +89,7 @@ describe('Integration | Component | search widget', () => {
       expect(this.$('.form-control-feedback').text()).to.not.include('Please enter a valid date.');
     });
 
-    it('validates date range (no backwards or future ranges', function () {
+    it('validates date range (no backwards or future ranges)', function () {
       this.render(hbs`{{search-widget disableAnimations=true}}`);
 
       this.$('#search-start-date').val(moment().add(1, 'year').format('YYYY-MM-DD')).change();
