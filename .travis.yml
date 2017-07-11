@@ -25,6 +25,7 @@ env:
     - secure: 0NHYGXploOTo4/VYF33jcRSNFD9H/OLcuusw2JZAgbgbVfog89W8ENpc9q2YtctVf+ie3RpZsXjEJVsQR5jXchmfVI19iND/JLk+vrK+7lR719hseur4wVIzVWzj2goU8Fy34OBN3NQq+0/Vi9rcSnsRbMgUl5nBrM3ISdPD/Ly4TQOmAOXTg3wc2lsmk/CNasGs5LzbganS1HcvKcQpSgOuK8Lzj12nzCGsJUau307gmeJryFp4quW+moB3AJ4HoYKWzWDL61aA4QjVRpzRciNcSEjcrFuBB9J+Q6ag+O+hQZUHU/M0L4CSZJ7mEUylCobqGzEKNS60CHJsalDdOGWQST+2qEfLxi+8nCgj5Bjql9fPOhiTm5XNfaAW/Wy5zn4PfehQa7snthc7ErCtpUZMqbwsyZTfU4LXW30gVy8lpzAB1UsNkDde0MiFJtCwaOHB5K1T6wGV3b8uGXXNgjguwtUg+4ZhnL/KRZUoJFU8f0eE1bqjFRXOueMiE7RL/rFukH4Pq2VsYyaQXTuURAWGWBaEVFiqJJWRdGtzZXtdaI02KVN4oAVoyHOwZTjySJ+/1/gT7A8OQ7SQHPRVTMWqP/oT1mdqFas2up1x6np6MRNWI39GTTVy2yAeEznGRxirFFMcex9IGe5D9dwFY+ZZxzMYnkkqfD82rMFB7Yw=
   matrix:
     - EMBER_VERSION=default # the Ember version specified in package.json
+    - EMBER_VERSION=lts     # the current LTS release of Ember
     - EMBER_VERSION=release # the latest release version of Ember
     - EMBER_VERSION=beta    # the pre-release of the upcoming version of Ember
 

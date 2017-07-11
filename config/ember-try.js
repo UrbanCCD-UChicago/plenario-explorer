@@ -5,6 +5,14 @@ module.exports = {
       dependencies: {},
     },
     {
+      name: 'lts',
+      npm: {
+        devDependencies: {
+          'ember-source': 'lts',
+        },
+      },
+    },
+    {
       name: 'release',
       npm: {
         devDependencies: {
