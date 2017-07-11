@@ -1,5 +1,5 @@
 <div class="action-card col-xl-4 float-xl-left pr-xl-1">
-  <div class="card">
+  <div class="card action-card">
     <div class="card-block">
       <div class="row align-items-center">
         <div class="col-12 col-md-6 col-xl-12 px-3">
@@ -8,12 +8,12 @@
           </div>
         </div>
         <div class="col-6 col-md-3 col-xl-6 pr-1">
-          {{#bs-button type="danger" block=true onClick=(action "resetForm")}}
+          {{#bs-button id="search-reset-button" type="danger" block=true onClick=(action "resetForm")}}
             {{fa-icon "undo"}}&emsp;Reset
           {{/bs-button}}
         </div>
         <div class="col-6 col-md-3 col-xl-6 pl-1">
-          {{#bs-button type="primary" block=true disabled=(not isValidDateRange) onClick=(action "submitForm")}}
+          {{#bs-button id="search-submit-button" type="primary" block=true disabled=(not isValidDateRange) onClick=(action "submitForm")}}
             {{fa-icon "search"}}&emsp;Search
           {{/bs-button}}
           {{!--
