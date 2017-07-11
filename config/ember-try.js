@@ -2,7 +2,9 @@ module.exports = {
   scenarios: [
     {
       name: 'default',
-      dependencies: {},
+      npm: {
+        devDependencies: {},
+      },
     },
     {
       name: 'lts',
