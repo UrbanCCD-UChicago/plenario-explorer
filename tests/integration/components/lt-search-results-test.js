@@ -2,9 +2,7 @@ import { expect } from 'chai';
 import { describe, it } from 'mocha';
 import { setupComponentTest } from 'ember-mocha';
 import hbs from 'htmlbars-inline-precompile';
-import moment from 'npm:moment';
 import wait from 'ember-test-helpers/wait';
-import Ember from 'ember';
 
 describe('Integration | Component | lt search results', () => {
   setupComponentTest('lt-search-results', {
@@ -67,5 +65,4 @@ describe('Integration | Component | lt search results', () => {
   it.skip('preserved selected rows across filter updates');
 
   it.skip('sorts displayed rows by the selected column');
-
 });
