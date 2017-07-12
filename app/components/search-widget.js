@@ -28,11 +28,11 @@ export default Ember.Component.extend({
     const targetBounds = this.get('jumpToBounds');
     this.set('jumpToBounds', null);
     this.set('mapBounds', targetBounds);
-    Ember.run.later(() => {
+    Ember.run.next(() => {
       const $tc = $('#teleport-control');
       $tc.children('option:selected').prop('selected', false);
       $tc.children('option:first').prop('selected', 'selected');
-    }, 750);
+    });
   }),
 
   startDateAsString: Ember.computed('startDate', {

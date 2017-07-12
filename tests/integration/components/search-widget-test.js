@@ -5,7 +5,7 @@ import wait from 'ember-test-helpers/wait';
 import hbs from 'htmlbars-inline-precompile';
 import moment from 'npm:moment';
 import ENV from 'plenario-explorer/config/environment';
-import { getCenterTileURL } from 'plenario-explorer/utils/open-street-map-utils';
+import { getCenterTileURLFragment } from 'plenario-explorer/utils/open-street-map-utils';
 
 const { geography } = ENV;
 
@@ -25,7 +25,9 @@ describe('Integration | Component | search widget', () => {
       // map to use an unpredictable zoom level. Order of zoom levels is by likelihood, so we can
       // easily short-circuit our find() calls (passing multiple selectors directly to find()
       // does an exhaustive search)
-      const centerTileURLs = [11, 10, 12, 9].map(z => getCenterTileURL(defaultPlace.bounds, z));
+      const centerTileURLs = [11, 10, 12, 9].map(z =>
+        getCenterTileURLFragment(defaultPlace.bounds, z)
+      );
 
       this.render(hbs`{{search-widget disableAnimations=true}}`);
 
@@ -44,7 +46,7 @@ describe('Integration | Component | search widget', () => {
       // map to use an unpredictable zoom level. Order of zoom levels is by likelihood, so we can
       // easily short-circuit our find() calls (passing multiple selectors directly to find()
       // does an exhaustive search)
-      const centerTileURLs = [11, 10, 12, 9].map(z => getCenterTileURL(place.bounds, z));
+      const centerTileURLs = [11, 10, 12, 9].map(z => getCenterTileURLFragment(place.bounds, z));
 
       this.render(hbs`{{search-widget disableAnimations=true}}`);
 
@@ -55,7 +57,14 @@ describe('Integration | Component | search widget', () => {
       });
     });
 
-    it.skip('restores predrawn shape if one is passed', function () {});
+    it('restores predrawn shape if one is passed', function () {
+      // eslint-disable-next-line max-len
+      const shapeGeoJsonObj = { type: 'FeatureCollection', features: [{ type: 'Feature', properties: {}, geometry: { type: 'Polygon', coordinates: [[[-87.65853881835938, 41.915818693496426], [-87.68600463867188, 41.857287927691345], [-87.60429382324219, 41.83529309193198], [-87.5562286376953, 41.86598147470959], [-87.59124755859375, 41.91019797889929], [-87.65853881835938, 41.915818693496426]]] } }] };
+
+      this.render(hbs`{{search-widget disableAnimations=true predrawnShapeGeoJson=shapeGeoJson}}`);
+      this.set('shapeGeoJson', shapeGeoJsonObj);
+      expect(this.$('.leaflet-overlay-pane>svg>g>path')).to.have.length.of.at.least(1);
+    });
   });
 
   describe('dates', function () {
@@ -125,7 +134,9 @@ describe('Integration | Component | search widget', () => {
       expect(this.$('#search-aggregate-by').val()).equals(originalVals.agg);
 
       // Check the map status
-      const centerTileURLs = [11, 10, 12, 9].map(z => getCenterTileURL(defaultPlace.bounds, z));
+      const centerTileURLs = [11, 10, 12, 9].map(z =>
+        getCenterTileURLFragment(defaultPlace.bounds, z)
+      );
       const tilePane = this.$('.leaflet-tile-pane');
       return wait().then(() => {
         expect(centerTileURLs.some(ct => tilePane.find(`img[src*="${ct}"]`).length)).to.be.true;

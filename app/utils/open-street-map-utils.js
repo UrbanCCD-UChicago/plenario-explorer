@@ -17,9 +17,9 @@ function lat2tile(latDeg, zoom) {
   return Math.floor(n * ((1 - (Math.log(Math.tan(latRad) + (1 / Math.cos(latRad))) / π)) / 2));
 }
 
-function getCenterTileURL(bounds, zoom) {
+function getCenterTileURLFragment(bounds, zoom) {
   const { lat, lng } = L.latLngBounds(bounds).getCenter();
   return `${zoom}/${lng2tile(lng, zoom)}/${lat2tile(lat, zoom)}`;
 }
 
-export { lng2tile, lat2tile, getCenterTileURL };
+export { lng2tile, lat2tile, getCenterTileURLFragment };
