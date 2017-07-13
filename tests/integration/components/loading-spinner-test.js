@@ -8,7 +8,7 @@ describe('Integration | Component | loading spinner', () => {
     integration: true,
   });
 
-  it.skip('renders', function () {
+  it('renders', function () {
     this.render(hbs`{{loading-spinner}}`);
     expect(this.$()).to.have.length(1);
   });
