@@ -7,7 +7,9 @@ setResolver(resolver);
 
 mocha.setup({
   // Mocha's default time settings are too aggressive for how slow Ember is as a baseline
-  timeout: 5000,
+  // while the office internet is terrible:
+  timeout: 15000, // (yes it's that bad)
+  // timeout: 5000,
   slow: 500,
 });
 

@@ -33,26 +33,28 @@
       </div>
     </div>
   </div>
-  {{#unless (eq nodeFeaturePseudoDatasets.length 0)}}
-    <div class="row">
-      <div class="col-12">
-        <h3 class="h5">Data From Sensor Nodes</h3>
+  <div id="results-tables-container">
+    {{#unless (eq nodeFeaturePseudoDatasets.length 0)}}
+      <div class="row">
+        <div class="col-12">
+          <h3 class="h5">Data From Sensor Nodes</h3>
+        </div>
       </div>
-    </div>
-    {{!-- Height value below is (5 * (row height)), where (row height) = ((1.5 * 1rem) + (2 * 0.3rem)) --}}
-    {{lt-search-results nodeFeaturePseudoDatasets columns=nodeFeatureTableColumns
-                        onSelectionChanged="userDidChangeSelection" height="10.5rem"}}
-  {{/unless}}
-  {{#unless (eq openDataProviderDatasets.length 0)}}
-    <div class="row">
-      <div class="col-12">
-        <h3 class="h5">Data From Open Data Providers</h3>
+      {{!-- Height value below is (5 * (row height)), where (row height) = ((1.5 * 1rem) + (2 * 0.3rem)) --}}
+      {{lt-search-results nodeFeaturePseudoDatasets columns=nodeFeatureTableColumns
+                          onSelectionChanged="userDidChangeSelection" height="10.5rem"}}
+    {{/unless}}
+    {{#unless (eq openDataProviderDatasets.length 0)}}
+      <div class="row">
+        <div class="col-12">
+          <h3 class="h5">Data From Open Data Providers</h3>
+        </div>
       </div>
-    </div>
-    {{!-- Height value below is (6 * (row height)), where (row height) = ((1.5 * 1rem) + (2 * 0.3rem)) --}}
-    {{lt-search-results openDataProviderDatasets columns=openDataTableColumns
-                        onSelectionChanged="userDidChangeSelection" height="12.6rem"}}
-  {{/unless}}
+      {{!-- Height value below is (6 * (row height)), where (row height) = ((1.5 * 1rem) + (2 * 0.3rem)) --}}
+      {{lt-search-results openDataProviderDatasets columns=openDataTableColumns
+                          onSelectionChanged="userDidChangeSelection" height="12.6rem"}}
+    {{/unless}}
+  </div>
   <div class="col-12 px-0">
     <button class="btn btn-primary btn-lrg btn-block" disabled={{not userHasMadeASelection}}>
       Compare&ensp;{{fa-icon "arrow-right"}}
