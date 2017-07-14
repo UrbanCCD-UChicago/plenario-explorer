@@ -3,13 +3,14 @@ import { mocha } from 'mocha';
 import { setResolver } from 'ember-mocha';
 import resolver from './helpers/resolver';
 
+setResolver(resolver);
+
 mocha.setup({
   // Mocha's default time settings are too aggressive for how slow Ember is as a baseline
   timeout: 5000,
   slow: 500,
 });
 
-setResolver(resolver);
 
 /*
   Mocha lacks the QUnit flag to hide the test container. This recreates something similar,
