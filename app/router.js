@@ -11,6 +11,8 @@ Router.map(function () {
   this.route('search', function () {
     this.route('results');
   });
+  this.route('compare', { path: '/compare/:datasetNames' });
+  this.route('view', { path: '/view/:datasetNames' });
 });
 
 export default Router;

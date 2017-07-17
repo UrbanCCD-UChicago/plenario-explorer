@@ -17,7 +17,7 @@ const LightTableSearchResults = Ember.Component.extend({
   selectionChanged: Ember.observer('table.selectedRows.[]', function () {
     this.sendAction('onSelectionChanged',
       this.get('elementId'),
-      this.get('table.selectedRows.length')
+      this.get('table.selectedRows')
     );
   }),
 

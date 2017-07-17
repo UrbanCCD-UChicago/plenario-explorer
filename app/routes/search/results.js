@@ -69,6 +69,7 @@ export default Ember.Route.extend(QueryParamsResetRouteMixin, {
   setupController(controller, model) {
     this._super(controller, model);
     controller.set('shouldSmoothScroll', !this.get('isUrlNav'));
+    controller.set('tableSelectedDatasets', {});
   },
 
   request(endpoint, queryParams) {

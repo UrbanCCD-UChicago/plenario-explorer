@@ -4,14 +4,14 @@ import ENV from 'plenario-explorer/config/environment';
 
 export default Ember.Controller.extend({
 
-  queryParameters: ['startDate', 'endDate', 'withinArea'],
+  queryParameters: ['startDate', 'endDate', 'aggregateBy', 'withinArea'],
 
   ENV,
 
   nodeFeaturePseudoDatasets: Ember.computed.alias('model.features'),
   openDataProviderDatasets: Ember.computed.uniq('model.events', 'model.shapes'),
 
-  tableSelectionCounts: {},
+  tableSelectedDatasets: {},
   isExpanded: {},
 
   nodeFeatureTableColumns: [
@@ -57,19 +57,33 @@ export default Ember.Controller.extend({
     },
   ],
 
-  userHasMadeASelection: Ember.computed('tableSelectionCounts', function () {
-    return _.values(this.get('tableSelectionCounts')).some(x => x > 0);
+  userHasMadeASelection: Ember.computed('tableSelectedDatasets', function () {
+    return _.values(this.get('tableSelectedDatasets')).some(dsList => dsList.length > 0);
   }),
 
   actions: {
     toggleCollapse(targetId) {
       this.toggleProperty(`isExpanded.${_.camelCase(targetId)}`);
     },
-    userDidChangeSelection(tableId, numRowsSelected) {
-      Ember.set(this.get('tableSelectionCounts'), tableId, numRowsSelected);
+    userDidChangeSelection(tableElementId, selectedRows) {
+      const selectedDatasets = selectedRows.map(row =>
+        (row.content.dataset_name ? row.content.dataset_name : row.content.name)
+      );
+      Ember.set(this.get('tableSelectedDatasets'), tableElementId, selectedDatasets);
       // Because Ember observers don't directly observe all property changes on a dependent object,
       // we have to notify observers manually
-      this.notifyPropertyChange('tableSelectionCounts');
+      this.notifyPropertyChange('tableSelectedDatasets');
+    },
+    compareSelectedDatasets() {
+      const selectedDatasets = _.chain(this.get('tableSelectedDatasets'))
+        .values()
+        .flatten()
+        .value();
+      this.transitionToRoute(
+        'compare',
+        selectedDatasets.join(','),
+        { queryParams: this.getProperties(this.get('queryParameters')) }
+      );
     },
   },
 
