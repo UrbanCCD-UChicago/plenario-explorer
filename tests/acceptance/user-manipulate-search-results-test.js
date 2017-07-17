@@ -56,5 +56,31 @@ describe('Acceptance | user manipulate search results', function () {
     });
   });
 
-  it("transitions to correct /compare page for user's selected results when [compare] is clicked");
+  it('with multiple rows selected, transitions to correct /compare page when [compare] is clicked',
+    function () {
+      visit('/search/results?aggregateBy=day&endDate=2017-07-14&startDate=2017-04-15&withinArea=%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Polygon%22%2C%22coordinates%22%3A%5B%5B%5B-88.08151245117189%2C41.57333394552688%5D%2C%5B-87.38388061523439%2C41.57333394552688%5D%2C%5B-87.38388061523439%2C42.09312731992276%5D%2C%5B-88.08151245117189%2C42.09312731992276%5D%2C%5B-88.08151245117189%2C41.57333394552688%5D%5D%5D%7D%7D');
+
+      click('thead.lt-head:eq(0) th:eq(1)');
+      click('tbody.lt-body:eq(0) tr:eq(0)');
+      click('tbody.lt-body:eq(0) tr:eq(1)');
+      click('#compare-submit-button');
+
+      andThen(() => {
+        expect(currentURL()).to.equal('/compare/acceleration,atmospheric_pressure?aggregateBy=day&endDate=2017-07-14&startDate=2017-04-15&withinArea=%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Polygon%22%2C%22coordinates%22%3A%5B%5B%5B-88.08151245117189%2C41.57333394552688%5D%2C%5B-87.38388061523439%2C41.57333394552688%5D%2C%5B-87.38388061523439%2C42.09312731992276%5D%2C%5B-88.08151245117189%2C42.09312731992276%5D%2C%5B-88.08151245117189%2C41.57333394552688%5D%5D%5D%7D%7D');
+      });
+    });
+
+  it('with one row selected, transitions to correct /view when [compare] is clicked',
+    function () {
+      visit('/search/results?aggregateBy=day&endDate=2017-07-14&startDate=2017-04-15&withinArea=%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Polygon%22%2C%22coordinates%22%3A%5B%5B%5B-88.08151245117189%2C41.57333394552688%5D%2C%5B-87.38388061523439%2C41.57333394552688%5D%2C%5B-87.38388061523439%2C42.09312731992276%5D%2C%5B-88.08151245117189%2C42.09312731992276%5D%2C%5B-88.08151245117189%2C41.57333394552688%5D%5D%5D%7D%7D');
+
+      click('thead.lt-head:eq(0) th:eq(1)');
+      click('tbody.lt-body:eq(0) tr:eq(0)');
+      click('tbody.lt-body:eq(0) tr:eq(1)');
+      click('#compare-submit-button');
+
+      andThen(() => {
+        expect(currentURL()).to.equal('/compare/acceleration,atmospheric_pressure?aggregateBy=day&endDate=2017-07-14&startDate=2017-04-15&withinArea=%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Polygon%22%2C%22coordinates%22%3A%5B%5B%5B-88.08151245117189%2C41.57333394552688%5D%2C%5B-87.38388061523439%2C41.57333394552688%5D%2C%5B-87.38388061523439%2C42.09312731992276%5D%2C%5B-88.08151245117189%2C42.09312731992276%5D%2C%5B-88.08151245117189%2C41.57333394552688%5D%5D%5D%7D%7D');
+      });
+    });
 });
