@@ -28,9 +28,9 @@ export default Ember.Route.extend(QueryParamsResetRouteMixin, {
     const api = this.get('api');
 
     return Ember.RSVP.hash({
-      events: api.fetch.core.events(Object.assign({ useSimpleBbox: true }, params)),
-      shapes: api.fetch.core.shapes(Object.assign({ useSimpleBbox: true }, params)),
-      features: api.fetch.networks.features('array_of_things_chicago', params),
+      events: api.fetch.core.metadata.events(Object.assign({ useSimpleBbox: true }, params)),
+      shapes: api.fetch.core.metadata.shapes(Object.assign({ useSimpleBbox: true }, params)),
+      features: api.fetch.networks.metadata.features('array_of_things_chicago', params),
     });
   },
 

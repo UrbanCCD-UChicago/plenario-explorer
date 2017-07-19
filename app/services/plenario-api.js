@@ -16,105 +16,139 @@ export default Ember.Service.extend({
 
   init() {
     this.fetch = this.fetch(this);
-    this.handle = this.handle();
+    this.handle = this.handle(this);
+    this.adapter = this.adapter(this);
   },
 
-  fetch(self) {
-    const ajax = self.get('ajax');
+  /* eslint-disable brace-style */
+  fetch(service) {
+    const ajax = service.get('ajax');
     return {
 
-      core: (function () {
-        return {
+      core: (function () { return {
+        metadata: (function () { return {
 
-          dataset(endpoint, appQueryParams) {
-            const qp = self.translateAppParamsToApiParams(appQueryParams);
+          datasets(endpoint, appQueryParams) {
+            const qp = service.adapter.appParamsToApiParams(appQueryParams);
             return ajax.request(endpoint, { data: qp })
-              .then(self.handle.core.fulfilled, self.handle.core.rejected);
+              .then(service.handle.core.fulfilled, service.handle.core.rejected);
           },
 
           events(appQueryParams) {
-            return this.dataset('datasets', appQueryParams);
+            return this.datasets('datasets', appQueryParams);
           },
 
           shapes(appQueryParams) {
-            return this.dataset('shapes', appQueryParams);
+            return this.datasets('shapes', appQueryParams);
           },
 
-        };
-      }()),
+        }; }()),
 
-      networks: (function () {
-        return {
+        data: (function () { return {
+
+          timeseries(appQueryParams) {
+            const qp = service.adapter.appParamsToApiParams(appQueryParams);
+            return ajax.request('timeseries', { data: qp })
+              .then(service.handle.core.fulfilled, service.handle.core.rejected);
+          },
+
+          singleDatasetEndpoint(endpoint, datasetName, appQueryParams) {
+            const qp = service.adapter.appParamsToApiParams(appQueryParams);
+            delete qp.dataset_name__in;
+            qp.dataset_name = datasetName;
+            return ajax.request(endpoint, { data: qp });
+          },
+
+          grids(appQueryParams) {
+            const dsNames = appQueryParams.datasetNames.split(',');
+            return Ember.RSVP.all(
+              dsNames.map(name => this.singleDatasetEndpoint('grid', name, appQueryParams))
+            );
+          },
+
+          shapes(appQueryParams) {
+            const dsNames = appQueryParams.datasetNames.split(',');
+            return Ember.RSVP.all(
+              dsNames.map(name => this.singleDatasetEndpoint('shapes', name, appQueryParams))
+            );
+          },
+
+        }; }()),
+      }; }()),
+
+      networks: (function () { return {
+
+        metadata: (function () { return {
 
           features(network, appQueryParams) {
-            const qp =
-              self.fixSensorNetworkParams(self.translateAppParamsToApiParams(appQueryParams));
+            const qp = service.adapter.appParamsToNetworkApiParams(appQueryParams);
             return ajax.request(`/sensor-networks/${network}/features`, { data: qp })
-              .then(self.handle.networks.fulfilled, self.handle.networks.rejected);
+              .then(service.handle.networks.fulfilled, service.handle.networks.rejected);
           },
 
-        };
-      }()),
-
+        }; }()),
+      }; }()),
     };
   },
+  /* eslint-enable brace-style */
 
-  handle() {
-    return {
+  /* eslint-disable brace-style */
+  handle(/* self */) { return {
 
-      core: (function () {
-        return {
+    core: (function () { return {
 
-          fulfilled(response) {
-            return response.objects;
-          },
+      fulfilled(response) {
+        return response.objects;
+      },
 
-          rejected(reason) {
-            return reason;
-          },
+      rejected(reason) {
+        return reason;
+      },
 
-        };
-      }()),
+    }; }()),
 
-      networks: (function () {
-        return {
+    networks: (function () { return {
 
-          fulfilled(response) {
-            return response.data;
-          },
+      fulfilled(response) {
+        return response.data;
+      },
 
-          rejected(reason) {
-            if (reason.message === 'Request was formatted incorrectly.' &&
-              reason.payload.error.toString().match(/^No \w+ found within {"crs":/)) {
-              // Ignore the API's incorrect usage of 400. It's just an empty list of results,
-              // not actually a bad request
-              Ember.Logger.info('Ignoring 400 Bad Request');
-              return [];
-            }
-            return reason;
-          },
+      rejected(reason) {
+        if (reason.message === 'Request was formatted incorrectly.' &&
+          reason.payload.error.toString().match(/^No \w+ found within {"crs":/)) {
+          // Ignore the API's incorrect usage of 400. It's just an empty list of results,
+          // not actually a bad request
+          Ember.Logger.info('Ignoring 400 Bad Request');
+          return [];
+        }
+        return reason;
+      },
 
-        };
-      }()),
+    }; }()),
+  }; },
+  /* eslint-enable brace-style */
 
-    };
-  },
+  /* eslint-disable brace-style */
+  adapter(service) { return {
 
-  translateAppParamsToApiParams(appParams) {
-    const apiParams = _.mapKeys(appParams, (value, key) => this.appParamsToApiParamsMap[key]);
-    if (Array.isArray(apiParams.dataset_name__in)) {
-      apiParams.dataset_name__in = apiParams.dataset_name__in.join(',');
-    }
-    return apiParams;
-  },
+    appParamsToApiParams(appParams) {
+      const apiParams = _.mapKeys(appParams, (value, key) => service.appParamsToApiParamsMap[key]);
+      if (Array.isArray(apiParams.dataset_name__in)) {
+        apiParams.dataset_name__in = apiParams.dataset_name__in.join(',');
+      }
+      return apiParams;
+    },
 
-  fixSensorNetworkParams(apiParams) {
-    const qp = _.cloneDeep(apiParams);
-    if (qp.location_geom__within) {
-      qp.geom = qp.location_geom__within;
-      delete qp.location_geom__within;
-    }
-    return qp;
-  },
+    appParamsToNetworkApiParams(appParams) {
+      const apiParams = this.appParamsToApiParams(appParams);
+      if (apiParams.location_geom__within) {
+        apiParams.geom = apiParams.location_geom__within;
+        delete apiParams.location_geom__within;
+      }
+      return apiParams;
+    },
+
+  }; },
+  /* eslint-enable brace-style */
 
 });
