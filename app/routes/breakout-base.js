@@ -3,6 +3,8 @@ import QueryParamsResetRouteMixin from 'ember-query-params-reset/mixins/query-pa
 
 export default Ember.Route.extend(QueryParamsResetRouteMixin, {
 
+  api: Ember.inject.service('plenario-api'),
+
   queryParams: {
     startDate: { refreshModel: true },
     endDate: { refreshModel: true },
@@ -10,15 +12,18 @@ export default Ember.Route.extend(QueryParamsResetRouteMixin, {
     withinArea: { refreshModel: true },
   },
 
-  queryParamsToApiParamsMap: {
-    startDate: 'obs_date__ge',
-    endDate: 'obs_date__le',
-    aggregateBy: 'agg',
-    withinArea: 'location_geom__within',
+  model(params) {
+    const api = this.get('api');
+
+    const metadata = Ember.RSVP.hash({
+      events: api.fetch.core.events(Object.assign({ useSimpleBbox: true }, params)),
+      shapes: api.fetch.core.shapes(Object.assign({ useSimpleBbox: true }, params)),
+      features: api.fetch.networks.features('array_of_things_chicago', params),
+    });
   },
 
-  model(params /* , transition */) {
-    return params.datasetNames.split(','); // If ',' not found, returns whole string as 1-elem array
+  request(endpoint, queryParams) {
+    return this.get('ajax').request(endpoint, { data: queryParams });
   },
 
 });

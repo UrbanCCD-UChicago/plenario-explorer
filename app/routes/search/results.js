@@ -3,20 +3,13 @@ import QueryParamsResetRouteMixin from 'ember-query-params-reset/mixins/query-pa
 
 export default Ember.Route.extend(QueryParamsResetRouteMixin, {
 
-  ajax: Ember.inject.service(),
+  api: Ember.inject.service('plenario-api'),
 
   queryParams: {
     startDate: { refreshModel: true },
     endDate: { refreshModel: true },
     aggregateBy: { refreshModel: true },
     withinArea: { refreshModel: true },
-  },
-
-  queryParamsToApiParamsMap: {
-    startDate: 'obs_date__ge',
-    endDate: 'obs_date__le',
-    aggregateBy: 'agg',
-    withinArea: 'location_geom__within',
   },
 
   beforeModel(transition) {
@@ -26,32 +19,18 @@ export default Ember.Route.extend(QueryParamsResetRouteMixin, {
       this.transitionTo('search');
     }
 
+    // Only smooth scroll to the results if we're coming from a search, otherwise just jump there
     this.set('isUrlNav', transition.isCausedByInitialTransition === undefined);
     this.controllerFor('search.results-loading').set('shouldSmoothScroll', !this.get('isUrlNav'));
   },
 
   model(params) {
-    const queryParamsToApiParamsMap = this.get('queryParamsToApiParamsMap');
-    const apiParams = { simple_bbox: true };
-    Object.keys(params).forEach((qp) => {
-      if (queryParamsToApiParamsMap[qp]) {
-        apiParams[queryParamsToApiParamsMap[qp]] = params[qp];
-      }
-    });
-    const apiParamsForFeatureQueries = { geom: params.withinArea };
-    return Ember.RSVP.hashSettled({
-      events: this.request('datasets', apiParams).then(response => response.objects),
-      shapes: this.request('shapes', apiParams).then(response => response.objects),
-      features: this.request('sensor-networks/array_of_things_chicago/features', apiParamsForFeatureQueries).then(response => response.data),
-    }).then((hash) => {
-      Object.keys(hash).forEach((key) => {
-        if (hash[key].state === 'fulfilled') {
-          hash[key] = hash[key].value; // eslint-disable-line no-param-reassign
-        } else {
-          hash[key] = []; // eslint-disable-line no-param-reassign
-        }
-      });
-      return hash;
+    const api = this.get('api');
+
+    return Ember.RSVP.hash({
+      events: api.fetch.core.events(Object.assign({ useSimpleBbox: true }, params)),
+      shapes: api.fetch.core.shapes(Object.assign({ useSimpleBbox: true }, params)),
+      features: api.fetch.networks.features('array_of_things_chicago', params),
     });
   },
 
