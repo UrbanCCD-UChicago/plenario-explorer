@@ -27,7 +27,8 @@ export default Ember.Service.extend({
         return {
 
           dataset(endpoint, appQueryParams) {
-            return ajax.request(endpoint, self.translateAppParamsToApiParams(appQueryParams))
+            const qp = self.translateAppParamsToApiParams(appQueryParams);
+            return ajax.request(endpoint, { data: qp })
               .then(self.handle.core.fulfilled, self.handle.core.rejected);
           },
 
@@ -48,8 +49,7 @@ export default Ember.Service.extend({
           features(network, appQueryParams) {
             const qp =
               self.fixSensorNetworkParams(self.translateAppParamsToApiParams(appQueryParams));
-            return self.get('ajax')
-              .request(`/sensor-networks/${network}/features`, qp)
+            return ajax.request(`/sensor-networks/${network}/features`, { data: qp })
               .then(self.handle.networks.fulfilled, self.handle.networks.rejected);
           },
 
@@ -88,6 +88,7 @@ export default Ember.Service.extend({
               reason.payload.error.toString().match(/^No \w+ found within {"crs":/)) {
               // Ignore the API's incorrect usage of 400. It's just an empty list of results,
               // not actually a bad request
+              Ember.Logger.info('Ignoring 400 Bad Request');
               return [];
             }
             return reason;
