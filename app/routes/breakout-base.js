@@ -20,54 +20,55 @@ export default Ember.Route.extend(QueryParamsResetRouteMixin, {
     // to an endpoint in `dataset_name__in`, so we have to make several extra requests and do a
     // whole lot of frontend trickery to figure out what we can ask of which API endpoint
     // If we came from a search, just grab this list from that route. Otherwise, go fetch it.
-    let possibleDatasetsByType = this.modelFor('search.results');
-    if (!possibleDatasetsByType) {
-      possibleDatasetsByType = this.getPossibleDatasets(params);
-    } else {
-      possibleDatasetsByType = _.mapValues(possibleDatasetsByType, datasetArray =>
-        datasetArray.map(dataset =>
-          (dataset.dataset_name ? dataset.dataset_name : dataset.name)
-        )
-      );
+    let validDatasetsMetadata = this.modelFor('search.results');
+    if (!validDatasetsMetadata) {
+      validDatasetsMetadata = this.getSearchDatasetsForQuery(params);
     }
 
-    const targetDatasetsByType = this.divideAndValidateDatasetNamesByType(possibleDatasetsByType, params);
+    const validDatasetNames = this.getDatasetNamesByType(validDatasetsMetadata);
+
+    const targetDatasetNames = this.divideAndValidateBy(params.datasetNames.split(','), validDatasetNames);
 
     // TODO: get and return sensor data
-    const data = targetDatasetsByType.then(tdsbt => Ember.RSVP.hash({
+    return targetDatasetNames.then(td => Ember.RSVP.hash({
       timeseries: api.fetch.core.data.timeseries(
-        Object.assign({}, params, { datasetNames: tdsbt.events.join(',') })
+        Object.assign({}, params, { datasetNames: td.events.join(',') })
       ),
       grids: api.fetch.core.data.grids(
-        Object.assign({}, params, { datasetNames: tdsbt.events.join(',') })
+        Object.assign({}, params, { datasetNames: td.events.join(',') })
       ),
       shapes: api.fetch.core.data.shapes(
-        Object.assign({}, params, { datasetNames: tdsbt.shapes.join(',') })
+        Object.assign({}, params, { datasetNames: td.shapes.join(',') })
+      ),
+      features: api.fetch.networks.data.rawObservations(
+        'array_of_things_chicago', td.features, params
       ),
     }));
-
-    return Ember.RSVP.hash({ requestedDatasets: possibleDatasetsByType, data });
   },
 
-  getPossibleDatasets(params) {
+  getSearchDatasetsForQuery(params) {
     const api = this.get('api');
     return Ember.RSVP.hash({
       events: api.fetch.core.metadata.events(Object.assign({ useSimpleBbox: true }, params)),
       shapes: api.fetch.core.metadata.shapes(Object.assign({ useSimpleBbox: true }, params)),
+      features: api.fetch.networks.metadata.features('array_of_things_chicago', params),
     });
   },
 
-  divideAndValidateDatasetNamesByType(hashOfDatasetNamesByType, params) {
-    // We might be getting a promise, or not, so we ask Ember to resolve it for us if it exists
-    // FIXME: not handling nav from search and straight from URL the same == breakage
-    return Ember.RSVP.Promise.resolve(hashOfDatasetNamesByType).then(hash => ({
-      events: _.intersection(hash.events, params.datasetNames.split(',')),
-      shapes: _.intersection(hash.shapes, params.datasetNames.split(',')),
-    }));
+  getDatasetNamesByType(searchMetadata) {
+    return Ember.RSVP.Promise.resolve(searchMetadata).then(metadata =>
+      _.mapValues(metadata, datasetList =>
+        datasetList.map(dataset =>
+          (dataset.dataset_name ? dataset.dataset_name : dataset.name)
+        )
+      )
+    );
   },
 
-  request(endpoint, queryParams) {
-    return this.get('ajax').request(endpoint, { data: queryParams });
+  divideAndValidateBy(requestedDatasetNames, validDatasetNames) {
+    return Ember.RSVP.Promise.resolve(validDatasetNames).then(vds =>
+      _.mapValues(vds, value => _.intersection(value, requestedDatasetNames))
+    );
   },
 
 });

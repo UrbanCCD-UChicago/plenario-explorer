@@ -62,14 +62,20 @@ export default Ember.Service.extend({
           grids(appQueryParams) {
             const dsNames = appQueryParams.datasetNames.split(',');
             return Ember.RSVP.all(
-              dsNames.map(name => this.singleDatasetEndpoint('grid', name, appQueryParams))
-            );
+              dsNames.map((name) => {
+                return this.singleDatasetEndpoint('grid', name, appQueryParams)
+                  .then(geoJson => ({ dataset_name: name, geoJson }));
+              })
+            ).then(result => _.filter(result, grid => grid.geoJson.features.length > 0));
           },
 
           shapes(appQueryParams) {
             const dsNames = appQueryParams.datasetNames.split(',');
             return Ember.RSVP.all(
-              dsNames.map(name => this.singleDatasetEndpoint('shapes', name, appQueryParams))
+              dsNames.map(name =>
+                this.singleDatasetEndpoint('shapes', name, appQueryParams)
+                  .then(service.handle.core.fulfilled, service.handle.core.rejected)
+              )
             );
           },
 
@@ -81,12 +87,31 @@ export default Ember.Service.extend({
         metadata: (function () { return {
 
           features(network, appQueryParams) {
-            const qp = service.adapter.appParamsToNetworkApiParams(appQueryParams);
+            const qp = service.adapter.appParamsToNetworkMetadataApiParams(appQueryParams);
             return ajax.request(`/sensor-networks/${network}/features`, { data: qp })
               .then(service.handle.networks.fulfilled, service.handle.networks.rejected);
           },
 
         }; }()),
+
+        data: (function () { return {
+
+          rawObservations(network, featureNames, appQueryParams) {
+            return Ember.RSVP.all(
+              featureNames.map((name) => {
+                const qp = {
+                  feature: name,
+                  start_datetime: appQueryParams.startDate,
+                  end_datetime: appQueryParams.endDate,
+                };
+                return ajax.request(`/sensor-networks/${network}/query`, { data: qp })
+                  .then(service.handle.networks.fulfilled, service.handle.networks.rejected);
+              })
+            );
+          },
+
+        }; }()),
+
       }; }()),
     };
   },
@@ -139,7 +164,7 @@ export default Ember.Service.extend({
       return apiParams;
     },
 
-    appParamsToNetworkApiParams(appParams) {
+    appParamsToNetworkMetadataApiParams(appParams) {
       const apiParams = this.appParamsToApiParams(appParams);
       if (apiParams.location_geom__within) {
         apiParams.geom = apiParams.location_geom__within;
