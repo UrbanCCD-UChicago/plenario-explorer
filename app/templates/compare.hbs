@@ -1,7 +1,13 @@
 <h1>Comparing:</h1>
 <ul>
-  {{#each model as |datasetName|}}
-    <li>{{datasetName}}</li>
+  {{#each model.timeseries as |dataset|}}
+    <li>{{dataset.dataset_name}}</li>
+  {{/each}}
+  {{#each model.shapes as |dataset|}}
+    <li>{{dataset.dataset_name}}</li>
+  {{/each}}
+  {{#each model.features as |dataset|}}
+    <li>{{dataset.dataset_name}}</li>
   {{/each}}
 </ul>
 {{outlet}}

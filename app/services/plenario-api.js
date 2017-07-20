@@ -61,6 +61,7 @@ export default Ember.Service.extend({
 
           grids(appQueryParams) {
             const dsNames = appQueryParams.datasetNames.split(',');
+            if (dsNames.length === 1 && dsNames[0] === '') return [];
             return Ember.RSVP.all(
               dsNames.map((name) => {
                 return this.singleDatasetEndpoint('grid', name, appQueryParams)
@@ -71,6 +72,7 @@ export default Ember.Service.extend({
 
           shapes(appQueryParams) {
             const dsNames = appQueryParams.datasetNames.split(',');
+            if (dsNames.length === 1 && dsNames[0] === '') return [];
             return Ember.RSVP.all(
               dsNames.map(name =>
                 this.singleDatasetEndpoint('shapes', name, appQueryParams)
@@ -105,7 +107,8 @@ export default Ember.Service.extend({
                   end_datetime: appQueryParams.endDate,
                 };
                 return ajax.request(`/sensor-networks/${network}/query`, { data: qp })
-                  .then(service.handle.networks.fulfilled, service.handle.networks.rejected);
+                  .then(service.handle.networks.fulfilled, service.handle.networks.rejected)
+                  .then(observations => ({ dataset_name: name, observations }));
               })
             );
           },

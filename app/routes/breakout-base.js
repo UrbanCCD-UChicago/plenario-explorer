@@ -26,10 +26,8 @@ export default Ember.Route.extend(QueryParamsResetRouteMixin, {
     }
 
     const validDatasetNames = this.getDatasetNamesByType(validDatasetsMetadata);
-
     const targetDatasetNames = this.divideAndValidateBy(params.datasetNames.split(','), validDatasetNames);
 
-    // TODO: get and return sensor data
     return targetDatasetNames.then(td => Ember.RSVP.hash({
       timeseries: api.fetch.core.data.timeseries(
         Object.assign({}, params, { datasetNames: td.events.join(',') })
