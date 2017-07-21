@@ -1,7 +1,9 @@
 <section class="container">
   <h2>Search</h2>
   <p class="lead">Plenar.io helps you find data in space and time.</p>
-  {{search-widget onSubmit=(action "doSearch") onReset=(action "resetSearch") predrawnShapeGeoJson=urlQueryShape}}
+  {{search-widget onSubmit=(action "doSearch") onReset=(action "resetSearch")
+                  nodeLocations=model.nodeLocations
+                  predrawnShapeGeoJson=urlQueryShape}}
   <div class="clearfix"></div>
 </section>
 {{outlet}}

@@ -41,6 +41,7 @@
                          onMoveend=(action "mapDidMove")
                          as |layers|}}
             {{layers.tile url="https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}{r}.png"}}
+            {{layers.geojson geoJSON=nodeLocations pointToLayer=nodeLocationsPointToLayer clickable=false}}
             {{#if userShapeGeoJson}}
               {{layers.geojson geoJSON=userShapeGeoJson}}
             {{/if}}

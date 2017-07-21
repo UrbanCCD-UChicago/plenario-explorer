@@ -13,6 +13,9 @@ export default Ember.Component.extend({
 
   teleportCities: ENV.geography.featuredPlaces.sortBy('label'),
 
+  nodeLocationsPointToLayer: (geoJsonPoint, latlng) =>
+    L.circleMarker(latlng, { radius: 4, className: 'leaflet-node-marker' }),
+
   userPassedShapeInUrl: Ember.observer('predrawnShapeGeoJson', function () {
     // If we get passed an existing shape, pretend it was drawn by the user
     // and then forget it was ever special

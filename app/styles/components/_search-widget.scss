@@ -8,3 +8,9 @@
 .leaflet-bar select {
   background-color: white;
 }
+
+.leaflet-node-marker {
+  stroke: none;
+  fill: $brand-primary;
+  fill-opacity: 1.0;
+}

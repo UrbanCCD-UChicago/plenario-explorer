@@ -88,6 +88,13 @@ export default Ember.Service.extend({
 
         metadata: (function () { return {
 
+          nodes(network, appQueryParams) {
+            const qp = service.adapter.appParamsToNetworkMetadataApiParams(appQueryParams);
+            console.log('qp: ', qp);
+            return ajax.request(`/sensor-networks/${network}/nodes`, { data: qp })
+              .then(service.handle.networks.fulfilled, service.handle.networks.rejected);
+          },
+
           features(network, appQueryParams) {
             const qp = service.adapter.appParamsToNetworkMetadataApiParams(appQueryParams);
             return ajax.request(`/sensor-networks/${network}/features`, { data: qp })
