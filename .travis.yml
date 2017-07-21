@@ -4,64 +4,56 @@ language: node_js
 addons:
   apt:
     sources:
-      - google-chrome
+    - google-chrome
     packages:
-      - google-chrome-stable
+    - google-chrome-stable
 node_js:
-  - "6.10"  # our specifically targeted Node version
-  - "lts/*" # the latest LTS release of Node
-  - "node"  # the latest standard release of Node
+- '6.10'
+- lts/*
+- node
 env:
   global:
-    - secure: BVA75qpzxi3U3KlHGOPBX2PH241pYhB58w0ubhJ6CEyAu7zcJSn/usURaXx92ayfoFO8S7PGFi48Y/3Tw1DKi1eTimRnT9Y5neGlsaSKpnBw8LJHhv/YHHOOyYbkJM/42AO0WB1Ihe0h0AT9vDn89zlMbWSqbH3/Jl0t1X8WDyBbewqVAf8RhFKsMNlwMeXSy109hUTMTkhYVh/kHU4LxwCLg4rbJA/MX9GQfUv4enlcrAvN+Z1UhgCt0rugua1Rgbe3j30MARmDdw4qZ0+vlB2HgPGITnmihe5H5JlHmM5t775bQHKWum4QuWmjfexf0hJ151y4ZfK3Da1fpXAB26orMdT6XtN0Z44Do/3aY6eQE+aF92IZ1DHCzRx4bnz1DoWtMS9FaVtDfq3OBfrXm0ijmzBJgj2VuoPNaB58uHuolXBtH878Q2OQyE9zUeLmRjgrAqmh2UY44pJeFkWuymPkUycdHuJQtng1sVYxwhOtfINK9ZgDYfqVXLLIajhm1if2M8sjTZ53/MkRlisb45klYQS0wf39YRxeqO0q6SwDSaK2XTfEY1u4TTnd72ssX6LK9rwWCVObiIQhl378OFT/1lVCEbf6HdH1vt4Q3lh/12b6IDk1qtLiyqmGgxgKKQKzTguurC9j7I36nFp2qQ2aB62yTi+kfl9KaQ8F4JA=
-    - secure: 2RL++U9sBmQdhOTQyLLqs08kknJjSEjNv3I+3ZzYkYoDXMlDErDsITcih7XCgMw62n9Cq1L445xnSfIIkLA/VFR0F0QdaRus8mDFHy5kvYaU4iNBRtkRG/vkvJqmCfucDSu3xUQhsg99+hQXaC4O60idoHVjpKKTqkRZJFo+u1ZU4oUQjuWJe4tPKScZfNJquCiE5o8fxvRR6Pssf6P2LhcApBhHix9HSfoeiPdGeTVNvC7MPIL3dJJHaUXK0lfGlp2cQM1O3eBEGkaKjwqC5uat4KR/0UyVNGU8ISbSIq15q62xBOF8UBEEb5ezHvj0FaKO6W5yFCX7xsGQtdVCC/FmMqEGENbbbjmQEl7UUj9aiPc+DvVHexBgTiPjW1j7U4IRLlD92QDyik9LG/icWmqeBCYKLLanHDHYZU1+tudxr2sylYFPvqZwt+E3x2/M8RQ/kwHVw3YHlKNsdpnuO6qpTyAIH3fjTFSC3qfZ9ie7he2XLPRJYUqy5ThhBXt29sS7kqfCkxVXUn7Edr/LVnBzfwzRLCxL1/J+QWP463AhLQh40HtLZaDfKOqQNHu/JoU4Ib5uC3+Z2am9uJi0N81l9UR8JF7DlnbuTHkJWmoiCUFY9O1pGbW7hJ/aaH/8nAk1UwwpZgj8CY1e5YzLHLdTnPBxQem25t/rHG2AF9A=
-    - secure: 0NHYGXploOTo4/VYF33jcRSNFD9H/OLcuusw2JZAgbgbVfog89W8ENpc9q2YtctVf+ie3RpZsXjEJVsQR5jXchmfVI19iND/JLk+vrK+7lR719hseur4wVIzVWzj2goU8Fy34OBN3NQq+0/Vi9rcSnsRbMgUl5nBrM3ISdPD/Ly4TQOmAOXTg3wc2lsmk/CNasGs5LzbganS1HcvKcQpSgOuK8Lzj12nzCGsJUau307gmeJryFp4quW+moB3AJ4HoYKWzWDL61aA4QjVRpzRciNcSEjcrFuBB9J+Q6ag+O+hQZUHU/M0L4CSZJ7mEUylCobqGzEKNS60CHJsalDdOGWQST+2qEfLxi+8nCgj5Bjql9fPOhiTm5XNfaAW/Wy5zn4PfehQa7snthc7ErCtpUZMqbwsyZTfU4LXW30gVy8lpzAB1UsNkDde0MiFJtCwaOHB5K1T6wGV3b8uGXXNgjguwtUg+4ZhnL/KRZUoJFU8f0eE1bqjFRXOueMiE7RL/rFukH4Pq2VsYyaQXTuURAWGWBaEVFiqJJWRdGtzZXtdaI02KVN4oAVoyHOwZTjySJ+/1/gT7A8OQ7SQHPRVTMWqP/oT1mdqFas2up1x6np6MRNWI39GTTVy2yAeEznGRxirFFMcex9IGe5D9dwFY+ZZxzMYnkkqfD82rMFB7Yw=
+  - secure: BVA75qpzxi3U3KlHGOPBX2PH241pYhB58w0ubhJ6CEyAu7zcJSn/usURaXx92ayfoFO8S7PGFi48Y/3Tw1DKi1eTimRnT9Y5neGlsaSKpnBw8LJHhv/YHHOOyYbkJM/42AO0WB1Ihe0h0AT9vDn89zlMbWSqbH3/Jl0t1X8WDyBbewqVAf8RhFKsMNlwMeXSy109hUTMTkhYVh/kHU4LxwCLg4rbJA/MX9GQfUv4enlcrAvN+Z1UhgCt0rugua1Rgbe3j30MARmDdw4qZ0+vlB2HgPGITnmihe5H5JlHmM5t775bQHKWum4QuWmjfexf0hJ151y4ZfK3Da1fpXAB26orMdT6XtN0Z44Do/3aY6eQE+aF92IZ1DHCzRx4bnz1DoWtMS9FaVtDfq3OBfrXm0ijmzBJgj2VuoPNaB58uHuolXBtH878Q2OQyE9zUeLmRjgrAqmh2UY44pJeFkWuymPkUycdHuJQtng1sVYxwhOtfINK9ZgDYfqVXLLIajhm1if2M8sjTZ53/MkRlisb45klYQS0wf39YRxeqO0q6SwDSaK2XTfEY1u4TTnd72ssX6LK9rwWCVObiIQhl378OFT/1lVCEbf6HdH1vt4Q3lh/12b6IDk1qtLiyqmGgxgKKQKzTguurC9j7I36nFp2qQ2aB62yTi+kfl9KaQ8F4JA=
+  - secure: 2RL++U9sBmQdhOTQyLLqs08kknJjSEjNv3I+3ZzYkYoDXMlDErDsITcih7XCgMw62n9Cq1L445xnSfIIkLA/VFR0F0QdaRus8mDFHy5kvYaU4iNBRtkRG/vkvJqmCfucDSu3xUQhsg99+hQXaC4O60idoHVjpKKTqkRZJFo+u1ZU4oUQjuWJe4tPKScZfNJquCiE5o8fxvRR6Pssf6P2LhcApBhHix9HSfoeiPdGeTVNvC7MPIL3dJJHaUXK0lfGlp2cQM1O3eBEGkaKjwqC5uat4KR/0UyVNGU8ISbSIq15q62xBOF8UBEEb5ezHvj0FaKO6W5yFCX7xsGQtdVCC/FmMqEGENbbbjmQEl7UUj9aiPc+DvVHexBgTiPjW1j7U4IRLlD92QDyik9LG/icWmqeBCYKLLanHDHYZU1+tudxr2sylYFPvqZwt+E3x2/M8RQ/kwHVw3YHlKNsdpnuO6qpTyAIH3fjTFSC3qfZ9ie7he2XLPRJYUqy5ThhBXt29sS7kqfCkxVXUn7Edr/LVnBzfwzRLCxL1/J+QWP463AhLQh40HtLZaDfKOqQNHu/JoU4Ib5uC3+Z2am9uJi0N81l9UR8JF7DlnbuTHkJWmoiCUFY9O1pGbW7hJ/aaH/8nAk1UwwpZgj8CY1e5YzLHLdTnPBxQem25t/rHG2AF9A=
+  - secure: 0NHYGXploOTo4/VYF33jcRSNFD9H/OLcuusw2JZAgbgbVfog89W8ENpc9q2YtctVf+ie3RpZsXjEJVsQR5jXchmfVI19iND/JLk+vrK+7lR719hseur4wVIzVWzj2goU8Fy34OBN3NQq+0/Vi9rcSnsRbMgUl5nBrM3ISdPD/Ly4TQOmAOXTg3wc2lsmk/CNasGs5LzbganS1HcvKcQpSgOuK8Lzj12nzCGsJUau307gmeJryFp4quW+moB3AJ4HoYKWzWDL61aA4QjVRpzRciNcSEjcrFuBB9J+Q6ag+O+hQZUHU/M0L4CSZJ7mEUylCobqGzEKNS60CHJsalDdOGWQST+2qEfLxi+8nCgj5Bjql9fPOhiTm5XNfaAW/Wy5zn4PfehQa7snthc7ErCtpUZMqbwsyZTfU4LXW30gVy8lpzAB1UsNkDde0MiFJtCwaOHB5K1T6wGV3b8uGXXNgjguwtUg+4ZhnL/KRZUoJFU8f0eE1bqjFRXOueMiE7RL/rFukH4Pq2VsYyaQXTuURAWGWBaEVFiqJJWRdGtzZXtdaI02KVN4oAVoyHOwZTjySJ+/1/gT7A8OQ7SQHPRVTMWqP/oT1mdqFas2up1x6np6MRNWI39GTTVy2yAeEznGRxirFFMcex9IGe5D9dwFY+ZZxzMYnkkqfD82rMFB7Yw=
   matrix:
-    - EMBER_VERSION=default # the Ember version specified in package.json
-    - EMBER_VERSION=release # the latest release version of Ember
-    - EMBER_VERSION=beta    # the current Ember beta
+  - EMBER_VERSION=default
+  - EMBER_VERSION=release
+  - EMBER_VERSION=beta
 matrix:
-  # Currently (since 2013!) bugged. Will send a notification email/Slack for
-  # *every* job on a build. Remove if Travis ever fixes it, but they don't seem
-  # to care (again, known issue for 3.5+ years with no progress)
-  #fast_finish: true
   allow_failures:
-    - node_js: "node"
-    - env: EMBER_VERSION=release
-    - env: EMBER_VERSION=beta
+  - node_js: node
+  - env: EMBER_VERSION=release
+  - env: EMBER_VERSION=beta
 before_install:
-  # starting a GUI to run tests, per https://docs.travis-ci.com/user/gui-and-headless-browsers/#Using-xvfb-to-Run-Tests-That-Require-a-GUI
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
-  - "npm config set spin false"
-  # This breaks 'npm install'. We'll just let it use whichever NPM came with
-  # the version of Node we're testing against
-  #- "npm install -g npm@^2"
+- export DISPLAY=:99.0
+- sh -e /etc/init.d/xvfb start
+- npm config set spin false
 install:
-  # Use the official PhantomJS Linux binary
-  - mkdir phantomjs
-  - wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2 -O $PWD/phantomjs/phantomjs-2.1.1-linux-x86_64.tar.bz2
-  - tar -xvf $PWD/phantomjs/phantomjs-2.1.1-linux-x86_64.tar.bz2 -C $PWD/phantomjs
-  - export PATH=$PWD/phantomjs:$PATH
-  - npm install -g bower
-  - npm install
-  - bower install
+- mkdir phantomjs
+- wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2
+  -O $PWD/phantomjs/phantomjs-2.1.1-linux-x86_64.tar.bz2
+- tar -xvf $PWD/phantomjs/phantomjs-2.1.1-linux-x86_64.tar.bz2 -C $PWD/phantomjs
+- export PATH=$PWD/phantomjs:$PATH
+- npm install -g bower
+- npm install
+- bower install
 script:
-  - ember try:one ${EMBER_VERSION} test --silent --config-file testem.travis.json
+- ember try:one ${EMBER_VERSION} test --silent --config-file testem.travis.json
 before_deploy:
-  - ember build -prod
+- ember build -prod
 deploy:
   provider: s3
   access_key_id:
-    secure: DEXKh81qg1E1De0Kgpd25hmeI519dnw9q1jzEsmvEBdaMmuM5ABGObAOFvHfhhLqHAkhQgNtcaXDyN2N55wkkT6DEcHeGrduQRb2tD++8D36/FXvt7bryeYp5T+gSj4+uqqRJA9udmOvWKIdJxj6oXrKJq9BAQmsY61Nzu5MrKER8pDpesXtxmWiPWg6Qz0lCpVAiw+Ey8xC61vwPLeCCwwkTZO9kFRO9oPtwOlMFlKNynuaHZTiM3ctzQMQVdpKPEHv1clWzni4wfwOnc9q13MOlAMYRVoZOYnTuesnnK53ERBo5mnx6gM27tZcliyC56pVx5pUHkBA6EMxBCZrg0LkCYkWgGzi18tY2ytU7GY+A6oZv3NmeBUd8Znp3gIBaTjZ93oE0pgk5gC8JuALv2m0SamXrkQ0w5gDASiQ5hewbbiVmExDGnj53uhIbIywz8FBzE1GpOWydGxeXhwJ2mCZlmqCgXx8GY/M9c3NPQO7Xd2zuylkM4CLuTCT5f83La0drCZr33Rx7DLBP83AyGoQmykTqiOAU5LstD5S/S0uIYoMirFsetH/4+iWdrCug/cRGAH2yKe1zbsxHwslEtAgS5NV91whlUEZXWGZ/9vgUC2ux0rqIJLWsj6WC2CIMJTOOB59+TC3bcOnP0wQCraF9IKqB67KvTSWjan588I=
+    secure: jxRyYwUevKT06OesoqZzPuvHvZWtyXev9omiPXOsBidtWFyRgEl4bC8/ZtAER1zh0HQExP5fz1bn1Kbh+7EVOCQ55Xb2Vj/k7IhiT5a4yR+zHd+IamehTDVNW12MQlg3H/IPZsK7BZevi3WAw3NbhS/k+brQA+xCS+d1z97mI3xZmR1Hrm/1wTp1zAAfTSgbrjw69XpFWBIZc8cMuFiK4hiSoiDzQsgsoNl7InweULaim8Aqvui4qwK9GavSrpRbwBoP4wKeGSjCHpqM1LMJctvtqySKiCoxY5QflJsMzvYtmN+A9sN6AKX/7ap2S6F7vig2crqyANpVOfXy3DbwxbIwqUZi+O9BowcjWsk4a7H/WKXtfeCGnAYtjn2OHAHq83ZTkbiDr0TwAPxpWAlB/MyZD6TMTMVr18hLOBnTZKrWnOP6a1lc1DQjL3krIwi2wx00+LFpFbT62uFFfed18uz6YPZnZe6UZswteoDVM8A5umSuPVt8THzYc8YLniZXkekPGLj4LAXSMTEgrfpQHQMcrWr4CKtbuvRF4SmZb39n1mAcMc28NrIfW2/ul5O+05hNGZtfknCxGeL2gA2qV/71otZ0WFAzYbf3A1ldTxTRy99LQFaEhOw+s016M5VYCGc8aJcu9s9Ac3MqtklvTmHV9tPPoQd/qyqkFnPQFlQ=
   secret_access_key:
-    secure: qw5J8KQTLva+/uEOMaqDdlyw7nz3oRw4uhi28nmSvMkOngz64qUSKuGAiNDJK/ky6Huy2t+3iHptdZ1G4RMo2PJzWRr7LuATTJo9cuJrAH2qoYykFXCHgt0hX/jpfuxs+mlDmhhLWdDzK9KjZIuH/D8TXqo/esRkr0uaoUFth/PQmpWj/rYXdccqEfDu4q0oUhuOQ/gftjaRKxwZcPh+7R/q/7ltQyLDnDW/gsg82qMkeF5vPXfitHJnAK+ohqXWcZ8M5MF/Il7Dl6/5+0v42l9Kiy/jf6QKq4BQXl8R5Zxo6JUJcCXWpv/kqp7SmWLiX0Tg1mNKfIjnCNHndJEPBoU93w06MkSOFqnJu4Li4vF1DLaI9ZT56XuDJqJbn23xPfEubnbR+zj5AIJjOgJ83SGn/7+UXiDVg8qjiv42p/XRY19ncPxCJixfUb4MmrGzW9KVGCWy2Vaz+XMrUMI5XrQYlNK8208LT/sfmP9+fuIbBvHTbzCIG+oVJbzg4l5DXULAusK8J5zfrpXFqPTeQiu7do8yKpxszu5NG/BdC5W7epBbFNQ2I/hI8eZZUxSlTFaW3cUJ25Sfl4AJTpa1A3nObzO9Jj5V9ykzIVFokPWlKbaq3qFkEF9/xSMFwmMU9P3U0Vwy7JE9zTRCfDBc/kjoIUgiP3lt3QY3dJ4HH3c=
+    secure: fbRIZIzffLOb4MbDt58Pc6lU+p8aoGYZKb50uWPjpaRr6HghUPwB8FLZXvXACVf2ILgZ92spEjU1gL4g7BQ2B0X57rqp5YvIO390iqH3GKrzqQmiZyxbbWNWaU33wsh0P/TyWFgh9v1XffRUnSbXH1h3gYx14RMf9RD+qLNNq9a5cwdN+qZd8kL5EEzs2CC/hDmggqDjgG6uK29G9tmhxoK3u5kGjAHsXu/iuLutzyHW2RbJ1ql/FiiEyuhD80tlkZOYTUXEUxuIhh7R6v6dF1GxUhO0ei9qeOM7zXiRNE/zdmSB3xvE/KYtETIkk7d393TgSYZv5OmX0vRZGusrn7NroqCMA3DNk4U1uE94zjWDQAViIghV0Lec780Lp/X5WTDZGv1KgvnjKe6UzhZgvoaIh45fgukt6DdqHhnzehK9AkwGQkPkr99HSfsu8OrGE/wQPfZqvkDrm5oy47P80Z1HBmDMfzZglPPSOE+f3sjs32vFmIW3+iicCEShqWplxFb1jAWWzA2aO8r79yWhk1mRQ6GTq8G4/ul+6tkqrwBBLpDf9yxesejNP+P/PMJbt3IfWlRgANPD2I3Jt+pBptuI9aidnWrFOII70ia9NP8oinZkDt5pvnVMXeuQNt7tHLXkkxP8PqxVfWhUhpzrggIC5zjjwzkzP6hZH5aKyvM=
   bucket: ember-dev
   skip_cleanup: true
   local-dir: dist
   acl: public_read
   on:
-    node: "6.10"
+    node: '6.10'
     condition: "$EMBER_VERSION = default"
 notifications:
   slack:
