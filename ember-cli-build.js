@@ -11,6 +11,9 @@ module.exports = function (defaults) {
     'ember-cli-babel': {
       includePolyfill: true,
     },
+    'ember-cli-chartist': {
+      useCustomCSS: true,
+    },
   });
 
   // Use `app.import` to add additional libraries to the generated
