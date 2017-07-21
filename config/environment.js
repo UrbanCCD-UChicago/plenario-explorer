@@ -82,6 +82,10 @@ module.exports = function (environment) {
           label: 'Edmonton, Alberta, Canada',
           bounds: [[53.3956433, -113.7136622], [53.7160698, -113.2714783]],
         },
+        {
+          label: 'Atlanta, GA',
+          bounds: [[33.647808, -84.551819], [33.887618, -84.2891076]],
+        },
       ],
     },
   };
