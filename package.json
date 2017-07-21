@@ -65,7 +65,7 @@
     "eslint-plugin-import": "^2.3.0",
     "geojson-validation": "^0.1.6",
     "highcharts": "^5.0.11",
-    "leaflet": "^1.0.3",
+    "leaflet": "1.0.3",
     "loader.js": "^4.2.3",
     "pusher-js": "^4.1.0",
     "urijs": "^1.18.10"
