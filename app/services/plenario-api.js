@@ -143,7 +143,7 @@ export default Ember.Service.extend({
 
       rejected(reason) {
         if (reason.message === 'Request was formatted incorrectly.' &&
-          reason.payload.error.toString().match(/^No \w+ found within {"crs":/)) {
+          reason.payload.error.toString().match(/^No \w+ found within {/)) {
           // Ignore the API's incorrect usage of 400. It's just an empty list of results,
           // not actually a bad request
           Ember.Logger.info('Ignoring 400 Bad Request');
