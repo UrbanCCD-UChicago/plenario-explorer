@@ -111,6 +111,15 @@ export default Ember.Controller.extend({
       location: [51.4590572, -2.5909956],
       zoom: 11,
     },
+    atlanta: {
+      label: 'Atlanta, GA',
+      bounds: [
+        [33.647808, -84.551819],
+        [33.887618, -84.2891076],
+      ],
+      location: [33.748998, -84.388113],
+      zoom: 10,
+    },
   },
 
   aggOptions: ([
