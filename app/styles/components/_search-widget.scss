@@ -2,6 +2,10 @@
   .card {
     @extend .mb-2;
   }
+  .embed-responsive-1by1 {
+    // Keep the map from getting obnoxiously large at XL breakpoint
+    max-height: 697px;
+  }
 }
 
 // This should be kept in sync with any Leaflet CSS changes
