@@ -1,24 +1,18 @@
 @import 'ember-bootstrap/bootstrap';
+@import 'vendor/highcharts/highcharts';
 
 
 /* ===== General style overrides ===== */
 // e.g. @import 'forms';
 
 
-/* ===== Component-specific styles ===== */
-@import 'components/search-widget';
-@import 'components/loading-spinner.scss';
-@import 'components/lt-search-results.scss';
-@import 'chartist';
 
-.ct-chart {
-  .ct-point {
-    stroke-width: 5px;
-  }
-  .ct-line {
-    stroke-width: 2px;
-  }
-}
+/* ===== Component-specific styles ===== */
+@import 'components/high-charts';
+@import 'components/loading-spinner';
+@import 'components/lt-search-results';
+@import 'components/search-widget';
+
 
 
 /* ===== Browser-specific hotfixes ===== */

@@ -14,7 +14,10 @@ export default BreakoutPageAbstractRoute.extend({
   },
 
   afterModel(resolvedModel) {
-    Ember.assert('grids.length != timeseries.length', resolvedModel.timeseries.length === resolvedModel.grids.length);
+    Ember.assert(
+      'grids.length != timeseries.length',
+      resolvedModel.timeseries.length === resolvedModel.grids.length
+    );
     console.log(resolvedModel);
   },
 

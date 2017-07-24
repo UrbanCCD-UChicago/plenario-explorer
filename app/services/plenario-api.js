@@ -64,10 +64,9 @@ export default Ember.Service.extend({
             if (dsNames.length === 1 && dsNames[0] === '') return [];
             return Ember.RSVP.all(
               dsNames.map((name) => {
-                return this.singleDatasetEndpoint('grid', name, appQueryParams)
-                  .then(geoJson => ({ dataset_name: name, geoJson }));
+                return this.singleDatasetEndpoint('grid', name, appQueryParams);
               })
-            ).then(result => _.filter(result, grid => grid.geoJson.features.length > 0));
+            ).then(result => _.filter(result, grid => grid.features.length > 0));
           },
 
           shapes(appQueryParams) {

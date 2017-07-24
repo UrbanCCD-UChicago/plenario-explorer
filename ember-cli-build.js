@@ -11,8 +11,9 @@ module.exports = function (defaults) {
     'ember-cli-babel': {
       includePolyfill: true,
     },
-    'ember-cli-chartist': {
-      useCustomCSS: true,
+    emberHighCharts: {
+      includeHighCharts: true,
+      useStyledMode: true,
     },
   });
 

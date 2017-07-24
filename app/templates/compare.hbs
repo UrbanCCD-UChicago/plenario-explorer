@@ -1,13 +1,41 @@
-<h1>Comparing:</h1>
-<ul>
-  {{#each model.timeseries as |dataset|}}
-    <li>{{dataset.dataset_name}}</li>
-  {{/each}}
-  {{#each model.shapes as |dataset|}}
-    <li>{{dataset.dataset_name}}</li>
-  {{/each}}
-  {{#each model.features as |dataset|}}
-    <li>{{dataset.dataset_name}}</li>
-  {{/each}}
-</ul>
-{{outlet}}
+<section class="container">
+  <div class="row">
+    <div class="col-6">
+      <div class="embed-responsive embed-responsive-4by3">
+        {{!--<img class="embed-responsive-item" src="http://placehold.it/400x300" alt="">--}}
+        {{high-charts class="embed-responsive-item"
+                      content=chartData
+                      chartOptions=chartOptions}}
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="embed-responsive embed-responsive-4by3">
+        {{!--<img class="embed-responsive-item" src="http://placehold.it/400x300" alt="">--}}
+        {{#leaflet-map class="embed-responsive-item"
+                       zoomAnimation=(not disableAnimations)
+                       fadeAnimation=(not disableAnimations)
+                       markerZoomAnimation=(not disableAnimations)
+                       bounds=mapBounds
+                       as |layers|}}
+          {{layers.tile url="https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}{r}.png"}}
+          {{#each model.grids as |grid index|}}
+            {{layers.geojson geoJSON=grid className=(concat "highcharts-color-" index)}}
+          {{/each}}
+        {{/leaflet-map}}
+      </div>
+    </div>
+  </div>
+  <h1>Comparing:</h1>
+  <ul>
+    {{#each model.timeseries as |dataset|}}
+      <li>{{dataset.dataset_name}}</li>
+    {{/each}}
+    {{#each model.shapes as |dataset|}}
+      <li>{{dataset.dataset_name}}</li>
+    {{/each}}
+    {{#each model.features as |dataset|}}
+      <li>{{dataset.dataset_name}}</li>
+    {{/each}}
+  </ul>
+  {{outlet}}
+</section>

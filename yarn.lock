@@ -1353,7 +1353,7 @@ broccoli-merge-trees@1.1.1:
     rimraf "^2.4.3"
     symlink-or-copy "^1.0.0"
 
-broccoli-merge-trees@^1.0.0, broccoli-merge-trees@^1.1.0, broccoli-merge-trees@^1.1.1, broccoli-merge-trees@^1.1.2, broccoli-merge-trees@^1.1.3, broccoli-merge-trees@^1.1.4, broccoli-merge-trees@^1.1.5, broccoli-merge-trees@^1.2.1, broccoli-merge-trees@^1.2.4:
+broccoli-merge-trees@^1.0.0, broccoli-merge-trees@^1.1.0, broccoli-merge-trees@^1.1.1, broccoli-merge-trees@^1.1.2, broccoli-merge-trees@^1.1.3, broccoli-merge-trees@^1.1.4, broccoli-merge-trees@^1.1.5, broccoli-merge-trees@^1.2.4:
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/broccoli-merge-trees/-/broccoli-merge-trees-1.2.4.tgz#a001519bb5067f06589d91afa2942445a2d0fdb5"
   dependencies:
@@ -1778,14 +1778,6 @@ charm@^1.0.0:
   resolved "https://registry.yarnpkg.com/charm/-/charm-1.0.2.tgz#8add367153a6d9a581331052c4090991da995e35"
   dependencies:
     inherits "^2.0.1"
-
-chartist@^0.10.1:
-  version "0.10.1"
-  resolved "https://registry.yarnpkg.com/chartist/-/chartist-0.10.1.tgz#3dd513d531dfca6b78e777fe0500d9c7e6406931"
-
-chartist@^0.11.0:
-  version "0.11.0"
-  resolved "https://registry.yarnpkg.com/chartist/-/chartist-0.11.0.tgz#84ba5e05490d096d93dcfa9343ebc31ef6a3bd28"
 
 cipher-base@^1.0.0, cipher-base@^1.0.1, cipher-base@^1.0.3:
   version "1.0.3"
@@ -2523,16 +2515,6 @@ ember-cli-chai@^0.4.2:
     rollup-plugin-commonjs "^5.0.5"
     rollup-plugin-node-resolve "^2.0.0"
 
-ember-cli-chartist@brlodi/ember-cli-chartist#remove-bower-dependency:
-  version "1.2.0"
-  resolved "https://codeload.github.com/brlodi/ember-cli-chartist/tar.gz/ffd5cb4e2ae1474343b4e429624366d2307b02a9"
-  dependencies:
-    broccoli-funnel "^1.1.0"
-    broccoli-merge-trees "^1.2.1"
-    chartist "^0.10.1"
-    ember-cli-babel "^5.1.7"
-    ember-cli-htmlbars "^1.1.1"
-
 ember-cli-dependency-checker@^1.3.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/ember-cli-dependency-checker/-/ember-cli-dependency-checker-1.4.0.tgz#2b13f977e1eea843fc1a21a001be6ca5d4ef1942"
@@ -2950,13 +2932,23 @@ ember-getowner-polyfill@1.1.1:
     ember-cli-babel "^5.1.6"
     ember-cli-version-checker "^1.2.0"
 
-ember-getowner-polyfill@^1.1.1:
+ember-getowner-polyfill@^1.1.1, ember-getowner-polyfill@^1.2.2:
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/ember-getowner-polyfill/-/ember-getowner-polyfill-1.2.3.tgz#ea70f4a48b1c05b91056371d1878bbafe018222e"
   dependencies:
     ember-cli-babel "^5.1.6"
     ember-cli-version-checker "^1.2.0"
     ember-factory-for-polyfill "^1.1.0"
+
+"ember-highcharts@git+https://github.com/brlodi/ember-highcharts.git#highcharts-5-fix-tests":
+  version "0.5.4"
+  resolved "git+https://github.com/brlodi/ember-highcharts.git#210389617d0eea4e9f458f25228313733cb405e8"
+  dependencies:
+    broccoli-funnel "^1.0.1"
+    broccoli-merge-trees "^1.1.1"
+    ember-cli-babel "^5.1.7"
+    ember-cli-htmlbars "^1.1.1"
+    ember-getowner-polyfill "^1.2.2"
 
 ember-in-viewport@2.1.1:
   version "2.1.1"
@@ -4229,6 +4221,10 @@ heimdalljs@^0.3.0:
   resolved "https://registry.yarnpkg.com/heimdalljs/-/heimdalljs-0.3.3.tgz#e92d2c6f77fd46d5bf50b610d28ad31755054d0b"
   dependencies:
     rsvp "~3.2.1"
+
+highcharts@^5.0.12:
+  version "5.0.12"
+  resolved "https://registry.yarnpkg.com/highcharts/-/highcharts-5.0.12.tgz#f73b970fe5c7f04100220b64aa7bd7fb019d11e2"
 
 hmac-drbg@^1.0.0:
   version "1.0.1"
