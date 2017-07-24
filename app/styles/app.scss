@@ -11,6 +11,15 @@
 @import 'components/lt-search-results.scss';
 @import 'chartist';
 
+.ct-chart {
+  .ct-point {
+    stroke-width: 5px;
+  }
+  .ct-line {
+    stroke-width: 2px;
+  }
+}
+
 
 /* ===== Browser-specific hotfixes ===== */
 /*  For flexbugs, rendering quirks, etc. */
