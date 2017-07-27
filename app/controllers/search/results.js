@@ -23,20 +23,12 @@ export default Ember.Controller.extend({
     },
     {
       label: 'Data Type',
-      valuePath: 'name',
-      format: string => _.chain(string).replace(/[_-]/, ' ')
-        .startCase()
-        .value(),
+      valuePath: 'humanName',
     },
     {
       label: 'Available Subtypes',
       valuePath: 'properties',
-      format: props => props.map(p =>
-        (p.common_name ? p.common_name.split(':').slice(-1) :
-          _.chain(p.name).replace(/[_-]/, ' ')
-            .startCase()
-            .value()
-        )).join(', '),
+      format: props => props.map(p => p.common_name.split(':').slice(-1)).join(', '),
       sortable: false,
     },
   ],
@@ -49,11 +41,11 @@ export default Ember.Controller.extend({
     },
     {
       label: 'Dataset Name',
-      valuePath: 'human_name',
+      valuePath: 'humanName',
     },
     {
       label: 'Source',
-      valuePath: 'attribution',
+      valuePath: 'provider',
     },
   ],
 

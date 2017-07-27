@@ -6,6 +6,7 @@ export default Ember.Service.extend({
   ajax: Ember.inject.service(),
 
   appParamsToApiParamsMap: {
+    datasetName: 'dataset_name',
     datasetNames: 'dataset_name__in',
     startDate: 'obs_date__ge',
     endDate: 'obs_date__le',
@@ -16,7 +17,6 @@ export default Ember.Service.extend({
 
   init() {
     this.fetch = this.fetch(this);
-    this.handle = this.handle(this);
     this.adapter = this.adapter(this);
   },
 
@@ -28,56 +28,151 @@ export default Ember.Service.extend({
       core: (function () { return {
         metadata: (function () { return {
 
-          datasets(endpoint, appQueryParams) {
-            const qp = service.adapter.appParamsToApiParams(appQueryParams);
-            return ajax.request(endpoint, { data: qp })
-              .then(service.handle.core.fulfilled, service.handle.core.rejected);
+          events(datasetNames, startDate, endDate, withinArea, useSimpleBbox) {
+            // TODO: in future, if API treats 'dataset_name__in' as and includes operation
+            // and not an iterable list of datasets to query, should be able to just pass
+            // datasetNames straight through, instead of filtering them client-side below
+            const qp = service.adapter.mapQueryParamNames(
+              { startDate, endDate, withinArea, useSimpleBbox }
+            );
+
+            Ember.Logger.debug('Calling /datasets with params: ', qp);
+
+            return ajax.request('datasets', { data: qp })
+              .then(response => response.objects)
+              .then(this._standardize)
+              .then((datasets) => {
+                if (!datasetNames) {
+                  return datasets;
+                }
+                return _.filter(datasets, dataset => _.includes(datasetNames, dataset.name));
+              });
           },
 
-          events(appQueryParams) {
-            return this.datasets('datasets', appQueryParams);
+          shapes(datasetNames, withinArea, useSimpleBbox) {
+            const qp = service.adapter.mapQueryParamNames({ withinArea, useSimpleBbox });
+
+            Ember.Logger.debug('Calling /shapes with params: ', qp);
+
+            return ajax.request('shapes', { data: qp })
+              .then(response => response.objects)
+              .then(this._standardize)
+              .then((shapes) => {
+                if (!datasetNames) {
+                  return shapes;
+                }
+                return _.filter(shapes, shape => _.includes(datasetNames, shape.name));
+              });
           },
 
-          shapes(appQueryParams) {
-            return this.datasets('shapes', appQueryParams);
+          _standardize(metadataObjects) {
+            return _.chain(metadataObjects)
+              .map(mO => ({
+                name: mO.dataset_name,
+                humanName: mO.human_name,
+                provider: mO.attribution,
+                description: mO.description,
+                dateAdded: mO.date_added,
+                oldest: mO.obs_from,
+                newest: mO.obs_to,
+                lastUpdate: mO.last_update,
+                updateFreq: mO.update_freq,
+                bbox: mO.bbox,
+                urls: {
+                  source: mO.source_url,
+                  view: mO.view_url,
+                },
+              }))
+              .sortBy(['name', 'provider'])
+              .value();
           },
 
         }; }()),
 
         data: (function () { return {
 
-          timeseries(appQueryParams) {
-            const qp = service.adapter.appParamsToApiParams(appQueryParams);
+          timeseries(datasetNames, startDate, endDate, aggregateBy, withinArea) {
+            const qp = service.adapter.mapQueryParamNames(
+              { datasetNames, startDate, endDate, aggregateBy, withinArea }
+            );
+            Ember.Logger.debug('Calling /timeseries with params: ', qp);
             return ajax.request('timeseries', { data: qp })
-              .then(service.handle.core.fulfilled, service.handle.core.rejected);
+              .then(response => response.objects)
+              .then(timeseries => _.map(timeseries, ts => ({
+                name: ts.dataset_name,
+                aggregatedEvents: ts.items,
+              })));
           },
 
-          singleDatasetEndpoint(endpoint, datasetName, appQueryParams) {
-            const qp = service.adapter.appParamsToApiParams(appQueryParams);
-            delete qp.dataset_name__in;
-            qp.dataset_name = datasetName;
-            return ajax.request(endpoint, { data: qp });
+          timeseriesFor(eventMetadataObjects, startDate, endDate, aggregateBy, withinArea) {
+            if (eventMetadataObjects.length < 1) {
+              return Ember.RSVP.resolve([]);
+            }
+
+            const datasetNames = _.map(eventMetadataObjects, mO => mO.name);
+            return this.timeseries(datasetNames, startDate, endDate, aggregateBy, withinArea)
+              .then((timeseriesData) => {
+                _.forEach(eventMetadataObjects, ((mO) => {
+                  const matchedTs = _.find(timeseriesData, td => td.name === mO.name);
+                  _.assign(mO, matchedTs);
+                }));
+                return eventMetadataObjects;
+              });
           },
 
-          grids(appQueryParams) {
-            const dsNames = appQueryParams.datasetNames.split(',');
-            if (dsNames.length === 1 && dsNames[0] === '') return [];
+          grids(datasetNames, startDate, endDate, aggregateBy, withinArea) {
+            const commonQp = service.adapter.mapQueryParamNames(
+              { startDate, endDate, aggregateBy, withinArea }
+            );
             return Ember.RSVP.all(
-              dsNames.map((name) => {
-                return this.singleDatasetEndpoint('grid', name, appQueryParams);
-              })
-            ).then(result => _.filter(result, grid => grid.features.length > 0));
-          },
-
-          shapes(appQueryParams) {
-            const dsNames = appQueryParams.datasetNames.split(',');
-            if (dsNames.length === 1 && dsNames[0] === '') return [];
-            return Ember.RSVP.all(
-              dsNames.map(name =>
-                this.singleDatasetEndpoint('shapes', name, appQueryParams)
-                  .then(service.handle.core.fulfilled, service.handle.core.rejected)
+              _.map(datasetNames, datasetName =>
+                ajax.request('grid', { data: _.assign({ dataset_name: datasetName }, commonQp) })
+                  .then(grid => ({ name: grid.properties.dataset, geoJSON: grid }))
               )
             );
+          },
+
+          gridsFor(eventMetadataObjects, startDate, endDate, aggregateBy, withinArea) {
+            if (eventMetadataObjects.length < 1) {
+              return Ember.RSVP.resolve([]);
+            }
+
+            const datasetNames = _.map(eventMetadataObjects, mO => mO.name);
+            return this.grids(datasetNames, startDate, endDate, aggregateBy, withinArea)
+              .then((grids) => {
+                _.forEach(eventMetadataObjects, ((mO) => {
+                  const matchedGrid = _.find(grids, g => g.name === mO.name);
+                  _.assign(mO, matchedGrid);
+                }));
+                return eventMetadataObjects;
+              });
+          },
+
+          shapes(datasetNames, withinArea) {
+            const qp = service.adapter.mapQueryParamNames({ withinArea });
+            return Ember.RSVP.all(
+              _.map(datasetNames, datasetName =>
+                ajax.request(`shapes/${datasetName}`, { data: qp })
+                // TODO: switch to using response properties for name, when it has some
+                  .then(shape => ({ name: datasetName, geoJSON: shape }))
+              )
+            );
+          },
+
+          shapesFor(shapeMetadataObjects, withinArea) {
+            if (shapeMetadataObjects.length < 1) {
+              return Ember.RSVP.resolve([]);
+            }
+
+            const datasetNames = _.map(shapeMetadataObjects, mO => mO.name);
+            return this.shapes(datasetNames, withinArea)
+              .then((shapes) => {
+                _.forEach(shapeMetadataObjects, ((mO) => {
+                  const matchedShape = _.find(shapes, g => g.name === mO.name);
+                  _.assign(mO, matchedShape);
+                }));
+                return shapeMetadataObjects;
+              });
           },
 
         }; }()),
@@ -87,36 +182,46 @@ export default Ember.Service.extend({
 
         metadata: (function () { return {
 
-          nodes(network, appQueryParams) {
-            const qp = service.adapter.appParamsToNetworkMetadataApiParams(appQueryParams);
-            console.log('qp: ', qp);
+          nodes(network, withinArea) {
+            const qp = service.adapter.mapQueryParamNames({ withinArea });
+
             return ajax.request(`/sensor-networks/${network}/nodes`, { data: qp })
-              .then(service.handle.networks.fulfilled, service.handle.networks.rejected);
+              .then(r => r.data);
           },
 
-          features(network, appQueryParams) {
-            const qp = service.adapter.appParamsToNetworkMetadataApiParams(appQueryParams);
+          features(network, withinArea) {
+            const qp = service.adapter.mapQueryParamNames({ withinArea });
+
+            // Fix the query parameter names because this uses different ones
+            if (qp.location_geom__within) {
+              qp.geom = qp.location_geom__within;
+              delete qp.location_geom__within;
+            }
+
             return ajax.request(`/sensor-networks/${network}/features`, { data: qp })
-              .then(service.handle.networks.fulfilled, service.handle.networks.rejected);
-          },
-
-        }; }()),
-
-        data: (function () { return {
-
-          rawObservations(network, featureNames, appQueryParams) {
-            return Ember.RSVP.all(
-              featureNames.map((name) => {
-                const qp = {
-                  feature: name,
-                  start_datetime: appQueryParams.startDate,
-                  end_datetime: appQueryParams.endDate,
-                };
-                return ajax.request(`/sensor-networks/${network}/query`, { data: qp })
-                  .then(service.handle.networks.fulfilled, service.handle.networks.rejected)
-                  .then(observations => ({ dataset_name: name, observations }));
-              })
-            );
+              .then(
+                r => r.data,
+                r => (r.payload.error.match(/^No features found within /) ? [] : r.payload.error)
+              ).then(
+                data => _.chain(data)
+                  .map(feat =>
+                    ({
+                      name: feat.name,
+                      humanName: _.chain(feat.name)
+                        .words()
+                        .join(' ')
+                        .startCase()
+                        .value(),
+                      provider: _.chain(network)
+                        .words()
+                        .join(' ')
+                        .startCase()
+                        .value(),
+                      properties: _.filter(feat.properties, 'common_name'),
+                    }))
+                  .filter(feat => feat.properties.length > 0)
+                  .value()
+              );
           },
 
         }; }()),
@@ -127,59 +232,25 @@ export default Ember.Service.extend({
   /* eslint-enable brace-style */
 
   /* eslint-disable brace-style */
-  handle(/* self */) { return {
-
-    core: (function () { return {
-
-      fulfilled(response) {
-        return response.objects;
-      },
-
-      rejected(reason) {
-        return reason;
-      },
-
-    }; }()),
-
-    networks: (function () { return {
-
-      fulfilled(response) {
-        return response.data;
-      },
-
-      rejected(reason) {
-        if (reason.message === 'Request was formatted incorrectly.' &&
-          reason.payload.error.toString().match(/^No \w+ found within {/)) {
-          // Ignore the API's incorrect usage of 400. It's just an empty list of results,
-          // not actually a bad request
-          Ember.Logger.info('Ignoring 400 Bad Request');
-          return [];
-        }
-        return reason;
-      },
-
-    }; }()),
-  }; },
-  /* eslint-enable brace-style */
-
-  /* eslint-disable brace-style */
   adapter(service) { return {
 
-    appParamsToApiParams(appParams) {
-      const apiParams = _.mapKeys(appParams, (value, key) => service.appParamsToApiParamsMap[key]);
-      if (Array.isArray(apiParams.dataset_name__in)) {
-        apiParams.dataset_name__in = apiParams.dataset_name__in.join(',');
-      }
-      return apiParams;
-    },
+    mapQueryParamNames(appQueryParams) {
+      const qp = _.mapKeys(appQueryParams, (value, key) => service.appParamsToApiParamsMap[key]);
 
-    appParamsToNetworkMetadataApiParams(appParams) {
-      const apiParams = this.appParamsToApiParams(appParams);
-      if (apiParams.location_geom__within) {
-        apiParams.geom = apiParams.location_geom__within;
-        delete apiParams.location_geom__within;
+      // Stringify the dataset name list as necessessary
+      if (qp.dataset_name__in && qp.dataset_name__in.length === 1) {
+        qp.dataset_name = qp.dataset_name__in[0];
+        delete qp.dataset_name__in;
+      } else if (qp.dataset_name__in) {
+        qp.dataset_name__in = qp.dataset_name__in.join(',');
       }
-      return apiParams;
+
+      // Stringify the search geometry so JQuery.ajax doesn't choke to death on it
+      if (qp.location_geom__within instanceof Object) {
+        qp.location_geom__within = JSON.stringify(qp.location_geom__within);
+      }
+
+      return _.pickBy(qp, value => value !== undefined && value !== null);
     },
 
   }; },

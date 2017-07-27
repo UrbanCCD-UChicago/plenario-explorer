@@ -26,22 +26,25 @@ export default Ember.Route.extend(QueryParamsResetRouteMixin, {
 
   model(params) {
     const api = this.get('api');
+    const { startDate, endDate, withinArea } = params;
+    const useSimpleBbox = true;
 
     return Ember.RSVP.hash({
-      events: api.fetch.core.metadata.events(Object.assign({ useSimpleBbox: true }, params)),
-      shapes: api.fetch.core.metadata.shapes(Object.assign({ useSimpleBbox: true }, params)),
-      features: api.fetch.networks.metadata.features('array_of_things_chicago', params),
+      events:
+        api.fetch.core.metadata.events(undefined, startDate, endDate, withinArea, useSimpleBbox),
+      shapes:
+        api.fetch.core.metadata.shapes(undefined, withinArea, useSimpleBbox),
+      features:
+        api.fetch.networks.metadata.features('array_of_things_chicago', withinArea),
     });
   },
 
   afterModel(resolvedModel, transition) {
-    if (this.get('isUrlNav') && transition.queryParams.withinArea) {
+    const { queryParams } = transition;
+    if (this.get('isUrlNav') && queryParams.withinArea) {
       // This JSON.parse should be safe, since a malformed shape query would have already triggered
       // the model hook's error handling and shipped the user to a relevant error route
-      this.controllerFor('search').set(
-        'urlQueryShape',
-        JSON.parse(transition.queryParams.withinArea)
-      );
+      this.controllerFor('search').set('urlQueryShape', JSON.parse(queryParams.withinArea));
     }
   },
 
@@ -49,10 +52,6 @@ export default Ember.Route.extend(QueryParamsResetRouteMixin, {
     this._super(controller, model);
     controller.set('shouldSmoothScroll', !this.get('isUrlNav'));
     controller.set('tableSelectedDatasets', {});
-  },
-
-  request(endpoint, queryParams) {
-    return this.get('ajax').request(endpoint, { data: queryParams });
   },
 
 });
