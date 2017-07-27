@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import _ from 'npm:lodash';
 import Table from 'ember-light-table';
 
 const LightTableSearchResults = Ember.Component.extend({
@@ -7,11 +8,28 @@ const LightTableSearchResults = Ember.Component.extend({
   sortDir: 'asc',
   filterBy: '',
 
-  table: Ember.computed('rows', 'columns', function () {
+  table: Ember.computed('rowsWithIndexStr.[]', 'columns', function () {
     return new Table(
       this.get('columns'),
-      this.get('rows')
+      this.get('rowsWithIndexStr')
     );
+  }),
+
+  rowsWithIndexStr: Ember.computed('rows.[]', 'columns', function () {
+    const rows = this.get('rows');
+    const cols = _.filter(this.get('columns'), 'valuePath');
+    _.forEach(rows, (row) => {
+      let indexStr = '';
+      _.forEach(cols, (col) => {
+        const cellRawValue = row[col.valuePath];
+        const cellFormatFunc = col.format;
+        const cellValue = cellFormatFunc ? cellFormatFunc(cellRawValue) : cellRawValue;
+        indexStr += `${cellValue.toString()}¶`;
+      });
+      indexStr = _.lowerCase(indexStr);
+      Ember.set(row, 'indexStr', indexStr);
+    });
+    return rows;
   }),
 
   selectionChanged: Ember.observer('table.selectedRows.[]', function () {
@@ -30,17 +48,10 @@ const LightTableSearchResults = Ember.Component.extend({
   }),
 
   applyFilter() {
-    // TODO: index properties so searching is faster
-    const filterBy = this.get('filterBy').toLowerCase();
+    const filterBy = _.lowerCase(this.get('filterBy'));
     const rows = this.get('table.rows');
-    const cols = this.get('table.columns').filter(col => col.valuePath !== null);
-    rows.forEach((row) => {
-      const isMatch = cols.some((col) => {
-        const cellRawValue = row.content[col.valuePath];
-        const cellFormatFunc = col.format;
-        const cellValue = cellFormatFunc ? cellFormatFunc(cellRawValue) : cellRawValue;
-        return cellValue.toString().toLowerCase().includes(filterBy);
-      });
+    _.forEach(rows, (row) => {
+      const isMatch = _.includes(row.content.indexStr, filterBy);
       Ember.set(row, 'hidden', !isMatch);
     });
   },

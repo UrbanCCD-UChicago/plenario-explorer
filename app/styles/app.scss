@@ -8,7 +8,7 @@
 
 
 /* ===== Component-specific styles ===== */
-@import 'components/high-charts';
+@import 'components/high-charts.scss';
 @import 'components/loading-spinner';
 @import 'components/lt-search-results';
 @import 'components/search-widget';
@@ -30,4 +30,41 @@ section.container {
 
 section.full-page {
   min-height: 100vh;
+}
+
+// For breakout page
+$dataset-colors: $blue $yellow $red $green $teal $pink $orange;
+
+// Redefine the color classes
+@for $i from 1 through length($dataset-colors) {
+  $color: nth($dataset-colors, $i);
+  .dataset-color-#{$i - 1} {
+    color: $color;
+    .leaflet-container &.grid {
+      stroke: none;
+      fill: $color;
+      fill-opacity: 0.8;
+    }
+    .leaflet-container &.shape {
+      stroke: $color;
+      stroke-opacity: 0.8;
+      fill: none;
+    }
+  }
+  .highcharts-color-#{$i - 1} {
+    fill: $color;
+    stroke: $color;
+    .highcharts-label-box {
+      fill: change_color($color, $lightness: 97%);
+    }
+  }
+}
+
+.leaflet-container .map-search-boundary {
+  fill: $gray-lighter;
+  fill-opacity: 0.4;
+  stroke: $gray-light;
+  stroke-width: 1px;
+  stroke-opacity: 0.4;
+  stroke-dasharray: 1px, 3px;
 }

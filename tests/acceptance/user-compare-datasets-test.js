@@ -1,5 +1,5 @@
 import { describe, it, beforeEach, afterEach } from 'mocha';
-import { expect } from 'chai';
+// import { expect } from 'chai';
 import startApp from 'plenario-explorer/tests/helpers/start-app';
 import destroyApp from 'plenario-explorer/tests/helpers/destroy-app';
 

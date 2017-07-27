@@ -1,41 +1,45 @@
 <section class="container">
   <div class="row">
-    <div class="col-6">
-      <div class="embed-responsive embed-responsive-4by3">
-        {{!--<img class="embed-responsive-item" src="http://placehold.it/400x300" alt="">--}}
-        {{high-charts class="embed-responsive-item"
-                      content=chartData
-                      chartOptions=chartOptions}}
+    {{#if chartData}}
+      <div class="col">
+        <div class="embed-responsive embed-responsive-4by3">
+          {{high-charts class="embed-responsive-item"
+                        content=chartData
+                        chartOptions=chartOptions}}
+        </div>
       </div>
-    </div>
-    <div class="col-6">
-      <div class="embed-responsive embed-responsive-4by3">
-        {{!--<img class="embed-responsive-item" src="http://placehold.it/400x300" alt="">--}}
-        {{#leaflet-map class="embed-responsive-item"
-                       zoomAnimation=(not disableAnimations)
-                       fadeAnimation=(not disableAnimations)
-                       markerZoomAnimation=(not disableAnimations)
-                       bounds=mapBounds
-                       as |layers|}}
-          {{layers.tile url="https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}{r}.png"}}
-          {{#each model.grids as |grid index|}}
-            {{layers.geojson geoJSON=grid className=(concat "highcharts-color-" index)}}
-          {{/each}}
-        {{/leaflet-map}}
+    {{/if}}
+    {{#if mapBounds}}
+      <div class="col">
+        <div class="embed-responsive embed-responsive-4by3">
+          {{#leaflet-map class="embed-responsive-item"
+                         zoomAnimation=(not disableAnimations)
+                         fadeAnimation=(not disableAnimations)
+                         markerZoomAnimation=(not disableAnimations)
+                         bounds=mapBounds
+                         as |layers|}}
+            {{layers.tile url="https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}{r}.png"}}
+            {{layers.geojson geoJSON=mapSearchLimit className="map-search-boundary"}}
+            {{!-- This depends on the Plenar.io API providing consistent grids across datasets --}}
+            {{!--{{#each griddedEvents as |event index|}}--}}
+              {{!--{{layers.geojson geoJSON=event.geoJSON--}}
+                               {{!--className=(concat "grid " "dataset-color-" event.colorIndex)}}--}}
+            {{!--{{/each}}--}}
+            {{#each model.shapes as |shape index|}}
+              {{layers.geojson geoJSON=shape.geoJSON
+                               className=(concat "shape " "dataset-color-" shape.colorIndex)}}
+            {{/each}}
+          {{/leaflet-map}}
+        </div>
       </div>
-    </div>
+    {{/if}}
   </div>
   <h1>Comparing:</h1>
-  <ul>
-    {{#each model.timeseries as |dataset|}}
-      <li>{{dataset.dataset_name}}</li>
-    {{/each}}
-    {{#each model.shapes as |dataset|}}
-      <li>{{dataset.dataset_name}}</li>
-    {{/each}}
-    {{#each model.features as |dataset|}}
-      <li>{{dataset.dataset_name}}</li>
-    {{/each}}
-  </ul>
+  {{#each allDatasets as |dataset|}}
+    <span class="dataset-color-{{dataset.colorIndex}}">{{fa-icon "circle"}}</span> {{dataset.humanName}}<br>
+  {{/each}}
+  {{#each model.features as |dataset|}}
+    {{dataset.dataset_name}}<br>
+  {{/each}}
   {{outlet}}
 </section>

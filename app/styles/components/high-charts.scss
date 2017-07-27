@@ -1,10 +1,4 @@
-$colors: $red $green $blue $yellow $teal $pink $orange;
-
-// Redefine the color classes
-@for $i from 1 through length($colors) {
-  $color: nth($colors, $i);
-  .highcharts-color-#{$i - 1} {
-    fill: $color;
-    stroke: $color;
-  }
+.highcharts-label-box {
+  fill: $white;
+  fill-opacity: 1.0;
 }

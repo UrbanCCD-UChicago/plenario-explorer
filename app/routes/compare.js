@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import _ from 'npm:lodash';
 import BreakoutPageAbstractRoute from './breakout-base';
 
 export default BreakoutPageAbstractRoute.extend({
@@ -13,12 +13,15 @@ export default BreakoutPageAbstractRoute.extend({
     }
   },
 
-  afterModel(resolvedModel) {
-    Ember.assert(
-      'grids.length != timeseries.length',
-      resolvedModel.timeseries.length === resolvedModel.grids.length
-    );
-    console.log(resolvedModel);
+  afterModel(model) {
+    _.forEach(model.events, (event, index) => {
+      event.colorIndex = index % 7; // eslint-disable-line no-param-reassign
+    });
+    _.forEach(model.shapes, (shape, index) => {
+      shape.colorIndex = (model.events.length + index) % 7; // eslint-disable-line no-param-reassign
+    });
+
+    return model;
   },
 
 });
