@@ -1,0 +1,12 @@
+<div class="row">
+  <div class="col-12">
+    {{#light-table table tableClassNames="table table-sm compare-table mb-0" as |t|}}
+      {{t.head iconAscending="fa fa-angle-up"
+               iconDescending="fa fa-angle-down"
+               onColumnClick=(action "onColumnClick")}}
+      {{t.body canSelect=true
+               multiSelect=true
+               multiSelectRequiresKeyboard=false}}
+    {{/light-table}}
+  </div>
+</div>

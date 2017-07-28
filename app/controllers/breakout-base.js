@@ -8,17 +8,24 @@ export default Ember.Controller.extend({
   queryParameters: ['startDate', 'endDate', 'aggregateBy', 'withinArea'],
 
   allDatasets: Ember.computed.union('model.events', 'model.shapes'),
+  spatialDatasets: Ember.computed.filter(
+    'allDatasets',
+    ds => (ds.geoJSON && ds.geoJSON.features.length > 0)
+  ),
+  temporalDatasets: Ember.computed.filter(
+    'allDatasets',
+    ds => (ds.aggregatedEvents && ds.aggregatedEvents.length > 0)
+  ),
 
-  mapBounds: Ember.computed('model', function () {
-    const griddedEvents = this.get('griddedEvents');
-    const shapes = this.get('model.shapes');
+  mapBounds: Ember.computed('spatialDatasets', function () {
+    const datasets = this.get('spatialDatasets');
 
     const allGeoJSONLayers = [];
 
-    _.forEach(griddedEvents, event => allGeoJSONLayers.push(L.geoJSON(event.geoJSON)));
-    _.forEach(shapes, shape => allGeoJSONLayers.push(L.geoJSON(shape.geoJSON)));
+    _.forEach(datasets, ds => allGeoJSONLayers.push(L.geoJSON(ds.geoJSON)));
 
-    return L.featureGroup(allGeoJSONLayers).getBounds();
+    const mapBounds = L.featureGroup(allGeoJSONLayers).getBounds();
+    return mapBounds.isValid() ? mapBounds : undefined;
   }),
 
   mapSearchLimit: Ember.computed('withinArea', function () {
@@ -34,10 +41,8 @@ export default Ember.Controller.extend({
     return turfDifference(worldGeoJSON, areaGeoJSON);
   }),
 
-  griddedEvents: Ember.computed.filter('model.events', (event => event.geoJSON)),
-
-  chartData: Ember.computed('model', function () {
-    const timeseriesData = _.filter(this.get('model.events'), 'aggregatedEvents');
+  chartData: Ember.computed('plottedDatasets', function () {
+    const timeseriesData = this.get('plottedDatasets');
 
     if (!timeseriesData || timeseriesData.length < 1) {
       return undefined;

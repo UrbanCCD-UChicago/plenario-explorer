@@ -1,0 +1,8 @@
+<span class="dataset-color-{{row.content.colorIndex}}">
+  {{#if row.selected}}
+    {{fa-icon "toggle-on" fixedWidth=true}}
+  {{else}}
+    {{fa-icon "toggle-off" fixedWidth=true}}
+  {{/if}}
+</span>
+{{yield}}

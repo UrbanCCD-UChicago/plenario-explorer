@@ -58,6 +58,7 @@ export default Ember.Controller.extend({
       this.toggleProperty(`isExpanded.${_.camelCase(targetId)}`);
     },
     userDidChangeSelection(tableElementId, selectedRows) {
+      // TODO: use Lodash for this
       const selectedDatasets = selectedRows.map(row =>
         (row.content.dataset_name ? row.content.dataset_name : row.content.name)
       );

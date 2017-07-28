@@ -61,6 +61,7 @@ const LightTableSearchResults = Ember.Component.extend({
     if (!sortBy) {
       return;
     }
+    // TODO: use Lodash for this
     const sortedRows = this.get('table.rows').sortBy(`content.${sortBy}`);
     if (this.get('sortDir') === 'desc') {
       sortedRows.reverse();
