@@ -2,43 +2,38 @@
 <section class="container">
   <div class="row">
     <div class="col-11">
+      {{#bs-button type="outline-primary" size="sm" onClick=(action "returnToSearch")}}
+        {{fa-icon "arrow-left"}}&ensp;Back to search
+      {{/bs-button}}
       <h1>View &amp; Compare</h1>
     </div>
   </div>
-  <div class="row">
-    <div class="col">
-      <div class="embed-responsive embed-responsive-4by3">
-        {{#if plottedDatasets}}
+  <div class="row no-gutters mb-3">
+    {{#if plottedDatasets}}
+      <div class="col">
+        <div class="embed-responsive embed-responsive-{{if mappedDatasets "4by3" "8by3"}}">
           {{high-charts class="embed-responsive-item"
                         content=chartData
                         chartOptions=chartOptions}}
-        {{else}}
-          <div class="embed-responsive-item">
-            <div class="card bg-faded w-100 h-100">
-              <div class="card-block d-flex align-items-center justify-content-center">
-                <p class="card-text text-muted text-center w-75">
-                  Select temporal datasets below to see them plotted over time here.
-                </p>
-              </div>
-            </div>
-          </div>
-        {{/if}}
+        </div>
       </div>
-    </div>
-    <div class="col">
-      <div class="embed-responsive embed-responsive-4by3">
-        {{#if mappedDatasets}}
+    {{/if}}
+    {{#if mappedDatasets}}
+      <div class="col">
+        <div class="embed-responsive embed-responsive-{{if plottedDatasets "4by3" "8by3"}}">
+
           {{#leaflet-map class="embed-responsive-item"
                          zoomAnimation=(not disableAnimations)
                          fadeAnimation=(not disableAnimations)
                          markerZoomAnimation=(not disableAnimations)
-                         bounds=mapBounds
-                         as |layers|}}
+                         bounds=mapBounds as |layers|}}
             {{layers.tile url="https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}{r}.png"}}
             {{layers.geojson geoJSON=mapSearchLimit className="map-search-boundary"}}
             {{#each mappedDatasets as |dataset|}}
               {{#if (gte dataset.colorIndex 0)}}
                 {{layers.geojson geoJSON=dataset.geoJSON
+                                 pointToLayer=mapGeoJSONPointToLayer
+                                 onEachFeature=(unless dataset.aggregatedEvents createShapePopup)
                                  className=(concat
                                    (if dataset.aggregatedEvents "grid" "shape")
                                    " "
@@ -48,19 +43,42 @@
               {{/if}}
             {{/each}}
           {{/leaflet-map}}
-        {{else}}
-          <div class="embed-responsive-item">
-            <div class="card bg-faded w-100 h-100">
-              <div class="card-block d-flex align-items-center justify-content-center">
-                <p class="card-text text-muted text-center w-75">
-                  Select spatial datasets below to compare them on a map.
-                </p>
-              </div>
+        </div>
+      </div>
+    {{/if}}
+    {{#unless (or plottedDatasets mappedDatasets)}}
+      <div class="col-12">
+        <div class="embed-responsive embed-responsive-8by3">
+          <div class="card bg-faded embed-responsive-item">
+            <div class="card-block d-flex align-items-center justify-content-center">
+              <p class="card-text text-muted text-center w-75">
+                Select datasets below to visualize them here.
+              </p>
             </div>
           </div>
-        {{/if}}
+        </div>
+      </div>
+    {{/unless}}
+  </div>
+  {{lt-compare allDatasets columns=tableColumns onSelectionChanged="userDidChangeSelection" classNames="mb-3"}}
+  {{#if (gt model.falsePositives.length 0)}}
+    <div class="row">
+      <div class="col">
+        <p class="h6">Not Displayed:</p>
+        <p class="small text-muted">
+          The Plenar.io Explorer takes advantage of Plenar.io's opt-in fast-find option when displaying search
+          results, which ensures a lightning-fast response. Unfortunately, this occasionally creates "false positives"
+          where the search area contains a particular dataset but when inspecting individual records for display none are
+          found.
+        </p>
+        <ul>
+          {{#each model.falsePositives as |dataset|}}
+            <li>{{dataset.humanName}} <span class="small text-muted">{{dataset.provider}}</span></li>
+          {{/each}}
+        </ul>
       </div>
     </div>
-  </div>
-  {{lt-compare allDatasets columns=tableColumns onSelectionChanged="userDidChangeSelection"}}
+  {{/if}}
 </section>
+
+{{log model}}

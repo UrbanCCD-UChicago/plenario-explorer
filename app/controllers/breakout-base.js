@@ -17,8 +17,9 @@ export default Ember.Controller.extend({
     ds => (ds.aggregatedEvents && ds.aggregatedEvents.length > 0)
   ),
 
-  mapBounds: Ember.computed('spatialDatasets', function () {
-    const datasets = this.get('spatialDatasets');
+  mappedDatasets: Ember.computed.alias('spatialDatasets'),
+  mapBounds: Ember.computed('mappedDatasets', function () {
+    const datasets = this.get('mappedDatasets');
 
     const allGeoJSONLayers = [];
 
@@ -41,6 +42,23 @@ export default Ember.Controller.extend({
     return turfDifference(worldGeoJSON, areaGeoJSON);
   }),
 
+  createShapePopup(geoJSONFeature, layer) {
+    const display = _.chain(geoJSONFeature.properties)
+      .toPairs()
+      .map(([key, value]) => {
+        if (key === 'colorIndex' || value === null) return null;
+        const humanizedKey = _.chain(key)
+          .words()
+          .join(' ')
+          .startCase()
+          .value();
+        return `<strong>${humanizedKey}:</strong> ${value}`;
+      }).filter(el => el)
+      .join('<br>')
+      .value();
+    layer.bindPopup(display);
+  },
+
   chartData: Ember.computed('plottedDatasets', function () {
     const timeseriesData = this.get('plottedDatasets');
 
@@ -55,5 +73,14 @@ export default Ember.Controller.extend({
         .map(item => ({ x: moment(item.datetime).valueOf(), y: item.count })),
     }));
   }),
+
+  actions: {
+    returnToSearch() {
+      this.transitionToRoute(
+        'search.results',
+        { queryParams: this.getProperties(this.get('queryParameters')) }
+      );
+    },
+  },
 
 });

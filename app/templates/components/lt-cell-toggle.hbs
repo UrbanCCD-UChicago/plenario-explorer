@@ -1,8 +1,6 @@
-<span class="dataset-color-{{row.content.colorIndex}}">
-  {{#if row.selected}}
-    {{fa-icon "toggle-on" fixedWidth=true}}
-  {{else}}
-    {{fa-icon "toggle-off" fixedWidth=true}}
-  {{/if}}
-</span>
-{{yield}}
+{{#unless (lte row.content.colorIndex -1)}}
+  {{fa-icon (if row.selected "toggle-on" "toggle-off") fixedWidth=true
+            class=(concat "dataset-color-" row.content.colorIndex)}}
+{{else}}
+  {{fa-icon "times" fixedWidth=true class="text-muted"}}
+{{/unless}}

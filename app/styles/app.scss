@@ -26,6 +26,8 @@
 
 section.container {
   position: relative; // Contains spinners to parent sections instead of the full body height
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 }
 
 section.full-page {
@@ -47,8 +49,15 @@ $dataset-colors: $blue $yellow $red $green $teal $pink $orange;
     }
     .leaflet-container &.shape {
       stroke: $color;
-      stroke-opacity: 0.8;
+      stroke-opacity: 1.0;
       fill: none;
+    }
+    .leaflet-container &.point {
+      stroke: $white;
+      stroke-width: 1px;
+      stroke-opacity: 1.0;
+      fill: $color;
+      fill-opacity: 1.0;
     }
   }
   .highcharts-color-#{$i - 1} {
@@ -67,4 +76,10 @@ $dataset-colors: $blue $yellow $red $green $teal $pink $orange;
   stroke-width: 1px;
   stroke-opacity: 0.4;
   stroke-dasharray: 1px, 3px;
+}
+
+.embed-responsive-8by3 {
+  &::before {
+    padding-top: percentage(3 / 8);
+  }
 }
