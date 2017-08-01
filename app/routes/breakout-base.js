@@ -17,6 +17,7 @@ export default Ember.Route.extend(QueryParamsResetRouteMixin, {
     const { startDate, endDate, withinArea, aggregateBy } = params;
 
     const datasetNames = params.datasetNames ? params.datasetNames.split(',') : [];
+    console.log(params);
 
     // TODO: grab and filter existing metadata if we came from a search, instead of fetching again
     const metadata = Ember.RSVP.hash({

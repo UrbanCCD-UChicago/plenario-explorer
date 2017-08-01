@@ -1,7 +1,126 @@
-<h1>Viewing:</h1>
-<ul>
-  {{#each model as |datasetName|}}
-    <li>{{datasetName}}</li>
-  {{/each}}
-</ul>
-{{outlet}}
+{{!-- TODO: fix kludgy placeholder boxes displayed with no datasets selected. Ideally some should start selected. --}}
+<section class="container">
+  {{#if (or startDate endDate aggregateBy withinArea)}}
+    <div class="row mb-1">
+      <div class="col">
+        {{#bs-button type="outline-primary" size="sm" onClick=(action "returnToSearch")}}
+          {{fa-icon "arrow-left"}}&ensp;Back to search results
+        {{/bs-button}}
+        <span class="text-muted">
+          {{#if withinArea}}<span class="badge bg-faded text-muted font-weight-normal">{{fa-icon "map-o"}} Area Specified</span> {{/if}}
+          {{#if (and startDate endDate)}}<span class="badge bg-faded text-muted font-weight-normal">{{fa-icon "calendar-o"}} {{format-date startDate endDate}}</span> {{/if}}
+          {{#if aggregateBy}}<span class="badge bg-faded text-muted font-weight-normal">Aggregate by: {{aggregateBy}}</span> {{/if}}
+        </span>
+      </div>
+    </div>
+  {{/if}}
+  <div class="row mb-1">
+    {{#if mappedDatasets}}
+      <div class="col">
+        <div class="embed-responsive embed-responsive-{{if media.isMd "8by3" "4by3"}}">
+
+          {{#leaflet-map class="embed-responsive-item"
+                         zoomAnimation=(not disableAnimations)
+                         fadeAnimation=(not disableAnimations)
+                         markerZoomAnimation=(not disableAnimations)
+                         bounds=mapBounds as |layers|}}
+            {{layers.tile url="https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}{r}.png"}}
+            {{#if mapSearchLimit}}
+              {{layers.geojson geoJSON=mapSearchLimit className="map-search-boundary"}}
+            {{/if}}
+            {{layers.geojson geoJSON=model.primaryDataset.geoJSON
+                             pointToLayer=mapGeoJSONPointToLayer
+                             onEachFeature=createShapePopup
+                             className=(concat
+                               (if model.primaryDataset.aggregatedEvents "grid" "shape")
+                               " "
+                               "dataset-color-0"
+                             )}}
+          {{/leaflet-map}}
+        </div>
+      </div>
+    {{/if}}
+
+  </div>
+  <div class="row">
+    <div class="col">
+      <h1>{{model.primaryDataset.humanName}}</h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-5">
+      {{#if (and model.primaryDataset.aggregatedEvents startDate endDate)}}
+        <dl class="row no-gutters">
+          <dt class="col-sm-6">{{fa-icon "calendar-o" fixedWidth=true}} Dates Shown</dt>
+          <dd class="col-sm-6 text-right">{{format-date startDate endDate}}</dd>
+
+          <dt class="col-sm-6">{{fa-icon "hashtag" fixedWidth=true}} Matching Events</dt>
+          <dd class="col-sm-6 text-right">{{model.primaryDataset.totalEventCount}}</dd>
+
+          <dt class="col-sm-7">{{fa-icon "download" fixedWidth=true}} Download<small> (Matched Items)</small></dt>
+          <dd class="col-sm-5 text-right">
+            {{#bs-dropdown as |dd|}}
+              {{#dd.button size="sm"}}Select format...{{/dd.button}}
+              {{#dd.menu as |ddm|}}
+                {{#ddm.item}}{{#ddm.link-to "index" class="px-2"}}<span class="small">JSON (<code class="small">.json</code>)</span>{{/ddm.link-to}}{{/ddm.item}}
+                {{#ddm.item}}{{#ddm.link-to "index" class="px-2"}}<span class="small">GeoJSON (<code class="small">.geojson</code>)</span>{{/ddm.link-to}}{{/ddm.item}}
+                {{#ddm.item}}{{#ddm.link-to "index" class="px-2"}}<span class="small">Comma-separated (<code class="small">.csv</code>)</span>{{/ddm.link-to}}{{/ddm.item}}
+              {{/dd.menu}}
+            {{/bs-dropdown}}
+          </dd>
+        </dl>
+      {{else}}
+        <p>
+          Displaying data from the last three months. You can download all of this dataset's data below.
+        </p>
+      {{/if}}
+      <hr>
+      <dl class="row no-gutters">
+        <dt class="col-sm-6">Data Provider</dt>
+        <dd class="col-sm-6 text-right">{{model.primaryDataset.provider}}</dd>
+
+        <dt class="col-sm-6">Date Added</dt>
+        <dd class="col-sm-6 text-right">{{format-date model.primaryDataset.dateAdded}}</dd>
+
+        <dt class="col-sm-6">Oldest Item</dt>
+        <dd class="col-sm-6 text-right">{{format-date model.primaryDataset.oldest}}</dd>
+
+        <dt class="col-sm-6">Newest Item</dt>
+        <dd class="col-sm-6 text-right">{{format-date model.primaryDataset.newest}}</dd>
+
+        <dt class="col-sm-6">Update Frequency</dt>
+        <dd class="col-sm-6 text-right">{{model.primaryDataset.updateFreq}}</dd>
+
+        <dt class="col-sm-6">Last Updated</dt>
+        <dd class="col-sm-6 text-right">{{format-date model.primaryDataset.lastUpdate format="l LT"}}</dd>
+
+        <dt class="col-sm-12">Description</dt>
+        <dd class="col-sm-12 text-justify small" style="max-height: 10rem; overflow-y: scroll;">{{model.primaryDataset.description}}</dd>
+
+        <dt class="col-sm-6">Bulk Download <small>(All Data)</small></dt>
+        <dd class="col-sm-6 text-right">
+          {{#bs-dropdown as |dd|}}
+            {{#dd.button size="sm"}}Select format...{{/dd.button}}
+            {{#dd.menu as |ddm|}}
+              {{#ddm.item}}{{#ddm.link-to "index" class="px-2"}}<span class="small">JSON (<code class="small">.json</code>)</span>{{/ddm.link-to}}{{/ddm.item}}
+              {{#ddm.item}}{{#ddm.link-to "index" class="px-2"}}<span class="small">GeoJSON (<code class="small">.geojson</code>)</span>{{/ddm.link-to}}{{/ddm.item}}
+              {{#ddm.item}}{{#ddm.link-to "index" class="px-2"}}<span class="small">Comma-separated (<code class="small">.csv</code>)</span>{{/ddm.link-to}}{{/ddm.item}}
+            {{/dd.menu}}
+          {{/bs-dropdown}}
+        </dd>
+
+      </dl>
+    </div>
+    {{#if plottedDatasets}}
+      <div class="col-7">
+        <div class="embed-responsive embed-responsive-{{if mappedDatasets "4by3" "8by3"}}">
+          {{high-charts class="embed-responsive-item"
+                        content=chartData
+                        chartOptions=chartOptions}}
+        </div>
+      </div>
+    {{/if}}
+  </div>
+</section>
+
+{{log model}}

@@ -50,7 +50,8 @@ export default Ember.Service.extend({
           },
 
           shapes(datasetNames, withinArea, useSimpleBbox) {
-            const qp = service.adapter.mapQueryParamNames({ withinArea, useSimpleBbox });
+            const qp = !withinArea ? undefined :
+              service.adapter.mapQueryParamNames({ withinArea, useSimpleBbox });
 
             Ember.Logger.debug('Calling /shapes with params: ', qp);
 
@@ -101,6 +102,7 @@ export default Ember.Service.extend({
               .then(timeseries => _.map(timeseries, ts => ({
                 name: ts.dataset_name,
                 aggregatedEvents: ts.items,
+                totalEventCount: ts.count,
               })));
           },
 

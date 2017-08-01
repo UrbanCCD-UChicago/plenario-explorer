@@ -43,9 +43,10 @@ $dataset-colors: $blue $yellow $red $green $teal $pink $orange;
   .dataset-color-#{$i - 1} {
     color: $color;
     .leaflet-container &.grid {
-      stroke: none;
+      stroke: $color;
+      stroke-width: 1px;
       fill: $color;
-      fill-opacity: 0.8;
+      fill-opacity: 0.05;
     }
     .leaflet-container &.shape {
       stroke: $color;
@@ -67,6 +68,10 @@ $dataset-colors: $blue $yellow $red $green $teal $pink $orange;
       fill: change_color($color, $lightness: 97%);
     }
   }
+}
+
+.highcharts-container {
+  font-family: inherit;
 }
 
 .leaflet-container .map-search-boundary {
