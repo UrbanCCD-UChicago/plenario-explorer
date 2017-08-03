@@ -49,30 +49,41 @@
   </div>
   <div class="row">
     <div class="col-5">
-      {{#if (and model.primaryDataset.aggregatedEvents startDate endDate)}}
-        <dl class="row no-gutters">
-          <dt class="col-sm-6">{{fa-icon "calendar-o" fixedWidth=true}} Dates Shown</dt>
-          <dd class="col-sm-6 text-right">{{format-date startDate endDate}}</dd>
+      {{#if (eq model.primaryDataset.type "event")}}
+        {{#if (or startDate endDate)}}
+          <dl class="row no-gutters">
+            <dt class="col-sm-6">{{fa-icon "calendar-o" class="text-muted" fixedWidth=true}} Dates Shown</dt>
+            <dd class="col-sm-6 text-right">{{format-date startDate endDate}}</dd>
 
-          <dt class="col-sm-6">{{fa-icon "hashtag" fixedWidth=true}} Matching Events</dt>
-          <dd class="col-sm-6 text-right">{{model.primaryDataset.totalEventCount}}</dd>
+            <dt class="col-sm-6">{{fa-icon "hashtag" class="text-muted" fixedWidth=true}} Matching Events</dt>
+            <dd class="col-sm-6 text-right">{{model.primaryDataset.totalEventCount}}</dd>
 
-          <dt class="col-sm-7">{{fa-icon "download" fixedWidth=true}} Download<small> (Matched Items)</small></dt>
-          <dd class="col-sm-5 text-right">
-            {{#bs-dropdown as |dd|}}
-              {{#dd.button size="sm"}}Select format...{{/dd.button}}
-              {{#dd.menu as |ddm|}}
-                {{#ddm.item}}{{#ddm.link-to "index" class="px-2"}}<span class="small">JSON (<code class="small">.json</code>)</span>{{/ddm.link-to}}{{/ddm.item}}
-                {{#ddm.item}}{{#ddm.link-to "index" class="px-2"}}<span class="small">GeoJSON (<code class="small">.geojson</code>)</span>{{/ddm.link-to}}{{/ddm.item}}
-                {{#ddm.item}}{{#ddm.link-to "index" class="px-2"}}<span class="small">Comma-separated (<code class="small">.csv</code>)</span>{{/ddm.link-to}}{{/ddm.item}}
-              {{/dd.menu}}
-            {{/bs-dropdown}}
-          </dd>
-        </dl>
-      {{else}}
-        <p>
-          Displaying data from the last three months. You can download all of this dataset's data below.
-        </p>
+            <dt class="col-sm-7">
+              {{fa-icon "download" class="text-muted" fixedWidth=true}}
+              Download
+              <small class="text-muted"> (Matched Items)</small>
+            </dt>
+            <dd class="col-sm-5 text-right">
+              {{#bs-dropdown as |dd|}}
+                {{#dd.button size="sm"}}Select format...{{/dd.button}}
+                {{#dd.menu as |ddm|}}
+                  {{#each model.primaryDataset.downloadFormats as |format|}}
+                    <a class="dropdown-item px-2" href="" {{action "downloadDataset" format.ext}}>
+                    <span class="small">
+                      {{format.name}}
+                      {{#if format.ext}}(<code class="small">.{{format.ext}}</code>){{/if}}
+                    </span>
+                    </a>
+                  {{/each}}
+                {{/dd.menu}}
+              {{/bs-dropdown}}
+            </dd>
+          </dl>
+        {{else}}
+          <p>
+            Displaying data from the last three months. You can download all of this dataset's data below.
+          </p>
+        {{/if}}
       {{/if}}
       <hr>
       <dl class="row no-gutters">
@@ -94,32 +105,47 @@
         <dt class="col-sm-6">Last Updated</dt>
         <dd class="col-sm-6 text-right">{{format-date model.primaryDataset.lastUpdate format="l LT"}}</dd>
 
-        <dt class="col-sm-12">Description</dt>
-        <dd class="col-sm-12 text-justify small" style="max-height: 10rem; overflow-y: scroll;">{{model.primaryDataset.description}}</dd>
+        {{#if plottedDatasets}}
+          <dt class="col-sm-12">Description</dt>
+          <dd class="col-sm-12 text-justify small" style="max-height: 10rem; overflow-y: scroll;">
+            {{model.primaryDataset.description}}
+          </dd>
+        {{/if}}
 
-        <dt class="col-sm-6">Bulk Download <small>(All Data)</small></dt>
+        <dt class="col-sm-6">Bulk Download <small class="text-muted">(All Data)</small></dt>
         <dd class="col-sm-6 text-right">
-          {{#bs-dropdown as |dd|}}
+          {{#bs-dropdown direction="up" as |dd|}}
             {{#dd.button size="sm"}}Select format...{{/dd.button}}
             {{#dd.menu as |ddm|}}
-              {{#ddm.item}}{{#ddm.link-to "index" class="px-2"}}<span class="small">JSON (<code class="small">.json</code>)</span>{{/ddm.link-to}}{{/ddm.item}}
-              {{#ddm.item}}{{#ddm.link-to "index" class="px-2"}}<span class="small">GeoJSON (<code class="small">.geojson</code>)</span>{{/ddm.link-to}}{{/ddm.item}}
-              {{#ddm.item}}{{#ddm.link-to "index" class="px-2"}}<span class="small">Comma-separated (<code class="small">.csv</code>)</span>{{/ddm.link-to}}{{/ddm.item}}
+              {{#each model.primaryDataset.downloadFormats as |format|}}
+                  <a class="dropdown-item px-2" href="" {{action "downloadDataset" format.ext true}}>
+                    <span class="small">
+                      {{format.name}}
+                      {{#if format.ext}}(<code class="small">.{{format.ext}}</code>){{/if}}
+                    </span>
+                  </a>
+              {{/each}}
             {{/dd.menu}}
           {{/bs-dropdown}}
         </dd>
 
       </dl>
     </div>
-    {{#if plottedDatasets}}
-      <div class="col-7">
-        <div class="embed-responsive embed-responsive-{{if mappedDatasets "4by3" "8by3"}}">
+    <div class="col-7">
+      {{#if plottedDatasets}}
+        <div class="embed-responsive embed-responsive-16by9">
           {{high-charts class="embed-responsive-item"
                         content=chartData
                         chartOptions=chartOptions}}
         </div>
-      </div>
-    {{/if}}
+      {{else}}
+        <dl class="row">
+          <dt class="col-sm-12">Description</dt>
+          <dd class="col-sm-12 text-justify small"
+              style="max-height: 10rem; overflow-y: scroll;">{{model.primaryDataset.description}}</dd>
+        </dl>
+      {{/if}}
+    </div>
   </div>
 </section>
 

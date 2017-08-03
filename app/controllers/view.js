@@ -21,7 +21,7 @@ export default BreakoutPageAbstractController.extend({
 
   chartOptions: {
     chart: {
-      height: '75%',
+      // height: '56.25%',
       spacing: [5, 5, 1, 0],
       zoomType: 'x',
     },
@@ -43,6 +43,12 @@ export default BreakoutPageAbstractController.extend({
       title: {
         text: null,
       },
+    },
+  },
+
+  actions: {
+    downloadDataset(format, isFullDownload) {
+      console.log('downloading format', format, isFullDownload ? '(all)' : 'filtered');
     },
   },
 

@@ -15,6 +15,19 @@ export default Ember.Service.extend({
     useSimpleBbox: 'simple_bbox',
   },
 
+  downloadFormats: {
+    shape: [
+      { name: 'GeoJSON', ext: 'geojson' },
+      { name: 'ESRI Shapefile', ext: undefined },
+      { name: 'KML (Google Earth)', ext: 'kml' },
+    ],
+    event: [
+      { name: 'JSON', ext: 'json' },
+      { name: 'GeoJSON', ext: 'geojson' },
+      { name: 'Comma-separated values', ext: 'csv' },
+    ]
+  },
+
   init() {
     this.fetch = this.fetch(this);
     this.adapter = this.adapter(this);
@@ -70,6 +83,7 @@ export default Ember.Service.extend({
             return _.chain(metadataObjects)
               .map(mO => ({
                 name: mO.dataset_name,
+                type: mO.num_shapes ? 'shape' : 'event',
                 humanName: mO.human_name,
                 provider: mO.attribution,
                 description: mO.description,
@@ -83,6 +97,9 @@ export default Ember.Service.extend({
                   source: mO.source_url,
                   view: mO.view_url,
                 },
+                downloadFormats: mO.num_shapes ?
+                  service.downloadFormats.shape :
+                  service.downloadFormats.event,
               }))
               .sortBy(['name', 'provider'])
               .value();
