@@ -1,0 +1,15 @@
+{{#bs-dropdown direction=direction as |dd|}}
+  {{#dd.button size="sm"}}Select format...{{/dd.button}}
+  {{#dd.menu as |ddm|}}
+    {{#each datasetObject.downloadFormats as |format|}}
+      <a class="dropdown-item px-2" href="" {{action "downloadDataset" format.downloadType filterDownload}}>
+        <span class="small">
+          {{format.name}}
+          {{#if format.ext}}(<code class="small">{{format.ext}}</code>){{/if}}
+        </span>
+      </a>
+    {{/each}}
+  {{/dd.menu}}
+{{/bs-dropdown}}
+
+{{log downloadURL}}

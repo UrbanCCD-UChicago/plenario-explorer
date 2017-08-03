@@ -1,8 +1,9 @@
 import AjaxService from 'ember-ajax/services/ajax';
+import ENV from 'plenario-explorer/config/environment';
 
 export default AjaxService.extend({
 
-  host: 'http://plenar.io',
-  namespace: 'v1/api',
+  host: ENV.ajax.host,
+  namespace: ENV.ajax.namespace,
 
 });

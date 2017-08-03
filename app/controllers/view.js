@@ -46,10 +46,4 @@ export default BreakoutPageAbstractController.extend({
     },
   },
 
-  actions: {
-    downloadDataset(format, isFullDownload) {
-      console.log('downloading format', format, isFullDownload ? '(all)' : 'filtered');
-    },
-  },
-
 });

@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import _ from 'npm:lodash';
+import ENV from 'plenario-explorer/config/environment';
 
 export default Ember.Service.extend({
 
@@ -13,19 +14,20 @@ export default Ember.Service.extend({
     aggregateBy: 'agg',
     withinArea: 'location_geom__within',
     useSimpleBbox: 'simple_bbox',
+    downloadType: 'data_type',
   },
 
   downloadFormats: {
     shape: [
-      { name: 'GeoJSON', ext: 'geojson' },
-      { name: 'ESRI Shapefile', ext: undefined },
-      { name: 'KML (Google Earth)', ext: 'kml' },
+      { name: 'GeoJSON', ext: '.geojson', downloadType: 'json' },
+      { name: 'ESRI Shapefile', ext: '.shp/.shx/.dbf', downloadType: 'shapefile' },
+      { name: 'KML (Google Earth)', ext: '.kml', downloadType: 'kml' },
     ],
     event: [
-      { name: 'JSON', ext: 'json' },
-      { name: 'GeoJSON', ext: 'geojson' },
-      { name: 'Comma-separated values', ext: 'csv' },
-    ]
+      { name: 'JSON', ext: '.json', downloadType: 'json' },
+      { name: 'GeoJSON', ext: '.geojson', downloadType: 'geojson' },
+      { name: 'Comma-separated values', ext: '.csv', downloadType: 'csv' },
+    ],
   },
 
   init() {
@@ -270,6 +272,33 @@ export default Ember.Service.extend({
       }
 
       return _.pickBy(qp, value => value !== undefined && value !== null);
+    },
+
+    buildDownloadURL(metadataObject, appQueryParams) {
+      const baseURL = `${ENV.ajax.host}/${ENV.ajax.namespace}`;
+      const qp = this.mapQueryParamNames(appQueryParams);
+
+      let endpoint;
+
+      switch (metadataObject.type) {
+        case 'event':
+          endpoint = 'datadump';
+          qp.dataset_name = metadataObject.name;
+          break;
+        case 'shape':
+          endpoint = `shapes/${metadataObject.name}`;
+          break;
+        default:
+          Ember.Logger.error('Invalid dataset metadata');
+      }
+
+      const qpStr = _.chain(qp)
+        .toPairs()
+        .map(([key, value]) => `${key}=${value}`)
+        .join('&')
+        .value();
+
+      return `${baseURL}/${endpoint}?${qpStr}`;
     },
 
   }; },

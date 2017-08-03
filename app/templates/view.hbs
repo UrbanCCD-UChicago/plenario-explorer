@@ -1,4 +1,3 @@
-{{!-- TODO: fix kludgy placeholder boxes displayed with no datasets selected. Ideally some should start selected. --}}
 <section class="container">
   {{#if (or startDate endDate aggregateBy withinArea)}}
     <div class="row mb-1">
@@ -64,19 +63,11 @@
               <small class="text-muted"> (Matched Items)</small>
             </dt>
             <dd class="col-sm-5 text-right">
-              {{#bs-dropdown as |dd|}}
-                {{#dd.button size="sm"}}Select format...{{/dd.button}}
-                {{#dd.menu as |ddm|}}
-                  {{#each model.primaryDataset.downloadFormats as |format|}}
-                    <a class="dropdown-item px-2" href="" {{action "downloadDataset" format.ext}}>
-                    <span class="small">
-                      {{format.name}}
-                      {{#if format.ext}}(<code class="small">.{{format.ext}}</code>){{/if}}
-                    </span>
-                    </a>
-                  {{/each}}
-                {{/dd.menu}}
-              {{/bs-dropdown}}
+              {{download-menu model.primaryDataset filterDownload=true queryParams=(hash
+                startDate=startDate
+                endDate=endDate
+                aggregateBy=aggregateBy
+                withinArea=withinArea)}}
             </dd>
           </dl>
         {{else}}
@@ -114,19 +105,11 @@
 
         <dt class="col-sm-6">Bulk Download <small class="text-muted">(All Data)</small></dt>
         <dd class="col-sm-6 text-right">
-          {{#bs-dropdown direction="up" as |dd|}}
-            {{#dd.button size="sm"}}Select format...{{/dd.button}}
-            {{#dd.menu as |ddm|}}
-              {{#each model.primaryDataset.downloadFormats as |format|}}
-                  <a class="dropdown-item px-2" href="" {{action "downloadDataset" format.ext true}}>
-                    <span class="small">
-                      {{format.name}}
-                      {{#if format.ext}}(<code class="small">.{{format.ext}}</code>){{/if}}
-                    </span>
-                  </a>
-              {{/each}}
-            {{/dd.menu}}
-          {{/bs-dropdown}}
+          {{download-menu model.primaryDataset direction="up" filterDownload=false queryParams=(hash
+            startDate=startDate
+            endDate=endDate
+            aggregateBy=aggregateBy
+            withinArea=withinArea)}}
         </dd>
 
       </dl>

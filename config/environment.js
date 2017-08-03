@@ -22,6 +22,11 @@ module.exports = function (environment) {
       // when it is created
     },
 
+    ajax: {
+      host: 'http://plenar.io',
+      namespace: 'v1/api',
+    },
+
     animation: {
       scrollingBaseDuration: 750, // ms
       stateChangeBaseDuration: 100, // ms
