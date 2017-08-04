@@ -1,26 +1,12 @@
-{{!-- TODO: fix kludgy placeholder boxes displayed with no datasets selected. Ideally some should start selected. --}}
 <section class="container">
-  <div class="row">
-    <div class="col-11">
-      {{#bs-button type="outline-primary" size="sm" onClick=(action "returnToSearch")}}
-        {{fa-icon "arrow-left"}}&ensp;Back to search
-      {{/bs-button}}
-      <h1>View &amp; Compare</h1>
-    </div>
-  </div>
-  <div class="row no-gutters mb-3">
-    {{#if plottedDatasets}}
-      <div class="col">
-        <div class="embed-responsive embed-responsive-{{if mappedDatasets "4by3" "8by3"}}">
-          {{high-charts class="embed-responsive-item"
-                        content=chartData
-                        chartOptions=chartOptions}}
-        </div>
-      </div>
-    {{/if}}
+  {{#if (or startDate endDate aggregateBy withinArea)}}
+    {{search-params-breadcrumbs queryParamHash action=(action "returnToSearch")}}
+  {{/if}}
+
+  <div class="row no-gutters">
     {{#if mappedDatasets}}
-      <div class="col">
-        <div class="embed-responsive embed-responsive-{{if plottedDatasets "4by3" "8by3"}}">
+      <div class="col-12 {{if plottedDatasets "col-lg-6"}}">
+        <div class="embed-responsive embed-responsive-{{if (and plottedDatasets media.isLg) "4by3" "8by3"}}">
 
           {{#leaflet-map class="embed-responsive-item"
                          zoomAnimation=(not disableAnimations)
@@ -35,7 +21,7 @@
                                  pointToLayer=mapGeoJSONPointToLayer
                                  onEachFeature=(unless dataset.aggregatedEvents createShapePopup)
                                  className=(concat
-                                   (if dataset.aggregatedEvents "grid" "shape")
+                                   dataset.type
                                    " "
                                    "dataset-color-"
                                    dataset.colorIndex
@@ -46,12 +32,25 @@
         </div>
       </div>
     {{/if}}
+
+    {{#if plottedDatasets}}
+      <div class="col-12 {{if mappedDatasets "col-lg-6"}}">
+        <div class="embed-responsive embed-responsive-{{if (and mappedDatasets media.isLg) "4by3" "8by3"}}">
+          {{high-charts class="embed-responsive-item"
+                        content=chartData
+                        chartOptions=chartOptions}}
+        </div>
+      </div>
+    {{/if}}
+
+    {{!-- TODO: fix this kludgy placeholder box displayed when no datasets selected. ~5 should start selected. --}}
     {{#unless (or plottedDatasets mappedDatasets)}}
       <div class="col-12">
         <div class="embed-responsive embed-responsive-8by3">
           <div class="card bg-faded embed-responsive-item">
             <div class="card-block d-flex align-items-center justify-content-center">
               <p class="card-text text-muted text-center w-75">
+                {{fa-icon "globe" size="2"}}&emsp;{{fa-icon "area-chart" size="2"}}<br>
                 Select datasets below to visualize them here.
               </p>
             </div>
@@ -59,8 +58,15 @@
         </div>
       </div>
     {{/unless}}
+
+    <div class="col-12 mt-1">
+      <h1>View &amp; Compare</h1>
+    </div>
+
   </div>
+
   {{lt-compare allDatasets columns=tableColumns onSelectionChanged="userDidChangeSelection" classNames="mb-3"}}
+
   {{#if (gt model.falsePositives.length 0)}}
     <div class="row">
       <div class="col">
@@ -80,5 +86,3 @@
     </div>
   {{/if}}
 </section>
-
-{{log model}}

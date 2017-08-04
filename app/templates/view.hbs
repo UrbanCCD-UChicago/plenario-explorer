@@ -2,9 +2,10 @@
   {{#if (or startDate endDate aggregateBy withinArea)}}
     {{search-params-breadcrumbs queryParamHash action=(action "returnToSearch")}}
   {{/if}}
-  <div class="row mb-1">
+
+  <div class="row d-flex">
     {{#if mappedDatasets}}
-      <div class="col">
+      <div class="col-12 mb-1">
         <div class="embed-responsive embed-responsive-{{if media.isMd "8by3" "4by3"}}">
 
           {{#leaflet-map class="embed-responsive-item"
@@ -20,7 +21,7 @@
                              pointToLayer=mapGeoJSONPointToLayer
                              onEachFeature=createShapePopup
                              className=(concat
-                               (if model.primaryDataset.aggregatedEvents "grid" "shape")
+                               model.primaryDataset.type
                                " "
                                "dataset-color-0"
                              )}}
@@ -29,40 +30,37 @@
       </div>
     {{/if}}
 
-  </div>
-
-  <div class="row">
-    <div class="col-12">
+    <div class="col-12 flex-first flex-lg-unordered">
       <h1>{{model.primaryDataset.humanName}}</h1>
     </div>
 
-    <div class="col-5">
-      {{#if (eq model.primaryDataset.type "event")}}
-        {{#if (or startDate endDate)}}
-          <dl class="row no-gutters">
+    <div class="col-12 col-lg-5 flex-last flex-lg-unordered">
+      {{#if (or aggregateBy startDate endDate withinArea)}}
+        <dl class="row no-gutters mb-0">
 
+          {{#if isEventDataset}}
             <dt class="col-sm-6">{{fa-icon "calendar-o" class="text-muted" fixedWidth=true}} Dates Shown</dt>
             <dd class="col-sm-6 text-right">{{format-date startDate endDate}}</dd>
+          {{/if}}
 
-            <dt class="col-sm-6">{{fa-icon "hashtag" class="text-muted" fixedWidth=true}} Matching Events</dt>
-            <dd class="col-sm-6 text-right">{{model.primaryDataset.totalEventCount}}</dd>
+          <dt class="col-sm-6">
+            {{fa-icon "hashtag" class="text-muted" fixedWidth=true}}
+            Matching {{capitalize (concat model.primaryDataset.type "s")}}
+          </dt>
+          <dd class="col-sm-6 text-right">{{model.primaryDataset.totalCount}}</dd>
 
-            <dt class="col-sm-7">
-              {{fa-icon "download" class="text-muted" fixedWidth=true}}
-              Download
-              <small class="text-muted"> (Matched Items)</small>
-            </dt>
-            <dd class="col-sm-5 text-right">
-              {{download-menu model.primaryDataset filterDownload=true queryParams=queryParamHash}}
-            </dd>
+          <dt class="col-sm-7">
+            {{fa-icon "download" class="text-muted" fixedWidth=true}}
+            Download
+            <small class="text-muted"> (Matched Items)</small>
+          </dt>
+          <dd class="col-sm-5 text-right">
+            {{download-menu model.primaryDataset filterDownload=true queryParams=queryParamHash}}
+          </dd>
 
-          </dl>
-        {{else}}
-          <p>Displaying data from the last three months. You can download all of this dataset's data below.</p>
-        {{/if}}
+        </dl>
+        <hr class="my-2">
       {{/if}}
-
-      <hr>
 
       <dl class="row no-gutters">
 
@@ -72,11 +70,13 @@
         <dt class="col-sm-6">Date Added</dt>
         <dd class="col-sm-6 text-right">{{format-date model.primaryDataset.dateAdded}}</dd>
 
-        <dt class="col-sm-6">Oldest Item</dt>
-        <dd class="col-sm-6 text-right">{{format-date model.primaryDataset.oldest}}</dd>
+        {{#if isEventDataset}}
+          <dt class="col-sm-6">Oldest Item</dt>
+          <dd class="col-sm-6 text-right">{{format-date model.primaryDataset.oldest}}</dd>
 
-        <dt class="col-sm-6">Newest Item</dt>
-        <dd class="col-sm-6 text-right">{{format-date model.primaryDataset.newest}}</dd>
+          <dt class="col-sm-6">Newest Item</dt>
+          <dd class="col-sm-6 text-right">{{format-date model.primaryDataset.newest}}</dd>
+        {{/if}}
 
         <dt class="col-sm-6">Update Frequency</dt>
         <dd class="col-sm-6 text-right">{{model.primaryDataset.updateFreq}}</dd>
@@ -100,10 +100,9 @@
 
     </div>
 
-    <div class="col-7">
-
+    <div class="col-12 col-lg-7">
       {{#if plottedDatasets}}
-        <div class="embed-responsive embed-responsive-16by9">
+        <div class="embed-responsive embed-responsive-{{if media.isLg "4by3" "8by3"}}">
           {{high-charts class="embed-responsive-item"
                         content=chartData
                         chartOptions=chartOptions}}
@@ -111,12 +110,11 @@
       {{else}}
         <dl class="row">
           <dt class="col-sm-12">Description</dt>
-          <dd class="col-sm-12 text-justify small">{{model.primaryDataset.description}}</dd>
+          <dd class="col-sm-12 text-justify small" style="max-height: 7.5rem; overflow-y: scroll;">
+            {{model.primaryDataset.description}}
+          </dd>
         </dl>
       {{/if}}
-
     </div>
   </div>
 </section>
-
-{{log model}}

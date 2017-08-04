@@ -121,7 +121,7 @@ export default Ember.Service.extend({
               .then(timeseries => _.map(timeseries, ts => ({
                 name: ts.dataset_name,
                 aggregatedEvents: ts.items,
-                totalEventCount: ts.count,
+                totalCount: ts.count,
               })));
           },
 
@@ -175,7 +175,11 @@ export default Ember.Service.extend({
               _.map(datasetNames, datasetName =>
                 ajax.request(`shapes/${datasetName}`, { data: qp })
                 // TODO: switch to using response properties for name, when it has some
-                  .then(shape => ({ name: datasetName, geoJSON: shape }))
+                  .then(shape => ({
+                    name: datasetName,
+                    geoJSON: shape,
+                    totalCount: shape.features.length,
+                  }))
               )
             );
           },

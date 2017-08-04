@@ -15,7 +15,6 @@ export default BreakoutPageAbstractRoute.extend({
   },
 
   afterModel(model) {
-    console.log(model);
     const primaryDataset = _.concat([], model.events, model.shapes, model.features)[0];
 
     if (!primaryDataset.aggregatedEvents || !primaryDataset.aggregatedEvents.length ||

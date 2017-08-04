@@ -14,6 +14,9 @@ export default BreakoutPageAbstractController.extend({
     return (pds.geoJSON && pds.geoJSON.features.length) ? [pds] : undefined;
   }),
 
+  isEventDataset: Ember.computed.equal('model.primaryDataset.type', 'event'),
+  isShapeDataset: Ember.computed.equal('model.primaryDataset.type', 'shape'),
+
   mapGeoJSONPointToLayer: (geoJsonPoint, latlng) => {
     const colorIndex = _.get(geoJsonPoint, 'properties.colorIndex');
     return L.circleMarker(latlng, { radius: 4, className: `point dataset-color-${colorIndex}` });
@@ -21,7 +24,6 @@ export default BreakoutPageAbstractController.extend({
 
   chartOptions: {
     chart: {
-      height: '56.25%', // 16:9 aspect ratio
       spacing: [5, 5, 10, 0],
       zoomType: 'x',
     },

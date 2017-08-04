@@ -35,7 +35,10 @@ export default BreakoutPageAbstractRoute.extend({
         // in a single FeatureCollection the same color, and turns them each into an individual,
         // totally oprhaned layer on its own with no reference to where it came from. Seriously,
         // why are so many popular JS libraries such utter steaming garbage?
-        _.forEach(shape.geoJSON.features, (elem) => { elem.properties.colorIndex = curColorIndex; });
+        _.forEach(shape.geoJSON.features, (elem) => {
+          // eslint-disable-next-line no-param-reassign
+          elem.properties.colorIndex = curColorIndex;
+        });
         curColorIndex = (curColorIndex + 1) % numColors;
       } else {
         shape.isFalsePositive = true; // eslint-disable-line no-param-reassign

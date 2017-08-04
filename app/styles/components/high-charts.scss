@@ -1,3 +1,13 @@
+// This makes responsive chart sizing actually work
+.chart-container {
+  position:absolute;
+  height: 100%;
+  width: 100%;
+}
+.highcharts-container {
+  font-family: inherit;
+}
+
 .highcharts-label-box {
   fill: $white;
   fill-opacity: 1.0;

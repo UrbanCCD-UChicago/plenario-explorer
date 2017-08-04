@@ -33,8 +33,7 @@ export default BreakoutPageAbstractController.extend({
 
   chartOptions: {
     chart: {
-      height: '75%',
-      spacing: [5, 5, 1, 0],
+      spacing: [5, 5, 1, 5],
       zoomType: 'x',
     },
     legend: {
