@@ -21,8 +21,8 @@ export default BreakoutPageAbstractController.extend({
 
   chartOptions: {
     chart: {
-      // height: '56.25%',
-      spacing: [5, 5, 1, 0],
+      height: '56.25%', // 16:9 aspect ratio
+      spacing: [5, 5, 10, 0],
       zoomType: 'x',
     },
     legend: {

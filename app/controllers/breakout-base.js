@@ -7,6 +7,10 @@ export default Ember.Controller.extend({
 
   queryParameters: ['startDate', 'endDate', 'aggregateBy', 'withinArea'],
 
+  queryParamHash: Ember.computed('startDate', 'endDate', 'aggregateBy', 'withinArea', function () {
+    return this.getProperties('startDate', 'endDate', 'aggregateBy', 'withinArea');
+  }),
+
   allDatasets: Ember.computed.union('model.events', 'model.shapes'),
   spatialDatasets: Ember.computed.filter(
     'allDatasets',
