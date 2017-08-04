@@ -79,6 +79,7 @@ deploy:
   # bleeding edge (needs to be tweaked per working branch, but at least stops it clashing with master)
   - provider: s3
     bucket: plenario-explorer-2017-redesign
+    region: us-east-2
     skip_cleanup: true
     local-dir: dist
     acl: public_read
