@@ -6,6 +6,7 @@ describe('Unit | Service | plenario api', function () {
   setupTest('service:plenario-api', {
     // Specify the other units that are required for this test.
     // needs: ['service:foo']
+    needs: ['service:ajax'],
   });
 
   // Replace this with your real tests.

@@ -6,6 +6,7 @@ describe('Unit | Route | view', function () {
   setupTest('route:view', {
     // Specify the other units that are required for this test.
     // needs: ['controller:foo']
+    needs: ['service:plenario-api'],
   });
 
   it('exists', function () {

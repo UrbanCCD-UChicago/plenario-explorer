@@ -6,6 +6,7 @@ describe('Unit | Route | search', () => {
   setupTest('route:search', {
     // Specify the other units that are required for this test.
     // needs: ['controller:foo']
+    needs: ['service:plenario-api'],
   });
 
   it('exists', function () {

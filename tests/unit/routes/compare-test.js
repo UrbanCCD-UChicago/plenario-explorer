@@ -6,6 +6,7 @@ describe('Unit | Route | compare', function () {
   setupTest('route:compare', {
     // Specify the other units that are required for this test.
     // needs: ['controller:foo']
+    needs: ['service:plenario-api'],
   });
 
   it('exists', function () {

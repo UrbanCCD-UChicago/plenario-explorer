@@ -18,8 +18,37 @@ describe('Integration | Component | search widget', () => {
   const defaultPlace = geography.featuredPlaces.findBy('isDefault');
   const otherPlaces = geography.featuredPlaces.rejectBy('isDefault');
 
+  const nodeLocations = {
+    type: 'FeatureCollection',
+    features: [
+      {
+        type: 'Feature',
+        properties: {},
+        geometry: {
+          type: 'Point',
+          coordinates: [
+            -87.6434326171875,
+            41.857287927691345,
+          ],
+        },
+      },
+      {
+        type: 'Feature',
+        properties: {},
+        geometry: {
+          type: 'Point',
+          coordinates: [
+            -104.72854614257812,
+            39.85915479295669,
+          ],
+        },
+      },
+    ],
+  };
+
   describe('map', function () {
     it('starts with map centered on default place', function () {
+      this.set('nodeLocations', nodeLocations);
       // Calculate what the URL for the center tile should be at each zoom level
       // This mitigates inconsistencies in the test container size which cause the Leaflet
       // map to use an unpredictable zoom level. Order of zoom levels is by likelihood, so we can
@@ -29,7 +58,7 @@ describe('Integration | Component | search widget', () => {
         getCenterTileURLFragment(defaultPlace.bounds, z)
       );
 
-      this.render(hbs`{{search-widget disableAnimations=true}}`);
+      this.render(hbs`{{search-widget nodeLocations=nodeLocations disableAnimations=true}}`);
 
       const tilePane = this.$('.leaflet-tile-pane');
       return wait().then(() => {
@@ -39,6 +68,7 @@ describe('Integration | Component | search widget', () => {
 
     it('re-centers the map when the teleport control is used', function () {
       this.slow(1000); // Re-centering Leaflet maps are *slow*, even with animations off
+      this.set('nodeLocations', nodeLocations);
       const place = otherPlaces[0];
 
       // Calculate what the URL for the center tile should be at each zoom level
@@ -48,7 +78,7 @@ describe('Integration | Component | search widget', () => {
       // does an exhaustive search)
       const centerTileURLs = [11, 10, 12, 9].map(z => getCenterTileURLFragment(place.bounds, z));
 
-      this.render(hbs`{{search-widget disableAnimations=true}}`);
+      this.render(hbs`{{search-widget nodeLocations=nodeLocations disableAnimations=true}}`);
 
       this.$('.leaflet-control select').val(place.bounds.toString()).change();
       const tilePane = this.$('.leaflet-tile-pane');
@@ -58,10 +88,11 @@ describe('Integration | Component | search widget', () => {
     });
 
     it('restores predrawn shape if one is passed', function () {
+      this.set('nodeLocations', nodeLocations);
       // eslint-disable-next-line max-len
       const shapeGeoJsonObj = { type: 'FeatureCollection', features: [{ type: 'Feature', properties: {}, geometry: { type: 'Polygon', coordinates: [[[-87.65853881835938, 41.915818693496426], [-87.68600463867188, 41.857287927691345], [-87.60429382324219, 41.83529309193198], [-87.5562286376953, 41.86598147470959], [-87.59124755859375, 41.91019797889929], [-87.65853881835938, 41.915818693496426]]] } }] };
 
-      this.render(hbs`{{search-widget disableAnimations=true predrawnShapeGeoJson=shapeGeoJson}}`);
+      this.render(hbs`{{search-widget nodeLocations=nodeLocations disableAnimations=true predrawnShapeGeoJson=shapeGeoJson}}`);
       this.set('shapeGeoJson', shapeGeoJsonObj);
       expect(this.$('.leaflet-overlay-pane>svg>g>path')).to.have.length.of.at.least(1);
     });
@@ -69,7 +100,8 @@ describe('Integration | Component | search widget', () => {
 
   describe('dates', function () {
     it('uses reasonable start and end dates', function () {
-      this.render(hbs`{{search-widget disableAnimations=true}}`);
+      this.set('nodeLocations', nodeLocations);
+      this.render(hbs`{{search-widget nodeLocations=nodeLocations disableAnimations=true}}`);
 
       const startDate = moment(this.$('#search-start-date').val());
       const endDate = moment(this.$('#search-end-date').val());
@@ -80,7 +112,8 @@ describe('Integration | Component | search widget', () => {
     });
 
     it('validates date input values are well-formed', function () {
-      this.render(hbs`{{search-widget disableAnimations=true}}`);
+      this.set('nodeLocations', nodeLocations);
+      this.render(hbs`{{search-widget nodeLocations=nodeLocations disableAnimations=true}}`);
 
       const sdField = this.$('#search-start-date');
       const edField = this.$('#search-end-date');
@@ -99,7 +132,8 @@ describe('Integration | Component | search widget', () => {
     });
 
     it('validates date range (no backwards or future ranges)', function () {
-      this.render(hbs`{{search-widget disableAnimations=true}}`);
+      this.set('nodeLocations', nodeLocations);
+      this.render(hbs`{{search-widget nodeLocations=nodeLocations disableAnimations=true}}`);
 
       this.$('#search-start-date').val(moment().add(1, 'year').format('YYYY-MM-DD')).change();
       expect(this.$('.form-control-feedback').text())
@@ -112,8 +146,9 @@ describe('Integration | Component | search widget', () => {
     it('resets form values and map when the reset button is clicked', function () {
       this.slow(1000); // We're changing the center of a Leaflet map and that alone is ~750ms
 
+      this.set('nodeLocations', nodeLocations);
       this.set('actions.noop', function () { /* no-op */ });
-      this.render(hbs`{{search-widget disableAnimations=true onReset=(action "noop")}}`);
+      this.render(hbs`{{search-widget nodeLocations=nodeLocations disableAnimations=true onReset=(action "noop")}}`);
 
       const originalVals = {
         startDate: this.$('#search-start-date').val(),
@@ -144,6 +179,7 @@ describe('Integration | Component | search widget', () => {
     });
 
     it('sends search parameters when search button is clicked', function () {
+      this.set('nodeLocations', nodeLocations);
       this.set('actions.checkParams', function (queryParams) {
         expect(queryParams, 'not returning all required search parameters')
           .to.have.all.keys(['startDate', 'endDate', 'aggregateBy', 'withinArea']);
@@ -167,7 +203,7 @@ describe('Integration | Component | search widget', () => {
         // TODO: figure out how to check that search area is *accurate* in addition to valid
       });
 
-      this.render(hbs`{{search-widget disableAnimations=true onSubmit=(action "checkParams")}}`);
+      this.render(hbs`{{search-widget nodeLocations=nodeLocations disableAnimations=true onSubmit=(action "checkParams")}}`);
 
       this.$('.leaflet-control select').val(otherPlaces[0].bounds.toString()).change();
       this.$('#search-start-date').val('1937-05-06').change();
