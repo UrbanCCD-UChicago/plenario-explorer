@@ -1,29 +1,21 @@
+/* ===== Bootstrap & related ===== */
+@import 'variables'; // Override Bootstrap variables here
 @import 'ember-bootstrap/bootstrap';
+
+/* ===== Other frameworks ===== */
+@import 'font-awesome';
 @import 'vendor/highcharts/highcharts';
 
-
-/* ===== General style overrides ===== */
-// e.g. @import 'forms';
-
-
+/* ===== Scoped styles ===== */
 
 /* ===== Component-specific styles ===== */
-@import 'components/high-charts.scss';
+@import 'components/high-charts';
 @import 'components/loading-spinner';
 @import 'components/lt-search-results';
 @import 'components/search-widget';
 
 
-
-/* ===== Browser-specific hotfixes ===== */
-/*  For flexbugs, rendering quirks, etc. */
-// e.g. @import 'hotfixes/safari';
-
-
-
 /* ======================================== Global Styles ======================================== */
-/* These should move to their own partials once they're big enough / are finalized in a feature. */
-
 section.container {
   position: relative; // Contains spinners to parent sections instead of the full body height
   padding-top: 1rem;
@@ -33,6 +25,8 @@ section.container {
 section.full-page {
   min-height: 100vh;
 }
+
+/* These should move to their own partials once they're big enough / are finalized in a feature. */
 
 // For breakout page
 $dataset-colors: $blue $yellow $red $green $teal $pink $orange;
@@ -77,6 +71,11 @@ $dataset-colors: $blue $yellow $red $green $teal $pink $orange;
   stroke-width: 1px;
   stroke-opacity: 0.4;
   stroke-dasharray: 1px, 3px;
+}
+
+.leaflet-popup-content-wrapper {
+  max-height: 8rem;
+  overflow-y: scroll;
 }
 
 .embed-responsive-8by3 {

@@ -1,4 +1,5 @@
-/* eslint-disable no-underscore-dangle */ // This file was mostly written by ember-responsive addon
+/* eslint-disable no-underscore-dangle,prefer-rest-params */
+// This file was mostly written by ember-responsive addon
 import Ember from 'ember';
 import MediaService from 'ember-responsive/media';
 

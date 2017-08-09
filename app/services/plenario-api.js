@@ -44,7 +44,7 @@ export default Ember.Service.extend({
         metadata: (function () { return {
 
           events(datasetNames, startDate, endDate, withinArea, useSimpleBbox) {
-            // TODO: in future, if API treats 'dataset_name__in' as and includes operation
+            // TODO: in future, if API treats 'dataset_name__in' as an includes operation
             // and not an iterable list of datasets to query, should be able to just pass
             // datasetNames straight through, instead of filtering them client-side below
             const qp = service.adapter.mapQueryParamNames(
@@ -251,6 +251,34 @@ export default Ember.Service.extend({
 
         }; }()),
 
+        data: (function () { return {
+
+          observations(network, feature, sensors, startDate, endDate, nodes, withinArea) {
+            const qp = service.adapter.mapQueryParamNames({ startDate, endDate, withinArea });
+
+            // Fix the query parameter names because this uses all completely different ones
+            if (qp.location_geom__within) {
+              qp.geom = qp.location_geom__within;
+              delete qp.location_geom__within;
+            }
+            if (qp.obs_date__ge) {
+              qp.start_datetime = qp.obs_date__ge;
+              delete qp.obs_date__ge;
+            }
+            if (qp.obs_date__le) {
+              qp.end_datetime = qp.obs_date__le;
+              delete qp.obs_date__le;
+            }
+
+            qp.feature = feature;
+            qp.sensors = sensors.join(',');
+            qp.nodes = nodes.join(',');
+
+            return ajax.request(`/sensor-networks/${network}/query`, { data: qp })
+          },
+
+        }; }()),
+
       }; }()),
     };
   },
@@ -262,7 +290,7 @@ export default Ember.Service.extend({
     mapQueryParamNames(appQueryParams) {
       const qp = _.mapKeys(appQueryParams, (value, key) => service.appParamsToApiParamsMap[key]);
 
-      // Stringify the dataset name list as necessessary
+      // Stringify the dataset name list as necessary
       if (qp.dataset_name__in && qp.dataset_name__in.length === 1) {
         qp.dataset_name = qp.dataset_name__in[0];
         delete qp.dataset_name__in;

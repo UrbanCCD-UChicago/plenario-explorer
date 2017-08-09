@@ -7,7 +7,7 @@ export default Ember.Route.extend({
   model() {
     const api = this.get('api');
     return Ember.RSVP.hash({
-      nodeLocations: api.fetch.networks.metadata.nodes('array_of_things_chicago', {}),
+      nodeLocations: api.fetch.networks.metadata.nodes('array_of_things_chicago', undefined),
     });
   },
 

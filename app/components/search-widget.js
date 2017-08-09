@@ -126,8 +126,8 @@ export default Ember.Component.extend({
     },
   },
 
-  init() {
-    this._super(...arguments);
+  init(...args) {
+    this._super(...args);
     this.setupInitialValues();
   },
 

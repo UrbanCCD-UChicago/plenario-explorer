@@ -8,7 +8,12 @@ export default Ember.Controller.extend({
 
   ENV,
 
-  nodeFeaturePseudoDatasets: Ember.computed.alias('model.features'),
+  nodeFeaturePseudoDatasets: Ember.computed('model.features', function () {
+    const features = this.get('model.features');
+    const allowedFeatures = _.keys(ENV.nodeFeatures);
+    return features.filter(feature => allowedFeatures.includes(feature.name));
+  }),
+
   openDataProviderDatasets: Ember.computed.uniq('model.events', 'model.shapes'),
 
   tableSelectedDatasets: {},

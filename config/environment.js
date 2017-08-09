@@ -93,6 +93,23 @@ module.exports = function (environment) {
         },
       ],
     },
+
+    nodeFeatures: {
+      temperature: {
+        sensorWhitelist: [
+          { name: 'bmp180', adjustmentFactor: 1 },
+          { name: 'htu21d', adjustmentFactor: 1 },
+          { name: 'tsys01', adjustmentFactor: 1 },
+          { name: 'lps25h', adjustmentFactor: 0.01 },
+          { name: 'sht25', adjustmentFactor: 0.01 },
+        ],
+      },
+      relative_humidity: {
+        sensorWhitelist: [
+          { name: 'sht25', adjustmentFactor: 0.01 },
+        ],
+      },
+    },
   };
 
   if (environment === 'development') {

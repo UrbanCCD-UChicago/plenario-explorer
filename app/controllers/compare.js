@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import _ from 'npm:lodash';
+import truncate from 'npm:@turf/truncate';
 import BreakoutPageAbstractController from './breakout-base';
 
 export default BreakoutPageAbstractController.extend({
@@ -12,10 +13,59 @@ export default BreakoutPageAbstractController.extend({
     return _.intersectionBy(temporalDatasets, selectedDatasets, 'name');
   }),
 
-  mappedDatasets: Ember.computed('spatialDatasets', 'selectedDatasets', function () {
+  mappedDatasets: Ember.computed('shapeDatasets', 'selectedDatasets', 'combinedMapGrid',
+    function () {
+      const selectedDatasets = this.get('selectedDatasets');
+      const shapeDatasets = this.get('shapeDatasets');
+      const combinedMapGrid = this.get('combinedMapGrid');
+      console.log(combinedMapGrid);
+
+      const mappedDatasets = _.intersectionBy(shapeDatasets, selectedDatasets, 'name');
+      console.log('mapped datasets is', mappedDatasets);
+      if (combinedMapGrid) {
+        mappedDatasets.push(combinedMapGrid);
+      }
+      console.log('and now mapped datasets is', mappedDatasets);
+
+      return mappedDatasets;
+    }
+  ),
+
+  combinedMapGrid: Ember.computed('mappedDatasets', function () {
     const selectedDatasets = this.get('selectedDatasets');
-    const spatialDatasets = this.get('spatialDatasets');
-    return _.intersectionBy(spatialDatasets, selectedDatasets, 'name');
+    const gridDatasets = this.get('gridDatasets');
+
+    const features = _.chain(gridDatasets)
+      .intersectionBy(selectedDatasets, 'name')
+      .map(dataset =>
+        _.map(dataset.geoJSON.features, feature => ({
+          properties: {
+            datasetName: dataset.name,
+            datasetHumanName: dataset.humanName,
+            count: feature.properties.count,
+          },
+          geometry: feature.geometry,
+          type: 'Feature',
+        }))
+      )
+      .flatten()
+      .groupBy(feature => truncate(feature, 4).geometry.coordinates)
+      .mapValues(group =>
+        _.reduce(group, (acc, value) => {
+          acc.properties.data.push(value.properties);
+          acc.geometry = acc.geometry || value.geometry;
+          acc.type = acc.type || value.type;
+          return acc;
+        }, { properties: { data: [] } })
+      )
+      .values()
+      .value();
+
+    if (features.length === 0) {
+      return undefined;
+    }
+
+    return { isCombinedGrid: true, geoJSON: { type: 'FeatureCollection', features } };
   }),
 
   // This is necessary to stop the Leaflet map from "breaking" when it's resized. We just

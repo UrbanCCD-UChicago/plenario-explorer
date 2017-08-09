@@ -1,0 +1,52 @@
+/* ===== Dataset coloration ===== */
+
+//To maintain consistent coloration of datasets across views, we define them here
+$dataset-colors: $blue $yellow $red $green $teal $pink $orange;
+
+@for $i from 1 through length($dataset-colors) {
+  $color: nth($dataset-colors, $i);
+  .dataset-color-#{$i - 1} {
+    color: $color;
+    .leaflet-container &.event {
+      fill-opacity: 0.05;
+      fill: $color;
+      stroke-width: 1px;
+      stroke: $color;
+    }
+    .leaflet-container &.shape {
+      fill: none;
+      stroke-opacity: 1.0;
+      stroke: $color;
+    }
+    .leaflet-container &.point {
+      fill-opacity: 1.0;
+      fill: $color;
+      stroke-opacity: 1.0;
+      stroke-width: 1px;
+      stroke: $white;
+    }
+  }
+  .highcharts-color-#{$i - 1} {
+    fill: $color;
+    stroke: $color;
+    .highcharts-label-box {
+      fill: change_color($color, $lightness: 97%);
+    }
+  }
+}
+
+/* ===== Leaflet styles ===== */
+
+.leaflet-container .map-search-boundary {
+  fill-opacity: 0.4;
+  fill: $gray-lighter;
+  stroke-dasharray: 1px, 3px;
+  stroke-opacity: 0.4;
+  stroke-width: 1px;
+  stroke: $gray-light;
+}
+
+.leaflet-popup-content-wrapper {
+  max-height: 8rem;
+  overflow-y: scroll;
+}

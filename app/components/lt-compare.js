@@ -9,8 +9,8 @@ const LightTableCompare = Ember.Component.extend({
 
   firstNSelectedByDefault: 5,
 
-  init() {
-    this._super(...arguments);
+  init(...args) {
+    this._super(...args);
     this.get('table.selectedRows'); // <-- This
     // is necessary because Ember is too focused on "being clever" to be functional in the real
     // world. If you don't ever call "get('thing')", changes to 'thing' won't fire observers

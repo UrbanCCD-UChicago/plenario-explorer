@@ -1,3 +1,4 @@
+{{log mappedDatasets}}
 <section class="container">
   {{#if (or startDate endDate aggregateBy withinArea)}}
     {{search-params-breadcrumbs queryParamHash action=(action "returnToSearch")}}
@@ -26,6 +27,9 @@
                                    "dataset-color-"
                                    dataset.colorIndex
                                  )}}
+              {{/if}}
+              {{#if dataset.isCombinedGrid}}
+                {{layers.geojson geoJSON=dataset.geoJSON className="combined-grid"}}
               {{/if}}
             {{/each}}
           {{/leaflet-map}}

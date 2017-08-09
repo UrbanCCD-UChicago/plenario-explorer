@@ -20,8 +20,11 @@ export default Ember.Controller.extend({
     'allDatasets',
     ds => (ds.aggregatedEvents && ds.aggregatedEvents.length > 0)
   ),
+  gridDatasets: Ember.computed.intersect('spatialDatasets', 'temporalDatasets'),
+  shapeDatasets: Ember.computed.setDiff('spatialDatasets', 'temporalDatasets'),
 
   mappedDatasets: Ember.computed.alias('spatialDatasets'),
+
   mapBounds: Ember.computed('mappedDatasets', function () {
     const datasets = this.get('mappedDatasets');
 
