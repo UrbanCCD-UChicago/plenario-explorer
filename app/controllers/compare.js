@@ -126,8 +126,7 @@ export default BreakoutPageAbstractController.extend({
 
   actions: {
     userDidChangeSelection(selectedRows) {
-      // TODO: use Lodash for this
-      const selectedDatasets = selectedRows.map(row => row.content);
+      const selectedDatasets = _.map(selectedRows, row => row.content);
       this.set('selectedDatasets', selectedDatasets);
     },
   },
