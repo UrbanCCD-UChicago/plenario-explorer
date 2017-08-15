@@ -1,7 +1,10 @@
-.results-table {
-  tr.is-selected {
-    color: $component-active-color;
-    background-color: $component-active-bg;
+.lt-search-results {
+  tr {
+    user-select: none;
+    &.is-selected {
+      color: $component-active-color;
+      background-color: $component-active-bg;
+    }
   }
   th, td {
     vertical-align: middle;

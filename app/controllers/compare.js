@@ -18,14 +18,11 @@ export default BreakoutPageAbstractController.extend({
       const selectedDatasets = this.get('selectedDatasets');
       const shapeDatasets = this.get('shapeDatasets');
       const combinedMapGrid = this.get('combinedMapGrid');
-      console.log(combinedMapGrid);
 
       const mappedDatasets = _.intersectionBy(shapeDatasets, selectedDatasets, 'name');
-      console.log('mapped datasets is', mappedDatasets);
       if (combinedMapGrid) {
         mappedDatasets.push(combinedMapGrid);
       }
-      console.log('and now mapped datasets is', mappedDatasets);
 
       return mappedDatasets;
     }

@@ -1,4 +1,5 @@
-{{#unless (lte row.content.colorIndex -1)}}
+{{!-- If we add other disabled states we should make this check more generic --}}
+{{#unless row.content.isTooLarge}}
   {{fa-icon (if row.selected "toggle-on" "toggle-off") fixedWidth=true
             class=(concat "dataset-color-" row.content.colorIndex)}}
 {{else}}

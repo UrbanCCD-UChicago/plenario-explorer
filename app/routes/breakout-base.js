@@ -18,12 +18,13 @@ export default Ember.Route.extend(QueryParamsResetRouteMixin, {
 
     const datasetNames = params.datasetNames ? params.datasetNames.split(',') : [];
 
-    // TODO: grab and filter existing metadata if we came from a search, instead of fetching again
+    // We're grabbing these again, because we don't want to use simple_bbox (we need to know
+    // how many shape items are within the search, not just the total in the intersecting dataset)
     const metadata = Ember.RSVP.hash({
       events:
-        api.fetch.core.metadata.events(datasetNames, startDate, endDate, withinArea, true),
+        api.fetch.core.metadata.events(datasetNames, startDate, endDate, withinArea),
       shapes:
-        api.fetch.core.metadata.shapes(datasetNames, withinArea, true),
+        api.fetch.core.metadata.shapes(datasetNames, withinArea),
       features:
         api.fetch.networks.metadata.features('array_of_things_chicago', withinArea),
     });

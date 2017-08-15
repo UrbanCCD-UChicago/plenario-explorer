@@ -4,6 +4,8 @@ import Table from 'ember-light-table';
 
 const LightTableCompare = Ember.Component.extend({
 
+  classNames: ['lt-compare'],
+
   sortBy: undefined,
   sortDir: 'asc',
 
@@ -12,12 +14,15 @@ const LightTableCompare = Ember.Component.extend({
   init(...args) {
     this._super(...args);
     this.get('table.selectedRows'); // <-- This
-    // is necessary because Ember is too focused on "being clever" to be functional in the real
-    // world. If you don't ever call "get('thing')", changes to 'thing' won't fire observers
-    // because Ember assumes (and makes an ass out of itself because it's stupid) you can't
-    // possibly be depending on it for anything. Meanwhile it enforce data-down-actions-up, which
-    // means you are almost guaranteed to waste time on dealing with what the Ember team themselves
-    // call a "gotcha"
+    // is necessary because changes to an object won't fire observers unless the object is directly
+    // consumed at least once
+
+    _.forEach(this.get('table.rows'), (row) => {
+      if (row.content.isTooLarge) {
+        // eslint-disable-next-line no-param-reassign
+        row.classNames = 'is-disabled text-muted';
+      }
+    });
   },
 
   table: Ember.computed('rows.[]', 'columns', function () {

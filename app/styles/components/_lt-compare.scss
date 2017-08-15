@@ -1,0 +1,8 @@
+.lt-compare {
+  tr {
+    user-select: none;
+    &.is-disabled {
+      cursor: default !important;
+    }
+  }
+}

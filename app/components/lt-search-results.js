@@ -4,6 +4,8 @@ import Table from 'ember-light-table';
 
 const LightTableSearchResults = Ember.Component.extend({
 
+  classNames: ['lt-search-results'],
+
   sortBy: undefined,
   sortDir: 'asc',
   filterBy: '',

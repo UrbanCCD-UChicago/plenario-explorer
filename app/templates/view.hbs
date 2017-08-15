@@ -43,20 +43,32 @@
             <dd class="col-sm-6 text-right">{{format-date startDate endDate}}</dd>
           {{/if}}
 
-          <dt class="col-sm-6">
-            {{fa-icon "hashtag" class="text-muted" fixedWidth=true}}
-            Matching {{capitalize (concat model.primaryDataset.type "s")}}
-          </dt>
-          <dd class="col-sm-6 text-right">{{model.primaryDataset.totalCount}}</dd>
+          {{#if (and isShapeDataset (gte model.primaryDataset.totalCount ENV.data.maxShapeItemsToDisplay))}}
+            <div class="col-12">
+              <div class="alert alert-warning small" role="alert">
+                This dataset is too large to display in your browser. You can still download it to work offline.
+              </div>
+            </div>
+          {{/if}}
 
-          <dt class="col-sm-7">
-            {{fa-icon "download" class="text-muted" fixedWidth=true}}
-            Download
-            <small class="text-muted"> (Matched Items)</small>
-          </dt>
-          <dd class="col-sm-5 text-right">
-            {{download-menu model.primaryDataset filterDownload=true queryParams=queryParamHash}}
-          </dd>
+          {{#if (gte model.primaryDataset.totalCount 1)}}
+            <dt class="col-sm-6">
+              {{fa-icon "hashtag" class="text-muted" fixedWidth=true}}
+              Matching {{capitalize (concat model.primaryDataset.type "s")}}
+            </dt>
+            <dd class="col-sm-6 text-right">{{model.primaryDataset.totalCount}}</dd>
+          {{/if}}
+
+          {{#if (gte model.primaryDataset.totalCount 1)}}
+            <dt class="col-sm-7">
+              {{fa-icon "download" class="text-muted" fixedWidth=true}}
+              Download
+              <small class="text-muted"> (Matched Items)</small>
+            </dt>
+            <dd class="col-sm-5 text-right">
+              {{download-menu model.primaryDataset filterDownload=true queryParams=queryParamHash}}
+            </dd>
+          {{/if}}
 
         </dl>
         <hr class="my-2">
@@ -100,21 +112,24 @@
 
     </div>
 
-    <div class="col-12 col-lg-7">
-      {{#if plottedDatasets}}
+    {{#if plottedDatasets}}
+      <div class="col-12 col-lg-7">
         <div class="embed-responsive embed-responsive-{{if media.isLg "4by3" "8by3"}}">
           {{high-charts class="embed-responsive-item"
                         content=chartData
                         chartOptions=chartOptions}}
         </div>
-      {{else}}
+      </div>
+    {{/if}}
+    {{#unless plottedDatasets}}
+      <div class="col-12 col-lg-7 flex-last flex-lg-unordered">
         <dl class="row">
           <dt class="col-sm-12">Description</dt>
           <dd class="col-sm-12 text-justify small" style="max-height: 7.5rem; overflow-y: scroll;">
             {{model.primaryDataset.description}}
           </dd>
         </dl>
-      {{/if}}
-    </div>
+      </div>
+    {{/unless}}
   </div>
 </section>

@@ -95,6 +95,7 @@ export default Ember.Service.extend({
                 lastUpdate: mO.last_update,
                 updateFreq: mO.update_freq,
                 bbox: mO.bbox,
+                totalCount: mO.num_shapes ? mO.num_shapes : undefined,
                 urls: {
                   source: mO.source_url,
                   view: mO.view_url,
@@ -189,7 +190,10 @@ export default Ember.Service.extend({
               return Ember.RSVP.resolve([]);
             }
 
-            const datasetNames = _.map(shapeMetadataObjects, mO => mO.name);
+            const datasetNames = _.chain(shapeMetadataObjects)
+              .filter(mO => mO.totalCount < ENV.data.maxShapeItemsToDisplay)
+              .map(mO => mO.name)
+              .value();
             return this.shapes(datasetNames, withinArea)
               .then((shapes) => {
                 _.forEach(shapeMetadataObjects, ((mO) => {
@@ -274,7 +278,7 @@ export default Ember.Service.extend({
             qp.sensors = sensors.join(',');
             qp.nodes = nodes.join(',');
 
-            return ajax.request(`/sensor-networks/${network}/query`, { data: qp })
+            return ajax.request(`/sensor-networks/${network}/query`, { data: qp });
           },
 
         }; }()),

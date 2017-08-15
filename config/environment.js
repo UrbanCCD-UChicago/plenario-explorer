@@ -32,6 +32,10 @@ module.exports = function (environment) {
       stateChangeBaseDuration: 100, // ms
     },
 
+    data: {
+      maxShapeItemsToDisplay: 10000,
+    },
+
     geography: {
       featuredPlaces: [
         {

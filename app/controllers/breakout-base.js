@@ -2,8 +2,11 @@ import Ember from 'ember';
 import _ from 'npm:lodash';
 import turfDifference from 'npm:@turf/difference';
 import moment from 'npm:moment';
+import ENV from 'plenario-explorer/config/environment';
 
 export default Ember.Controller.extend({
+
+  ENV,
 
   queryParameters: ['startDate', 'endDate', 'aggregateBy', 'withinArea'],
 

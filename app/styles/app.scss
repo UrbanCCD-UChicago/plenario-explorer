@@ -12,6 +12,7 @@
 @import 'components/high-charts';
 @import 'components/loading-spinner';
 @import 'components/lt-search-results';
+@import 'components/lt-compare';
 @import 'components/search-widget';
 
 
@@ -24,6 +25,12 @@ section.container {
 
 section.full-page {
   min-height: 100vh;
+}
+
+.embed-responsive-8by3 {
+  &::before {
+    padding-top: percentage(3 / 8);
+  }
 }
 
 /* These should move to their own partials once they're big enough / are finalized in a feature. */
@@ -78,8 +85,4 @@ $dataset-colors: $blue $yellow $red $green $teal $pink $orange;
   overflow-y: scroll;
 }
 
-.embed-responsive-8by3 {
-  &::before {
-    padding-top: percentage(3 / 8);
-  }
-}
+
