@@ -1,7 +1,7 @@
 <div class="col-lg-4 float-lg-left pr-lg-1">
   <div class="card time-card">
     <div class="card-header">{{fa-icon "clock-o"}}&ensp;Time</div>
-    <div class="card-block">
+    <div class="card-body">
       <div class="row">
         <div class="col-12 col-md-4 col-lg-12">
           <p class="card-text">
@@ -48,7 +48,7 @@
               <label class="col-5 col-form-label col-form-label-sm" for="">Aggregate&nbsp;by: </label>
               <div class="col-7">
                 {{one-way-select aggregateBy id="search-aggregate-by"
-                                 class="form-control form-control-sm custom-select"
+                                 class="custom-select form-control form-control-sm"
                                  options=aggregationOptions
                                  update=(action (mut aggregateBy))}}
               </div>

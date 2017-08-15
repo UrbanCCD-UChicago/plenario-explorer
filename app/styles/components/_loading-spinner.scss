@@ -1,8 +1,8 @@
 $size: 1.5em;
-$color1: $brand-primary;
-$color2: change_color($brand-primary, $alpha: 0.25);
-$color3: $brand-primary;
-$color4: change_color($brand-primary, $alpha: 0.25);
+$color1: map-get($theme-colors, primary);
+$color2: change_color(map-get($theme-colors, primary), $alpha: 0.25);
+$color3: map-get($theme-colors, primary);
+$color4: change_color(map-get($theme-colors, primary), $alpha: 0.25);
 
 .loading-spinner {
   position: absolute;

@@ -9,6 +9,6 @@
 }
 
 .highcharts-label-box {
-  fill: $white;
+  fill: map-get($colors, white);
   fill-opacity: 1.0;
 }

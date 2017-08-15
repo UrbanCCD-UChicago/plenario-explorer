@@ -15,6 +15,6 @@
 
 .leaflet-node-marker {
   stroke: none;
-  fill: $brand-primary;
+  fill: map-get($theme-colors, primary);
   fill-opacity: 1.0;
 }
