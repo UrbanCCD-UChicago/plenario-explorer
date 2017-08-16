@@ -60,7 +60,7 @@ describe('Acceptance | user manipulate search results', function () {
     function () {
       // yes this is ridiculous, but necessary until this issue is resolved:
       // https://github.com/UrbanCCD-UChicago/plenario-explorer/issues/16
-      this.timeout(30000);
+      this.timeout(120000);
 
       visit('/search/results?aggregateBy=day&endDate=2017-07-14&startDate=2017-04-15&withinArea=%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Polygon%22%2C%22coordinates%22%3A%5B%5B%5B-88.08151245117189%2C41.57333394552688%5D%2C%5B-87.38388061523439%2C41.57333394552688%5D%2C%5B-87.38388061523439%2C42.09312731992276%5D%2C%5B-88.08151245117189%2C42.09312731992276%5D%2C%5B-88.08151245117189%2C41.57333394552688%5D%5D%5D%7D%7D');
 
