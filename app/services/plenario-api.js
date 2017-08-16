@@ -7,7 +7,6 @@ export default Ember.Service.extend({
   ajax: Ember.inject.service(),
 
   appParamsToApiParamsMap: {
-    datasetName: 'dataset_name',
     datasetNames: 'dataset_name__in',
     startDate: 'obs_date__ge',
     endDate: 'obs_date__le',
