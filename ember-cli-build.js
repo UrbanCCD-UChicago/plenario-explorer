@@ -3,6 +3,9 @@ const EmberApp = require('ember-cli/lib/broccoli/ember-app');
 
 module.exports = function (defaults) {
   const app = new EmberApp(defaults, {
+    autoprefixer: {
+      sourcemap: true,
+    },
     'ember-bootstrap': {
       bootstrapVersion: 4,
       importBootstrapFont: false,
@@ -17,6 +20,9 @@ module.exports = function (defaults) {
     emberHighCharts: {
       includeHighCharts: true,
       useStyledMode: true,
+    },
+    sassOptions: {
+      sourceMapEmbed: true,
     },
   });
 
