@@ -290,8 +290,11 @@ export default Ember.Service.extend({
   /* eslint-disable brace-style */
   adapter(service) { return {
 
-    mapQueryParamNames(appQueryParams) {
-      const qp = _.mapKeys(appQueryParams, (value, key) => service.appParamsToApiParamsMap[key]);
+    mapQueryParamNames(appQueryParamsHash) {
+      const qp = _.mapKeys(
+        appQueryParamsHash,
+        (value, key) => service.appParamsToApiParamsMap[key]
+      );
 
       // Stringify the dataset name list as necessary
       if (qp.dataset_name__in && qp.dataset_name__in.length === 1) {
@@ -309,9 +312,9 @@ export default Ember.Service.extend({
       return _.pickBy(qp, value => value !== undefined && value !== null);
     },
 
-    buildDownloadURL(metadataObject, appQueryParams) {
+    buildDownloadURL(metadataObject, appQueryParamsHash) {
       const baseURL = `${ENV.ajax.host}/${ENV.ajax.namespace}`;
-      const qp = this.mapQueryParamNames(appQueryParams);
+      const qp = this.mapQueryParamNames(appQueryParamsHash);
 
       let endpoint;
 
