@@ -7,7 +7,12 @@
     <span class="text-muted">
       {{#if searchQueryParams.withinArea}}
         <span class="badge bg-light text-muted font-weight-normal">
-          {{fa-icon "map-o"}} Area Specified
+          {{fa-icon "map-o"}} area specified
+        </span>
+      {{/if}}
+      {{#if searchQueryParams.gridResolution}}
+        <span class="badge bg-light text-muted font-weight-normal">
+          {{fa-icon "th-large"}} {{searchQueryParams.gridResolution}}m
         </span>
       {{/if}}
       {{#if (and searchQueryParams.startDate searchQueryParams.endDate)}}
@@ -17,7 +22,7 @@
       {{/if}}
       {{#if searchQueryParams.aggregateBy}}
         <span class="badge bg-light text-muted font-weight-normal">
-          {{fa-icon "th-large"}} Aggregate by: {{searchQueryParams.aggregateBy}}
+          {{fa-icon "clock-o"}} by {{searchQueryParams.aggregateBy}}
         </span>
       {{/if}}
     </span>
