@@ -5,7 +5,8 @@
   <div class="no-gutters" {{!-- suppress the usual column spacing since cards have their own padding --}}>
     {{partial "components/search-widget/space-cards"}}
     {{partial "components/search-widget/time-card"}}
-    <div class="clearfix hidden-xl-up"></div> {{!-- ensures submit bar goes full-width when it's supposed to --}}
+    {{!-- ensures submit bar goes full-width except on XL viewports --}}
+    <div class="clearfix d-xl-none"></div>
     {{partial "components/search-widget/action-card"}}
   </div>
 </div>

@@ -14,7 +14,7 @@
         </div>
         <div class="col-12 col-md-8 col-lg-12">
           <form class="">
-            <div class="form-group row {{unless (and isValidStartDate isNonFutureDateRange isForwardDateRange) "has-warning"}}">
+            <div class="form-group form-row {{unless (and isValidStartDate isNonFutureDateRange isForwardDateRange) "has-warning"}}">
               <label class="col-5 col-form-label col-form-label-sm" for="search-start-date">Start Date</label>
               <div class="col-7">
                 {{one-way-input startDateAsString
@@ -29,7 +29,7 @@
                 <div class="col-12 form-control-feedback small">Start date can't be in future.</div>
               {{/if}}
             </div>
-            <div class="form-group row {{unless (and isValidEndDate isForwardDateRange) "has-warning"}}">
+            <div class="form-group form-row {{unless (and isValidEndDate isForwardDateRange) "has-warning"}}">
               <label class="col-5 col-form-label col-form-label-sm" for="search-end-date">End Date</label>
               <div class="col-7">
                 {{one-way-input endDateAsString
@@ -44,8 +44,8 @@
                 <div class="col-12 form-control-feedback small">End date can't be before start date.</div>
               {{/if}}
             </div>
-            <div class="form-group row mb-0">
-              <label class="col-5 col-form-label col-form-label-sm" for="">Aggregate&nbsp;by: </label>
+            <div class="form-group form-row mb-0">
+              <label class="col-5 col-form-label col-form-label-sm" for="">Aggregate&nbsp;by</label>
               <div class="col-7">
                 {{one-way-select aggregateBy id="search-aggregate-by"
                                  class="custom-select form-control form-control-sm"
