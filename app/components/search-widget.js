@@ -5,6 +5,8 @@ import ENV from 'plenario-explorer/config/environment';
 
 export default Ember.Component.extend({
 
+  ENV,
+
   aggregationOptions: ['day', 'week', 'month', 'quarter', 'year'],
 
   defaultStartDate: moment().subtract(90, 'days').startOf('day'),
