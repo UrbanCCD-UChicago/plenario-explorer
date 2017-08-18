@@ -41,19 +41,23 @@
                          onMoveend=(action "mapDidMove")
                          as |layers|}}
             {{layers.tile url="https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}{r}.png"}}
-            {{layers.geojson geoJSON=nodeLocations pointToLayer=nodeLocationsPointToLayer clickable=false}}
+            {{#if ENV.enableSensorNetworkInUI}}
+              {{layers.geojson geoJSON=nodeLocations pointToLayer=nodeLocationsPointToLayer clickable=false}}
+            {{/if}}
             {{#if userShapeGeoJson}}
               {{layers.geojson geoJSON=userShapeGeoJson}}
             {{/if}}
             {{draw-control draw=(hash circle=false marker=false) onDrawCreated=(action "userDidDrawShape")}}
             <div class="leaflet-control-container">
-              <div class="leaflet-top leaflet-right">
-                <div class="leaflet-control leaflet-bar bg-white">
-                  <p class="mb-0 p-1">
-                    <span class="text-primary">{{fa-icon "circle"}}</span> Array of Things node
-                  </p>
+              {{#if ENV.enableSensorNetworkInUI}}
+                <div class="leaflet-top leaflet-right">
+                  <div class="leaflet-control leaflet-bar bg-white">
+                    <p class="mb-0 p-1">
+                      <span class="text-primary">{{fa-icon "circle"}}</span> Array of Things node
+                    </p>
+                  </div>
                 </div>
-              </div>
+              {{/if}}
               <div class="leaflet-bottom leaflet-left">
                 <div class="leaflet-control leaflet-bar">
                   {{one-way-select jumpToBounds

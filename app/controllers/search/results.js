@@ -16,6 +16,12 @@ export default Ember.Controller.extend({
 
   openDataProviderDatasets: Ember.computed.uniq('model.events', 'model.shapes'),
 
+  displayNodeFeatureTable: Ember.computed.and(
+    'nodeFeaturePseudoDatasets.length',
+    'ENV.enableSensorNetworkInUI'
+  ),
+  displayOpenDataTable: Ember.computed.alias('openDataProviderDatasets.length'),
+
   tableSelectedDatasets: {},
   isExpanded: {},
 

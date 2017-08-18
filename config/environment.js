@@ -7,20 +7,16 @@ module.exports = function (environment) {
     rootURL: '/',
     locationType: 'auto',
     EmberENV: {
-      FEATURES: {
-        // Here you can enable experimental features on an ember canary build
-        // e.g. 'with-controller': true
-      },
+      FEATURES: {},
       EXTEND_PROTOTYPES: {
         // Prevent Ember Data from overriding Date.parse.
         Date: false,
       },
     },
 
-    APP: {
-      // Here you can pass flags/options to your application instance
-      // when it is created
-    },
+    APP: {},
+
+    enableSensorNetworkInUI: false,
 
     ajax: {
       host: 'http://plenar.io',
@@ -122,6 +118,9 @@ module.exports = function (environment) {
     // ENV.APP.LOG_TRANSITIONS = true;
     // ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
     // ENV.APP.LOG_VIEW_LOOKUPS = true;
+
+    // Always enable sensor network features in dev
+    ENV.enableSensorNetworkInUI = true;
   }
 
   if (environment === 'test') {
@@ -133,6 +132,9 @@ module.exports = function (environment) {
     ENV.APP.LOG_VIEW_LOOKUPS = false;
 
     ENV.APP.rootElement = '#ember-testing';
+
+    // Always enable sensor network features in testing
+    ENV.enableSensorNetworkInUI = true;
   }
 
   if (environment === 'production') {

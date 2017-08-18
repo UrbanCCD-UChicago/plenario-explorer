@@ -34,7 +34,7 @@
     </div>
   </div>
   <div id="results-tables-container">
-    {{#unless (eq nodeFeaturePseudoDatasets.length 0)}}
+    {{#if displayNodeFeatureTable}}
       <div class="row">
         <div class="col-12">
           <h3 class="h5">Data From Sensor Nodes</h3>
@@ -43,8 +43,8 @@
       {{!-- Height value below is (5 * (row height)), where (row height) = ((1.5 * 1rem) + (2 * 0.3rem)) --}}
       {{lt-search-results nodeFeaturePseudoDatasets columns=nodeFeatureTableColumns
                           onSelectionChanged="userDidChangeSelection" height="10.5rem"}}
-    {{/unless}}
-    {{#unless (eq openDataProviderDatasets.length 0)}}
+    {{/if}}
+    {{#if displayOpenDataTable}}
       <div class="row">
         <div class="col-12">
           <h3 class="h5">Data From Open Data Providers</h3>
@@ -53,8 +53,8 @@
       {{!-- Height value below is (6 * (row height)), where (row height) = ((1.5 * 1rem) + (2 * 0.3rem)) --}}
       {{lt-search-results openDataProviderDatasets columns=openDataTableColumns
                           onSelectionChanged="userDidChangeSelection" height="12.6rem"}}
-    {{/unless}}
-    {{#if (and (eq nodeFeaturePseudoDatasets.length 0) (eq openDataProviderDatasets.length 0))}}
+    {{/if}}
+    {{#if (not displayNodeFeatureTable displayOpenDataTable)}}
       <div class="row">
         <div class="col-12 col-md-10 offset-md-1 my-3">
           <div class="card bg-light">
@@ -73,7 +73,7 @@
       </div>
     {{/if}}
   </div>
-  {{#unless (and (eq nodeFeaturePseudoDatasets.length 0) (eq openDataProviderDatasets.length 0))}}
+  {{#unless (not displayNodeFeatureTable displayOpenDataTable)}}
     <div class="col-12 px-0">
       {{#bs-button id="compare-submit-button" type="primary" block=true
                    disabled=(not userHasMadeASelection) onClick=(action "compareSelectedDatasets")}}
