@@ -47,6 +47,13 @@
             {{/if}}
             {{draw-control draw=(hash circle=false marker=false) onDrawCreated=(action "userDidDrawShape")}}
             <div class="leaflet-control-container">
+              <div class="leaflet-top leaflet-right">
+                <div class="leaflet-control leaflet-bar bg-white">
+                  <p class="mb-0 p-1">
+                    <span class="text-primary">{{fa-icon "circle"}}</span> Array of Things node
+                  </p>
+                </div>
+              </div>
               <div class="leaflet-bottom leaflet-left">
                 <div class="leaflet-control leaflet-bar">
                   {{one-way-select jumpToBounds
