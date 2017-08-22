@@ -142,12 +142,15 @@ export default Ember.Service.extend({
           },
 
           grids(datasetNames, startDate, endDate, aggregateBy, withinArea) {
-            const commonQp = service.adapter.mapQueryParamNames(
+            const qp = service.adapter.mapQueryParamNames(
               { startDate, endDate, aggregateBy, withinArea }
             );
+
+            Ember.Logger.debug('Calling /grid with params: ', qp, 'for each of: ', datasetNames);
+
             return Ember.RSVP.all(
               _.map(datasetNames, datasetName =>
-                ajax.request('grid', { data: _.assign({ dataset_name: datasetName }, commonQp) })
+                ajax.request('grid', { data: _.assign({ dataset_name: datasetName }, qp) })
                   .then(grid => ({ name: grid.properties.dataset, geoJSON: grid }))
               )
             );

@@ -39,6 +39,9 @@ describe('Acceptance | user make search', function () {
   });
 
   it('makes correct search query when [search] is clicked', () => {
+    server.createList('event', 1);
+    server.createList('meta-shape', 1);
+
     visit('/search');
 
     fillIn('select#teleport-control', '30.0986648,-97.938383,30.516863,-97.561489');

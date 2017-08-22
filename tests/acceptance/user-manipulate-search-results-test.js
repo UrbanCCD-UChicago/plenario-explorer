@@ -23,7 +23,11 @@ describe('Acceptance | user manipulate search results', function () {
   });
 
   it('displays results of fruitful search query', function () {
-    visit('/search/results?aggregateBy=day&endDate=2017-07-14&startDate=2017-04-15&withinArea=%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Polygon%22%2C%22coordinates%22%3A%5B%5B%5B-88.08151245117189%2C41.57333394552688%5D%2C%5B-87.38388061523439%2C41.57333394552688%5D%2C%5B-87.38388061523439%2C42.09312731992276%5D%2C%5B-88.08151245117189%2C42.09312731992276%5D%2C%5B-88.08151245117189%2C41.57333394552688%5D%5D%5D%7D%7D');
+    server.createList('event', 1);
+    server.createList('meta-shape', 1);
+    server.createList('feature', 1);
+
+    visit('/search/results?aggregateBy=day');
 
     andThen(() => {
       expect(find('.ember-light-table')).to.have.lengthOf(2);
@@ -32,7 +36,10 @@ describe('Acceptance | user manipulate search results', function () {
   });
 
   it('gracefully handles results that include no sensor datasets', function () {
-    visit('/search/results?aggregateBy=day&endDate=2017-07-14&startDate=2017-04-15&withinArea=%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Polygon%22%2C%22coordinates%22%3A%5B%5B%5B-113.84170532226562%2C53.34809202306839%5D%2C%5B-113.14407348632814%2C53.34809202306839%5D%2C%5B-113.14407348632814%2C53.76251363638676%5D%2C%5B-113.84170532226562%2C53.76251363638676%5D%2C%5B-113.84170532226562%2C53.34809202306839%5D%5D%5D%7D%7D');
+    server.createList('event', 1);
+    server.createList('meta-shape', 1);
+
+    visit('/search/results?aggregateBy=day');
 
     andThen(() => {
       expect(find('.ember-light-table')).to.have.lengthOf(1);
