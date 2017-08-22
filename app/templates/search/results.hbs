@@ -56,16 +56,20 @@
     {{/if}}
     {{#if (not displayNodeFeatureTable displayOpenDataTable)}}
       <div class="row">
-        <div class="col-12 col-md-10 offset-md-1 my-3">
+        <div class="col-12 col-md-9 mx-md-auto my-5">
           <div class="card bg-light">
-            <div class="card-body">
-              <p class="card-text text-muted">
-                Sorry, no data was found in the selected region for the specified date range. Try modifying your query
-                and searching again.
+            <div class="card-body text-center">
+              <p class="card-text lead text-muted">
+                {{#fa-stack size="lg" as |s|}}
+                  {{s.stack-2x "search"}}
+                  {{s.stack-1x "file-text-o"}}
+                {{/fa-stack}}
               </p>
-              <p class="card-text text-muted">
-                You can use the "Jump to place..." map control to quickly go to an area where the
-                Plenar.io team has found interesting data.
+              <p class="card-text lead text-muted">
+                Sorry, no data was found in the selected geographic region for the specified date range.
+              </p>
+              <p class="card-text small text-muted">
+                Try modifying your query and searching again.
               </p>
             </div>
           </div>
