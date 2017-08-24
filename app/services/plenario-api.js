@@ -216,6 +216,8 @@ export default Ember.Service.extend({
           nodes(network, withinArea) {
             const qp = service.adapter.mapQueryParamNames({ withinArea });
 
+            Ember.Logger.debug(`Calling /${network}/nodes with params: `, qp);
+
             return ajax.request(`/sensor-networks/${network}/nodes`, { data: qp })
               .then(r => r.data);
           },

@@ -35,5 +35,5 @@ export default function () {
   // Sensor network namespace endpoints
   this.namespace = `${ENV.ajax.namespace}/sensor-networks/array_of_things_chicago`;
   this.get('/features');
-  this.passthrough('/nodes');
+  this.get('/nodes');
 }
