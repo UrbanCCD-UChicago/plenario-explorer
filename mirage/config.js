@@ -8,6 +8,9 @@ export default function () {
   // Default namespace endpoints
   this.namespace = ENV.ajax.namespace;
   this.get('/datasets', 'events');
+  this.get('/shapes/:id', ({ shapes }) =>
+    shapes.first()
+  );
   this.get('/shapes', 'meta-shapes');
   this.get('/timeseries', ({ timeseries }, request) => {
     if (request.queryParams.dataset_name) {
@@ -28,9 +31,7 @@ export default function () {
   //     return g.properties.dataset === request.queryParams.dataset_name;
   //   });
   // });
-  this.get('/shapes/:id', ({ shapes }) =>
-    shapes.first()
-  );
+
 
   // Sensor network namespace endpoints
   this.namespace = `${ENV.ajax.namespace}/sensor-networks/array_of_things_chicago`;
