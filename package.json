@@ -1,17 +1,20 @@
 {
   "name": "plenario-explorer",
-  "version": "0.0.0",
-  "description": "Small description for plenario-explorer goes here",
+  "version": "0.2.0",
+  "description": "This is an Ember app providing a simple interface to the Plenar.io API (https://github.com/UrbanCCD-UChicago/plenario)",
   "license": "MIT",
-  "author": "",
+  "contributors": [
+    "Will Engler <willengler@uchicago.edu> (http://willengler.com/)",
+    "Benjamin Lodi <brlodi@gmail.com> (http://benjaminlodi.com)"
+  ],
   "directories": {
     "doc": "doc",
     "test": "tests"
   },
-  "repository": "",
+  "repository": "UrbanCCD-UChicago/plenario-explorer",
   "scripts": {
     "build": "ember build",
-    "start": "ember server",
+    "start": "ember serve",
     "test": "ember test",
     "testall": "ember try:each",
     "testall-ci": "ember try:each --- ember test --config-file testem-ci.json",
@@ -70,6 +73,5 @@
   "engines": {
     "node": "^6.10.3"
   },
-  "private": true,
-  "dependencies": {}
+  "private": true
 }

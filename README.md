@@ -1,50 +1,81 @@
-# plenario-explorer
+# Plenar.io Explorer
 
-This README outlines the details of collaborating on this Ember application.
-A short introduction of this app could easily go here.
+This is an Ember application which provides a simple interface to the [Plenar.io API](https://github.com/UrbanCCD-UChicago/plenario). The goal is to present an accessible entry point to explore the kinds of data and associations Plenar.io makes possible, rather than wrapping the complete functionality of the API
 
 ## Prerequisites
 
 You will need the following things properly installed on your computer.
 
 * [Git](https://git-scm.com/)
-* [Node.js](https://nodejs.org/) (with NPM)
+* [Node.js](https://nodejs.org/)
+* [Yarn](https://yarnpkg.com/)
 * [Ember CLI](https://ember-cli.com/)
 * [PhantomJS](http://phantomjs.org/)
 
+We also strongly recommend installing [Watchman](https://facebook.github.io/watchman/) on macOS/Linux for better live-reloading performance.
+
 ## Installation
 
-* `git clone <repository-url>` this repository
-* `cd plenario-explorer`
-* `npm install`
+`git clone https://github.com/UrbanCCD-UChicago/plenario-explorer.git`  
+`cd plenario-explorer`  
+`yarn install`
 
 ## Running / Development
 
-* `ember serve`
-* Visit your app at [http://localhost:4200](http://localhost:4200).
+You can start a local development server to see the app as you're working on it. It has live reload enabled, so changes (within the `app/` directory) appear immediately without having to restart the server.
 
-### Code Generators
+Simply run
 
-Make use of the many generators for code, try `ember help generate` for more details
+`yarn start`
+
+and visit [http://localhost:4200](http://localhost:4200).
 
 ### Running Tests
 
-* `ember test`
-* `ember test --server`
+Running the standard test suite on the command line, using PhantomJS:
+
+`yarn test`
+
+To run tests in multiple installed browsers (Chrome, Firefox, etc.) with live-reloading enabled, you can invoke Ember's test command directly:
+
+`yarn test -- --server`
+
+On Travis CI we run a more intensive test suite across multiple browsers, Node versions, and Ember releases. You can run the same comprehensive tests locally (be warned, these take a while without the parallel testing capability of a CI provider).
+
+`yarn testall`
+
+### Running ESLint
+
+The test suite automatically lints all of the application's JavaScript files, but you can also run ESLint as a standalone process.
+
+`yarn lint`  
+`yarn lint -- --fix` (to automatically fix common formatting issues)
 
 ### Building
 
-* `ember build` (development)
-* `ember build --environment production` (production)
+`yarn build` (development)
+
+You can also build for a production environment, although for actual deployment this is handled by Travis CI. This is mostly useful because Ember reports the resulting file sizes.
+
+`ember build -- --environment production` (production)
 
 ### Deploying
 
-Specify what it takes to deploy your app.
+Deployment is handled by automatically by Travis CI.
 
 ## Further Reading / Useful Links
 
-* [ember.js](http://emberjs.com/)
+### The Plenar.io Project
+
+* [Plenar.io](http://plenar.io)
+* [UrbanCCD](http://www.urbanccd.org)
+* [Computation Institute at the University of Chicago](https://www.ci.uchicago.edu)
+* [Argonne National Laboratory](http://www.anl.gov)
+
+### Ember.js Resources
+
+* [Ember.js](http://emberjs.com/)
 * [ember-cli](https://ember-cli.com/)
-* Development Browser Extensions
-  * [ember inspector for chrome](https://chrome.google.com/webstore/detail/ember-inspector/bmdblncegkenkacieihfhpjfppoconhi)
-  * [ember inspector for firefox](https://addons.mozilla.org/en-US/firefox/addon/ember-inspector/)
+* Browser Extensions
+  * [Ember Inspector for Chrome](https://chrome.google.com/webstore/detail/ember-inspector/bmdblncegkenkacieihfhpjfppoconhi)
+  * [Ember Inspector for Firefox](https://addons.mozilla.org/en-US/firefox/addon/ember-inspector/)

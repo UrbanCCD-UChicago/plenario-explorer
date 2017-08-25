@@ -11,7 +11,7 @@ module.exports = {
   disable_watching: true,
   parallel: 3,
   tap_quiet_logs: true,
-  ignore_missing_launchers: true,
+  ignore_missing_launchers: false,
   launch_in_ci: [
     'PhantomJS',
     'Chrome',
